@@ -43,32 +43,35 @@ class AttendanceRecords extends GetView<AttendanceController> {
          final context = Get.context!;
          return SingleChildScrollView(
            scrollDirection: Axis.vertical,
-           child: ConstrainedBox(
-             constraints: BoxConstraints(minWidth: MediaQuery
-                 .of(context)
-                 .size
-                 .width - 64,
-             ),
-             child: PaginatedDataTable(
-               rowsPerPage: controller.currentLimit,
-               availableRowsPerPage: const [10, 20, 50, 100, 200],
-               onPageChanged: (firstRowIndex) {
-                 final newPage = (firstRowIndex ~/ controller.currentLimit);
-                 controller.updatePagination(controller.currentLimit, newPage);
-               },
-               onRowsPerPageChanged: (value) {
-                 if (value != null) {
-                   controller.updatePagination(value, 0);
-                 }
-               },
-               columns: const [
-                 DataColumn(label: Text('Log ID')),
-                 DataColumn(label: Text('ID Fingerprint')),
-                 DataColumn(label: Text('Username')),
-                 DataColumn(label: Text('Clock IN')),
-                 DataColumn(label: Text('Check Type')),
-               ],
-               source: controller.dataSource.value!,
+           child: Padding(
+             padding: const EdgeInsets.all(32.0),
+             child: ConstrainedBox(
+               constraints: BoxConstraints(minWidth: MediaQuery
+                   .of(context)
+                   .size
+                   .width - 30,
+               ),
+               child: PaginatedDataTable(
+                 rowsPerPage: controller.currentLimit,
+                 availableRowsPerPage: const [10, 20, 50, 100, 200],
+                 onPageChanged: (firstRowIndex) {
+                   final newPage = (firstRowIndex ~/ controller.currentLimit);
+                   controller.updatePagination(controller.currentLimit, newPage);
+                 },
+                 onRowsPerPageChanged: (value) {
+                   if (value != null) {
+                     controller.updatePagination(value, 0);
+                   }
+                 },
+                 columns: const [
+                   DataColumn(label: Text('Log ID')),
+                   DataColumn(label: Text('ID Fingerprint')),
+                   DataColumn(label: Text('Username')),
+                   DataColumn(label: Text('Clock IN')),
+                   DataColumn(label: Text('Check Type')),
+                 ],
+                 source: controller.dataSource.value!,
+               ),
              ),
            ),
          );

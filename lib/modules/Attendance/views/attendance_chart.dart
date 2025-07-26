@@ -41,7 +41,7 @@ class AttendacneChart extends GetView<ChartController> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               alignment: Alignment.centerLeft,
               child: const Text(
-                "Attendance Flow Chart",
+                "Attendance By Department",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -85,11 +85,12 @@ class AttendacneChart extends GetView<ChartController> {
           ),
         ),
         tooltipBehavior: TooltipBehavior(enable: true),
+        legend: Legend(isVisible: true),
         primaryXAxis: CategoryAxis(labelRotation: 0),
         primaryYAxis: NumericAxis(),
         series: <CartesianSeries<Chartmodel, String>>[
           ColumnSeries<Chartmodel, String>(
-            name: 'Column',
+            name: 'Bar',
             dataSource: chartData,
             xValueMapper: (Chartmodel data, _) => data.category,
             yValueMapper: (Chartmodel data, _) => data.value,

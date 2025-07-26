@@ -46,7 +46,7 @@ class AttendacneChartPie extends GetView<ChartPieController> {
               child: const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Activity Chart",
+                  "Attendance Leave",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
