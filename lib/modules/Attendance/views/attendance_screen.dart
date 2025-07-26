@@ -47,20 +47,26 @@ class _AttendanceScreenState extends State<AttendanceScreen>
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (isMobile)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: _buildHeader(),
-                    ),
-                  if (!isMobile)
-                    _buildHeader(),
-                  Cardinfo(),
-                  _buildcardinfo(),
-                ],
+            Scrollbar(
+              controller: _verticalScrollController,
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: _verticalScrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isMobile)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _buildHeader(),
+                      ),
+                    if (!isMobile) _buildHeader(),
+                    Cardinfo(),
+                    _buildcardinfo(),
+                  ],
+                ),
               ),
             ),
             if (loading.isLoading.value)
@@ -128,13 +134,16 @@ Widget _CardinfoColumn() {
             ),
           ],
         ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const AlwaysScrollableScrollPhysics(),
+          child: Scrollbar(
+            controller: _horizontalScrollController,
+            thumbVisibility: true,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              controller: _horizontalScrollController,
             child: Center(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width - 64,
+                  minWidth: MediaQuery.of(context).size.width - 100,
                   maxWidth: MediaQuery.of(context).size.width,
                   maxHeight: MediaQuery.of(context).size.height * 0.8,
                 ),
@@ -151,7 +160,7 @@ Widget _CardinfoColumn() {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(18.0),
                             child: AttendanceFilterView(),
                           ),
                         ],
@@ -169,6 +178,7 @@ Widget _CardinfoColumn() {
             ),
           ),
       ),
+      )
     );
 }
 
