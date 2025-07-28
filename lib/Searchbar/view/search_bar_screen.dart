@@ -45,28 +45,26 @@ class SearchbarScreen extends GetView<SearchBarController>{
   }
   Widget _buildSearchBoxOther() {
     final searchController = Get.find<SearchBarController>();
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: SizedBox(
-        width: 250,
-        child: TextField(
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.blue.withOpacity(0.5),
-            prefixIcon: const Icon(Icons.search, color: Colors.white),
-            hintText: 'Search',
-            hintStyle: const TextStyle(color: Colors.white70),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
-            ),
+    return SizedBox(
+      height: 35,
+      width: 250,
+      child: TextField(
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.blue.withOpacity(0.5),
+          prefixIcon: const Icon(Icons.search, color: Colors.white),
+          hintText: 'Search',
+          hintStyle: const TextStyle(color: Colors.white70),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
           ),
-          onChanged: (value) {
-            searchController.search(value);
-          },
         ),
+        onChanged: (value) {
+          searchController.search(value);
+        },
       ),
     );
   }

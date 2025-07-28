@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Attendance/utils/ExportExcel.dart';
+import 'package:hrms/modules/Attendance/utils/ExportPDF.dart';
 
 import '../API/attendance_stream_api_sql.dart';
 import '../widgets/attendance_data_source_table.dart';
@@ -77,6 +79,17 @@ class AttendanceController extends GetxController {
       return matchDate && matchSearch;
     }).toList();
   }
+  void searchData(String query) {
+    searchText.value = query;
+    applyFilter();
+  }
+
+  void filterSheet(){
+    ExportPDF( attendaData: attendanceData);
+    exportToExcel( attendaData: attendanceData);
+  }
+
+
 
   void refreshData() {
     buildAttendanceTable(limit: currentLimit, page: currentPage);

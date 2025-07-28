@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/Dashboard/views/dashboard_screen.dart';
+import 'package:hrms/modules/Department/views/department_screen.dart';
 import '../../../ErrorScreen/Controller/ErrorMessage.dart';
 import '../../../Loadingui/Loading_Screen.dart';
 import '../../../Loadingui/loading_controller.dart';
 import '../../Attendance/controllers/attendance_widget_controller.dart';
 import '../../Attendance/views/attendance_screen.dart';
+import '../../Employee/views/employee_screen.dart';
 
 Future<void> MethodButton1() async {
   final error = Get.put<ErrormessageController>(ErrormessageController());
@@ -40,7 +42,6 @@ Future<void> MethodButton1() async {
 Future<void> MethodButton2() async {
   final error = Get.put<ErrormessageController>(ErrormessageController());
   final attendanceController = Get.find<AttendanceController>();
-  final context = Get.context ;
   if (!Get.isRegistered<LoadingUiController>()) {
     Get.put(LoadingUiController());
   }
@@ -55,7 +56,7 @@ Future<void> MethodButton2() async {
   );
   await Future.delayed(const Duration(seconds: 2));
   if (attendanceController.attendanceData.isEmpty) {
-    error.error.value = 'No Employee Data Found';
+    error.error.value = 'No Attendance Data Found';
     error.buildErrorMessages();
     await Future.delayed(const Duration(seconds: 1));
   }
@@ -93,7 +94,7 @@ Future<void> MethodButton3() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(AttendanceScreen.routeName));
+  Future.microtask(() => Get.offAllNamed(EmployeeScreen.routeName));
 }
 
 
@@ -116,7 +117,7 @@ Future<void> MethodButton4() async {
   );
   await Future.delayed(const Duration(seconds: 2));
   if (attendanceController.attendanceData.isEmpty) {
-    error.error.value = 'No Employee Data Found';
+    error.error.value = 'No Department Data Found';
     error.buildErrorMessages();
     await Future.delayed(const Duration(seconds: 1));
   }
@@ -124,7 +125,7 @@ Future<void> MethodButton4() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(AttendanceScreen.routeName));
+  Future.microtask(() => Get.offAllNamed(DepartmentScreen.routeName));
 }
 
 

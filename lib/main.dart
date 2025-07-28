@@ -17,6 +17,7 @@ import 'modules/Dashboard/controllers/dashboard_recently_screen_controller.dart'
 import 'modules/Drawer/controllers/attendance_dialog_controller.dart';
 import 'modules/Drawer/controllers/drawer_controller.dart';
 import 'modules/Drawer/controllers/drawer_dialog_screen_controller.dart';
+import 'modules/Employee/Controller/employeefiltercontroller.dart';
 import 'modules/Loginscreen/controllers/login_card_controller.dart';
 import 'modules/Loginscreen/controllers/login_controller.dart';
 import 'modules/Loginscreen/controllers/loginscreen_animation_controller.dart';
@@ -49,6 +50,7 @@ import 'modules/Routes/Routes.dart';
     Get.put(SuccessMesage());
     Get.put(SearchBarController());
     Get.put(DataUnavailable());
+    Get.put(EmployeeFilterController());
     if (!Get.isRegistered<LoadingUiController>()) {
       Get.put(LoadingUiController());
     }

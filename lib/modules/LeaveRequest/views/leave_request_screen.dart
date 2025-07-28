@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:hrms/modules/Attendance/controllers/attendance_widget_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -7,6 +10,7 @@ import '../../Attendance/utils/ExportExcel.dart';
 import '../../Attendance/utils/ExportPDF.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/views/drawer_screen.dart';
+import '../../Employee/Controller/employeefiltercontroller.dart';
 import '../API/leave_stream_rpc_sql.dart';
 
 
@@ -135,6 +139,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
 
 
   Widget _buildLeaveRequestsTable() {
+    final controller = Get.find<EmployeeFilterController>();
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: getPendingLeaveRequests(),
       builder: (context, snapshot) {
@@ -254,7 +259,6 @@ class _LeaveRequestState extends State<LeaveRequest> {
                         label: const Text('End Date', style: TextStyle(color: Colors.white)),
                       ),
 
-                      // 🔹 Export Dropdown
                       Container(
                         height: 30,
                         decoration: BoxDecoration(
@@ -275,15 +279,15 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             ))
                                 .toList(),
                             onChanged: (newValue) async {
+                              final controller = Get.find<AttendanceController>();
                               if (newValue != null) {
                                 setState(() => selectedValue = newValue);
                                 if (newValue == 'PDF') {
-                                  await Navigator.push(context, MaterialPageRoute(builder: (_) => ExportPDF()));
+                                  await Navigator.push(context, MaterialPageRoute(builder: (_) => ExportPDF(attendaData: controller.attendanceData)));
                                   setState(() => selectedValue = 'EXCEL');
                                 } else if (newValue == 'EXCEL') {
-                                  await exportToExcel();
+                                  await exportToExcel(attendaData: controller.attendanceData);
                                 } else if (newValue == 'Image') {
-                                  // Image export logic
                                 }
                               }
                             },

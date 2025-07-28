@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -9,7 +10,7 @@ import '../widgets/attendance_datasource.dart';
 
 
 class ExportPDF extends StatefulWidget {
-  const ExportPDF({super.key});
+  const ExportPDF({super.key, required RxList<Map<String, dynamic>> attendaData});
 
   @override
   State<ExportPDF> createState() => _ExportPDFState();
