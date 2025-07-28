@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/Drawer/widgets/Method_drawer_policy_button.dart';
 import '../../Employee/views/employee_screen.dart';
 import '../controllers/drawer_controller.dart';
 
@@ -25,7 +26,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
               (bool expanded) => controller.toggleTile1('Employee'),
           leading: Icon(Icons.person_2, color: Colors.white),
           title: InkWell(
-            onTap: () => Get.toNamed(EmployeeScreen.routeName),
+            onTap: () => MethodButton3(),
             child: Text(
               'Employee',
               style: TextStyle(

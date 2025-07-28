@@ -119,7 +119,8 @@ class _AttendanceScreenState extends State<AttendanceScreen>
       ),
     );
   }
-Widget _CardinfoColumn() {
+
+  Widget _CardinfoColumn() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -266,14 +267,14 @@ Widget _CardinfoColumn() {
                       children: [
                         const SizedBox(width: 20),
                         isMobile ? Text(
-                          'ATTENDANCE',
+                          'ATTENDANCE DASHBOARD',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ) : Text(
-                          'ATTENDANCE',
+                          'ATTENDANCE DASHBOARD',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 20,

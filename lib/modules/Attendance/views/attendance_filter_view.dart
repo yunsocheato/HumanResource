@@ -68,9 +68,9 @@ class AttendanceFilterView extends GetView<AttendanceController> {
                     if (newValue != null) {
                       controller.selectedExport.value = newValue;
                       if (newValue == 'PDF') {
-                        await Future.microtask(() => ExportPDF());
+                        await Future.microtask(() => ExportPDF( attendaData: controller.attendanceData));
                       } else if (newValue == 'EXCEL') {
-                        await Future.microtask(() => exportToExcel());
+                        await Future.microtask(() => exportToExcel(attendaData: controller.attendanceData));
                       } else if (newValue == 'Image') {
                         Get.snackbar('Coming Soon', 'This feature is coming soon');
                       }
@@ -134,9 +134,9 @@ class AttendanceFilterView extends GetView<AttendanceController> {
             if (newValue != null) {
               selectedExport.value = newValue;
               if (newValue == 'PDF') {
-                Future.microtask(() => Get.to(() => const ExportPDF()));
+                Future.microtask(() => Get.to(() =>  ExportPDF(attendaData: controller.attendanceData)));
               } else if (newValue == 'EXCEL') {
-                Future.microtask(() => exportToExcel());
+                Future.microtask(() => exportToExcel(attendaData: controller.attendanceData));
               } else if (newValue == 'Image') {
                 Get.snackbar('Coming Soon', 'Image export is coming soon');
               }

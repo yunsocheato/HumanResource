@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Department/views/department_screen.dart';
 import '../controllers/drawer_controller.dart';
+import 'Method_drawer_policy_button.dart';
 
 class Departmentpolicy extends GetView<AppDrawerController> {
   const Departmentpolicy({super.key});
@@ -25,7 +26,7 @@ class Departmentpolicy extends GetView<AppDrawerController> {
               (bool expanded) => controller.toggleTile1('Department'),
           leading: Icon(Icons.apartment, color: Colors.white),
           title: InkWell(
-            onTap: () => Get.toNamed(DepartmentScreen.routeName),
+            onTap: () => MethodButton4(),
             child: Text(
               'Department',
               style: TextStyle(
