@@ -8,7 +8,7 @@ class ChartController extends GetxController {
   var selectedValue =  ''.obs;
   RxList<double> counts = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ].obs;
   List <Color> colors = [Colors.blue, Colors.red, Colors.green, Colors.yellow, Colors.purple, Colors.orange];
-  List<String>departments = ['Human Resource', 'Information Technology', 'Finance Department', 'Sales Department', 'Administrator Department' , 'ATM Department'];
+  List<String>departments = ['HR', 'IT', 'Finance', 'Sales', 'Administrator' , 'ATM'];
   @override
   void onInit() {
     super.onInit();
@@ -22,7 +22,7 @@ class ChartController extends GetxController {
         .stream(primaryKey: ['id'])
         .order('department', ascending: true)
         .listen((data) {
-      List<int> updatedCounts = [0, 0, 0, 0, 0, 0];
+      List<double> updatedCounts = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
       for (var user in data) {
         final dept = user['department'];

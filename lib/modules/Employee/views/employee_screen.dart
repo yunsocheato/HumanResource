@@ -96,52 +96,57 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
               ),
               elevation: 8,
               shadowColor: Colors.grey.withOpacity(0.2),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(width: 20),
-                        isMobile ? Text(
-                          'EMPLOYEE DASHBOARD',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ) : Text(
-                          'EMPLOYEE DASHBOARD',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 20),
+                            isMobile ? Text(
+                              'EMPLOYEE DASHBOARD',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ) : Text(
+                              'EMPLOYEE DASHBOARD',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                  
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            isMobile ? TextButton(
+                              onPressed: () => controllers.refreshdata(),
+                              child: const Text(
+                                'Refresh',
+                                style: TextStyle(color: Colors.black, fontSize: 16),
+                              ),
+                            ): TextButton(
+                              onPressed: () => controllers.refreshdata(),
+                              child: const Text(
+                                'Refresh',
+                                style: TextStyle(color: Colors.black, fontSize: 20),
+                              ),
+                            ),
+                          ],
                         )
-
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        isMobile ? TextButton(
-                          onPressed: () => controllers.refreshdata(),
-                          child: const Text(
-                            'Refresh',
-                            style: TextStyle(color: Colors.black, fontSize: 16),
-                          ),
-                        ): TextButton(
-                          onPressed: () => controllers.refreshdata(),
-                          child: const Text(
-                            'Refresh',
-                            style: TextStyle(color: Colors.black, fontSize: 20),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -184,36 +189,6 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
   }
 
   Widget _buildDesktopTabletContent() {
-    return Padding(
-      padding:  EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-        ),
-       child:  Scrollbar(
-          controller: _horizontalScrollController,
-          thumbVisibility: true,
-          child: Scrollbar(
-            controller: _verticalScrollController,
-            thumbVisibility: true,
-            child: SingleChildScrollView(
-              controller: _verticalScrollController,
-              child: SingleChildScrollView(
-                controller: _horizontalScrollController,
-                scrollDirection: Axis.horizontal,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width,
-                    maxWidth: MediaQuery.of(context).size.width * 1.5,
-                  ),
-                  child: EmployeeList(),
-                ),
-              ),
-            ),
-          ),
-        )
-,
-      ),
-    );
+    return EmployeeList();
   }
 }

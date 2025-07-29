@@ -21,7 +21,6 @@ class Drawerscreen extends GetView<AppDrawerController> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       final isMobile = constraints.maxWidth < 600;
-      final isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 1024;
       final isDesktop = constraints.maxWidth >= 1024;
       final controller = Get.find<AuthController>();
       return Scaffold(
@@ -99,17 +98,15 @@ class Drawerscreen extends GetView<AppDrawerController> {
   }
 
   Widget _buildSidebar(BuildContext context) {
-    final isTablet = MediaQuery.of(context).size.width >= 600 && MediaQuery.of(context).size.width < 1024;
     final isDesktop = MediaQuery.of(context).size.width >= 1024;
     final isMobile = MediaQuery.of(context).size.width < 600;
     final controller = Get.find<AuthController>();
 
     return SafeArea(
       child: Container(
-        color: const Color(0xFF1B2230),
+        color:  Color(0xFF1B2230),
         child: Stack(
           children: [
-            // Scrollable content
             Padding(
               padding: const EdgeInsets.only(bottom: 90), // Reserve space for bottom bar
               child: ListView(
@@ -156,7 +153,6 @@ class Drawerscreen extends GetView<AppDrawerController> {
               ),
             ),
 
-            // Fixed bottom profile bar (only on mobile)
             if (isMobile)
               Positioned(
                 bottom: 0,
@@ -165,7 +161,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                 child: Container(
                   height: 90,
                   decoration: const BoxDecoration(
-                    color: Color(0xFF242C40),
+                    color:  Color(0xFF1B2230),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),

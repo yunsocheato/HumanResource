@@ -45,7 +45,16 @@ class DashboardModel {
 
     );
   }
-
+  Map<String, dynamic> toJson() {
+    return {
+      'email': email,
+      'name': name,
+      'id_card': id_card,
+      'position': position,
+      'department': department,
+      'to_date': created_at,
+    };
+  }
   get icon => RecentlyControllerScreen.icon;
   get iconColor => RecentlyControllerScreen.iconColor;
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hrms/ErrorScreen/Controller/SuccessMessage.dart';
+import 'package:hrms/modules/LeaveRequest/controllers/leave_controller.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'ErrorScreen/Controller/DataUnavaiable.dart';
@@ -17,6 +18,7 @@ import 'modules/Dashboard/controllers/dashboard_recently_screen_controller.dart'
 import 'modules/Drawer/controllers/attendance_dialog_controller.dart';
 import 'modules/Drawer/controllers/drawer_controller.dart';
 import 'modules/Drawer/controllers/drawer_dialog_screen_controller.dart';
+import 'modules/Employee/Controller/Employeetable_controller.dart';
 import 'modules/Employee/Controller/employeefiltercontroller.dart';
 import 'modules/Loginscreen/controllers/login_card_controller.dart';
 import 'modules/Loginscreen/controllers/login_controller.dart';
@@ -51,6 +53,8 @@ import 'modules/Routes/Routes.dart';
     Get.put(SearchBarController());
     Get.put(DataUnavailable());
     Get.put(EmployeeFilterController());
+    Get.put(LeaveController());
+    Get.put(EmployeeTalbeController());
     if (!Get.isRegistered<LoadingUiController>()) {
       Get.put(LoadingUiController());
     }
