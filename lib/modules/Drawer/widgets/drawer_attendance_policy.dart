@@ -20,10 +20,7 @@ class Attendancepolicy extends GetView<AppDrawerController> {
   }
 
   Widget _buildDrawerTile(BuildContext, context) {
-    final error = Get.put<ErrormessageController>( ErrormessageController());
-    final loading = Get.put<LoadingUiController>(LoadingUiController());
     final controller = Get.find<AppDrawerController>();
-    final attendanceController = Get.find<AttendanceController>();
     return Obx(() {
       final isExpanded1 = controller.isExpanded1('Attendance');
       return Theme(

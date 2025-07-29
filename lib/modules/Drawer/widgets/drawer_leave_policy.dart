@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Attendance/views/attendance_screen.dart';
 import '../controllers/drawer_controller.dart';
+import 'Method_drawer_policy_button.dart';
 
 class LeavePolicy extends GetView<AppDrawerController> {
   const LeavePolicy({super.key});
@@ -25,7 +26,7 @@ class LeavePolicy extends GetView<AppDrawerController> {
               (bool expanded) => controller.toggleTile1('Leave'),
           leading: Icon(Icons.stop_circle, color: Colors.white),
           title: InkWell(
-            onTap: () => Get.toNamed(AttendanceScreen.routeName),
+            onTap: () => MethodButton5(),
             child: Text(
               'Leave Request',
               style: TextStyle(

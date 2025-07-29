@@ -49,8 +49,6 @@ class AttendacneChart extends GetView<ChartController> {
                 ),
               ),
             ),
-
-            // Chart Body
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: SizedBox(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/Dashboard/views/dashboard_screen.dart';
 import 'package:hrms/modules/Department/views/department_screen.dart';
+import 'package:hrms/modules/LeaveRequest/views/leave_request_screen.dart';
 import '../../../ErrorScreen/Controller/ErrorMessage.dart';
 import '../../../Loadingui/Loading_Screen.dart';
 import '../../../Loadingui/loading_controller.dart';
@@ -147,7 +148,7 @@ Future<void> MethodButton5() async {
   );
   await Future.delayed(const Duration(seconds: 2));
   if (attendanceController.attendanceData.isEmpty) {
-    error.error.value = 'No Employee Data Found';
+    error.error.value = 'No Leave Data Found';
     error.buildErrorMessages();
     await Future.delayed(const Duration(seconds: 1));
   }
@@ -155,5 +156,5 @@ Future<void> MethodButton5() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(AttendanceScreen.routeName));
+  Future.microtask(() => Get.offAllNamed(LeaveRequest.routeName));
 }
