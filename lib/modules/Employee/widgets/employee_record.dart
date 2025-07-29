@@ -1,15 +1,8 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/Loadingui/Loading_Screen.dart';
-import 'package:hrms/modules/Dashboard/models/dashboard_model.dart';
-import 'package:intl/intl.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../../Searchbar/view/search_bar_screen.dart';
 import '../../Dashboard/controllers/dashboard_recently_screen_controller.dart';
-import '../../Dashboard/models/dashboard_model.dart';
 import '../Controller/Employeetable_controller.dart';
 import '../Controller/employeefiltercontroller.dart';
 import '../views/employee_filter_view.dart';
@@ -30,10 +23,12 @@ class EmployeeList extends GetView<EmployeeFilterController> {
   Widget _buildEmployeeOther() {
     final controller = Get.find<RecentlyControllerScreen>();
     final controller1 = Get.find<EmployeeTalbeController>();
+    final ScrollController _horizontalController = ScrollController();
+
     final context = Get.context! ;
     return Obx(() {
       return SizedBox(
-        height: 800,
+        height: MediaQuery.of(context).size.width * 0.3,
         width: double.infinity,
         child: Card(
           color: Colors.white,
@@ -86,15 +81,20 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                 ),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  controller: _horizontalController,
                   child: SingleChildScrollView(
+                    controller: _horizontalController,
                     scrollDirection: Axis.horizontal,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width - 15),
-                      child: IntrinsicWidth(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width,
+                        ),
                         child: DataTable(
-                          headingTextStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          headingTextStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           dataTextStyle: const TextStyle(fontSize: 12),
                           columns: const [
                             DataColumn(label: Text('Email')),

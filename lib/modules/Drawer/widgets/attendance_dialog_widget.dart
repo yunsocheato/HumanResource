@@ -4,33 +4,17 @@ import 'package:get/get.dart';
 import '../controllers/attendance_dialog_controller.dart';
 
 class AttendanceDialog extends GetView<AttendanceDialogController> {
-  const AttendanceDialog({super.key});
+  final Widget content;
+   AttendanceDialog(this.content, {super.key ,});
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: controller.formkey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            controller: controller.nameController,
-            decoration: const InputDecoration(labelText: 'Name'),
-            validator: (value) => value!.isEmpty ? 'Required' : null,
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            controller: controller.emailController,
-            decoration: const InputDecoration(labelText: 'Email'),
-            validator:
-                (value) => !value!.contains('@') ? 'Invalid email' : null,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: controller.submit,
-            child: const Text('Submit'),
-          ),
-        ],
+    return Dialog(
+      backgroundColor: Colors.white.withOpacity(0.5),
+      shadowColor: Colors.grey,
+      shape: CircleBorder(),
+      child: AlertDialog(
+        content: content,
       ),
     );
   }

@@ -13,8 +13,8 @@ class leaverequesttable extends GetView<LeaveController>{
   const leaverequesttable({super.key});
   @override
   Widget build(BuildContext context) {
-
     final LeaveController controller = Get.find<LeaveController>();
+
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
@@ -33,16 +33,13 @@ class leaverequesttable extends GetView<LeaveController>{
     });
   }
 
-
-
-
   Widget _buildLeaveRequestsTableOther(BuildContext context) {
     final controller = Get.find<LeaveController>();
-
+    final ScrollController _horizontalController = ScrollController();
     return Obx(() {
       final requests = controller.leaveRequests;
       return SizedBox(
-        height: 800,
+        height: MediaQuery.of(context).size.height * 0.5,
         width: double.infinity,
         child: Card(
           color: Colors.white,
@@ -88,13 +85,28 @@ class leaverequesttable extends GetView<LeaveController>{
                 padding: const EdgeInsets.all(8.0),
                 child: LeaveViewFilter(),
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
+          SizedBox(height: 10,),
+          Expanded(
+            child: Scrollbar(
+              thumbVisibility: true,
+              controller: _horizontalController,
+              child: SingleChildScrollView(
+                controller: _horizontalController,
+                scrollDirection: Axis.horizontal,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width,
+                  ),
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: Axis.vertical,
                     child: DataTable(
-                      headingTextStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      headingRowHeight: 30,
+                      sortAscending: true,
+                      columnSpacing: 12.0,
+                      dataRowMaxHeight: double.infinity,
+                      dataRowMinHeight: 60,
+                      dividerThickness: 1,
+                      headingTextStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                       dataTextStyle: const TextStyle(fontSize: 12),
                       columns: const [
                         DataColumn(label: Text('Employee')),
@@ -119,12 +131,14 @@ class leaverequesttable extends GetView<LeaveController>{
                             DataCell(Text(request['department'] ?? '-')),
                             DataCell(Text(request['position'] ?? '-')),
                             DataCell(Text(request['status'] ?? '-')),
-                            DataCell(Text(request['from_date'] != null
-                                ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['from_date']))
-                                : '-')),
-                            DataCell(Text(request['to_date'] != null
-                                ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['to_date']))
-                                : '-')),
+                            DataCell(Text(
+                                request['from_date'] != null
+                                    ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['from_date']))
+                                    : '-')),
+                            DataCell(Text(
+                                request['to_date'] != null
+                                    ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['to_date']))
+                                    : '-')),
                             DataCell(Row(
                               children: [
                                 IconButton(
@@ -164,9 +178,11 @@ class leaverequesttable extends GetView<LeaveController>{
                         );
                       }).toList(),
                     ),
+                  ),
                 ),
               ),
-              )
+            ),
+          ),
             ],
           ),
         ),
