@@ -80,9 +80,9 @@ import 'modules/Routes/Routes.dart';
         final session = Supabase.instance.client.auth.currentSession;
 
         if (session != null) {
-          Get.offAllNamed(DashboardScreen.routeName); // clears stack
+          Get.offAllNamed(DashboardScreen.routeName);
         } else {
-          Get.offAllNamed(LoginScreen.routeName); // clears stack
+          Get.offAllNamed(LoginScreen.routeName);
         }
       });
     }
