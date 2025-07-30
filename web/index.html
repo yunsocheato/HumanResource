@@ -1,38 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+    <base href="$FLUTTER_BASE_HREF">
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="A new Flutter project.">
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+    <!-- iOS meta tags & icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="hrms">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    <title>hrms</title>
+    <link rel="manifest" href="manifest.json">
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="hrms">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <style>
+    @keyframes ldio-wsbvjv859yq {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-  <title>hrms</title>
-  <link rel="manifest" href="manifest.json">
+    /* Outer container: fullscreen + centered */
+    .loadingio-spinner-dual-ring-xbxg75n9q9s {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0070e2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    /* Spinner container */
+    .ldio-wsbvjv859yq {
+      width: 200px;
+      height: 200px;
+      position: relative;
+    }
+
+    /* Outer ring animation */
+    .ldio-wsbvjv859yq > div {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 20px solid #ffffff;
+      border-color: #ffffff transparent #ffffff transparent;
+      animation: ldio-wsbvjv859yq 1s linear infinite;
+      box-sizing: border-box !important;
+    }
+
+    /* Inner ring effects */
+    .ldio-wsbvjv859yq > div:nth-child(2) {
+      border-color: transparent;
+    }
+
+    .ldio-wsbvjv859yq > div:nth-child(2) div {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform: rotate(45deg);
+    }
+
+    .ldio-wsbvjv859yq > div:nth-child(2) div:before,
+    .ldio-wsbvjv859yq > div:nth-child(2) div:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ffffff;
+      border-radius: 50%;
+    }
+
+    .ldio-wsbvjv859yq > div:nth-child(2) div:before {
+      top: -20px;
+      left: 70px;
+      box-shadow: 0 160px 0 0 #ffffff;
+    }
+
+    .ldio-wsbvjv859yq > div:nth-child(2) div:after {
+      top: 70px;
+      left: -20px;
+      box-shadow: 160px 0 0 0 #ffffff;
+    }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+<div class="loadingio-spinner-dual-ring-xbxg75n9q9s">
+    <div class="ldio-wsbvjv859yq">
+        <div></div>
+        <div>
+            <div></div>
+        </div>
+    </div>
+</div>
+<script src="flutter_bootstrap.js"></script>
+<script>
+  window.addEventListener('flutter-first-frame', function () {
+    const loader = document.querySelector('.loadingio-spinner-dual-ring-xbxg75n9q9s');
+    if (loader) loader.remove();
+  });
+</script>
+
+
 </body>
 </html>

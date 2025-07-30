@@ -54,7 +54,7 @@ class Attendancepolicy extends GetView<AppDrawerController> {
               ),
               onTap: () {
                 final controller = Get.find<DialogScreenController>();
-                controller.ShowcustomDialog(AttendanceDialog());
+                controller.ShowcustomDialog(AttendanceDialog(context));
               },
             ),
             ListTile(
@@ -70,12 +70,3 @@ class Attendancepolicy extends GetView<AppDrawerController> {
     });
   }
 }
-// if (controller.isNullOrBlank!) {
-// if (Get.isRegistered<LoadingUiController>()) {
-// Get.put<LoadingUiController>(LoadingUiController());
-// }
-// Get.toNamed(AttendanceScreen.routeName);
-// } else {
-// error.error.value = 'No Employee Data Found';
-// error.buildErrorMessages();
-// }
