@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Attendance/controllers/attendance_widget_controller.dart';
-
-import '../../../ErrorScreen/Controller/ErrorMessage.dart';
-import '../../../Loadingui/Loading_Screen.dart';
-import '../../../Loadingui/loading_controller.dart';
-import '../../Attendance/views/attendance_screen.dart';
+import '../../DialogScreen/DialogScreen.dart';
 import '../controllers/drawer_controller.dart';
-import '../controllers/drawer_dialog_screen_controller.dart';
+import '../views/fingerprint_setup_screen.dart';
 import 'Method_drawer_policy_button.dart';
-import 'attendance_dialog_widget.dart';
 
 class Attendancepolicy extends GetView<AppDrawerController> {
   const Attendancepolicy({super.key});
@@ -53,8 +47,7 @@ class Attendancepolicy extends GetView<AppDrawerController> {
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
-                final controller = Get.find<DialogScreenController>();
-                controller.ShowcustomDialog(AttendanceDialog(context));
+                DialogScreen(context, FingerPrintSetup());
               },
             ),
             ListTile(
