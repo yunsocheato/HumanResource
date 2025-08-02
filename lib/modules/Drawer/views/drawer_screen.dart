@@ -120,7 +120,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                     Icons.home, () => MethodButton2()
                   ),
                   const SizedBox(height: 10),
-                  Policysetup(),
+                  PolicySetup(),
                   ReportPolicy(),
                   Employeepolicy(),
                   Departmentpolicy(),

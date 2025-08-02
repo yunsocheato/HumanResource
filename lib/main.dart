@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hrms/ErrorScreen/Controller/SuccessMessage.dart';
 import 'package:hrms/modules/Drawer/controllers/Leave_Policy_controller.dart';
+import 'package:hrms/modules/Drawer/controllers/employee_policy_controller.dart';
 import 'package:hrms/modules/LeaveRequest/controllers/leave_controller.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +19,8 @@ import 'modules/Dashboard/views/dashboard_screen.dart';
 import 'modules/Dashboard/controllers/dashboard_recently_screen_controller.dart';
 import 'modules/DialogScreen/Controller/dialog_screen_controller.dart';
 import 'modules/Drawer/controllers/drawer_controller.dart';
+import 'modules/Drawer/controllers/fingerprint_setup_controller.dart';
+import 'modules/Drawer/controllers/payroll_policy_controller.dart';
 import 'modules/Employee/Controller/Employeetable_controller.dart';
 import 'modules/Employee/Controller/employeefiltercontroller.dart';
 import 'modules/Loginscreen/controllers/login_card_controller.dart';
@@ -55,6 +58,10 @@ import 'modules/Routes/Routes.dart';
     Get.put(EmployeeFilterController());
     Get.put(LeaveController());
     Get.put(EmployeeTalbeController());
+    Get.put(PayrollPolicyController());
+    Get.put(FingerPrintController());
+    Get.put(EmployeePolicyController());
+
     if (!Get.isRegistered<LoadingUiController>()) {
       Get.put(LoadingUiController());
     }

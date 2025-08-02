@@ -25,7 +25,7 @@ class ReportPolicy extends GetView<AppDrawerController> {
               (bool expanded) => controller.toggleTile1('Report'),
           leading: Icon(Icons.folder, color: Colors.white),
           title: Text(
-            'Manage Report',
+            'Report',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -59,6 +59,13 @@ class ReportPolicy extends GetView<AppDrawerController> {
             ListTile(
               title: Text(
                 'Leave Summary',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () => Get.toNamed('/hr-policy'),
+            ),
+            ListTile(
+              title: Text(
+                'OT Reports',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () => Get.toNamed('/hr-policy'),

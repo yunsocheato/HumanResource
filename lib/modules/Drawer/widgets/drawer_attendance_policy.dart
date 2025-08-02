@@ -41,15 +41,6 @@ class Attendancepolicy extends GetView<AppDrawerController> {
           children: [
             ListTile(
               title: Text(
-                'Fingerprint Setup',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                // DialogScreen(context, FingerPrintSetup());
-              },
-            ),
-            ListTile(
-              title: Text(
                 'Attendance Policy',
                 style: TextStyle(color: Colors.white),
               ),
