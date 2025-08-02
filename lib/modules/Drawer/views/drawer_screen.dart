@@ -9,7 +9,7 @@ import '../controllers/drawer_controller.dart';
 import '../widgets/drawer_attendance_policy.dart';
 import '../widgets/drawer_department_policy.dart';
 import '../widgets/drawer_employee_policy.dart';
-import '../widgets/drawer_leave_policy.dart';
+import '../widgets/drawer_leave_request.dart';
 import '../widgets/drawer_policy_setup.dart';
 import '../widgets/drawer_reports_policy.dart';
 
@@ -125,7 +125,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   Employeepolicy(),
                   Departmentpolicy(),
                   Attendancepolicy(),
-                  LeavePolicy(),
+                  DrawerLeaveRequest(),
                   _buildDrawerTile(
                     'Schedule',
                     Icons.calendar_today,

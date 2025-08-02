@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../DialogScreen/DialogScreen.dart';
 import '../controllers/drawer_controller.dart';
-import '../views/fingerprint_setup_screen.dart';
 import 'Method_drawer_policy_button.dart';
 
 class Attendancepolicy extends GetView<AppDrawerController> {
@@ -47,7 +45,7 @@ class Attendancepolicy extends GetView<AppDrawerController> {
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
-                DialogScreen(context, FingerPrintSetup());
+                // DialogScreen(context, FingerPrintSetup());
               },
             ),
             ListTile(

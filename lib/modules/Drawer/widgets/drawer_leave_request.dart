@@ -4,8 +4,8 @@ import '../../Attendance/views/attendance_screen.dart';
 import '../controllers/drawer_controller.dart';
 import 'Method_drawer_policy_button.dart';
 
-class LeavePolicy extends GetView<AppDrawerController> {
-  const LeavePolicy({super.key});
+class DrawerLeaveRequest extends GetView<AppDrawerController> {
+  const DrawerLeaveRequest({super.key});
 
   @override
   Widget build(BuildContext context) {
