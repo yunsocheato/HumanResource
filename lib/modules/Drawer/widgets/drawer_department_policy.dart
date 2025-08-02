@@ -41,7 +41,7 @@ class Departmentpolicy extends GetView<AppDrawerController> {
           children: [
             ListTile(
               title: Text(
-                'Staff Department Setup',
+                'Department Setup',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () => Get.toNamed('/hr-policy'),

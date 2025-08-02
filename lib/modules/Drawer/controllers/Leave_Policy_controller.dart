@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LeavePolicyController extends GetxController {
+  final TextEditingController Usernames = TextEditingController();
   final isSwitched1 = false.obs;
   final isSwitched2 = false.obs;
   final isSwitched3 = false.obs;
@@ -19,12 +20,16 @@ class LeavePolicyController extends GetxController {
   final IconData icon = Icons.search ;
   final Color color = Colors.blue.shade900;
 
-  final RxString LeaveType = ''.obs;
   final RxString Username = ''.obs;
 
   final RxString MonthlySalary = ''.obs;
   final RxString DailySalary = ''.obs;
   final Rx<int> isLeave= 0.obs;
+
+  final useragreement = false.obs;
+  final leaveagreement = false.obs;
+  final leavepolicyagreement = false.obs;
+  final leavebalancepolicy = false.obs;
 
 
 

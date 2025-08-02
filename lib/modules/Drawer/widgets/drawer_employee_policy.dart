@@ -41,14 +41,14 @@ class Employeepolicy extends GetView<AppDrawerController> {
           children: [
             ListTile(
               title: Text(
-                'Staff Profile',
+                'Employee Profile',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () => Get.toNamed('/hr-policy'),
             ),
             ListTile(
               title: Text(
-                'Career History',
+                'Employee History',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () => Get.toNamed('/it-policy'),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Drawer/views/Leave_Policy_screen.dart';
+import 'package:hrms/modules/Drawer/views/employee_policy_screen.dart';
+import 'package:hrms/modules/Drawer/views/payroll_policy_screen.dart';
 
 import '../../DialogScreen/DialogScreen.dart';
 import '../controllers/drawer_controller.dart';
+import '../views/fingerprint_setup_screen.dart';
 
-class Policysetup extends GetView<AppDrawerController> {
-  const Policysetup({super.key});
+class PolicySetup extends GetView<AppDrawerController> {
+  const PolicySetup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +21,8 @@ class Policysetup extends GetView<AppDrawerController> {
       final isExpanded1 = controller.isExpanded1('Policy Set up');
       return Theme(
         data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent, // remove expansion tile divider
-          unselectedWidgetColor: Colors.white, // arrow color
+          dividerColor: Colors.transparent,
+          unselectedWidgetColor: Colors.white,
         ),
         child: ExpansionTile(
           initiallyExpanded: isExpanded1,
@@ -35,15 +38,8 @@ class Policysetup extends GetView<AppDrawerController> {
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
             ListTile(
-              title: Text(
-                'Job Analysis',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () => Get.toNamed('/hr-policy'),
-            ),
-            ListTile(
-              title: Text('Payroll', style: TextStyle(color: Colors.white)),
-              onTap: () => Get.toNamed('/it-policy'),
+              title: Text('Payroll Policy', style: TextStyle(color: Colors.white)),
+              onTap: () => DialogScreen(context,PayrollPolicyScreen()),
             ),
             ListTile(
               title: Text(
@@ -54,27 +50,22 @@ class Policysetup extends GetView<AppDrawerController> {
             ),
             ListTile(
               title: Text(
-                'General Setting',
+                'Fingerprint Setup',
                 style: TextStyle(color: Colors.white),
               ),
-              onTap: () => Get.toNamed('/it-policy'),
+              onTap: () {
+                DialogScreen(context, FingerPrintScreen());
+              },
             ),
             ListTile(
               title: Text(
-                'User Settings',
+                'Employee Policy',
                 style: TextStyle(color: Colors.white),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
+              onTap: () =>DialogScreen(context, EmployeePolicyScreen())
             ),
             ListTile(
-              title: Text(
-                'Telegram config',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () => Get.toNamed('/it-policy'),
-            ),
-            ListTile(
-              title: Text('OT Settings', style: TextStyle(color: Colors.white)),
+              title: Text('OT Policy', style: TextStyle(color: Colors.white)),
               onTap: () => Get.toNamed('/hr-policy'),
             ),
           ],
