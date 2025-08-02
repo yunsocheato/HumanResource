@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/Drawer/views/Leave_Policy_screen.dart';
 
+import '../../DialogScreen/DialogScreen.dart';
 import '../controllers/drawer_controller.dart';
 
 class Policysetup extends GetView<AppDrawerController> {
@@ -48,7 +50,7 @@ class Policysetup extends GetView<AppDrawerController> {
                 'Leave Policy',
                 style: TextStyle(color: Colors.white),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
+              onTap: () => DialogScreen(context,LeavePolicy())
             ),
             ListTile(
               title: Text(
