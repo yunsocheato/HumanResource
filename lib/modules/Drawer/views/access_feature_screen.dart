@@ -1,26 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:hrms/modules/Drawer/controllers/OT_policy_controller.dart';
+import '../controllers/access_feature_controller.dart';
 
-class OTPolicyScreen extends GetView<OTPolicyController>{
-  final _formkey1 = GlobalKey<FormState>();
-  final _formkey2 = GlobalKey<FormState>();
-   OTPolicyScreen({Key? key}) : super(key: key);
+class AccessFeatureScreen extends GetView<AccessFeatureController> {
+  var _formkey1 = GlobalKey<FormState>();
+  var _formkey2 = GlobalKey<FormState>();
+   AccessFeatureScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _buildResponsiveOTpolicy();
   }
 
-  Widget _buildResponsiveOTpolicy(){
+  Widget _buildResponsiveOTpolicy() {
     final isMobile = Get.width < 600;
     return isMobile ? _buildPopDialogMobile() : _buildPopDialogOther();
   }
 
-  Widget _buildPopDialogMobile() {
-    final controller = Get.find<OTPolicyController>();
+  Widget _buildPopDialogOther() {
+    final controller = Get.find<AccessFeatureController>();
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -41,7 +41,7 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text(
-                      'OT POLICY SETUP',
+                      'Access Feature Setup',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
@@ -58,7 +58,8 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: controller.isLoading.value
-                  ? Center(child: CircularProgressIndicator(color: Colors.blue.shade900))
+                  ? Center(
+                  child: CircularProgressIndicator(color: Colors.blue.shade900))
                   : Form(
                 key: _formkey1,
                 child: Column(
@@ -72,58 +73,67 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                           labelText: 'FIND USERNAME',
                           suffixIcon: InkWell(
                             onTap: () {},
-                            child: Icon(controller.icon, color: controller.color),
+                            child: Icon(
+                                controller.icon, color: controller.color),
                           ),
                           border: const OutlineInputBorder(),
                         ),
-                        validator: (value) => (value == null || value.trim().isEmpty)
+                        validator: (value) =>
+                        (value == null || value
+                            .trim()
+                            .isEmpty)
                             ? 'Please enter a username'
                             : null,
-                        onSaved: (value) => controller.Username.value = value ?? '',
+                        onSaved: (value) =>
+                        controller.Username.value = value ?? '',
                       ),
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Technical'),
-                            value: controller.ifTechnical.value,
-                            onChanged: (value) =>
-                            controller.ifTechnical.value = value ?? false,
+                          child: RadioListTile<UserRole>(
+                            title: const Text('USER'),
+                            value: UserRole.user,
+                            groupValue: controller.selectedRole1.value,
+                            onChanged: (value) {
+                              if (value != null) controller.selectedRole1.value = value;
+                            },
                           ),
                         ),
                         Expanded(
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Non Technical'),
-                            value: controller.ifNonTechnical.value,
-                            onChanged: (value) =>
-                            controller.ifNonTechnical.value = value ?? false,
-                          ),
+                            child:RadioListTile<UserRole>(
+                              title: const Text('Admin'),
+                              value: UserRole.admin,
+                              groupValue: controller.selectedRole2.value,
+                              onChanged: (value) {
+                                if (value != null) controller.selectedRole2.value = value;
+                              },
+                            )
                         ),
                       ],
                     ),
                     Row(
                       children: [
                         Expanded(
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Restrict Change'),
-                            value: controller.usercannotchange.value,
-                            onChanged: (value) =>
-                            controller.usercannotchange.value = value ?? false,
-                          ),
+                            child: RadioListTile<UserRole>(
+                              title: const Text('Supervisor'),
+                              value: UserRole.supervisor,
+                              groupValue: controller.selectedRole3.value,
+                              onChanged: (value) {
+                                if (value != null) controller.selectedRole3.value = value;
+                              },
+                            )
                         ),
                         Expanded(
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Unrestrict Change'),
-                            value: controller.ifNonTechnical.value,
-                            onChanged: (value) =>
-                            controller.ifNonTechnical.value = value ?? false,
-                          ),
+                            child:RadioListTile<UserRole>(
+                              title: const Text('SuperAdmin User'),
+                              value: UserRole.superAdmin,
+                              groupValue: controller.selectedRole4.value,
+                              onChanged: (value) {
+                                if (value != null) controller.selectedRole4.value = value;
+                              },
+                            )
                         ),
                       ],
                     ),
@@ -132,7 +142,8 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          child: const Text('Close', style: TextStyle(color: Colors.red)),
+                          child: const Text(
+                              'Close', style: TextStyle(color: Colors.red)),
                           onPressed: () => Get.back(),
                         ),
                         const SizedBox(width: 8),
@@ -150,7 +161,8 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                               _formkey1.currentState?.save();
                               Get.snackbar(
                                 'New Create',
-                                'Set OT Policy on: ${controller.Username.value} Successfully',
+                                'Set OT Policy on: ${controller.Username
+                                    .value} Successfully',
                                 snackPosition: SnackPosition.TOP,
                                 backgroundColor: Colors.green.shade100,
                                 colorText: Colors.black,
@@ -172,8 +184,8 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
   }
 
 
-  Widget _buildPopDialogOther() {
-    final controller = Get.find<OTPolicyController>();
+  Widget _buildPopDialogMobile() {
+    final controller = Get.find<AccessFeatureController>();
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -194,7 +206,7 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text(
-                      'OT POLICY SETUP',
+                      'Access Feature Setup',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
@@ -211,9 +223,10 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: controller.isLoading.value
-                  ? Center(child: CircularProgressIndicator(color: Colors.blue.shade900))
+                  ? Center(
+                  child: CircularProgressIndicator(color: Colors.blue.shade900))
                   : Form(
-                key: _formkey2,
+                key: _formkey1,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -225,58 +238,67 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                           labelText: 'FIND USERNAME',
                           suffixIcon: InkWell(
                             onTap: () {},
-                            child: Icon(controller.icon, color: controller.color),
+                            child: Icon(
+                                controller.icon, color: controller.color),
                           ),
                           border: const OutlineInputBorder(),
                         ),
-                        validator: (value) => (value == null || value.trim().isEmpty)
+                        validator: (value) =>
+                        (value == null || value
+                            .trim()
+                            .isEmpty)
                             ? 'Please enter a username'
                             : null,
-                        onSaved: (value) => controller.Username.value = value ?? '',
+                        onSaved: (value) =>
+                        controller.Username.value = value ?? '',
                       ),
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Technical'),
-                            value: controller.ifTechnical.value,
-                            onChanged: (value) =>
-                            controller.ifTechnical.value = value ?? false,
+                          child: RadioListTile<UserRole>(
+                            title: const Text('USER'),
+                            value: UserRole.user,
+                            groupValue: controller.selectedRole1.value,
+                            onChanged: (value) {
+                              if (value != null) controller.selectedRole1.value = value;
+                            },
                           ),
                         ),
                         Expanded(
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Non Technical'),
-                            value: controller.ifNonTechnical.value,
-                            onChanged: (value) =>
-                            controller.ifNonTechnical.value = value ?? false,
-                          ),
+                            child:RadioListTile<UserRole>(
+                              title: const Text('Admin'),
+                              value: UserRole.admin,
+                              groupValue: controller.selectedRole2.value,
+                              onChanged: (value) {
+                                if (value != null) controller.selectedRole2.value = value;
+                              },
+                            )
                         ),
                       ],
                     ),
                     Row(
                       children: [
                         Expanded(
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Restrict Change'),
-                            value: controller.usercannotchange.value,
-                            onChanged: (value) =>
-                            controller.usercannotchange.value = value ?? false,
-                          ),
+                            child: RadioListTile<UserRole>(
+                              title: const Text('Supervisor'),
+                              value: UserRole.supervisor,
+                              groupValue: controller.selectedRole3.value,
+                              onChanged: (value) {
+                                if (value != null) controller.selectedRole3.value = value;
+                              },
+                            )
                         ),
                         Expanded(
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Unrestrict Change'),
-                            value: controller.ifNonTechnical.value,
-                            onChanged: (value) =>
-                            controller.ifNonTechnical.value = value ?? false,
-                          ),
+                            child:RadioListTile<UserRole>(
+                              title: const Text('SuperAdmin User'),
+                              value: UserRole.superAdmin,
+                              groupValue: controller.selectedRole4.value,
+                              onChanged: (value) {
+                                if (value != null) controller.selectedRole4.value = value;
+                              },
+                            )
                         ),
                       ],
                     ),
@@ -285,7 +307,8 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          child: const Text('Close', style: TextStyle(color: Colors.red)),
+                          child: const Text(
+                              'Close', style: TextStyle(color: Colors.red)),
                           onPressed: () => Get.back(),
                         ),
                         const SizedBox(width: 8),
@@ -299,11 +322,12 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                           ),
                           child: const Text('Create'),
                           onPressed: () {
-                            if (_formkey2.currentState?.validate() ?? false) {
-                              _formkey2.currentState?.save();
+                            if (_formkey1.currentState?.validate() ?? false) {
+                              _formkey1.currentState?.save();
                               Get.snackbar(
                                 'New Create',
-                                'Set OT Policy on: ${controller.Username.value} Successfully',
+                                'Set OT Policy on: ${controller.Username
+                                    .value} Successfully',
                                 snackPosition: SnackPosition.TOP,
                                 backgroundColor: Colors.green.shade100,
                                 colorText: Colors.black,
@@ -323,5 +347,4 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
       );
     });
   }
-
 }
