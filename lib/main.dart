@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:hrms/ErrorScreen/Controller/SuccessMessage.dart';
 import 'package:hrms/modules/Drawer/controllers/Leave_Policy_controller.dart';
 import 'package:hrms/modules/Drawer/controllers/OT_policy_controller.dart';
+import 'package:hrms/modules/Drawer/controllers/access_feature_controller.dart';
 import 'package:hrms/modules/Drawer/controllers/employee_policy_controller.dart';
+import 'package:hrms/modules/Drawer/views/access_feature_screen.dart';
 import 'package:hrms/modules/LeaveRequest/controllers/leave_controller.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -63,6 +65,7 @@ import 'modules/Routes/Routes.dart';
     Get.put(FingerPrintController());
     Get.put(EmployeePolicyController());
     Get.put(OTPolicyController());
+    Get.put(AccessFeatureController());
 
     if (!Get.isRegistered<LoadingUiController>()) {
       Get.put(LoadingUiController());
