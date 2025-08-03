@@ -12,8 +12,14 @@ class OTPolicyController extends GetxController{
   final isSwitched3= false.obs;
 
   final Username = ''.obs;
-  final IconData icon = Icons.person;
+  final IconData icon = Icons.search;
   final Color color = Colors.orange.shade900;
+
+  final usercannotchange = false.obs;
+  final usercanchange = false.obs;
+
+  final ifTechnical = false.obs;
+  final ifNonTechnical = false.obs;
 
 
 }

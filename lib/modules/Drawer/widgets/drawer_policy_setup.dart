@@ -6,6 +6,7 @@ import 'package:hrms/modules/Drawer/views/payroll_policy_screen.dart';
 
 import '../../DialogScreen/DialogScreen.dart';
 import '../controllers/drawer_controller.dart';
+import '../views/OT_policy_screen.dart';
 import '../views/fingerprint_setup_screen.dart';
 
 class PolicySetup extends GetView<AppDrawerController> {
@@ -66,7 +67,15 @@ class PolicySetup extends GetView<AppDrawerController> {
             ),
             ListTile(
               title: Text('OT Policy', style: TextStyle(color: Colors.white)),
-              onTap: () => Get.toNamed('/hr-policy'),
+              onTap: () => DialogScreen(context, OTPolicyScreen()),
+            ),
+            ListTile(
+              title: Text('Access Feature', style: TextStyle(color: Colors.white)),
+              onTap: () => DialogScreen(context,PayrollPolicyScreen()),
+            ),
+            ListTile(
+              title: Text('User Policy', style: TextStyle(color: Colors.white)),
+              onTap: () => DialogScreen(context,PayrollPolicyScreen()),
             ),
           ],
         ),
