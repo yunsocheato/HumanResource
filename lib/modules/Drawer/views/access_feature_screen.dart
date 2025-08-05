@@ -7,7 +7,8 @@ import '../controllers/access_feature_controller.dart';
 class AccessFeatureScreen extends GetView<AccessFeatureController> {
   var _formkey1 = GlobalKey<FormState>();
   var _formkey2 = GlobalKey<FormState>();
-   AccessFeatureScreen({Key? key}) : super(key: key);
+
+  AccessFeatureScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,132 +58,126 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
             const Divider(height: 1),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: controller.isLoading.value
-                  ? Center(
-                  child: CircularProgressIndicator(color: Colors.blue.shade900))
-                  : Form(
-                key: _formkey1,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: TextFormField(
-                        initialValue: controller.Username.value,
-                        decoration: InputDecoration(
-                          labelText: 'FIND USERNAME',
-                          suffixIcon: InkWell(
-                            onTap: () {},
-                            child: Icon(
-                                controller.icon, color: controller.color),
-                          ),
-                          border: const OutlineInputBorder(),
+              child:
+                  controller.isLoading.value
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blue.shade900,
                         ),
-                        validator: (value) =>
-                        (value == null || value
-                            .trim()
-                            .isEmpty)
-                            ? 'Please enter a username'
-                            : null,
-                        onSaved: (value) =>
-                        controller.Username.value = value ?? '',
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile<UserRole>(
-                            title: const Text('USER'),
-                            value: UserRole.user,
-                            groupValue: controller.selectedRole1.value,
-                            onChanged: (value) {
-                              if (value != null) controller.selectedRole1.value = value;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                            child:RadioListTile<UserRole>(
-                              title: const Text('Admin'),
-                              value: UserRole.admin,
-                              groupValue: controller.selectedRole2.value,
-                              onChanged: (value) {
-                                if (value != null) controller.selectedRole2.value = value;
-                              },
-                            )
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: RadioListTile<UserRole>(
-                              title: const Text('Supervisor'),
-                              value: UserRole.supervisor,
-                              groupValue: controller.selectedRole3.value,
-                              onChanged: (value) {
-                                if (value != null) controller.selectedRole3.value = value;
-                              },
-                            )
-                        ),
-                        Expanded(
-                            child:RadioListTile<UserRole>(
-                              title: const Text('SuperAdmin User'),
-                              value: UserRole.superAdmin,
-                              groupValue: controller.selectedRole4.value,
-                              onChanged: (value) {
-                                if (value != null) controller.selectedRole4.value = value;
-                              },
-                            )
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          child: const Text(
-                              'Close', style: TextStyle(color: Colors.red)),
-                          onPressed: () => Get.back(),
-                        ),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange.shade900,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                      )
+                      : Form(
+                        key: _formkey1,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                              ),
+                              child: TextFormField(
+                                initialValue: controller.Username.value,
+                                decoration: InputDecoration(
+                                  labelText: 'FIND USERNAME',
+                                  suffixIcon: InkWell(
+                                    onTap: () {},
+                                    child: Icon(
+                                      controller.icon,
+                                      color: controller.color,
+                                    ),
+                                  ),
+                                  border: const OutlineInputBorder(),
+                                ),
+                                validator:
+                                    (value) =>
+                                        (value == null || value.trim().isEmpty)
+                                            ? 'Please enter a username'
+                                            : null,
+                                onSaved:
+                                    (value) =>
+                                        controller.Username.value = value ?? '',
+                              ),
                             ),
-                          ),
-                          child: const Text('Create'),
-                          onPressed: () {
-                            if (_formkey1.currentState?.validate() ?? false) {
-                              _formkey1.currentState?.save();
-                              Get.snackbar(
-                                'New Create',
-                                'Set OT Policy on: ${controller.Username
-                                    .value} Successfully',
-                                snackPosition: SnackPosition.TOP,
-                                backgroundColor: Colors.green.shade100,
-                                colorText: Colors.black,
-                              );
-                              Get.close(0);
-                            }
-                          },
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Obx(
+                                    () => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Choose a role:', style: TextStyle(fontSize: 18)),
+                                    ...UserRole.values.map((role) {
+                                      return RadioListTile<UserRole>(
+                                        title: Text(role.toString().split('.').last),
+                                        value: role,
+                                        groupValue: controller.selectedRole.value,
+                                        onChanged: (value) {
+                                          controller.selectedRole.value = value;
+                                        },
+                                      );
+                                    }).toList(),
+                                    const SizedBox(height: 20),
+                                    if (controller.selectedRole.value != null) ...[
+                                      Text('Accessible Features:',
+                                          style:
+                                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                      const SizedBox(height: 10),
+                                      ...controller
+                                          .featureaccessMap[controller.selectedRole.value]!
+                                          .map((feature) => ListTile(
+                                        leading: Icon(Icons.check),
+                                        title: Text(feature),
+                                      )),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  child: const Text(
+                                    'Close',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () => Get.back(),
+                                ),
+                                const SizedBox(width: 8),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.orange.shade900,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Text('Create'),
+                                  onPressed: () {
+                                    if (_formkey1.currentState?.validate() ??
+                                        false) {
+                                      _formkey1.currentState?.save();
+                                      Get.snackbar(
+                                        'New Create',
+                                        'Set OT Policy on: ${controller.Username.value} Successfully',
+                                        snackPosition: SnackPosition.TOP,
+                                        backgroundColor: Colors.green.shade100,
+                                        colorText: Colors.black,
+                                      );
+                                      Get.close(0);
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                      ),
             ),
           ],
         ),
       );
     });
   }
-
 
   Widget _buildPopDialogMobile() {
     final controller = Get.find<AccessFeatureController>();
@@ -222,16 +217,22 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
             const Divider(height: 1),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: controller.isLoading.value
+              child:
+              controller.isLoading.value
                   ? Center(
-                  child: CircularProgressIndicator(color: Colors.blue.shade900))
+                child: CircularProgressIndicator(
+                  color: Colors.blue.shade900,
+                ),
+              )
                   : Form(
-                key: _formkey1,
+                key: _formkey2,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                      ),
                       child: TextFormField(
                         initialValue: controller.Username.value,
                         decoration: InputDecoration(
@@ -239,68 +240,65 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
                           suffixIcon: InkWell(
                             onTap: () {},
                             child: Icon(
-                                controller.icon, color: controller.color),
+                              controller.icon,
+                              color: controller.color,
+                            ),
                           ),
                           border: const OutlineInputBorder(),
                         ),
-                        validator: (value) =>
-                        (value == null || value
-                            .trim()
-                            .isEmpty)
+                        validator:
+                            (value) =>
+                        (value == null || value.trim().isEmpty)
                             ? 'Please enter a username'
                             : null,
-                        onSaved: (value) =>
+                        onSaved:
+                            (value) =>
                         controller.Username.value = value ?? '',
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile<UserRole>(
-                            title: const Text('USER'),
-                            value: UserRole.user,
-                            groupValue: controller.selectedRole1.value,
-                            onChanged: (value) {
-                              if (value != null) controller.selectedRole1.value = value;
-                            },
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Obx(
+                            () => ListView(
+                          padding: const EdgeInsets.all(16),
+                          children: UserRole.values.map((role) {
+                            final isSelected = controller.selectedRole.value == role;
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: RadioListTile<UserRole>(
+                                    title: Text(role.toString().split('.').last),
+                                    value: role,
+                                    groupValue: controller.selectedRole.value,
+                                    onChanged: (value) {
+                                      controller.selectedRole.value = value;
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: isSelected
+                                      ? Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: controller.featureaccessMap[role]!
+                                        .map((feature) => Row(
+                                      children: [
+                                        Icon(Icons.check, size: 18),
+                                        SizedBox(width: 6),
+                                        Text(feature),
+                                      ],
+                                    ))
+                                        .toList(),
+                                  )
+                                      : SizedBox(),
+                                ),
+                              ],
+                            );
+                          }).toList(),
                         ),
-                        Expanded(
-                            child:RadioListTile<UserRole>(
-                              title: const Text('Admin'),
-                              value: UserRole.admin,
-                              groupValue: controller.selectedRole2.value,
-                              onChanged: (value) {
-                                if (value != null) controller.selectedRole2.value = value;
-                              },
-                            )
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: RadioListTile<UserRole>(
-                              title: const Text('Supervisor'),
-                              value: UserRole.supervisor,
-                              groupValue: controller.selectedRole3.value,
-                              onChanged: (value) {
-                                if (value != null) controller.selectedRole3.value = value;
-                              },
-                            )
-                        ),
-                        Expanded(
-                            child:RadioListTile<UserRole>(
-                              title: const Text('SuperAdmin User'),
-                              value: UserRole.superAdmin,
-                              groupValue: controller.selectedRole4.value,
-                              onChanged: (value) {
-                                if (value != null) controller.selectedRole4.value = value;
-                              },
-                            )
-                        ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Row(
@@ -308,7 +306,9 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
                       children: [
                         TextButton(
                           child: const Text(
-                              'Close', style: TextStyle(color: Colors.red)),
+                            'Close',
+                            style: TextStyle(color: Colors.red),
+                          ),
                           onPressed: () => Get.back(),
                         ),
                         const SizedBox(width: 8),
@@ -322,12 +322,12 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
                           ),
                           child: const Text('Create'),
                           onPressed: () {
-                            if (_formkey1.currentState?.validate() ?? false) {
-                              _formkey1.currentState?.save();
+                            if (_formkey2.currentState?.validate() ??
+                                false) {
+                              _formkey2.currentState?.save();
                               Get.snackbar(
                                 'New Create',
-                                'Set OT Policy on: ${controller.Username
-                                    .value} Successfully',
+                                'Access Feature Policy on: ${controller.Username.value} Successfully',
                                 snackPosition: SnackPosition.TOP,
                                 backgroundColor: Colors.green.shade100,
                                 colorText: Colors.black,
@@ -348,3 +348,5 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
     });
   }
 }
+
+

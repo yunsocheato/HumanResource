@@ -3,20 +3,53 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class AccessFeatureController extends GetxController{
-  final Rx<UserRole> selectedRole1 = UserRole.user.obs;
-  final Rx<UserRole> selectedRole2 = UserRole.admin.obs;
-  final Rx<UserRole> selectedRole3 = UserRole.supervisor.obs;
-  final Rx<UserRole> selectedRole4 = UserRole.superAdmin.obs;
+
+  int? selectedIndex;
+
+  final Rx<UserRole?> selectedRole = Rx<UserRole?>(null);
 
 
-  RxBool UserisAccessFeature = false.obs;
-  RxBool SupervisorisAccessFeature = false.obs;
-  RxBool AdminisAccessFeature = false.obs;
-  RxBool SuperAdminisAccessFeature = false.obs;
 
-  final List<String> UserAccessFeature = <String>[].obs;
-  final List<String> AdminAccessFeature = [];
-  final List<String> SuperAdminAccessFeature = [];
+  final Map<UserRole ,List<String>> UserRoleMap = {
+    UserRole.user: ['user'],
+    UserRole.supervisor: ['supervisor'],
+    UserRole.admin: ['admin'],
+    UserRole.superAdmin: ['superAdmin'],
+
+  };
+  final Map<UserRole, List<String>> permissionMap = {
+    UserRole.superAdmin: ['Create', 'Read', 'Update', 'Delete','Approve','Reject'],
+    UserRole.admin: ['Create', 'Read', 'Update', 'Delete','Approve','Reject'],
+    UserRole.user: ['Update', 'Read' , 'Request'],
+    UserRole.supervisor: ['Read', 'Update', 'Approve','Reject'],
+  };
+  final Map<UserRole, List<String>> featureaccessMap = {
+    UserRole.admin: [
+      'Dashboard',
+      'Manage Users',
+      'Leave Requests',
+      'Reports',
+      'Settings',
+    ],
+    UserRole.user: [
+      'Dashboard',
+      'Submit Leave',
+      'View Attendance',
+    ],
+    UserRole.supervisor: [
+      'Dashboard',
+      'Approve Leave',
+      'Team Reports',
+    ],
+    UserRole.superAdmin: [
+      'Dashboard',
+      'Employee Records',
+      'Recruitment',
+      'Payroll',
+
+    ],
+  };
+
 
   final IconData icon  = Icons.search ;
   final Color color = Colors.yellow;
