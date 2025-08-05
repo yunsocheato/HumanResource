@@ -39,10 +39,10 @@ class PolicySetup extends GetView<AppDrawerController> {
           collapsedIconColor: Colors.white,
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
-            ListTile(
-              title: Text('Payroll Policy', style: TextStyle(color: Colors.white)),
-              onTap: () => DialogScreen(context,PayrollPolicyScreen()),
-            ),
+            // ListTile(
+            //   title: Text('Payroll Policy', style: TextStyle(color: Colors.white)),
+            //   onTap: () => DialogScreen(context,PayrollPolicyScreen()),
+            // ),
             ListTile(
               title: Text(
                 'Leave Policy',
@@ -71,13 +71,14 @@ class PolicySetup extends GetView<AppDrawerController> {
               onTap: () => DialogScreen(context, OTPolicyScreen()),
             ),
             ListTile(
-              title: Text('Access Feature', style: TextStyle(color: Colors.white)),
+              title: Text('Access Feature Setup', style: TextStyle(color: Colors.white)),
               onTap: () => DialogScreen(context,AccessFeatureScreen()),
             ),
             ListTile(
-              title: Text('User Policy', style: TextStyle(color: Colors.white)),
-              // onTap: () => DialogScreen(context,PayrollPolicyScreen()),
+              title: Text('Department SetUp', style: TextStyle(color: Colors.white)),
+              onTap: () => DialogScreen(context,AccessFeatureScreen()),
             ),
+
           ],
         ),
       );

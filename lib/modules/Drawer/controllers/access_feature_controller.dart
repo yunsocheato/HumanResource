@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 class AccessFeatureController extends GetxController{
 
   int? selectedIndex;
+  var featureSelectionMap = <UserRole, Map<String, RxBool>>{}.obs;
 
   final Rx<UserRole?> selectedRole = Rx<UserRole?>(null);
 
@@ -67,8 +68,15 @@ class AccessFeatureController extends GetxController{
   @override
   void onInit() {
     super.onInit();
+    initializeFeatureSelection();
   }
-
+  void initializeFeatureSelection() {
+    for (var role in UserRole.values) {
+      featureSelectionMap[role] = {
+        for (var feature in featureaccessMap[role]!) feature: false.obs,
+      };
+    }
+  }
 
 }
 enum UserRole {
