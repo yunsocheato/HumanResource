@@ -28,7 +28,7 @@ class employeepolicysql {
   Future<void>UpdateUser(employeepolicymodel user) async {
     final userData = await Supabase.instance.client
         .from('signupuser')
-        .update(user.toJson())
+        .insert(user.toJson())
         .eq('name', user.name)
         .select();
     if(userData.isEmpty != null){

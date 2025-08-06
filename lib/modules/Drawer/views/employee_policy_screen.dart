@@ -372,11 +372,9 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
               border: const OutlineInputBorder(),
             ),
             onChanged: (value) {
-              controller.Username.value = value; // trigger debounce
+              controller.Username.value = value;
             },
           ),
-
-          // Auto-suggestion dropdown
           if (controller.suggestionList.isNotEmpty &&
               controller.Username.value.isNotEmpty)
             Container(
@@ -407,6 +405,5 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
       );
     });
   }
-
 
 }

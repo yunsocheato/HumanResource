@@ -64,6 +64,8 @@ class EmployeePolicyController extends GetxController{
       isLoading.value = false;
     }
   }
+
+
   Future<void>UpdateChanges() async {
     if(user.value == null ) return;
     isLoading.value = true;
