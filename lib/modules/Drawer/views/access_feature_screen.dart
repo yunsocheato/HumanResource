@@ -22,7 +22,6 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
 
   Widget _buildPopDialogMobile() {
     final controller = Get.find<AccessFeatureController>();
-    final context = Get.context;
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -67,7 +66,7 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
                         ),
                       )
                       : Form(
-                        key: _formkey2,
+                        key: _formkey1,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -100,74 +99,7 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: Obx(
-                                () => Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Wrap(
-                                    spacing: 16,
-                                    runSpacing: 16,
-                                    children:
-                                        UserRole.values.map((role) {
-                                          final isSelected =
-                                              controller.selectedRole.value ==
-                                              role;
-                                          return SizedBox(
-                                            width:
-                                                MediaQuery.of(
-                                                      context!,
-                                                    ).size.width /
-                                                    2 -
-                                                32,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                RadioListTile<UserRole>(
-                                                  title: Text(
-                                                    role
-                                                        .toString()
-                                                        .split('.')
-                                                        .last,
-                                                  ),
-                                                  value: role,
-                                                  groupValue:
-                                                      controller
-                                                          .selectedRole
-                                                          .value,
-                                                  onChanged: (value) {
-                                                    controller
-                                                        .selectedRole
-                                                        .value = value!;
-                                                  },
-                                                ),
-                                                if (isSelected)
-                                                  ...controller.featureaccessMap[role]!.map(
-                                                    (feature) => Obx(
-                                                      () => CheckboxListTile(
-                                                        contentPadding:
-                                                            const EdgeInsets.only(
-                                                              left: 16,
-                                                            ),
-                                                        title: Text(feature),
-                                                        value:
-                                                            controller
-                                                                .featureSelectionMap[role]![feature]!
-                                                                .value,
-                                                        onChanged: (val) {
-                                                          controller
-                                                              .featureSelectionMap[role]![feature]!
-                                                              .value = val!;
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                              ],
-                                            ),
-                                          );
-                                        }).toList(),
-                                  ),
-                                ),
-                              ),
+                              child: buildAccessRoleSection(),
                             ),
                             const SizedBox(height: 16),
                             Row(
@@ -189,21 +121,24 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text('Create'),
-                                  onPressed: () {
-                                    if (_formkey2.currentState?.validate() ??
-                                        false) {
-                                      _formkey2.currentState?.save();
-                                      Get.snackbar(
-                                        'New Create',
-                                        'Access Feature Policy on: ${controller.Username.value} Successfully',
-                                        snackPosition: SnackPosition.TOP,
-                                        backgroundColor: Colors.green.shade100,
-                                        colorText: Colors.black,
-                                      );
-                                      Get.close(0);
+                                  child: const Text('CREATE'),
+                                    onPressed: () async {
+                                      if (_formkey1.currentState?.validate() ?? false) {
+                                        _formkey1.currentState?.save();
+
+                                        await controller.InsertData();
+
+                                        Get.snackbar(
+                                          'New Create',
+                                          'Access Feature Policy on: ${controller.Username.value} Successfully',
+                                          snackPosition: SnackPosition.TOP,
+                                          backgroundColor: Colors.green.shade100,
+                                          colorText: Colors.black,
+                                        );
+
+                                        Get.close(0);
+                                      }
                                     }
-                                  },
                                 ),
                               ],
                             ),
@@ -219,7 +154,7 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
 
   Widget _buildPopDialogOther() {
     final controller = Get.find<AccessFeatureController>();
-    final roles = UserRole.values;
+    final TextEditingController textController = TextEditingController(text: controller.Username.value);
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -257,177 +192,168 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child:
-                  controller.isLoading.value
-                      ? Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.blue.shade900,
+              controller.isLoading.value
+                  ? Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue.shade900,
+                ),
+              )
+                  : Form(
+                key: _formkey2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: TextFormField(
+                        controller: textController,
+                        decoration: InputDecoration(
+                          labelText: 'Find Username',
+                          suffixIcon: IconButton(
+                            icon: Icon(controller.icon, color: controller.color),
+                            onPressed: () {
+                              controller.fetchbyusersAccessFeatures(textController.text);
+                            },
+                          ),
+                          border: OutlineInputBorder(),
                         ),
-                      )
-                      : Form(
-                        key: _formkey2,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 8.0,
-                              ),
-                              child: TextFormField(
-                                initialValue: controller.Username.value,
-                                decoration: InputDecoration(
-                                  labelText: 'FIND USERNAME',
-                                  suffixIcon: InkWell(
-                                    onTap: () {},
-                                    child: Icon(
-                                      controller.icon,
-                                      color: controller.color,
-                                    ),
-                                  ),
-                                  border: const OutlineInputBorder(),
-                                ),
-                                validator:
-                                    (value) =>
-                                        (value == null || value.trim().isEmpty)
-                                            ? 'Please enter a username'
-                                            : null,
-                                onSaved:
-                                    (value) =>
-                                        controller.Username.value = value ?? '',
-                              ),
-                            ),
+                        onChanged: (value) {
+                          controller.Username.value = value;
+                        },
 
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Choose Role',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: (roles.length / 2).ceil(),
-                                    itemBuilder: (context, index) {
-                                      final role1 = roles[index * 2];
-                                      final role2 =
-                                      (index * 2 + 1 < roles.length) ? roles[index * 2 + 1] : null;
+                      ),
 
-                                      return Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(child: _buildRoleItem(role1)),
-                                          if (role2 != null) Expanded(child: _buildRoleItem(role2)),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  child: const Text(
-                                    'Close',
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                  onPressed: () => Get.back(),
-                                ),
-                                const SizedBox(width: 8),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange.shade900,
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                  child: const Text('Create'),
-                                  onPressed: () {
-                                    if (_formkey2.currentState?.validate() ??
-                                        false) {
-                                      _formkey2.currentState?.save();
-                                      Get.snackbar(
-                                        'New Create',
-                                        'Access Feature Policy on: ${controller.Username.value} Successfully',
-                                        snackPosition: SnackPosition.TOP,
-                                        backgroundColor: Colors.green.shade100,
-                                        colorText: Colors.black,
-                                      );
-                                      Get.close(0);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
+                    ),
+                    if (controller.suggestionList.isNotEmpty &&
+                        controller.Username.value.isNotEmpty)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        constraints: const BoxConstraints(maxHeight: 150),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: controller.suggestionList.length,
+                          itemBuilder: (context, index) {
+                            final suggestion = controller.suggestionList[index];
+                            return ListTile(
+                              title: Text(suggestion),
+                              onTap: () {
+                                textController.text = suggestion;
+                                controller.Username.value = suggestion;
+                                controller.fetchbyusersAccessFeatures(suggestion);
+                                controller.suggestionList.clear();
+                              },
+                            );
+                          },
                         ),
                       ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: buildAccessRoleSection(),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          child: const Text(
+                            'Close',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          onPressed: () => Get.back(),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange.shade900,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text('CREATE'),
+                            onPressed: () async {
+                                await controller.InsertData();
+                                Get.snackbar(
+                                  'New Create',
+                                  'Access Feature Policy on: ${controller.Username.value} Successfully',
+                                  snackPosition: SnackPosition.TOP,
+                                  backgroundColor: Colors.green.shade100,
+                                  colorText: Colors.black,
+                                );
+                                Get.close(0);
+                              }
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       );
     });
   }
-  Widget buildRoleList() {
-    final roles = UserRole.values;
 
-    return ListView.builder(
-      itemCount: (roles.length / 2).ceil(),
-      itemBuilder: (context, index) {
-        int firstIndex = index * 2;
-        int secondIndex = firstIndex + 1;
 
-        UserRole role1 = roles[firstIndex];
-        UserRole? role2 = secondIndex < roles.length ? roles[secondIndex] : null;
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: _buildRoleItem(role1)),
-            if (role2 != null) Expanded(child: _buildRoleItem(role2)),
-            if (role2 == null) Spacer(),
-          ],
-        );
-      },
-    );
-  }
-  Widget _buildRoleItem(UserRole role) {
+  Widget buildAccessRoleSection() {
     final controller = Get.find<AccessFeatureController>();
 
     return Obx(() {
-      final isSelected = controller.selectedRole.value == role;
+      final selectedRole = controller.selectedRole.value;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RadioListTile<UserRole>(
-            title: Text(role.toString().split('.').last),
-            value: role,
-            groupValue: controller.selectedRole.value,
-            onChanged: (value) {
-              controller.selectedRole.value = value!;
-            },
+          Text(
+            'Choose Your Role',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
-          if (isSelected)
-            ...controller.featureaccessMap[role]!.map(
-                  (feature) => Obx(() => CheckboxListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.only(left: 16),
-                title: Text(feature),
-                value: controller.featureSelectionMap[role]![feature]!.value,
-                onChanged: (val) {
-                  controller.featureSelectionMap[role]![feature]!.value = val!;
-                },
-              )),
+          ...UserRole.values.map(
+                (role) => RadioListTile<UserRole>(
+              title: Text(role.name),
+              value: role,
+              groupValue: selectedRole,
+              onChanged: (value) {
+                controller.selectedRole.value = value;
+                controller.initializeSelections(value!); // ensure maps are filled
+              },
             ),
+          ),
+
+          if (selectedRole != null) ...[
+            SizedBox(height: 12),
+            Text("Select Permissions", style: TextStyle(fontWeight: FontWeight.bold)),
+
+            if (controller.permissionSelectionMap[selectedRole] != null)
+              ...controller.permissionSelectionMap[selectedRole]!.entries.map(
+                    (entry) => Obx(() => CheckboxListTile(
+                  title: Text(entry.key),
+                  value: entry.value.value,
+                  onChanged: (val) => entry.value.value = val!,
+                )),
+              )
+            else
+              Text("No permissions available"),
+
+            SizedBox(height: 12),
+            Text("Select Features", style: TextStyle(fontWeight: FontWeight.bold)),
+
+            if (controller.featureSelectionMap[selectedRole] != null)
+              ...controller.featureSelectionMap[selectedRole]!.entries.map(
+                    (entry) => Obx(() => CheckboxListTile(
+                  title: Text(entry.key),
+                  value: entry.value.value,
+                  onChanged: (val) => entry.value.value = val!,
+                )),
+              )
+            else
+              Text("No features available"),
+          ]
         ],
       );
     });
