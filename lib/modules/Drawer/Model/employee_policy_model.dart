@@ -6,7 +6,7 @@ class employeepolicymodel{
   final String position;
   final String idCard;
   final String password;
-  final int fingerprint;
+  final int? fingerprint;
   final String phone;
   final String address;
   final String gender;
@@ -39,7 +39,9 @@ class employeepolicymodel{
       position: json['position'] ?? '',
       idCard: json['id_card'] ?? '',
       password: json['password'] ?? '',
-      fingerprint: json['fingerprints_id'] ?? 0,
+      fingerprint: json['fingerprints_id'] is int
+          ? json['fingerprints_id'] as int
+          : int.tryParse(json['fingerprints_id'].toString()) ?? 0,
       phone: json['phone'] ?? '',
       address: json['address'] ?? '',
       gender: json['gender'] ?? '',
@@ -57,7 +59,7 @@ class employeepolicymodel{
       'position': position,
       'id_card': idCard,
       'password': password,
-      'fingerprints_id': fingerprint,
+      'fingerprints_id': fingerprint?.toString(),
       'phone': phone,
       'address': address,
       'gender': gender,

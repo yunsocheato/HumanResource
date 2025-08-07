@@ -84,21 +84,17 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Text('Create'),
+                          child: const Text('CREATE'),
                           onPressed: () async {
-                            if (_formKey1.currentState?.validate() ?? false) {
-                              _formKey1.currentState?.save();
-                              await controller.UpdateChanges();
-
-                              Get.snackbar(
-                                'New Create',
-                                'Set Employee on: ${controller.Name.value}()} Successfully',
-                                snackPosition: SnackPosition.TOP,
-                                backgroundColor: Colors.white.withOpacity(0.3),
-                                colorText: Colors.black,
-                              );
-                              Get.close(0);
-                            }
+                            await controller.UpdateChange();
+                            Get.snackbar(
+                              'New Create',
+                              'Set Employee Policy on: ${controller.NameController.text} Successfully',
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.white.withOpacity(0.3),
+                              colorText: Colors.black,
+                            );
+                            Get.close(0);
                           },
                         ),
                       ],
@@ -181,20 +177,17 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Text('Create'),
+                          child: const Text('CREATE'),
                           onPressed: () async {
-                            if (_formKey2.currentState?.validate() ?? false) {
-                              _formKey2.currentState?.save();
-                              await controller.UpdateChanges();
+                              await controller.UpdateChange();
                               Get.snackbar(
                                 'New Create',
-                                'Set Employee Policy on: ${controller.Name.value} Successfully',
+                                'Set Employee Policy on: ${controller.NameController.text} Successfully',
                                 snackPosition: SnackPosition.TOP,
                                 backgroundColor: Colors.white.withOpacity(0.3),
                                 colorText: Colors.black,
                               );
                               Get.close(0);
-                            }
                           },
                         ),
                       ],
@@ -213,143 +206,124 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
   Widget _buildUserInfoFields(EmployeePolicyController controller) {
     return Column(
       children: [
+        _buildField(label: 'USER-ID',
+            icon: Icons.verified_user,
+            controller: controller.UserIDController),
         _buildField(label: 'USERNAME',
             icon: Icons.person,
-            initialValue: controller.Name.value),
+            controller: controller.NameController),
         _buildField(label: 'EMAIL',
             icon: Icons.email,
-            initialValue: controller.Email.value),
+            controller: controller.EmailController),
         _buildField(label: 'DEPARTMENT',
             icon: Icons.apartment,
-            initialValue: controller.Department.value),
+            controller: controller.DepartmentController),
         _buildField(label: 'ID CARD',
             icon: Icons.photo_camera_front_rounded,
-            initialValue: controller.id_card.value),
-        _buildField(
-          label: 'PASSWORD',
-          icon: Icons.remove_red_eye,
-          initialValue: controller.Password.value,
-          obscureText: controller.isPasswordHidden.value,
-          onToggle: () {
-            controller.isPasswordHidden.value =
-            !controller.isPasswordHidden.value;
-          },),
+            controller: controller.id_cardController),
         _buildField(label: 'FINGER PRINT',
             icon: Icons.fingerprint,
-          initialValue: controller.fingerprint_id.value.toString(),),
+          controller: controller.fingerprint_idController,),
         _buildField(label: 'PHONE',
             icon: Icons.phone,
-            initialValue: controller.Phone.value),
+            controller: controller.PhoneController),
         _buildField(label: 'ADDRESS',
             icon: Icons.add_location_alt_outlined,
-            initialValue: controller.Address.value),
-        _buildField(label: 'GENDER',
-            icon: Icons.group_add,
-            initialValue: controller.Gender.value),
-        _buildField(label: 'DATE BIRTH',
-            icon: Icons.date_range,
-            initialValue: controller.DOB.value),
+            controller: controller.AddressController),
         _buildField(label: 'ROLE',
             icon: Icons.star,
-            initialValue: controller.Role.value),
+            controller: controller.RoleController),
         _buildField(label: 'JOIN DATE',
             icon: Icons.calendar_month,
-            initialValue: controller.DateOfJoining.value),
-        Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Restrict'),
-                    value: controller.usercannotchange.value,
-                    onChanged: (value) =>
-                    controller.usercannotchange.value = value ?? false,
-                  ),
-                ),
-                Expanded(
-                  child: CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Unrestrict'),
-                    value: controller.usercanchange.value,
-                    onChanged: (value) =>
-                    controller.usercanchange.value = value ?? false,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Restrict'),
-                    value: controller.usercannotchange.value,
-                    onChanged: (value) =>
-                    controller.usercannotchange.value = value ?? false,
-                  ),
-                ),
-                Expanded(
-                  child: CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Unrestrict'),
-                    value: controller.usercanchange.value,
-                    onChanged: (value) =>
-                    controller.usercanchange.value = value ?? false,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Restrict'),
-                    value: controller.usercannotchange.value,
-                    onChanged: (value) =>
-                    controller.usercannotchange.value = value ?? false,
-                  ),
-                ),
-                Expanded(
-                  child: CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Unrestrict'),
-                    value: controller.usercanchange.value,
-                    onChanged: (value) =>
-                    controller.usercanchange.value = value ?? false,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+            controller: controller.createAtController),
+        // Column(
+        //   children: [
+        //     Row(
+        //       children: [
+        //         Expanded(
+        //           child: CheckboxListTile(
+        //             contentPadding: EdgeInsets.zero,
+        //             title: const Text('Restrict'),
+        //             value: controller.usercannotchange.value,
+        //             onChanged: (value) =>
+        //             controller.usercannotchange.value = value ?? false,
+        //           ),
+        //         ),
+        //         Expanded(
+        //           child: CheckboxListTile(
+        //             contentPadding: EdgeInsets.zero,
+        //             title: const Text('Unrestrict'),
+        //             value: controller.usercanchange.value,
+        //             onChanged: (value) =>
+        //             controller.usercanchange.value = value ?? false,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //     SizedBox(height: 8),
+        //     Row(
+        //       children: [
+        //         Expanded(
+        //           child: CheckboxListTile(
+        //             contentPadding: EdgeInsets.zero,
+        //             title: const Text('Restrict'),
+        //             value: controller.usercannotchange.value,
+        //             onChanged: (value) =>
+        //             controller.usercannotchange.value = value ?? false,
+        //           ),
+        //         ),
+        //         Expanded(
+        //           child: CheckboxListTile(
+        //             contentPadding: EdgeInsets.zero,
+        //             title: const Text('Unrestrict'),
+        //             value: controller.usercanchange.value,
+        //             onChanged: (value) =>
+        //             controller.usercanchange.value = value ?? false,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //     SizedBox(height: 8),
+        //     Row(
+        //       children: [
+        //         Expanded(
+        //           child: CheckboxListTile(
+        //             contentPadding: EdgeInsets.zero,
+        //             title: const Text('Restrict'),
+        //             value: controller.usercannotchange.value,
+        //             onChanged: (value) =>
+        //             controller.usercannotchange.value = value ?? false,
+        //           ),
+        //         ),
+        //         Expanded(
+        //           child: CheckboxListTile(
+        //             contentPadding: EdgeInsets.zero,
+        //             title: const Text('Unrestrict'),
+        //             value: controller.usercanchange.value,
+        //             onChanged: (value) =>
+        //             controller.usercanchange.value = value ?? false,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
-  Widget _buildField( {required String label, required IconData icon,required initialValue,bool obscureText = false,   VoidCallback? onToggle,
+  Widget _buildField( {required String label, required IconData icon,required TextEditingController controller
   }) {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child:
-        TextFormField(
-            initialValue: initialValue,
+        child: TextFormField(
+            controller: controller,
             decoration: InputDecoration(
               labelText: label,
-              suffixIcon: onToggle != null ? IconButton(
-                icon: Icon(
-                  obscureText ? Icons.visibility_off : icon,
-                  color: Colors.green.shade900,
-                ),
-                onPressed: onToggle,
-              ) : Icon(icon ,color: Colors.green.shade900,) ,
+              prefixIcon: Icon(icon, color: Colors.green.shade900),
               border: const OutlineInputBorder(),
             )
         )
-    );
+        );
   }
   Widget _buildUsernameAutoSuggestField(EmployeePolicyController controller) {
     final TextEditingController textController = TextEditingController(text: controller.Username.value);

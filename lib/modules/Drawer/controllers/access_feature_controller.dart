@@ -127,39 +127,50 @@ class AccessFeatureController extends GetxController{
         .map((e) => e.key)
         .toList();
 
-    final userId = selectedUser['user_id'];
-    final email = selectedUser['email'];
-    final name = selectedUser['name'];
 
-    if (userId == null || email == null || name == null) {
-      Get.snackbar("Error", "Selected user data is incomplete");
+    final policyString = selectedPermissions.join(', ');
+    final featureString = selectedFeatures.join(', ');
+
+    final userId = selectedUser.value['user_id'];
+    final email = selectedUser.value['email'];
+    final name = selectedUser.value['name'];
+    final department = selectedUser.value['department'];
+    final userRole = selectedUser.value['role'];
+
+    if (userId == null || email == null || name == null || department == null || userRole == null) {
+      Get.snackbar("Error", "User data incomplete.");
+      return;
+    }
+
+    if (selectedFeatures.isEmpty || selectedPermissions.isEmpty) {
+      Get.snackbar("Error", "Please select at least one feature and permission.");
       return;
     }
 
     try {
       for (var feature in selectedFeatures) {
-        final response = await Supabase.instance.client
-            .from('access_feature')
-            .insert({
+        final response = await Supabase.instance.client.from('access_feature').upsert({
           'user_id': userId,
           'name': name,
           'email': email,
-          'department': Department,
-          'role': role.name,
-          'feature': feature,
-          'policy': selectedPermissions.join(', '),
+          'role': userRole,
+          'department': department,
+          'feature': featureString,
+          'policy': policyString,
+          'created_at': DateTime.now().toIso8601String(),
         });
-
-
-        if (response.error != null) {
-          Get.snackbar("Insert Failed", response.error!.message);
-        }
+        print('Insert response: $response');
       }
 
-      Get.snackbar("${name}", "Data inserted successfully");
-
+      Get.snackbar(
+        'Success',
+        'Access Feature Policy for $name has been saved successfully.',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.white.withOpacity(0.3),
+        colorText: Colors.black,
+      );
     } catch (e) {
-      Get.snackbar("Exception", e.toString());
+      Get.snackbar("Error", "Failed to insert data: $e");
     }
   }
 
@@ -179,25 +190,25 @@ class AccessFeatureController extends GetxController{
         ClearDataFields();
 
       }
-    }catch(e){
-      Get.snackbar("Error", "Failed to load user");
-      ClearDataFields();
-
+    }catch (e){
+      Get.snackbar("Error", "Failed to load user: $e");
     }finally{
       isLoading.value = false;
     }
   }
 
 
-  void mapDataFields(data) {
-    Username.value = '';
-    name.value = '';
-    Email.value = '';
-    Department.value = '';
-    Role.value = ' ' ;
-    feature.value = '';
-    policy.value = '';
-    create_at.value = '';
+  void mapDataFields(AccessFeatureModel data) {
+    Username.value = data.name;
+    selectedUser.value = {
+      'user_id': data.userId,
+      'email': data.email,
+      'name': data.name,
+      'department': data.department,
+      'role': data.role,
+      'feature': data.feature,
+      'policy': data.policy,
+    };
   }
 
   void ClearDataFields(){

@@ -22,6 +22,7 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
 
   Widget _buildPopDialogMobile() {
     final controller = Get.find<AccessFeatureController>();
+    final TextEditingController textController = TextEditingController(text: controller.Username.value);
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -59,92 +60,106 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child:
-                  controller.isLoading.value
-                      ? Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.blue.shade900,
+              controller.isLoading.value
+                  ? Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue.shade900,
+                ),
+              )
+                  : Form(
+                key: _formkey2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: TextFormField(
+                        controller: textController,
+                        decoration: InputDecoration(
+                          labelText: 'Find Username',
+                          suffixIcon: IconButton(
+                            icon: Icon(controller.icon, color: controller.color),
+                            onPressed: () {
+                              controller.fetchbyusersAccessFeatures(textController.text);
+                            },
+                          ),
+                          border: OutlineInputBorder(),
                         ),
-                      )
-                      : Form(
-                        key: _formkey1,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 8.0,
-                              ),
-                              child: TextFormField(
-                                initialValue: controller.Username.value,
-                                decoration: InputDecoration(
-                                  labelText: 'FIND USERNAME',
-                                  suffixIcon: InkWell(
-                                    onTap: () {},
-                                    child: Icon(
-                                      controller.icon,
-                                      color: controller.color,
-                                    ),
-                                  ),
-                                  border: const OutlineInputBorder(),
-                                ),
-                                validator:
-                                    (value) =>
-                                        (value == null || value.trim().isEmpty)
-                                            ? 'Please enter a username'
-                                            : null,
-                                onSaved:
-                                    (value) =>
-                                        controller.Username.value = value ?? '',
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: buildAccessRoleSection(),
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  child: const Text(
-                                    'Close',
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                  onPressed: () => Get.back(),
-                                ),
-                                const SizedBox(width: 8),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange.shade900,
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                  child: const Text('CREATE'),
-                                    onPressed: () async {
-                                      if (_formkey1.currentState?.validate() ?? false) {
-                                        _formkey1.currentState?.save();
+                        onChanged: (value) {
+                          controller.Username.value = value;
+                        },
 
-                                        await controller.InsertData();
+                      ),
 
-                                        Get.snackbar(
-                                          'New Create',
-                                          'Access Feature Policy on: ${controller.Username.value} Successfully',
-                                          snackPosition: SnackPosition.TOP,
-                                          backgroundColor: Colors.green.shade100,
-                                          colorText: Colors.black,
-                                        );
-
-                                        Get.close(0);
-                                      }
-                                    }
-                                ),
-                              ],
-                            ),
-                          ],
+                    ),
+                    if (controller.suggestionList.isNotEmpty &&
+                        controller.Username.value.isNotEmpty)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        constraints: const BoxConstraints(maxHeight: 150),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: controller.suggestionList.length,
+                          itemBuilder: (context, index) {
+                            final suggestion = controller.suggestionList[index];
+                            return ListTile(
+                              title: Text(suggestion),
+                              onTap: () {
+                                textController.text = suggestion;
+                                controller.Username.value = suggestion;
+                                controller.fetchbyusersAccessFeatures(suggestion);
+                                controller.suggestionList.clear();
+                              },
+                            );
+                          },
                         ),
                       ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: buildAccessRoleSection(),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          child: const Text(
+                            'Close',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          onPressed: () => Get.back(),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange.shade900,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text('CREATE'),
+                            onPressed: () async {
+                              await controller.InsertData();
+                              Get.snackbar(
+                                'New Create',
+                                'Access Feature Policy on: ${controller.Username.value} Successfully',
+                                snackPosition: SnackPosition.TOP,
+                                backgroundColor: Colors.white.withOpacity(0.3),
+                                colorText: Colors.black,
+                              );
+                              Get.close(0);
+                            }
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -281,7 +296,7 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
                                   'New Create',
                                   'Access Feature Policy on: ${controller.Username.value} Successfully',
                                   snackPosition: SnackPosition.TOP,
-                                  backgroundColor: Colors.green.shade100,
+                                  backgroundColor: Colors.white.withOpacity(0.3),
                                   colorText: Colors.black,
                                 );
                                 Get.close(0);

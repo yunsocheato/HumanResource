@@ -12,17 +12,15 @@ class AccessFeatureSQL {
         .ilike('name', query.isEmpty ? '%' : '%$query%');
     return List<String>.from(result.map((e) => e['name']));
   }
-
   Future<AccessFeatureModel?> fetchUserByAccessFeature(String name) async {
-    final userData =
-    await Supabase.instance.client
+    final results = await Supabase.instance.client
         .from('signupuser')
         .select()
-        .ilike('name', name)
-        .maybeSingle();
+        .ilike('name', '%$name%')
+        .limit(1);
 
-    if (userData != null) {
-      return AccessFeatureModel.fromJson(userData);
+    if (results.isNotEmpty) {
+      return AccessFeatureModel.fromJson(results.first);
     } else {
       return null;
     }

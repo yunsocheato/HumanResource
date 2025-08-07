@@ -11,28 +11,16 @@ class employeepolicysql {
   }
 
   Future<employeepolicymodel?> fetchUserByEmployee(String name) async {
-    final userData =
-        await Supabase.instance.client
-            .from('signupuser')
-            .select()
-            .ilike('name', name)
-            .maybeSingle();
+    final results = await Supabase.instance.client
+        .from('signupuser')
+        .select()
+        .ilike('name', '%$name%')
+        .limit(1);
 
-    if (userData != null) {
-      return employeepolicymodel.fromJson(userData);
+    if (results.isNotEmpty) {
+      return employeepolicymodel.fromJson(results.first);
     } else {
       return null;
-    }
-  }
-
-  Future<void>UpdateUser(employeepolicymodel user) async {
-    final userData = await Supabase.instance.client
-        .from('signupuser')
-        .insert(user.toJson())
-        .eq('name', user.name)
-        .select();
-    if(userData.isEmpty != null){
-      throw Exception('Failed to update user: No matching user found');
     }
   }
 }

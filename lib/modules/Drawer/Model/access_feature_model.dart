@@ -1,4 +1,5 @@
 class AccessFeatureModel{
+  final String userId;
   final String name;
   final String email;
   final String role;
@@ -8,6 +9,7 @@ class AccessFeatureModel{
   final String createdAt;
 
   AccessFeatureModel({
+    required this.userId,
     required this.name,
     required this.email,
     required this.role,
@@ -18,13 +20,14 @@ class AccessFeatureModel{
   });
   factory AccessFeatureModel.fromJson(Map<String, dynamic> json) {
     return AccessFeatureModel(
-      name: json['name'],
-      email: json['email'],
-      role: json['role'],
-      department: json['department'],
-      feature: json['feature'],
-      policy: json['policy'],
-      createdAt: json['created_at'],
+      userId: json['user_id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      email: json['email']?.toString() ?? '',
+      role: json['role']?.toString() ?? '',
+      department: json['department']?.toString() ?? '',
+      feature: json['feature']?.toString() ?? '',
+      policy: json['policy']?.toString() ?? '',
+      createdAt: json['created_at']?.toString() ?? DateTime.now().toIso8601String(),
     );
   }
   Map<String, dynamic> toJson() {
