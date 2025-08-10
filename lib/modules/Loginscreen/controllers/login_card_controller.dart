@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../ErrorScreen/Controller/ErrorMessage.dart';
-import '../../../Loadingui/loading_controller.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
+import '../../Loadingui/ErrorScreen/Controller/ErrorMessage.dart';
+import '../../Loadingui/loading_controller.dart';
 import '../services/login_service.dart';
 
 class LoginCardController extends GetxController {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/Loadingui/Loading_Screen.dart';
-import '../../../ErrorScreen/Controller/DataUnavaiable.dart';
-import '../../../Searchbar/controller/search_bar_controller.dart';
+import '../../Loadingui/ErrorScreen/Controller/DataUnavaiable.dart';
+import '../../Loadingui/Loading_Screen.dart';
+import '../../Searchbar/controller/search_bar_controller.dart';
 import '../controllers/attendance_widget_controller.dart';
 
 

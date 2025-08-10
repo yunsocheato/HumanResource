@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
 import 'package:hrms/modules/Loginscreen/views/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../Loadingui/Loading_Screen.dart';
-import '../../../Loadingui/loading_controller.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
+import '../../Loadingui/loading_controller.dart';
 import '../services/login_service.dart';
 
 class LoginController extends GetxController {

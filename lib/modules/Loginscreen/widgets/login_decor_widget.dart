@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../Loadingui/Loading_Screen.dart';
-import '../../../Loadingui/loading_controller.dart';
+import '../../Loadingui/Loading_Screen.dart';
+import '../../Loadingui/loading_controller.dart';
 import '../controllers/login_card_controller.dart';
 
 class LoginCard extends GetView<LoginCardController> {
