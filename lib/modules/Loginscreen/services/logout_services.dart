@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/Loadingui/Loading_Screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../Loadingui/loading_controller.dart';
+import '../../Loadingui/Loading_Screen.dart';
+import '../../Loadingui/loading_controller.dart';
 import '../views/login_screen.dart';
 
 class AuthController extends GetxController {

@@ -4,12 +4,12 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/Dashboard/views/dashboard_screen.dart';
 import 'package:hrms/modules/Department/views/department_screen.dart';
 import 'package:hrms/modules/LeaveRequest/views/leave_request_screen.dart';
-import '../../../ErrorScreen/Controller/ErrorMessage.dart';
-import '../../../Loadingui/Loading_Screen.dart';
-import '../../../Loadingui/loading_controller.dart';
 import '../../Attendance/controllers/attendance_widget_controller.dart';
 import '../../Attendance/views/attendance_screen.dart';
 import '../../Employee/views/employee_screen.dart';
+import '../../Loadingui/ErrorScreen/Controller/ErrorMessage.dart';
+import '../../Loadingui/Loading_Screen.dart';
+import '../../Loadingui/loading_controller.dart';
 
 Future<void> MethodButton1() async {
   final error = Get.put<ErrormessageController>(ErrormessageController());

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:hrms/Loadingui/Loading_Screen.dart';
-
-import '../../../Loadingui/loading_controller.dart';
+import '../../Loadingui/Loading_Screen.dart';
+import '../../Loadingui/loading_controller.dart';
 import '../controllers/loginscreen_animation_controller.dart';
 import '../widgets/login_decor_widget.dart';
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/Loadingui/Loading_Screen.dart';
-import '../../../Loadingui/loading_controller.dart';
-import '../../../Searchbar/view/search_bar_screen.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/controllers/drawer_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
+import '../../Loadingui/Loading_Screen.dart';
+import '../../Loadingui/loading_controller.dart';
+import '../../Searchbar/view/search_bar_screen.dart';
 import '../controllers/attendane_screen_controller.dart';
 import 'attendance_chart.dart';
 import 'attendance_chart_pie.dart';
@@ -70,7 +70,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
               ),
             ),
             if (loading.isLoading.value)
-              const LoadingScreen(),
+               LoadingScreen(),
           ],
         )),
       );

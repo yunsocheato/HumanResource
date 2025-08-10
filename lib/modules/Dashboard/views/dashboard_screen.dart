@@ -51,14 +51,18 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 10),
               if(isMobile)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: _buildHeader(),
               ),
+              SizedBox(height: 10),
               if(!isMobile)
                 _buildHeader(),
+              SizedBox(height: 15),
               Cardinfo(),
+              SizedBox(height: 15),
               _buildcardinfo(),
             ],
           ),
@@ -146,8 +150,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
 
   Widget _buildHeader() {
     final isMobile = MediaQuery.of(context).size.width < 600;
-    return Obx(
-          () => AnimatedOpacity(
+    return Obx(() => AnimatedOpacity(
         duration: const Duration(seconds: 2),
         opacity: Dcontroller.showlogincard1.value ? 1.0 : 0.0,
         child: AnimatedPadding(
@@ -157,60 +160,98 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
           ),
           child: SizedBox(
             height: 70,
-            child: Card(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 8,
-              shadowColor: Colors.grey.withOpacity(0.2),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 20),
-                        isMobile ? Text(
-                          'DASHBOARD',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 20),
+                      isMobile ? Row(
+                        children: [
+                          Stack(
+                            children: <Widget>[
+                              Text(
+                                'DASHBOARD',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 2
+                                    ..color = Colors.blue[700]!,
+                                ),
+                              ),
+                              Text(
+                                'DASHBOARD',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                        ) : Text(
-                          'DASHBOARD',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                          SizedBox(width: 10,),
+                          Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.home_outlined, color: Colors.blue, size: 16)),
+                        ],
+                      ) :
+                      Row(
+                        children: [
+                          Stack(
+                            children: <Widget>[
+                              Text(
+                                'DASHBOARD',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 2
+                                    ..color = Colors.blue[700]!,
+                                ),
+                              ),
+                              Text(
+                                'DASHBOARD',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                        )
+                          SizedBox(width: 10,),
+                          Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.home_outlined, color: Colors.blue, size: 24)),
+                        ],
+                      )
 
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                         isMobile ? TextButton(
-                          onPressed: () => Dcontroller.refreshdata(),
-                          child: const Text(
-                            'Refresh',
-                            style: TextStyle(color: Colors.black, fontSize: 16),
-                          ),
-                        ): TextButton(
-                           onPressed: () => Dcontroller.loaddata(),
-                           child: const Text(
-                             'Refresh',
-                             style: TextStyle(color: Colors.black, fontSize: 20),
-                           ),
-                         ),
-                      ],
-                    )
-                  ],
-                ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      isMobile ? IconButton(onPressed: () => Dcontroller.refreshdata()
+                          , icon: Icon(Icons.refresh, color: Colors.blue, size: 16,)
+                      ):
+                      IconButton(onPressed: () => Dcontroller.refreshdata()
+                          , icon: Icon(Icons.refresh, color: Colors.blue, size: 24,)
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
           ),
