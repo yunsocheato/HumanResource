@@ -178,7 +178,6 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
             ),
             const SizedBox(height: 12),
 
-            // List of users
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -195,7 +194,6 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
                     ),
                     child: Row(
                       children: [
-                        // Vertical colored bar
                         Container(
                           width: 6,
                           height: 98,

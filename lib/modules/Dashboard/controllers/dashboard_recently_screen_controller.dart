@@ -17,6 +17,7 @@ class RecentlyControllerScreen extends GetxController{
   static final iconColor = Colors.blue;
   static final iconBgColor = Colors.white;
 
+  final RxBool isRight = false.obs;
 
   RxString errorMessage1 = ''.obs;
   RxString errorMessage2 = ''.obs;
@@ -42,6 +43,8 @@ class RecentlyControllerScreen extends GetxController{
     }
     );
   }
+
+
 
   void CombinesStream1() async {
     combinedStream1.listen((data) {

@@ -28,7 +28,7 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
     final controller = Get.find<RecentlyControllerScreen>();
     return SizedBox(
       height: 300,
-      width: 700,
+      width: 750,
       child: Card(
         color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -63,8 +63,7 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                         'Employees Distribution',
                         style: TextStyle(
                           color:
-                          Colors
-                              .white, // changed from black for better contrast
+                          Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
@@ -83,11 +82,13 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                     return Center(child: Text('No data available'));
                   }
                   return Scrollbar(
+                    thumbVisibility: true,
+                    trackVisibility: true,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: SingleChildScrollView(
                         scrollDirection:
-                        Axis.horizontal, // To allow horizontal scroll if needed
+                        Axis.horizontal,
                         child: ConstrainedBox(
                           constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width - 40,

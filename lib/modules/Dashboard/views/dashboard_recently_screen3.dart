@@ -32,7 +32,7 @@ Widget _buildOBxResponsiveRow(BuildContext context) {
   final controller = Get.find<RecentlyControllerScreen>();
   return SizedBox(
     height: 300,
-    width: 320,
+    width: 350,
     child: Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
