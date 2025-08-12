@@ -25,6 +25,7 @@ Stream<List<MutipleModel2>> employeeStreams() {
             .map(
               (row) => MutipleModel2(
                 title: 'Scan Record',
+                photo: row['photo_url'] ?? '',
                 description:
                     '${row['username'] ?? ''}  \n check in at ${row['timestamp'] ?? ''}',
                 icon: Icons.group_add,

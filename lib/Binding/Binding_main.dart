@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../Core/user_profile_controller.dart';
 import '../modules/Attendance/controllers/attendance_chart_controller.dart';
 import '../modules/Attendance/controllers/attendance_chart_pie_controller.dart';
 import '../modules/Attendance/controllers/attendance_widget_controller.dart';
@@ -104,7 +105,8 @@ class BindingMain extends Bindings{
     Get.put(AccessFeatureController());
     Get.lazyPut<AccessFeatureController>(() => AccessFeatureController());
 
-
+    Get.put(userprofilecontroller());
+    Get.lazyPut<userprofilecontroller>(() => userprofilecontroller());
 
   }
 

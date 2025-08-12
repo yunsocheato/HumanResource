@@ -30,7 +30,7 @@ class Recentscreen2 extends GetView<RecentlyControllerScreen> {
     final controller = Get.find<RecentlyControllerScreen>();
     return SizedBox(
       height: 300,
-      width: 320,
+      width: 400,
       child: Card(
         color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -90,13 +90,16 @@ class Recentscreen2 extends GetView<RecentlyControllerScreen> {
                   itemCount: controller.items1.length,
                   itemBuilder: (context, index) {
                     final item = controller.items1[index];
-                    return _buildCardInfo(
-                      item.title,
-                      item.description,
-                      item.icon,
-                      item.color1,
-                      item.color2,
-                      item.iconBgColor,
+                    return Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: _buildCardInfo(
+                        item.title,
+                        item.description,
+                        item.photo as String ,
+                        item.color1,
+                        item.color2,
+                        item.iconBgColor,
+                      ),
                     );
                   },
                 );
@@ -186,7 +189,7 @@ class Recentscreen2 extends GetView<RecentlyControllerScreen> {
                       child: _buildCardInfo(
                         item.title,
                         item.description,
-                        item.icon,
+                        item.photo as String ,
                         item.color1,
                         item.color2,
                         item.iconBgColor,
@@ -217,60 +220,62 @@ class Recentscreen2 extends GetView<RecentlyControllerScreen> {
   Widget _buildCardInfo(
       String title,
       String subtitle,
-      IconData icon,
+      String photoUrl,
       Color color,
       Color backgroundColor,
       Color subtitleColor,
       ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: backgroundColor.withOpacity(0.2),
-                    shape: BoxShape.circle,
+    return Obx(() {
+      final controller = Get.find<RecentlyControllerScreen>();
+      // ImageProvider imageProvider = controller.isRight.value
+      //     ? NetworkImage(photoUrl) : AssetImage('assets/images/profileuser.png');
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage: (controller.isRight.value || photoUrl.isEmpty)
+                        ? AssetImage('assets/images/profileuser.png')
+                        : NetworkImage(photoUrl),
                   ),
-                  child: Icon(icon, size: 20, color: color),
-                ),
-                const SizedBox(width: 12),
-                Flexible(
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+
+                  SizedBox(width: 12),
+                  Flexible(
+                    child: Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Padding(
-              padding: const EdgeInsets.only(left: 52), // aligns with text after icon
-              child: Text(
-                subtitle,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: subtitleColor,
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 0,left: 65),
+                child: Text(
+                  subtitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: subtitleColor,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
 }

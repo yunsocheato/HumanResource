@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Drawer/widgets/Method_drawer_policy_button.dart';
 
+import '../../../Core/user_profile_controller.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
 import '../../Loginscreen/services/logout_services.dart';
 import '../../Schedule/views/schedule_screen.dart';
@@ -52,35 +53,87 @@ class Drawerscreen extends GetView<AppDrawerController> {
           backgroundColor: Color(0xFF242C40),
           actions: [
             if (!isMobile)
-              CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 18,
-                child: Icon(Icons.person, color: Colors.grey, size: 15),
-              ),
-            const SizedBox(width: 20),
+              Obx(() {
+                final controller = Get.find<userprofilecontroller>();
+                final profile = controller.userprofiles.value;
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${profile?.role ?? "No role"} ,'.toUpperCase(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      profile?.name ?? 'No Name',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.grey[300],
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+            SizedBox(width: 15),
+            if (!isMobile)
+            Obx(() {
+              final controller = Get.find<userprofilecontroller>();
+              final image = controller.userprofiles.value?.image;
+
+              if (image == null || image.isEmpty) {
+                return CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 25,
+                  backgroundImage: AssetImage('assets/images/profileuser.png'),
+                );
+              }
+
+              return CircleAvatar(
+                radius: 25,
+                backgroundImage: NetworkImage(image),
+              );
+            }),
+
+            SizedBox(width: 20),
+
             IconButton(
-              icon: const Icon(Icons.notifications, color: Colors.white),
+              icon: Icon(Icons.notifications, color: Colors.white),
               onPressed: () {},
             ),
+
             if (!isMobile)
-            IconButton(
-              icon: const Icon(Icons.logout, color: Colors.white),
-              onPressed: () => controller.logoutWithConfirmation(),
-            ),
-            const SizedBox(width: 10),
-            if (isMobile)
-            IconButton(
-              icon: const Icon(Icons.search, color: Colors.white),
-              onPressed: () => showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                builder: (_) => Container(
-                  height: 250,
-                    child: _buildSearchBox()),
+              IconButton(
+                icon: Icon(Icons.logout, color: Colors.white),
+                onPressed: () {
+                  controller.logoutWithConfirmation();
+                },
               ),
-            ),
-          ],
+
+            SizedBox(width: 10),
+
+            if (isMobile)
+              IconButton(
+                icon: Icon(Icons.search, color: Colors.white),
+                onPressed: () => showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  isScrollControlled: true,
+                  builder: (_) => Container(
+                    height: 250,
+                    child: _buildSearchBox(),
+                  ),
+                ),
+              ),
+          ]
+,
         ),
         drawer: isMobile ? Drawer(child: _buildSidebar(context)) : null,
         body: Row(
@@ -168,36 +221,62 @@ class Drawerscreen extends GetView<AppDrawerController> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 12.0),
                     child: Row(
                       children: [
-                        const CircleAvatar(
-                          radius: 20,
-                          backgroundImage: AssetImage('assets/images/user_profile.png'),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "Username",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                        Obx(() {
+                          final controller = Get.find<userprofilecontroller>();
+                          final image = controller.userprofiles.value?.image;
+
+                          if (image == null || image.isEmpty) {
+                            return CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 25,
+                              backgroundImage: AssetImage(
+                                  'assets/images/profileuser.png'),
+                            );
+                          }
+
+                          return CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage(image),
+                          );
+                        }),
+
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Obx(() {
+                            final controller = Get.find<
+                                userprofilecontroller>();
+                            final profile = controller.userprofiles.value;
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  profile?.name ?? 'No Name',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "Developer",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
+                                Text(
+                                  profile?.role ?? 'No Role',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            );
+                          }
                           ),
                         ),
                         IconButton(

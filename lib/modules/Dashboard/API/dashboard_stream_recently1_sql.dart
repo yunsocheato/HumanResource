@@ -4,7 +4,7 @@ import '../models/dashboard_model.dart';
 Stream<List<DashboardModel>> streamSignupUserAsModel() {
   return supabase
       .from('signupuser')
-      .stream(primaryKey: ['user_id']) // Replace 'id' with your actual primary key
+      .stream(primaryKey: ['user_id'])
       .order('email', ascending: true)
       .map((rows) => rows.map((row) => DashboardModel.fromJson(row)).toList());
 
