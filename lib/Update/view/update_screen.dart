@@ -16,7 +16,7 @@ class UpdateButtonScreen extends GetView<UpdateController> {
     final controller = Get.find<UpdateController>();
     final isMobile = Get.width < 600;
     return Obx(() {
-      if (controller.hasNewUpdate.value) {
+      if (controller.hasnewUpdate.value) {
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black12,
