@@ -44,7 +44,7 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                   gradient: LinearGradient(
-                    colors: [Colors.purple.shade900, Colors.purpleAccent.shade200],
+                    colors: [Colors.green.shade900, Colors.green.shade200],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
