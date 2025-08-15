@@ -32,7 +32,8 @@ class UpdateController extends GetxController{
     gitHubAPI = UpdateGitHubAPI(
       githubToken: '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'
     );
-    Timer.periodic(Duration(minutes: 1), (_) => CheckForUpdate());
+    CheckForUpdate();
+    Timer.periodic(Duration(milliseconds: 300), (_) => CheckForUpdate());
   }
 
   Future<void>CheckForUpdate() async {
@@ -40,8 +41,8 @@ class UpdateController extends GetxController{
     try{
       final response = await http.get(url);
       if(response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final latestSha = data['sha'];
+        final List data = jsonDecode(response.body);
+        final latestSha = data[0]['sha'];
         if(latestSha != lastcommitsha){
           lastcommitsha = latestSha;
           hasnewUpdate.value = true;
