@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Update/view/update_screen.dart';
 import 'package:hrms/modules/Drawer/widgets/Method_drawer_policy_button.dart';
 
 import '../../../Core/user_profile_controller.dart';
@@ -48,6 +49,8 @@ class Drawerscreen extends GetView<AppDrawerController> {
                 'DEAM COMPUTER INTERNATIONAL HR',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
               ),
+              SizedBox(width: 20),
+              UpdateButtonScreen()
             ],
           ),
           backgroundColor: Color(0xFF242C40),
@@ -161,7 +164,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 90), // Reserve space for bottom bar
+              padding: const EdgeInsets.only(bottom: 90),
               child: ListView(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 children: [
@@ -178,7 +181,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   Employeepolicy(),
                   Departmentpolicy(),
                   Attendancepolicy(),
-                  DrawerLeaveRequest(),
+                  LeaveRequest(),
                   _buildDrawerTile(
                     'Schedule',
                     Icons.calendar_today,

@@ -50,15 +50,15 @@ class PolicySetup extends GetView<AppDrawerController> {
               ),
               onTap: () => DialogScreen(context,LeavePolicy())
             ),
-            ListTile(
-              title: Text(
-                'Fingerprint Setup',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                DialogScreen(context, FingerPrintScreen());
-              },
-            ),
+            // ListTile(
+            //   title: Text(
+            //     'Fingerprint Setup',
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            //   onTap: () {
+            //     DialogScreen(context, FingerPrintScreen());
+            //   },
+            // ),
             ListTile(
               title: Text(
                 'Employee Policy',

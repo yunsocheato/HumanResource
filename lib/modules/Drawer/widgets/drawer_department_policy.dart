@@ -39,13 +39,13 @@ class Departmentpolicy extends GetView<AppDrawerController> {
           collapsedIconColor: Colors.white,
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
-            ListTile(
-              title: Text(
-                'Department Setup',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () => Get.toNamed('/hr-policy'),
-            ),
+            // ListTile(
+            //   title: Text(
+            //     'Department Setup',
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            //   onTap: () => Get.toNamed('/hr-policy'),
+            // ),
             ListTile(
               title: Text(
                 'Department Announcement',

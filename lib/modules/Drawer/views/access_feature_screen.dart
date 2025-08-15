@@ -67,7 +67,7 @@ class AccessFeatureScreen extends GetView<AccessFeatureController> {
                 ),
               )
                   : Form(
-                key: _formkey2,
+                key: _formkey1,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
