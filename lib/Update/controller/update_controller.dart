@@ -30,28 +30,29 @@ class UpdateController extends GetxController{
       githubToken: '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'
     );
     CheckForUpdate();
-    Timer.periodic(Duration(milliseconds: 300), (_) => CheckForUpdate());
+    Timer.periodic(Duration(seconds: 60), (_) => CheckForUpdate());
   }
 
-  Future<void>CheckForUpdate() async {
-    final url = Uri.parse('https://api.github.com/repos/${model.repoOwner}/${model.repoName}/commits');
-    try{
+  Future<void> CheckForUpdate() async {
+    final url = Uri.parse('https://api.github.com/repos/${model.repoOwner}/${model.repoName}/commits?sha=${model.branch}');
+    try {
       final response = await http.get(url);
-      if(response.statusCode == 200) {
+      if (response.statusCode == 200) {
         final List data = jsonDecode(response.body);
-        final latestSha = data[0]['sha'];
-        if(latestSha != lastcommitsha){
-          lastcommitsha = latestSha;
-          hasnewUpdate.value = true;
-          Get.snackbar('Update', 'New update available',
-              snackPosition: SnackPosition.TOP);
+        if (data.isNotEmpty) {
+          final latestSha = data[0]['sha'];
+          print('Latest SHA: $latestSha, Last SHA: $lastcommitsha');
+          if (latestSha != lastcommitsha) {
+            lastcommitsha = latestSha;
+            hasnewUpdate.value = true;
+            print('New update detected!');
+          }
         }
-        else{
-          hasnewUpdate.value = false;
-        }
+      } else {
+        print('GitHub API error: ${response.statusCode}');
       }
-    } catch(e){
-      Get.snackbar('Error', 'Exception: $e');
+    } catch (e) {
+      print('Error checking commits: $e');
     }
   }
 
