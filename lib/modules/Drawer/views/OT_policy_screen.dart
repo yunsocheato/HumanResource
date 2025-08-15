@@ -21,6 +21,7 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
 
   Widget _buildPopDialogMobile() {
     final controller = Get.find<OTPolicyController>();
+    final textController = TextEditingController(text: controller.Username.value);
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -67,21 +68,48 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: TextFormField(
-                        initialValue: controller.Username.value,
+                        controller: textController,
                         decoration: InputDecoration(
-                          labelText: 'FIND USERNAME',
-                          suffixIcon: InkWell(
-                            onTap: () {},
-                            child: Icon(controller.icon, color: controller.color),
+                          labelText: 'Find Username',
+                          suffixIcon: IconButton(
+                            icon: Icon(controller.icon, color: controller.color),
+                            onPressed: () {
+                              controller.fetchUserByOTPolicy(textController.text);
+                            },
                           ),
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                         ),
-                        validator: (value) => (value == null || value.trim().isEmpty)
-                            ? 'Please enter a username'
-                            : null,
-                        onSaved: (value) => controller.Username.value = value ?? '',
+                        onChanged: (value) {
+                          controller.Username.value = value;
+                        },
                       ),
                     ),
+                    if (controller.suggestionList.isNotEmpty &&
+                        controller.Username.value.isNotEmpty)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        constraints: const BoxConstraints(maxHeight: 150),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: controller.suggestionList.length,
+                          itemBuilder: (context, index) {
+                            final suggestion = controller.suggestionList[index];
+                            return ListTile(
+                              title: Text(suggestion),
+                              onTap: () {
+                                textController.text = suggestion;
+                                controller.Username.value = suggestion;
+                                controller.fetchUserByOTPolicy(suggestion);
+                                controller.suggestionList.clear();
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
@@ -120,9 +148,9 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                           child: CheckboxListTile(
                             contentPadding: EdgeInsets.zero,
                             title: const Text('Unrestrict Change'),
-                            value: controller.ifNonTechnical.value,
+                            value: controller.usercanchange.value,
                             onChanged: (value) =>
-                            controller.ifNonTechnical.value = value ?? false,
+                            controller.usercanchange.value = value ?? false,
                           ),
                         ),
                       ],
@@ -145,19 +173,18 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                             ),
                           ),
                           child: const Text('Create'),
-                          onPressed: () {
-                            if (_formkey1.currentState?.validate() ?? false) {
-                              _formkey1.currentState?.save();
+                            onPressed: () async {
+                              await controller.InsertData();
                               Get.snackbar(
                                 'New Create',
-                                'Set OT Policy on: ${controller.Username.value} Successfully',
+                                'Access OT Policy on: ${controller.Username.value} Successfully',
                                 snackPosition: SnackPosition.TOP,
-                                backgroundColor: Colors.green.shade100,
+                                backgroundColor: Colors.white.withOpacity(0.3),
                                 colorText: Colors.black,
                               );
                               Get.close(0);
                             }
-                          },
+
                         ),
                       ],
                     ),
@@ -174,6 +201,7 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
 
   Widget _buildPopDialogOther() {
     final controller = Get.find<OTPolicyController>();
+    final textController = TextEditingController(text: controller.Username.value);
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -220,21 +248,48 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: TextFormField(
-                        initialValue: controller.Username.value,
+                        controller: textController,
                         decoration: InputDecoration(
-                          labelText: 'FIND USERNAME',
-                          suffixIcon: InkWell(
-                            onTap: () {},
-                            child: Icon(controller.icon, color: controller.color),
+                          labelText: 'Find Username',
+                          suffixIcon: IconButton(
+                            icon: Icon(controller.icon, color: controller.color),
+                            onPressed: () {
+                              controller.fetchUserByOTPolicy(textController.text);
+                            },
                           ),
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                         ),
-                        validator: (value) => (value == null || value.trim().isEmpty)
-                            ? 'Please enter a username'
-                            : null,
-                        onSaved: (value) => controller.Username.value = value ?? '',
+                        onChanged: (value) {
+                          controller.Username.value = value;
+                        },
                       ),
                     ),
+                    if (controller.suggestionList.isNotEmpty &&
+                        controller.Username.value.isNotEmpty)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        constraints: const BoxConstraints(maxHeight: 150),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: controller.suggestionList.length,
+                          itemBuilder: (context, index) {
+                            final suggestion = controller.suggestionList[index];
+                            return ListTile(
+                              title: Text(suggestion),
+                              onTap: () {
+                                textController.text = suggestion;
+                                controller.Username.value = suggestion;
+                                controller.fetchUserByOTPolicy(suggestion);
+                                controller.suggestionList.clear();
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
@@ -273,9 +328,9 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                           child: CheckboxListTile(
                             contentPadding: EdgeInsets.zero,
                             title: const Text('Unrestrict Change'),
-                            value: controller.ifNonTechnical.value,
+                            value: controller.usercanchange.value,
                             onChanged: (value) =>
-                            controller.ifNonTechnical.value = value ?? false,
+                            controller.usercanchange.value = value ?? false,
                           ),
                         ),
                       ],
@@ -298,19 +353,18 @@ class OTPolicyScreen extends GetView<OTPolicyController>{
                             ),
                           ),
                           child: const Text('Create'),
-                          onPressed: () {
-                            if (_formkey2.currentState?.validate() ?? false) {
-                              _formkey2.currentState?.save();
+                            onPressed: () async {
+                              await controller.InsertData();
                               Get.snackbar(
                                 'New Create',
-                                'Set OT Policy on: ${controller.Username.value} Successfully',
+                                'Access OT Policy on: ${controller.Username.value} Successfully',
                                 snackPosition: SnackPosition.TOP,
-                                backgroundColor: Colors.green.shade100,
+                                backgroundColor: Colors.white.withOpacity(0.3),
                                 colorText: Colors.black,
                               );
                               Get.close(0);
                             }
-                          },
+
                         ),
                       ],
                     ),

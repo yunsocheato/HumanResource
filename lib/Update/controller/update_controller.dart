@@ -1,58 +1,90 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../API/update_api.dart';
+import '../Model/update_model.dart';
+
 class UpdateController extends GetxController{
   final buttonUpdate = true.obs;
   final isLoading = false.obs;
-  final RxString githubCode = ''.obs ;
+  final hasnewUpdate = false.obs;
+  final RxString filecontent = ''.obs ;
+  final RxList<Map<String, dynamic>> allFiles = <Map<String, dynamic>>[].obs;
+
 
   var Username = 'yunsocheato'.obs;
-  var localgithub = 'https://github.com/yunsocheato/HumanResource.git'.obs;
+
+  var model = UpdateModelGithub(
+    repoOwner: 'yunsocheato',
+    repoName: 'HumanResource',
+    branch: 'master',
+  );
+  late UpdateGitHubAPI gitHubAPI;
+  String? lastcommitsha;
 
   @override
   void onInit() {
     super.onInit();
-    githubCode.value = localgithub.value;
+    gitHubAPI = UpdateGitHubAPI(
+      githubToken: ''
+    );
+    CheckForUpdate();
   }
 
-  Future<void> GetUpdateFromGithubCode() async{
-    isLoading.value = true;
-    buttonUpdate.value = false;
-    try {
-      final response = await http.get(Uri.parse(githubCode.value));
-      if (response.statusCode == 200) {
-        Get.snackbar(
-          'Update',
-          'Update Successfully',
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.white.withOpacity(0.3),
-          colorText: Colors.black,
-        );
-        isLoading.value = false;
-        Get.close(0);
-      }else{
-        Get.snackbar(
-          'Update',
-          'Update Failed',
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.white.withOpacity(0.3),
-          colorText: Colors.black,
-        );
-        isLoading.value = false;
+  Future<void>CheckForUpdate() async {
+    final url = Uri.parse('https://api.github.com/repos/${model.repoOwner}/${model.repoName}/commits');
+    try{
+      final response = await http.get(url);
+      if(response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final latestSha = data['sha'];
+        if(latestSha != lastcommitsha){
+          lastcommitsha = latestSha;
+          hasnewUpdate.value = true;
+          Get.snackbar('Update', 'New update available',
+              snackPosition: SnackPosition.TOP);
+        }
+        else{
+          hasnewUpdate.value = false;
+        }
       }
-    }catch(e){
-      Get.snackbar(
-        'Update',
-        'Update Got Problem',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.white.withOpacity(0.3),
-        colorText: Colors.black,
-      );
+    } catch(e){
+      Get.snackbar('Error', 'Exception: $e');
+    }
+  }
+
+  Future<void> fetchAllFiles([String path = '']) async {
+    isLoading.value = true;
+    hasnewUpdate.value = false;
+    final url = Uri.parse(
+        'https://api.github.com/repos/${model.repoOwner}/${model.repoName}/contents/$path?ref=${model.branch}');
+    try {
+      final response = await http.get(url, headers: {
+        'Authorization': 'token <YOUR_PERSONAL_ACCESS_TOKEN>'
+      });
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body);
+        for (var item in data) {
+          if (item['type'] == 'file') {
+            allFiles.add({
+              'path': item['path'],
+              'download_url': item['download_url'],
+            });
+          } else if (item['type'] == 'dir') {
+            await fetchAllFiles(item['path']);
+          }
+        }
+        Get.snackbar('Update', 'Fetched all files from GitHub',
+            snackPosition: SnackPosition.TOP);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to fetch files: $e',
+          snackPosition: SnackPosition.TOP);
+    } finally {
       isLoading.value = false;
-    }finally{
-      isLoading.value = false;
-      buttonUpdate.value = true;
       update();
     }
   }

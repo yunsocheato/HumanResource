@@ -114,29 +114,29 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                              children: [
                                Obx(() => SwitchListTile(
                                  title:  Text('Policy Probation',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
-                                 value: controller.isSwitched1.value,
-                                 onChanged: (value) => controller.isSwitched1.value = value,
+                                 value: controller.isBlockLeave.value,
+                                 onChanged: (value) => controller.isBlockLeave.value = value,
                                )),
                                Obx(() {
-                                 if (!controller.isSwitched1.value) return const SizedBox.shrink();
+                                 if (!controller.isBlockLeave.value) return const SizedBox.shrink();
                                  return Padding(
                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                                    child: Column(
                                      children: [
                                        CheckboxListTile(
                                          title: const Text('Block Annual Leave'),
-                                         value: controller.blockAnualleave.value,
-                                         onChanged: (value) => controller.blockAnualleave.value = value ?? false,
+                                         value: controller.blockAnualLeave.value,
+                                         onChanged: (value) => controller.blockAnualLeave.value = value ?? false,
                                        ),
                                        CheckboxListTile(
-                                         title: const Text('Block Vacation Leave'),
-                                         value: controller.blockVacationleave.value,
-                                         onChanged: (value) => controller.blockVacationleave.value = value ?? false,
+                                         title: const Text('Block Unpaid Leave'),
+                                         value: controller.blockUnpaidLeave.value,
+                                         onChanged: (value) => controller.blockUnpaidLeave.value = value ?? false,
                                        ),
                                        CheckboxListTile(
                                          title: const Text('Block Sick Leave'),
-                                         value: controller.blockSickleave.value,
-                                         onChanged: (value) => controller.blockSickleave.value = value ?? false,
+                                         value: controller.blockSickLeave.value,
+                                         onChanged: (value) => controller.blockSickLeave.value = value ?? false,
                                        ),
                                      ],
                                    ),
@@ -149,54 +149,44 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                              children: [
                                Obx(() => SwitchListTile(
                                  title: const Text('Policy Deduction',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
-                                 value: controller.isSwitched2.value,
-                                 onChanged: (value) => controller.isSwitched2.value = value,
+                                 value: controller.isDeduction.value,
+                                 onChanged: (value) => controller.isDeduction.value = value,
                                )),
-                               Obx(() => controller.isSwitched2.value
+                               Obx(() => controller.isDeduction.value
                                    ? Padding(
                                  padding: const EdgeInsets.only(top: 8.0),
                                  child: Row(
                                    children: [
                                      Expanded(
                                        child: TextFormField(
-                                         initialValue: controller.MonthlySalary.value,
                                          decoration: const InputDecoration(
                                            labelText: 'Monthly Salary',
                                            border: OutlineInputBorder(),
                                          ),
-                                         validator: (value) => value == null || value.trim().isEmpty
-                                             ? 'Please enter Monthly Salary'
-                                             : null,
-                                         onSaved: (value) => controller.MonthlySalary.value = value ?? '',
+                                         onChanged: (val) =>
+                                         controller.monthly.value = int.tryParse(val) ?? 0,
                                        ),
                                      ),
                                      const SizedBox(width: 8),
                                      Expanded(
                                        child: TextFormField(
-                                         initialValue: controller.DailySalary.value,
                                          decoration: const InputDecoration(
                                            labelText: 'Daily Salary',
                                            border: OutlineInputBorder(),
                                          ),
-                                         validator: (value) => value == null || value.trim().isEmpty
-                                             ? 'Please enter Daily Salary'
-                                             : null,
-                                         onSaved: (value) => controller.DailySalary.value = value ?? '',
+                                         onChanged: (val) =>
+                                         controller.daily.value = double.tryParse(val) ?? 0.0,
                                        ),
                                      ),
                                      const SizedBox(width: 8),
                                      Expanded(
                                        child: TextFormField(
-                                         initialValue: controller.isLeave.value.toString(),
                                          decoration: const InputDecoration(
                                            labelText: 'In Minutes',
                                            border: OutlineInputBorder(),
                                          ),
-                                         validator: (value) => value == null || value.trim().isEmpty
-                                             ? 'Please enter In Minutes'
-                                             : null,
-                                         onSaved: (value) =>
-                                         controller.isLeave.value = int.tryParse(value ?? '') ?? 0,
+                                         onChanged: (val) =>
+                                         controller.inMinute.value = double.tryParse(val) ?? 0.0,
                                        ),
                                      ),
                                    ],
@@ -209,36 +199,36 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                Obx(() =>
                                    SwitchListTile(
                                      title: const Text('Policy OverBalance',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
-                                     value: controller.isSwitched3.value,
+                                     value: controller.isAgreement.value,
                                      onChanged: (value) =>
-                                     controller.isSwitched3.value = value,
+                                     controller.isAgreement.value = value,
                                    )
                                ),
                                Obx(() {
-                                 if (!controller.isSwitched3.value) return const SizedBox.shrink();
+                                 if (!controller.isAgreement.value) return const SizedBox.shrink();
                                  return Padding(
                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                                    child: Column(
                                      children: [
                                        CheckboxListTile(
                                          title: const Text('User have Limited on Leave Balance'),
-                                         value: controller.leavebalancepolicy.value,
-                                         onChanged: (value) => controller.leavebalancepolicy.value = value ?? false,
+                                         value: controller.limitLeave.value,
+                                         onChanged: (value) => controller.limitLeave.value = value ?? false,
                                        ),
                                        CheckboxListTile(
                                          title: const Text('Cannot Leave During Probation'),
-                                         value: controller.useragreement.value,
-                                         onChanged: (value) => controller.useragreement.value = value ?? false,
+                                         value: controller.notLeaveProbation.value,
+                                         onChanged: (value) => controller.notLeaveProbation.value = value ?? false,
                                        ),
                                        CheckboxListTile(
                                          title: const Text('Only Unpaid Leave during Probation'),
-                                         value: controller.leavepolicyagreement.value,
-                                         onChanged: (value) => controller.leavepolicyagreement.value = value ?? false,
+                                         value: controller.unpaidLeaveAvailable.value,
+                                         onChanged: (value) => controller.unpaidLeaveAvailable.value = value ?? false,
                                        ),
                                        CheckboxListTile(
                                          title: const Text('Sick leave Need Doctor Certificate'),
-                                         value: controller.leaveagreement.value,
-                                         onChanged: (value) => controller.leaveagreement.value = value ?? false,
+                                         value: controller.sickLeaveCertif.value,
+                                         onChanged: (value) => controller.sickLeaveCertif.value = value ?? false,
                                        ),
                                      ],
                                    ),
@@ -387,29 +377,29 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                              children: [
                                Obx(() => SwitchListTile(
                                  title:  Text('Policy Probation',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
-                                 value: controller.isSwitched1.value,
-                                 onChanged: (value) => controller.isSwitched1.value = value,
+                                 value: controller.isBlockLeave.value,
+                                 onChanged: (value) => controller.isBlockLeave.value = value,
                                )),
                                Obx(() {
-                                 if (!controller.isSwitched1.value) return const SizedBox.shrink();
+                                 if (!controller.isBlockLeave.value) return const SizedBox.shrink();
                                  return Padding(
                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                                    child: Column(
                                      children: [
                                        CheckboxListTile(
                                          title: const Text('Block Annual Leave',style: TextStyle(fontSize: 12),),
-                                         value: controller.blockAnualleave.value,
-                                         onChanged: (value) => controller.blockAnualleave.value = value ?? false,
+                                         value: controller.blockAnualLeave.value,
+                                         onChanged: (value) => controller.blockAnualLeave.value = value ?? false,
                                        ),
                                        CheckboxListTile(
-                                         title: const Text('Block Vacation Leave',style: TextStyle(fontSize: 12),),
-                                         value: controller.blockVacationleave.value,
-                                         onChanged: (value) => controller.blockVacationleave.value = value ?? false,
+                                         title: const Text('Block Unpaid Leave',style: TextStyle(fontSize: 12),),
+                                         value: controller.blockUnpaidLeave.value,
+                                         onChanged: (value) => controller.blockUnpaidLeave.value = value ?? false,
                                        ),
                                        CheckboxListTile(
                                          title: const Text('Block Sick Leave',style: TextStyle(fontSize: 12),),
-                                         value: controller.blockSickleave.value,
-                                         onChanged: (value) => controller.blockSickleave.value = value ?? false,
+                                         value: controller.blockSickLeave.value,
+                                         onChanged: (value) => controller.blockSickLeave.value = value ?? false,
                                        ),
                                      ],
                                    ),
@@ -422,54 +412,44 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                              children: [
                                Obx(() => SwitchListTile(
                                  title: const Text('Policy Deduction',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
-                                 value: controller.isSwitched2.value,
-                                 onChanged: (value) => controller.isSwitched2.value = value,
+                                 value: controller.isDeduction.value,
+                                 onChanged: (value) => controller.isDeduction.value = value,
                                )),
-                               Obx(() => controller.isSwitched2.value
+                               Obx(() => controller.isDeduction.value
                                    ? Padding(
                                  padding: const EdgeInsets.only(top: 8.0),
                                  child: Row(
                                    children: [
                                      Expanded(
                                        child: TextFormField(
-                                         initialValue: controller.MonthlySalary.value,
                                          decoration: const InputDecoration(
                                            labelText: 'Monthly Salary',
                                            border: OutlineInputBorder(),
                                          ),
-                                         validator: (value) => value == null || value.trim().isEmpty
-                                             ? 'Please enter Monthly Salary'
-                                             : null,
-                                         onSaved: (value) => controller.MonthlySalary.value = value ?? '',
+                                         onChanged: (val) =>
+                                         controller.monthly.value = int.tryParse(val) ?? 0,
                                        ),
                                      ),
                                      const SizedBox(width: 8),
                                      Expanded(
                                        child: TextFormField(
-                                         initialValue: controller.DailySalary.value,
                                          decoration: const InputDecoration(
                                            labelText: 'Daily Salary',
                                            border: OutlineInputBorder(),
                                          ),
-                                         validator: (value) => value == null || value.trim().isEmpty
-                                             ? 'Please enter Daily Salary'
-                                             : null,
-                                         onSaved: (value) => controller.DailySalary.value = value ?? '',
+                                         onChanged: (val) =>
+                                         controller.daily.value = double.tryParse(val) ?? 0.0,
                                        ),
                                      ),
                                      const SizedBox(width: 8),
                                      Expanded(
                                        child: TextFormField(
-                                         initialValue: controller.isLeave.value.toString(),
                                          decoration: const InputDecoration(
                                            labelText: 'In Minutes',
                                            border: OutlineInputBorder(),
                                          ),
-                                         validator: (value) => value == null || value.trim().isEmpty
-                                             ? 'Please enter In Minutes'
-                                             : null,
-                                         onSaved: (value) =>
-                                         controller.isLeave.value = int.tryParse(value ?? '') ?? 0,
+                                         onChanged: (val) =>
+                                         controller.inMinute.value = double.tryParse(val) ?? 0.0,
                                        ),
                                      ),
                                    ],
@@ -482,36 +462,36 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                Obx(() =>
                                    SwitchListTile(
                                      title: const Text('Policy OverBalance',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
-                                     value: controller.isSwitched3.value,
+                                     value: controller.isAgreement.value,
                                      onChanged: (value) =>
-                                     controller.isSwitched3.value = value,
+                                     controller.isAgreement.value = value,
                                    )
                                ),
                                Obx(() {
-                                 if (!controller.isSwitched3.value) return const SizedBox.shrink();
+                                 if (!controller.isAgreement.value) return const SizedBox.shrink();
                                  return Padding(
                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                                    child: Column(
                                      children: [
                                        CheckboxListTile(
                                          title: const Text('User have Limited on Leave Balance',style: TextStyle(fontSize: 12),),
-                                         value: controller.leavebalancepolicy.value,
-                                         onChanged: (value) => controller.leavebalancepolicy.value = value ?? false,
+                                         value: controller.limitLeave.value,
+                                         onChanged: (value) => controller.limitLeave.value = value ?? false,
                                        ),
                                        CheckboxListTile(
                                          title: const Text('Cannot Leave During Probation',style: TextStyle(fontSize: 12),),
-                                         value: controller.useragreement.value,
-                                         onChanged: (value) => controller.useragreement.value = value ?? false,
+                                         value: controller.notLeaveProbation.value,
+                                         onChanged: (value) => controller.notLeaveProbation.value = value ?? false,
                                        ),
                                        CheckboxListTile(
                                          title: const Text('Only Unpaid Leave during Probation',style: TextStyle(fontSize: 12),),
-                                         value: controller.leavepolicyagreement.value,
-                                         onChanged: (value) => controller.leavepolicyagreement.value = value ?? false,
+                                         value: controller.unpaidLeaveAvailable.value,
+                                         onChanged: (value) => controller.unpaidLeaveAvailable.value = value ?? false,
                                        ),
                                        CheckboxListTile(
                                          title: const Text('Sick leave Need Doctor Certificate',style: TextStyle(fontSize: 12),),
-                                         value: controller.leaveagreement.value,
-                                         onChanged: (value) => controller.leaveagreement.value = value ?? false,
+                                         value: controller.sickLeaveCertif.value,
+                                         onChanged: (value) => controller.sickLeaveCertif.value = value ?? false,
                                        ),
                                      ],
                                    ),
