@@ -7,7 +7,6 @@ import 'modules/Loginscreen/views/login_screen.dart';
 import 'modules/Routes/Routes.dart';
 
    void main() async {
-
     WidgetsFlutterBinding.ensureInitialized();
     await Supabase.initialize(
       url: 'http://172.20.20.98:54321',
@@ -16,21 +15,18 @@ import 'modules/Routes/Routes.dart';
     WidgetsFlutterBinding.ensureInitialized();
     runApp(MyApp());
   }
-
   class MyApp extends StatefulWidget {
     const MyApp({super.key});
     @override
     State<MyApp> createState() => _MyAppState();
   }
   class _MyAppState extends State<MyApp> {
-
     @override
     void initState(){
       super.initState();
       initialization();
       Future.delayed(const Duration(seconds: 2), () {
         final session = Supabase.instance.client.auth.currentSession;
-
         if (session != null) {
           Get.offAllNamed(DashboardScreen.routeName);
         } else {
@@ -38,22 +34,29 @@ import 'modules/Routes/Routes.dart';
         }
       });
     }
-
     void initialization() async {
       await Future.delayed(Duration(seconds:3));
     }
-
-
     @override
     Widget build(BuildContext context) {
       final session = Supabase.instance.client.auth.currentSession;
-
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Deam HR Web',
         home: session != null ? DashboardScreen() : LoginScreen(),
         getPages: appRoutes ,
         initialBinding: BindingMain(),
+        theme: ThemeData(
+          primarySwatch: Colors.orange,
+        ),
+        darkTheme: ThemeData.dark(),
+        themeMode: ThemeMode.light,
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: child!,
+          );
+        },
       );
     }
   }

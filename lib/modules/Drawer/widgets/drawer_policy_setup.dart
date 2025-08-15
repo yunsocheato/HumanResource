@@ -74,10 +74,10 @@ class PolicySetup extends GetView<AppDrawerController> {
               title: Text('Access Feature Setup', style: TextStyle(color: Colors.white)),
               onTap: () => DialogScreen(context,AccessFeatureScreen()),
             ),
-            ListTile(
-              title: Text('Department SetUp', style: TextStyle(color: Colors.white)),
-              onTap: () => DialogScreen(context,AccessFeatureScreen()),
-            ),
+            // ListTile(
+            //   title: Text('Department SetUp', style: TextStyle(color: Colors.white)),
+            //   onTap: () => DialogScreen(context,AccessFeatureScreen()),
+            // ),
 
           ],
         ),

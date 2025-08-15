@@ -16,30 +16,23 @@ class UpdateButtonScreen extends GetView<UpdateController> {
     final controller = Get.find<UpdateController>();
     final isMobile = Get.width < 600;
     return Obx(() {
-      return controller.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
-          : ElevatedButton(
-            onPressed: () {
-              controller.GetUpdateFromGithubCode();
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(45, 35),
-              backgroundColor: Colors.black12,
-              side: const BorderSide(color: Colors.white),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+      if (controller.hasnewUpdate.value) {
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black12,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Center(
-              child: Text(
-                'UPDATE',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          );
+          ),
+          onPressed: () => controller.fetchAllFiles(),
+          child: controller.isLoading.value
+              ? CircularProgressIndicator(color: Colors.blue)
+              : Text('UPDATE',style: TextStyle(color: Colors.white)),
+        );
+      } else {
+        return SizedBox.shrink();
+      }
     });
   }
 }

@@ -1,8 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../API/OT_SQL.dart';
+import '../Model/OT_Model.dart';
 
 class OTPolicyController extends GetxController{
+  final OTPolicySql _sql = OTPolicySql();
+  var suggestionList = <String>[].obs;
+
   final StartFrom = DateTime.now();
   final EndDate = DateTime.now().add(Duration(days: 7));
 
@@ -12,6 +19,7 @@ class OTPolicyController extends GetxController{
   final isSwitched3= false.obs;
 
   final Username = ''.obs;
+  final userID = ''.obs;
   final IconData icon = Icons.search;
   final Color color = Colors.orange.shade900;
 
@@ -21,5 +29,82 @@ class OTPolicyController extends GetxController{
   final ifTechnical = false.obs;
   final ifNonTechnical = false.obs;
 
+  @override
+  void onInit() {
+   super.onInit();
+   debounce(Username, (value) {
+     fetchSuggestionsOTPolicy(value);
+   }, time: Duration(milliseconds: 300));
+  }
+
+ Future<void> fetchUserByOTPolicy(String name) async {
+    try {
+      isLoading.value = true;
+      final user = await OTPolicySql().fetchUserByOTPolicy(name);
+      if (user != null) {
+        Username.value = user.username ?? '';
+        ifTechnical.value = user.ifTechnical ?? false;
+        ifNonTechnical.value = user.ifNonTechnical ?? false;
+        usercannotchange.value = user.usercannotchange ?? false;
+        usercanchange.value = user.usercannotchange ?? false ;
+        userID.value = user.userID ?? '';
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to fetch user: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading.value = false;
+    }
+ }
+
+ Future<void> fetchSuggestionsOTPolicy(String query) async {
+    suggestionList.value = await _sql.fetchUsernameSuggestionsOTPolicy(query);
+  }
+
+  Future<void> InsertData() async {
+    try {
+      isLoading.value = true;
+      final response = await Supabase.instance.client.from('ot_policy').insert({
+        'user_id': userID.value,
+        'name': Username.value,
+        'technical': ifTechnical.value,
+        'nontechnical': ifNonTechnical.value,
+        'usercannotchange': usercannotchange.value,
+        'usercanchange': usercanchange.value,
+        'created_at': DateTime.now().toIso8601String(),
+      }).select();
+      if (response.isNotEmpty) {
+        Get.snackbar('Success', 'Data inserted successfully',
+            snackPosition: SnackPosition.BOTTOM);
+      } else {
+        Get.snackbar('Error', 'Failed to insert data',
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to insert data: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading.value = false;
+      Get.snackbar('Success', 'Data inserted successfully',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+  void ClearDataFields() {
+    userID.value = '';
+    Username.value = '';
+    ifTechnical.value = false;
+    ifNonTechnical.value = false;
+    usercannotchange.value = false;
+    usercanchange.value = false;
+  }
+
+  void MapDataFields(OTModel data) {
+    userID.value = data.userID ?? '';
+    Username.value = data.username ?? '';
+    ifTechnical.value = data.ifTechnical ?? false;
+    ifNonTechnical.value = data.ifNonTechnical ?? false;
+    usercannotchange.value = data.usercannotchange ?? false;
+    usercanchange.value = !usercannotchange.value;
+  }
 
 }

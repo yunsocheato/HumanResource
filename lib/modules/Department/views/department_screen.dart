@@ -7,7 +7,6 @@ import '../../Drawer/controllers/drawer_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
-import '../widgets/department_piechart.dart';
 
 class DepartmentScreen extends StatefulWidget {
   static const String routeName = '/DepartmentScreen';
