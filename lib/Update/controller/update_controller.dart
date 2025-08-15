@@ -29,7 +29,7 @@ class UpdateController extends GetxController{
   void onInit() {
     super.onInit();
     gitHubAPI = UpdateGitHubAPI(
-      githubToken: ''
+      githubToken: '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'
     );
     CheckForUpdate();
   }
