@@ -19,6 +19,7 @@ class LeavePolicy extends GetView<LeavePolicyController> {
 
    Widget _buildPopDialogMobile() {
      final controller = Get.find<LeavePolicyController>();
+     final TextEditingController textController = TextEditingController(text: controller.Username.value);
      return Obx(() {
        return SingleChildScrollView(
          child: Column(
@@ -64,24 +65,50 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                            Padding(
                              padding: const EdgeInsets.symmetric(vertical: 8.0),
                              child: TextFormField(
-                               initialValue: controller.Username.value,
+                               controller: textController,
                                decoration: InputDecoration(
-                                 labelText: 'FIND USERNAME',
-                                 suffixIcon: InkWell(
-                                     onTap: () {},
-                                     child: Icon(controller.icon, color: controller.color)),
-                                 border: const OutlineInputBorder(),
+                                 labelText: 'Find Username',
+                                 suffixIcon: IconButton(
+                                   icon: Icon(controller.icon, color: controller.color),
+                                   onPressed: () {
+                                     controller.fetchUserByLeavePolicy(textController.text);
+                                   },
+                                 ),
+                                 border: OutlineInputBorder(),
                                ),
-                               validator: (value) =>
-                               value == null || value
-                                   .trim()
-                                   .isEmpty
-                                   ? 'Please enter a username'
-                                   : null,
-                               onSaved: (value) =>
-                               controller.Username.value = value ?? '',
+                               onChanged: (value) {
+                                 controller.Username.value = value;
+                               },
+
                              ),
+
                            ),
+                           if (controller.suggestionList.isNotEmpty &&
+                               controller.Username.value.isNotEmpty)
+                             Container(
+                               decoration: BoxDecoration(
+                                 color: Colors.white,
+                                 border: Border.all(color: Colors.grey.shade300),
+                                 borderRadius: BorderRadius.circular(4),
+                               ),
+                               constraints: const BoxConstraints(maxHeight: 150),
+                               child: ListView.builder(
+                                 shrinkWrap: true,
+                                 itemCount: controller.suggestionList.length,
+                                 itemBuilder: (context, index) {
+                                   final suggestion = controller.suggestionList[index];
+                                   return ListTile(
+                                     title: Text(suggestion),
+                                     onTap: () {
+                                       textController.text = suggestion;
+                                       controller.Username.value = suggestion;
+                                       controller.fetchUserByLeavePolicy(suggestion);
+                                       controller.suggestionList.clear();
+                                     },
+                                   );
+                                 },
+                               ),
+                             ),
                            Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
@@ -237,21 +264,17 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                    ),
                                  ),
                                  child: const Text('Create'),
-                                 onPressed: () {
-                                   if (_formKey1.currentState?.validate() ??
-                                       false) {
-                                     _formKey1.currentState?.save();
+                                   onPressed: () async {
+                                     await controller.InsertData();
                                      Get.snackbar(
-                                       'Success',
-                                       'Leave Policy Create: ${controller
-                                           .Usernames.value}',
-                                       snackPosition: SnackPosition.BOTTOM,
-                                       backgroundColor: Colors.green.shade100,
+                                       'New Create',
+                                       'Access Leave Policy on: ${controller.Username.value} Successfully',
+                                       snackPosition: SnackPosition.TOP,
+                                       backgroundColor: Colors.white.withOpacity(0.3),
                                        colorText: Colors.black,
                                      );
                                      Get.close(0);
-                                   }
-                                 },
+                                   },
                                ),
                              ],
                            ),
@@ -269,6 +292,7 @@ class LeavePolicy extends GetView<LeavePolicyController> {
 
    Widget _buildPopDialogOther() {
      final controller = Get.find<LeavePolicyController>();
+     final TextEditingController textController = TextEditingController(text: controller.Username.value);
      return Obx(() {
        return SingleChildScrollView(
          child: Column(
@@ -314,24 +338,50 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                            Padding(
                              padding: const EdgeInsets.symmetric(vertical: 8.0),
                              child: TextFormField(
-                               initialValue: controller.Username.value,
+                               controller: textController,
                                decoration: InputDecoration(
-                                 labelText: 'FIND USERNAME',
-                                 suffixIcon: InkWell(
-                                     onTap: () {},
-                                     child: Icon(controller.icon, color: controller.color)),
-                                 border: const OutlineInputBorder(),
+                                 labelText: 'Find Username',
+                                 suffixIcon: IconButton(
+                                   icon: Icon(controller.icon, color: controller.color),
+                                   onPressed: () {
+                                     controller.fetchUserByLeavePolicy(textController.text);
+                                   },
+                                 ),
+                                 border: OutlineInputBorder(),
                                ),
-                               validator: (value) =>
-                               value == null || value
-                                   .trim()
-                                   .isEmpty
-                                   ? 'Please enter a username'
-                                   : null,
-                               onSaved: (value) =>
-                               controller.Username.value = value ?? '',
+                               onChanged: (value) {
+                                 controller.Username.value = value;
+                               },
+
                              ),
+
                            ),
+                           if (controller.suggestionList.isNotEmpty &&
+                               controller.Username.value.isNotEmpty)
+                             Container(
+                               decoration: BoxDecoration(
+                                 color: Colors.white,
+                                 border: Border.all(color: Colors.grey.shade300),
+                                 borderRadius: BorderRadius.circular(4),
+                               ),
+                               constraints: const BoxConstraints(maxHeight: 150),
+                               child: ListView.builder(
+                                 shrinkWrap: true,
+                                 itemCount: controller.suggestionList.length,
+                                 itemBuilder: (context, index) {
+                                   final suggestion = controller.suggestionList[index];
+                                   return ListTile(
+                                     title: Text(suggestion),
+                                     onTap: () {
+                                       textController.text = suggestion;
+                                       controller.Username.value = suggestion;
+                                       controller.fetchUserByLeavePolicy(suggestion);
+                                       controller.suggestionList.clear();
+                                     },
+                                   );
+                                 },
+                               ),
+                             ),
                            Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
@@ -487,21 +537,18 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                    ),
                                  ),
                                  child: const Text('Create'),
-                                 onPressed: () {
-                                   if (_formKey2.currentState?.validate() ??
-                                       false) {
-                                     _formKey2.currentState?.save();
+                                   onPressed: () async {
+                                     await controller.InsertData();
                                      Get.snackbar(
-                                       'Success',
-                                       'Leave Policy Created: ${controller
-                                           .Usernames.value}',
-                                       snackPosition: SnackPosition.BOTTOM,
-                                       backgroundColor: Colors.green.shade100,
+                                       'New Create',
+                                       'Access Leave Policy on: ${controller.Username.value} Successfully',
+                                       snackPosition: SnackPosition.TOP,
+                                       backgroundColor: Colors.white.withOpacity(0.3),
                                        colorText: Colors.black,
                                      );
                                      Get.close(0);
                                    }
-                                 },
+
                                ),
                              ],
                            ),

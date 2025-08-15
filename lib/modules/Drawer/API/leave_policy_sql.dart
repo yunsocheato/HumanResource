@@ -1,15 +1,20 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../Model/access_feature_model.dart';
+import '../Model/leave_policy_model.dart';
 
-class AccessFeatureSQL {
-  Future<List<String>> fetchUsernameSuggestionsAccessFeature(String query) async {
+
+class LeavePolicySQL {
+
+
+  Future<List<String>> fetchUsernameSuggestionsLeavePolicy(String query) async {
     final result = await Supabase.instance.client
         .from('signupuser')
         .select('name')
         .ilike('name', query.isEmpty ? '%' : '%$query%');
     return List<String>.from(result.map((e) => e['name']));
   }
-  Future<AccessFeatureModel?> fetchUserByAccessFeature(String name) async {
+
+
+  Future<LeavePolicyModel?> fetchUserByLeavePolicy(String name) async {
     final results = await Supabase.instance.client
         .from('signupuser')
         .select()
@@ -17,10 +22,9 @@ class AccessFeatureSQL {
         .limit(1);
 
     if (results.isNotEmpty) {
-      return AccessFeatureModel.fromJson(results.first);
+      return LeavePolicyModel.fromJson(results.first);
     } else {
       return null;
     }
   }
-
 }

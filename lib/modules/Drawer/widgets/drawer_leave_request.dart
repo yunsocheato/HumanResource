@@ -4,8 +4,8 @@ import '../../Attendance/views/attendance_screen.dart';
 import '../controllers/drawer_controller.dart';
 import 'Method_drawer_policy_button.dart';
 
-class DrawerLeaveRequest extends GetView<AppDrawerController> {
-  const DrawerLeaveRequest({super.key});
+class LeaveRequest extends GetView<AppDrawerController> {
+  const LeaveRequest({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,8 @@ class DrawerLeaveRequest extends GetView<AppDrawerController> {
       final isExpanded1 = controller.isExpanded1('Leave');
       return Theme(
         data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent, // remove expansion tile divider
-          unselectedWidgetColor: Colors.white, // arrow color
+          dividerColor: Colors.transparent,
+          unselectedWidgetColor: Colors.white,
         ),
         child: ExpansionTile(
           initiallyExpanded: isExpanded1,
@@ -41,7 +41,7 @@ class DrawerLeaveRequest extends GetView<AppDrawerController> {
           children: [
             ListTile(
               title: Text(
-                'Leave Balance',
+                'Apply Leave',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () => Get.toNamed('/hr-policy'),
