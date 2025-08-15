@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class UpdateController extends GetxController{
     gitHubAPI = UpdateGitHubAPI(
       githubToken: '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'
     );
-    CheckForUpdate();
+    Timer.periodic(Duration(minutes: 1), (_) => CheckForUpdate());
   }
 
   Future<void>CheckForUpdate() async {
@@ -63,7 +64,8 @@ class UpdateController extends GetxController{
         'https://api.github.com/repos/${model.repoOwner}/${model.repoName}/contents/$path?ref=${model.branch}');
     try {
       final response = await http.get(url, headers: {
-        'Authorization': 'token <YOUR_PERSONAL_ACCESS_TOKEN>'
+        'Authorization':
+        'token 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'
       });
       if (response.statusCode == 200) {
         final List data = jsonDecode(response.body);
