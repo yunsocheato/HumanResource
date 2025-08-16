@@ -9,7 +9,7 @@ void DialogScreen(BuildContext context, Widget content) {
     barrierColor: Colors.black.withOpacity(0.5),
     builder: (context) {
       return AlertDialog(
-        backgroundColor: Colors.white.withOpacity(0.95),
+        backgroundColor: Colors.white.withOpacity(0.5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

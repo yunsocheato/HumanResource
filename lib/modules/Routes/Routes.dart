@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Report/view/employee_checkin.dart';
 import '../Attendance/views/attendance_screen.dart';
 import '../Dashboard/views/dashboard_screen.dart';
 import '../Department/views/department_screen.dart';
@@ -15,4 +16,5 @@ final List<GetPage> appRoutes = [
   GetPage(name: EmployeeScreen.routeName, page: () => EmployeeScreen(),transition: Transition.rightToLeft),
   GetPage(name: DepartmentScreen.routeName, page: () => DepartmentScreen(),transition: Transition.rightToLeft),
   GetPage(name: schedulescreen.routeName, page: () => schedulescreen(),transition: Transition.rightToLeft),
+  GetPage(name: EmployeeCheckIN.routeName, page: () => EmployeeCheckIN(),transition: Transition.rightToLeft),
 ];

@@ -5,13 +5,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Model/employee_checkin_model.dart';
 class empoloyeecheckINSQL {
 
-  Stream<List<EmployeeCheckinModel>> employeecheckin()  {
+  Stream<List<EmployeeCheckinModel>> employeecheckin() {
     final stream = Supabase.instance.client
-        .from('signupuser_fit_attendance')
+        .from('singupuser_fit_attendance')
         .stream(primaryKey: ['id'])
         .eq('check_type', 'Check-in')
         .order('id', ascending: true);
-    return stream.map((event) => event.map((e) => EmployeeCheckinModel.fromJson(e)).toList());
+    return stream.map(
+          (event) => event.map((e) => EmployeeCheckinModel.fromJson(e)).toList(),
+    );
   }
 
   Stream<List<EmployeeCheckinCountModel>>employeecheckinCount(){
