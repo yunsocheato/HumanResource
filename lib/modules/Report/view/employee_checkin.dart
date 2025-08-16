@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Dashboard/controllers/dashboard_screen_controller.dart';
+import 'package:hrms/modules/Report/controller/employee_checkin_controller.dart';
+import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Employee/views/employee_filter_view.dart';
-import '../../Employee/widgets/employee_record.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
 
-class EmployeeScreen extends GetView<DashboardController> {
-  const EmployeeScreen({super.key});
-  static const String routeName = '/EmployeeScreen';
+class EmployeeCheckIN extends GetView<EmployeeCheckinController> {
+  const EmployeeCheckIN({super.key});
+  static const String routeName = '/employeescreencheckin';
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,6 @@ class EmployeeScreen extends GetView<DashboardController> {
                     if (!isMobile)
                       Padding(
                           padding: const EdgeInsets.all(8), child: _buildHeader()),
-                    SizedBox(height: 15),
-                    const Cardinfo(),
                     SizedBox(height: 15),
                     _buildResponsiveContent(),
                   ],
@@ -95,7 +93,7 @@ class EmployeeScreen extends GetView<DashboardController> {
                           Stack(
                             children: <Widget>[
                               Text(
-                                'EMPLOYEE\nDASHBOARD',
+                                'CHRCKIN\nREPORT',
                                 style: TextStyle(
                                   fontSize: 16,
                                   foreground: Paint()
@@ -105,7 +103,7 @@ class EmployeeScreen extends GetView<DashboardController> {
                                 ),
                               ),
                               Text(
-                                'EMPLOYEE\nDASHBOARD',
+                                'CHECKIN\nREPORT',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -120,7 +118,7 @@ class EmployeeScreen extends GetView<DashboardController> {
                           Stack(
                             children: <Widget>[
                               Text(
-                                'EMPLOYEE DASHBOARD',
+                                'CHECKIN REPORT',
                                 style: TextStyle(
                                   fontSize: 24,
                                   foreground: Paint()
@@ -130,7 +128,7 @@ class EmployeeScreen extends GetView<DashboardController> {
                                 ),
                               ),
                               Text(
-                                'EMPLOYEE DASHBOARD',
+                                'CHECKIN REPORT',
                                 style: TextStyle(
                                   fontSize: 24,
                                   color: Colors.white,
@@ -194,18 +192,18 @@ class EmployeeScreen extends GetView<DashboardController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (isMobile)
-           EmployeefilterView(),
-           SizedBox(height: 10),
-           if (isMobile)
-           SearchbarScreen(),
-           SizedBox(height: 10),
-           EmployeeList(),
+            EmployeefilterView(),
+          SizedBox(height: 10),
+          if (isMobile)
+            SearchbarScreen(),
+          SizedBox(height: 10),
+          EmployeeScreenCheckIN(),
         ],
       ),
     );
   }
 
   Widget _buildDesktopTabletContent() {
-    return EmployeeList();
+    return EmployeeScreenCheckIN();
   }
 }

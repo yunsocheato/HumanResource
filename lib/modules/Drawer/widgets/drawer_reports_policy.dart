@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/Report/view/employee_checkin.dart';
 import '../../Attendance/views/attendance_screen.dart';
 import '../controllers/drawer_controller.dart';
+import 'Method_drawer_policy_button.dart';
 
 class ReportPolicy extends GetView<AppDrawerController> {
   const ReportPolicy({super.key});
@@ -36,11 +38,14 @@ class ReportPolicy extends GetView<AppDrawerController> {
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
             ListTile(
-              title: Text(
-                'Employee Checkin',
-                style: TextStyle(color: Colors.white),
+              title: InkWell(
+                onTap: () => MethodButton6(),
+                child: Text(
+                  'Employee Checkin',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
+              onTap: () => Get.toNamed(EmployeeCheckIN.routeName),
             ),
             ListTile(
               title: Text(

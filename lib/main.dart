@@ -5,7 +5,6 @@ import 'Binding/Binding_main.dart';
 import 'modules/Dashboard/views/dashboard_screen.dart';
 import 'modules/Loginscreen/views/login_screen.dart';
 import 'modules/Routes/Routes.dart';
-
    void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Supabase.initialize(
@@ -42,7 +41,7 @@ import 'modules/Routes/Routes.dart';
       final session = Supabase.instance.client.auth.currentSession;
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Deam HR Web',
+        title: 'DeamHR Web',
         home: session != null ? DashboardScreen() : LoginScreen(),
         getPages: appRoutes ,
         initialBinding: BindingMain(),

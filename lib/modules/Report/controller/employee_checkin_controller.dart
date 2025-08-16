@@ -1,11 +1,22 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../API/employee_checkin_sql.dart';
 import '../Model/employee_checkin_model.dart';
 
 class EmployeeCheckinController extends GetxController{
-  final _employeecheckinModel = <EmployeeCheckinModel>[].obs;
-  final _employeeCheckinSQL = empoloyeecheckINSQL();
+  final user = <EmployeeCheckinModel>[].obs;
+  final employeeCheckinSQL = empoloyeecheckINSQL();
+  StreamSubscription<List<EmployeeCheckinModel>>? _subscription;
+
   final isLoading = false.obs;
+  final verticalScrollController = ScrollController();
+  final horizontalScrollController = ScrollController();
+  final showlogincard1 = true.obs;
+  final showCards = true.obs;
+  final recentDataLoaded = false.obs;
+  final refreshdata = false.obs;
 
   @override
   void onInit() {
@@ -13,20 +24,28 @@ class EmployeeCheckinController extends GetxController{
     _bindStream();
   }
 
-  void _bindStream(){
+
+  void _bindStream() {
     isLoading.value = true;
-    _employeeCheckinSQL.employeecheckin().listen((event) {
-      _employeecheckinModel.assignAll(event);
-      isLoading.value = false;
-    },
+    _subscription = employeeCheckinSQL.employeecheckin().listen(
+          (event) {
+        user.assignAll(event);
+        isLoading.value = false;
+      },
       onError: (error) {
         isLoading.value = false;
         Get.snackbar('Error', error.toString());
-
-      }
+      },
     );
   }
-}
+
+  @override
+  void onClose() {
+    _subscription?.cancel();
+    verticalScrollController.dispose();
+    horizontalScrollController.dispose();
+    super.onClose();
+  }}
 
 class EmployeeCheckinCount extends GetxController{
   final _employeeCheckinCountModel = <EmployeeCheckinCountModel>[].obs;
@@ -49,5 +68,9 @@ class EmployeeCheckinCount extends GetxController{
       Get.snackbar('Error', error.toString());
     }
     );
+  }
+
+  void refreshdata(){
+    _bindStream();
   }
 }

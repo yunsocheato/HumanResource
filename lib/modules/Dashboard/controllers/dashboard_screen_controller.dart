@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../Drawer/widgets/Method_drawer_policy_button.dart';
@@ -8,6 +9,15 @@ class DashboardController extends GetxController {
    var showCards = true.obs;
    var recentDataLoaded = false.obs;
    var isLoading = true.obs;
+
+   final verticalScrollController = ScrollController();
+   final horizontalScrollController = ScrollController();
+
+   @override
+   void onInit() {
+     loaddata();
+     super.onInit();
+   }
 
 
    void toogleShowlogincard1 () {
