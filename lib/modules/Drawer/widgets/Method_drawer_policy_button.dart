@@ -4,7 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/Dashboard/views/dashboard_screen.dart';
 import 'package:hrms/modules/Department/views/department_screen.dart';
 import 'package:hrms/modules/LeaveRequest/views/leave_request_screen.dart';
-import 'package:hrms/modules/Report/view/employee_checkin.dart';
 import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
 import '../../Attendance/controllers/attendance_widget_controller.dart';
 import '../../Attendance/views/attendance_screen.dart';
@@ -188,5 +187,5 @@ Future<void> MethodButton6() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(EmployeeCheckIN.routeName));
+  Future.microtask(() => Get.offAllNamed(EmployeeCheckinWidget.routeName));
 }

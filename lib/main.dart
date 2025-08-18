@@ -5,6 +5,8 @@ import 'Binding/Binding_main.dart';
 import 'modules/Dashboard/views/dashboard_screen.dart';
 import 'modules/Loginscreen/views/login_screen.dart';
 import 'modules/Routes/Routes.dart';
+
+
    void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Supabase.initialize(
@@ -20,6 +22,7 @@ import 'modules/Routes/Routes.dart';
     State<MyApp> createState() => _MyAppState();
   }
   class _MyAppState extends State<MyApp> {
+
     @override
     void initState(){
       super.initState();

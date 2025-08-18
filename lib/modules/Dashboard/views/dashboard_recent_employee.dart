@@ -27,15 +27,13 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
   }
   Widget buildOBxResponsiveRow(BuildContext context) {
     final controller = Get.find<RecentlyControllerScreen>();
-
-    return Card(
+    return Card (
       elevation: 4,
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
           Container(
             height: 50,
             width: double.infinity,
@@ -84,7 +82,6 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
             ),
           ),
 
-          // Table Content
           Obx(() {
             if (controller.isLoading.value) {
               return Padding(

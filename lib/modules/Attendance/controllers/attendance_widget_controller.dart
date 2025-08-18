@@ -7,14 +7,13 @@ import '../widgets/attendance_data_source_table.dart';
 import '../widgets/attendance_picker_date.dart';
 
 class AttendanceController extends GetxController {
-  final RxList<Map<String, dynamic>> attendanceData =
-      <Map<String, dynamic>>[].obs;
-  final Rx<DataTableSourceAttendance?> dataSource =
-      Rx<DataTableSourceAttendance?>(null);
+  final RxList<Map<String, dynamic>> attendanceData = <Map<String, dynamic>>[].obs;
+  final Rx<DataTableSourceAttendance?> dataSource = Rx<DataTableSourceAttendance?>(null);
 
   final RxBool isLoading = true.obs;
   final Rxn<DateTime> startDate = Rxn<DateTime>();
   final Rxn<DateTime> endDate = Rxn<DateTime>();
+
   final RxString selectedFilter = 'Filter'.obs;
   final RxString selectedExport = 'EXCEL'.obs;
   final RxString searchText = ''.obs;
