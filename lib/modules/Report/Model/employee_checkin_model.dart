@@ -3,12 +3,14 @@ class EmployeeCheckinModel {
   final int fingerprint_id ;
   final String username ;
   final String? check_type ;
+  final String? created_at ;
 
   EmployeeCheckinModel({
     required this.id,
     required this.fingerprint_id,
     required this.username,
     required this.check_type,
+    required this.created_at,
 });
 
   factory EmployeeCheckinModel.fromJson(Map<String, dynamic> json) =>
@@ -17,6 +19,7 @@ class EmployeeCheckinModel {
         check_type: json["check_type"],
         fingerprint_id: json["fingerprint_id"] as int,
         username: json["username"],
+        created_at: json["timestamp"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -24,6 +27,7 @@ class EmployeeCheckinModel {
     "username": check_type,
     "fingerprint_id": fingerprint_id,
     "check_type": check_type,
+    "timestamp": created_at,
   };
 
 }

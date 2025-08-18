@@ -1,174 +1,232 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/Report/controller/employee_report_controller.dart';
+import '../../Drawer/views/drawer_screen.dart';
+import '../../Employee/views/employee_filter_view.dart';
 import '../../Loadingui/Loading_Screen.dart';
-import '../controller/employee_checkin_controller.dart';
+import '../../Loadingui/loading_controller.dart';
+import '../../Searchbar/view/search_bar_screen.dart';
+import '../widget/ExportExcel.dart';
+import '../widget/employee_checkinreport_widget.dart';
 
-class EmployeeScreenCheckIN extends GetView<EmployeeCheckinController>{
-  const EmployeeScreenCheckIN({super.key});
+class EmployeeCheckinWidget extends GetView<EmployeeReportController> {
+  const EmployeeCheckinWidget({super.key});
+  static const String routeName = '/employeescreencheckin';
 
   @override
   Widget build(BuildContext context) {
-    return _buildResponsiveContent();
-  }
+    final loading = Get.find<LoadingUiController>();
+    final isMobile = Get.width < 600;
 
-
-  Widget _buildResponsiveContent() {
-    final context = Get.context;
-    final isMobile = MediaQuery.of(context!).size.width < 600;
-    return isMobile ?  _buildEmployeeCheckINOther() : _buildEmployeeCheckINMobile() ;
-  }
-
-  Widget _buildEmployeeCheckINOther() {
-    final controller = Get.find<EmployeeCheckinController>();
-    final ScrollController _horizontalController = ScrollController();
-
-    final context = Get.context! ;
-    return Obx(() {
-      return SizedBox(
-        height: MediaQuery.of(context).size.width * 0.3,
-        width: double.infinity,
-        child: Card(
-          color: Colors.white,
-          margin: const EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Drawerscreen(
+      content: Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            Scrollbar(
+              controller: controller.verticalScrollController,
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: controller.verticalScrollController,
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: const Text(
-                          'Checkin Record',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
+                    SizedBox(height: 10),
+                    if (isMobile) _buildHeader(),
+                    SizedBox(height: 10),
+                    if (!isMobile)
+                      Padding(
+                          padding: const EdgeInsets.all(8), child: _buildHeader()),
+                    SizedBox(height: 15),
+                    _buildResponsiveContent(),
                   ],
                 ),
               ),
-              Expanded(
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  controller: _horizontalController,
-                  child: SingleChildScrollView(
-                    controller: _horizontalController,
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minWidth: MediaQuery.of(context).size.width,
-                        ),
-                        child: DataTable(
-                          headingTextStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                          dataTextStyle: const TextStyle(fontSize: 12),
-                          columns: const [
-                            DataColumn(label: Text('ID')),
-                            DataColumn(label: Text('Fingerprint')),
-                            DataColumn(label: Text('Username')),
-                            DataColumn(label: Text('Check_type')),
-                          ],
-                          rows: controller.user.map((user) {
-                            return DataRow(
-                              cells: [
-                                DataCell(Text(user.id.toInt() as String ?? '-')),
-                                DataCell(Text(user.fingerprint_id.toInt() as String ?? '-')),
-                                DataCell(Text(user.username ?? '-')),
-                                DataCell(Text(user.check_type ?? '-')),
-                              ],
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+            if (loading.isLoading.value) const LoadingScreen(),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
-  Widget _buildEmployeeCheckINMobile() {
-    final controller = Get.find<EmployeeCheckinController>();
-    return Obx(() {
-      if (controller.isLoading.value) {
-        return Center(child: LoadingScreen());
-      }
-      if (controller.user.isEmpty) {
-        return Center(child: Text('No data available'));
-      }
-
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: controller.user.length,
-        itemBuilder: (context, index) {
-          final record = controller.user[index];
-          return Card(
+  Widget _buildHeader() {
+    final context = Get.context ;
+    final isMobile = MediaQuery.of(context!).size.width < 600;
+    return Obx(() => AnimatedOpacity(
+      duration: const Duration(seconds: 2),
+      opacity: controller.showlogincard1.value ? 1.0 : 0.0,
+      child: AnimatedPadding(
+        duration: const Duration(seconds: 2),
+        padding: EdgeInsets.only(
+          top: controller.showlogincard1.value ? 0 : 100,
+        ),
+        child: SizedBox(
+          height: 70,
+          child: Card(
             color: Colors.white,
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)),
-            child: Row(
-              children: [
-                Container(
-                  width: 6,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade900,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomLeft: Radius.circular(12),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
+            elevation: 10,
+            shadowColor: Colors.grey.withOpacity(0.5),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      const SizedBox(width: 20),
+                      isMobile ? Row(
                         children: [
-                          Text(
-                            record.id.toInt() as String,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                  Icons.folder_copy, color: Colors.green,
+                                  size: 16)),
+                          SizedBox(width: 10,),
+                          Stack(
+                            children: <Widget>[
+                              Text(
+                                'CHRCK-IN REPORT',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 2
+                                    ..color = Colors.green[700]!,
+                                ),
+                              ),
+                              Text(
+                                'CHECK-IN REPORT',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                       ),
-                      const SizedBox(height: 5),
-                      Text(record.username ?? '-'),
-                      const SizedBox(height: 6),
-                      Text(record.fingerprint_id.toInt() as String),
-                      const SizedBox(height: 6),
-                      Text(record.check_type ?? '-'),
+                      ) :
+                      Row(
+                        children: [
+                          Stack(
+                            children: <Widget>[
+                              Text(
+                                'CHECK-IN REPORT',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 2
+                                    ..color = Colors.green[700]!,
+                                ),
+                              ),
+                              Text(
+                                'CHECK-IN REPORT',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 10,),
+                          Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.folder_copy, color: Colors.green, size: 24)),
+                        ],
+                      )
+
                     ],
                   ),
-                )
-              ],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      isMobile ? IconButton(onPressed: () => controller.refreshData()
+                          , icon: Icon(Icons.refresh, color: Colors.green, size: 16,)
+                      ):
+                      IconButton(onPressed: () => controller.refreshData()
+                          , icon: Icon(Icons.refresh, color: Colors.green, size: 24,)
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
-          );
-        },
-      );
-    });
+          ),
+        ),
+      ),
+    ),
+    );
   }
 
+  Widget _buildResponsiveContent() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 600;
+        if (isMobile) {
+          return _buildMobileContent();
+        } else {
+          return _buildDesktopTabletContent();
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileContent() {
+    final isMobile = Get.width < 600;
+    return Padding(
+      padding:  EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isMobile)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Employee Check-ins',),
+                Container(
+                    height: 30,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade700,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: TextButton(onPressed: () async {
+                      await Future.microtask(() => ExportExcel());
+                    },
+                      child: Obx(() =>
+                          Text(controller.isExporting1.value
+                              ? 'Exporting..'
+                              : 'Export',),
+                      ),
+                    )
+                )
+                  ],
+            ),
+          SizedBox(height: 10),
+          if (isMobile)
+            SearchbarScreen(),
+          SizedBox(height: 10),
+          EmployeeScreenCheckinReport(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesktopTabletContent() {
+    return EmployeeScreenCheckinReport();
+  }
 }

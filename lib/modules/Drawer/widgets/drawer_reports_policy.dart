@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Report/view/employee_checkin.dart';
+import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
 import '../../Attendance/views/attendance_screen.dart';
 import '../controllers/drawer_controller.dart';
 import 'Method_drawer_policy_button.dart';
@@ -45,7 +45,7 @@ class ReportPolicy extends GetView<AppDrawerController> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              onTap: () => Get.toNamed(EmployeeCheckIN.routeName),
+              onTap: () => Get.toNamed(EmployeeCheckinWidget.routeName),
             ),
             ListTile(
               title: Text(
