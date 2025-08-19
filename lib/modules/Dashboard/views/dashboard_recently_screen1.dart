@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../controllers/dashboard_recently_screen_controller.dart';
 
 class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
@@ -94,6 +95,7 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                             maxWidth: MediaQuery.of(context).size.width - 40,
                           ),
                           child: DataTable(
+
                             columns: const [
                               DataColumn(label: Text('Name')),
                               DataColumn(label: Text('Position')),
@@ -102,12 +104,13 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                             ],
                             rows:
                             controller.users.map((user) {
+                              final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(user.created_at);
                               return DataRow(
                                 cells: [
                                   DataCell(Text(user.name)),
                                   DataCell(Text(user.position)),
                                   DataCell(Text(user.id_card)),
-                                  DataCell(Text(user.created_at)),
+                                  DataCell(Text(formattedDate)),
                                 ],
                               );
                             }).toList(),

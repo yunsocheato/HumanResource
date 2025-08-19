@@ -39,10 +39,13 @@ class PolicySetup extends GetView<AppDrawerController> {
           collapsedIconColor: Colors.white,
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
-            // ListTile(
-            //   title: Text('Payroll Policy', style: TextStyle(color: Colors.white)),
-            //   onTap: () => DialogScreen(context,PayrollPolicyScreen()),
-            // ),
+            ListTile(
+              title: Text(
+                'Attendance Policy',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () => Get.toNamed('/it-policy'),
+            ),
             ListTile(
               title: Text(
                 'Leave Policy',
@@ -50,15 +53,6 @@ class PolicySetup extends GetView<AppDrawerController> {
               ),
               onTap: () => DialogScreen(context,LeavePolicy())
             ),
-            // ListTile(
-            //   title: Text(
-            //     'Fingerprint Setup',
-            //     style: TextStyle(color: Colors.white),
-            //   ),
-            //   onTap: () {
-            //     DialogScreen(context, FingerPrintScreen());
-            //   },
-            // ),
             ListTile(
               title: Text(
                 'Employee Policy',
@@ -71,14 +65,9 @@ class PolicySetup extends GetView<AppDrawerController> {
               onTap: () => DialogScreen(context, OTPolicyScreen()),
             ),
             ListTile(
-              title: Text('Access Feature Setup', style: TextStyle(color: Colors.white)),
+              title: Text('Access Feature Policy', style: TextStyle(color: Colors.white)),
               onTap: () => DialogScreen(context,AccessFeatureScreen()),
             ),
-            // ListTile(
-            //   title: Text('Department SetUp', style: TextStyle(color: Colors.white)),
-            //   onTap: () => DialogScreen(context,AccessFeatureScreen()),
-            // ),
-
           ],
         ),
       );

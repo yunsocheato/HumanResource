@@ -13,7 +13,7 @@ class DashboardModel {
   final Color iconBgColor;
   final IconData icondata;
   final String id_card;
-  final String created_at;
+  final DateTime created_at;
 
 
   DashboardModel({
@@ -37,7 +37,9 @@ class DashboardModel {
       position: json['position'] ?? '',
       department: json['department'] ?? '',
       id_card: json['id_card'] ?? '',
-      created_at: json['created_at'] ?? '',
+      created_at: json['created_at'] != null
+          ? DateTime.parse(json['created_at']).toLocal()
+          : DateTime.now(),
       color1: Colors.blue,
       color2: Colors.lightBlue,
       icondata: Icons.person,
@@ -52,7 +54,7 @@ class DashboardModel {
       'id_card': id_card,
       'position': position,
       'department': department,
-      'to_date': created_at,
+      'to_date': created_at.toLocal().toIso8601String(),
     };
   }
   get icon => RecentlyControllerScreen.icon;

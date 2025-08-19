@@ -38,15 +38,6 @@ class Attendancepolicy extends GetView<AppDrawerController> {
           iconColor: Colors.white,
           collapsedIconColor: Colors.white,
           childrenPadding: EdgeInsets.only(left: 32),
-          children: [
-            ListTile(
-              title: Text(
-                'Attendance Policy',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () => Get.toNamed('/it-policy'),
-            ),
-          ],
         ),
       );
     });
