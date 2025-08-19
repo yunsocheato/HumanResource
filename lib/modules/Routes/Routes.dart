@@ -6,6 +6,7 @@ import '../Department/views/department_screen.dart';
 import '../Employee/views/employee_screen.dart';
 import '../LeaveRequest/views/leave_request_screen.dart';
 import '../Loginscreen/views/login_screen.dart';
+import '../Report/view/employee_Late_screen.dart';
 import '../Schedule/views/schedule_screen.dart';
 
 final List<GetPage> appRoutes = [
@@ -16,5 +17,6 @@ final List<GetPage> appRoutes = [
   GetPage(name: EmployeeScreen.routeName, page: () => EmployeeScreen(),transition: Transition.rightToLeft),
   GetPage(name: DepartmentScreen.routeName, page: () => DepartmentScreen(),transition: Transition.rightToLeft),
   GetPage(name: schedulescreen.routeName, page: () => schedulescreen(),transition: Transition.rightToLeft),
-  GetPage(name: EmployeeCheckinWidget.routeName, page: () => EmployeeCheckinWidget(),transition: Transition.rightToLeft),
+  GetPage(name: EmployeeCheckinScreen.routeName, page: () => EmployeeCheckinScreen(),transition: Transition.rightToLeft),
+  GetPage(name: EmployeeLateScreen.routeName, page: () => EmployeeLateScreen(),transition: Transition.rightToLeft),
 ];

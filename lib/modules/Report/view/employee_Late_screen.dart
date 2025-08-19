@@ -4,14 +4,13 @@ import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
-import '../controller/employee_report_controller1.dart';
-import '../widget/ExportExcel1.dart';
-import '../widget/employee_checkinreport_widget1.dart';
+import '../controller/employee_report_controller2.dart';
+import '../widget/ExportExcel2.dart';
+import '../widget/employee_checkoutreport_widget2.dart';
 
-class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
-  const EmployeeCheckinScreen({super.key});
-  static const String routeName = '/employeescreencheckin';
-
+class EmployeeLateScreen extends GetView<EmployeeReportController2> {
+  const EmployeeLateScreen({super.key});
+  static const String routeName = '/employeeLatescreen';
   @override
   Widget build(BuildContext context) {
     final loading = Get.find<LoadingUiController>();
@@ -82,7 +81,7 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                               height: 50,
                               width: 50,
                               decoration: BoxDecoration(
-                                color: Colors.green.shade100,
+                                color: Colors.blue.shade100,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -92,17 +91,17 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                           Stack(
                             children: <Widget>[
                               Text(
-                                'CHRCK-IN REPORT',
+                                'Late REPORT',
                                 style: TextStyle(
                                   fontSize: 16,
                                   foreground: Paint()
                                     ..style = PaintingStyle.stroke
                                     ..strokeWidth = 2
-                                    ..color = Colors.green[700]!,
+                                    ..color = Colors.blue[700]!,
                                 ),
                               ),
                               Text(
-                                'CHECK-IN REPORT',
+                                'LATE REPORT',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -117,17 +116,17 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                           Stack(
                             children: <Widget>[
                               Text(
-                                'CHECK-IN REPORT',
+                                'LATE REPORT',
                                 style: TextStyle(
                                   fontSize: 24,
                                   foreground: Paint()
                                     ..style = PaintingStyle.stroke
                                     ..strokeWidth = 2
-                                    ..color = Colors.green[700]!,
+                                    ..color = Colors.blue[700]!,
                                 ),
                               ),
                               Text(
-                                'CHECK-IN REPORT',
+                                'LATE REPORT',
                                 style: TextStyle(
                                   fontSize: 24,
                                   color: Colors.white,
@@ -140,10 +139,10 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                               height: 70,
                               width: 70,
                               decoration: BoxDecoration(
-                                color: Colors.green.shade100,
+                                color: Colors.blue.shade100,
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(Icons.folder_copy, color: Colors.green, size: 24)),
+                              child: Icon(Icons.folder_copy, color: Colors.blue, size: 24)),
                         ],
                       )
 
@@ -153,10 +152,10 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       isMobile ? IconButton(onPressed: () => controller.refreshData()
-                          , icon: Icon(Icons.refresh, color: Colors.green, size: 16,)
+                          , icon: Icon(Icons.refresh, color: Colors.blue, size: 16,)
                       ):
                       IconButton(onPressed: () => controller.refreshData()
-                          , icon: Icon(Icons.refresh, color: Colors.green, size: 24,)
+                          , icon: Icon(Icons.refresh, color: Colors.blue, size: 24,)
                       )
                     ],
                   )
@@ -194,7 +193,7 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Employee Check-ins',),
+                Text('Employee Late',),
                 Container(
                     height: 30,
                     width: 80,
@@ -204,7 +203,7 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: TextButton(onPressed: () async {
-                      await Future.microtask(() => ExportExcel1());
+                      await Future.microtask(() => ExportExcel2());
                     },
                       child: Obx(() =>
                           Text(controller.isExporting1.value
@@ -213,19 +212,19 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                       ),
                     )
                 )
-                  ],
+              ],
             ),
           SizedBox(height: 10),
           if (isMobile)
             SearchbarScreen(),
           SizedBox(height: 10),
-          EmployeeScreenCheckinReport(),
+          EmployeeScreenCheckoutReport2(),
         ],
       ),
     );
   }
 
   Widget _buildDesktopTabletContent() {
-    return EmployeeScreenCheckinReport();
+    return EmployeeScreenCheckoutReport2();
   }
 }

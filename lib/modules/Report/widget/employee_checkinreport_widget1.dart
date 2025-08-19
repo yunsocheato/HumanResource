@@ -4,8 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../API/DataSourceTableReport.dart';
-import '../controller/employee_report_controller.dart';
-import 'ExportExcel.dart';
+import '../controller/employee_report_controller1.dart';
+import 'ExportExcel1.dart';
 
 class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
   const EmployeeScreenCheckinReport({super.key});
@@ -34,16 +34,14 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
         borderRadius: BorderRadius.circular(12),
       ),
       child: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+        if(controller.isLoading.value) {
+          return Center(child: LoadingScreen());
         }
         if (controller.data.isEmpty) {
-          return const Center(child: Text('No data available'));
+          return Center(child: Text('No data available'));
         }
 
-        final dataSource =
-        DataSourceTableReport(controller.data);
-
+        final dataSource = DataSourceTableReport(controller.data);
         return SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
@@ -69,6 +67,70 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                           height: 30,
                           width: 120,
                           decoration: BoxDecoration(
+                            color: Colors.red.shade900,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: TextButton(
+                            onPressed: () async {
+                              final picked = await showDatePicker(
+                                context: Get.context!,
+                                initialDate: controller.startDate.value,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (picked != null) controller.updateStartDate(picked);
+                            },
+                            child: Text('StartDate', style: TextStyle(color: Colors.white)),
+                          ),
+
+                        ),
+                        SizedBox(width: 10),
+                        Container(
+                          height: 30,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade900,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: TextButton(
+                            onPressed: () async {
+                              final picked = await showDatePicker(
+                                context: Get.context!,
+                                initialDate: controller.endDate.value,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (picked != null) controller.updateEndDate(picked);
+                            },
+                            child: Text('EndDate', style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Obx(() => Container(
+                          height: 30,
+                          width: 170,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade700,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          alignment: Alignment.centerLeft,
+                          child: Center(
+                            child: Text(
+                              '${controller.startDate.value?.toLocal().toString().split(' ')[0]} '
+                                  'To '
+                                  '${controller.endDate.value?.toLocal().toString().split(' ')[0]}',
+                              style: TextStyle(color: Colors.white,fontSize: 10),
+                            ),
+                          ),
+                        )),
+                        SizedBox(width: 10),
+                        Container(
+                          height: 30,
+                          width: 120,
+                          decoration: BoxDecoration(
                             color: Colors.green.shade700,
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -77,19 +139,23 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                             onPressed: () async {
                               controller.isExporting1.value = true;
                               try {
-                                await Future.microtask(() => ExportExcel());
+                                await Future.microtask(() => ExportExcel1());
                               } finally {
                                 controller.isExporting1.value = false;
                               }
                             },
                             child: Obx(() => Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  controller.isExporting1.value ? 'Exporting...' : 'Excel',
-                                  style: const TextStyle(color: Colors.white),
+                                Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      controller.isExporting1.value ? 'Exporting...' : 'Excel',
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
                                 ),
-                                const SizedBox(width: 2),
                                 const Icon(Icons.download_outlined, color: Colors.white),
                               ],
                             ))
@@ -140,7 +206,6 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Center(child: Text('Date Time', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
-
                 ],
                 source: dataSource,
                 rowsPerPage: controller.pageSize,

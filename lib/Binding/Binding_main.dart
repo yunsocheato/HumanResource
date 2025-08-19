@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:hrms/modules/Report/controller/employee_report_controller.dart';
 import '../Core/user_profile_controller.dart';
 import '../Update/controller/update_controller.dart';
 import '../modules/Attendance/controllers/attendance_chart_controller.dart';
@@ -26,6 +25,8 @@ import '../modules/Loginscreen/controllers/login_card_controller.dart';
 import '../modules/Loginscreen/controllers/login_controller.dart';
 import '../modules/Loginscreen/controllers/loginscreen_animation_controller.dart';
 import '../modules/Loginscreen/services/logout_services.dart';
+import '../modules/Report/controller/employee_report_controller1.dart';
+import '../modules/Report/controller/employee_report_controller2.dart';
 import '../modules/Searchbar/controller/search_bar_controller.dart';
 
 class BindingMain extends Bindings{
@@ -115,6 +116,9 @@ class BindingMain extends Bindings{
 
     Get.put(EmployeeReportController());
     Get.lazyPut<EmployeeReportController>(() => EmployeeReportController());
+
+    Get.put(EmployeeReportController2());
+    Get.lazyPut<EmployeeReportController2>(() => EmployeeReportController2());
 
   }
 
