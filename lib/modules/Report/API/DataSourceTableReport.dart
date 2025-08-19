@@ -15,7 +15,11 @@ class DataSourceTableReport extends DataTableSource {
       DataCell(Text(user.fingerprint_id.toString() ?? '')),
       DataCell(Text(user.username ?? '')),
       DataCell(Text(user.check_type ?? '')),
-      DataCell(Text(user.created_at ?? '')),
+      DataCell(Text(
+        user.created_at != null
+            ? user.created_at!.toLocal().toString().split(' ')[0]
+            : '',
+      )),
     ]);
   }
 
@@ -27,4 +31,10 @@ class DataSourceTableReport extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
+}
+
+extension on String {
+  toLocal() {
+    return DateTime.parse(this).toLocal();
+  }
 }

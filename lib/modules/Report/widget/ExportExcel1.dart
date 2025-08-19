@@ -1,16 +1,17 @@
 import 'dart:io';
 import 'package:excel/excel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:path/path.dart';
-import '../API/employee_report_sql.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'dart:html' as html;
 
-Future<void> ExportExcel() async {
+import '../API/employee_report_sql1.dart';
+
+Future<void> ExportExcel1() async {
   final employeeService = empoloyeecheckINSQL();
-  final data = await employeeService.employeeReportCheckin();
+  final data = await employeeService.employeeReportCheckin(StartDate: DateTime.now(), endDate: DateTime.now(),from: 0,to: 9999);
 
   final excel = Excel.createExcel();
   final sheet = excel['Report-Checkin'];
@@ -54,18 +55,23 @@ Future<void> ExportExcel() async {
   if (kIsWeb) {
     final blob = html.Blob([bytes]);
     final url = html.Url.createObjectUrl(blob);
-    final anchor = html.AnchorElement(href: url)
-      ..setAttribute("download", fileName)
-      ..click();
+    final anchor =
+        html.AnchorElement(href: url)
+          ..setAttribute("download", fileName)
+          ..click();
     html.Url.revokeObjectUrl(url);
-  } else {
+  } else if (Platform.isAndroid ||
+      Platform.isIOS ||
+      Platform.isLinux ||
+      Platform.isMacOS ||
+      Platform.isWindows) {
     final dir = await getApplicationDocumentsDirectory();
     final path = join(dir.path, fileName);
     final file = File(path);
     await file.writeAsBytes(bytes);
+  } else {
+    Get.snackbar('Error', 'Unsupported platform');
   }
-
-
 }
 
 
