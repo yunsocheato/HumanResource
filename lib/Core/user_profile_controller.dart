@@ -14,7 +14,6 @@ class userprofilecontroller extends GetxController{
 
   }
 
-
   void _fetchuserProfile() async{
     final email = _profileSql.userEmail;
     if (email == null) return;
