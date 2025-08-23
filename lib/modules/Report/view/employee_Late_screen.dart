@@ -203,27 +203,48 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Center(child: Text('Employee Late',style: TextStyle(color: Colors.white),))),
+                      child: Center(child: Text('Employee Late',
+                        style: TextStyle(color: Colors.white),))),
                   Container(
-                      height: 30,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.orange.shade700,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: TextButton(onPressed: () async {
-                        await Future.microtask(() => ExportExcel2());
+                    height: 30,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.orange.shade700,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: TextButton(
+                      onPressed: () async {
+                        controller.isExporting1.value = true;
+                        try {
+                          await ExportExcel2();
+                          Get.snackbar(
+                            'Success',
+                            'Excel exported successfully',
+                          );
+                        } catch (e) {
+                          Get.snackbar('Error', 'Export failed: $e');
+                        } finally {
+                          controller.isExporting1.value = false;
+                        }
                       },
-                        child: Obx(() =>
-                            Center(
-                              child: Text(controller.isExporting1.value
-                                  ? 'Exporting'
-                                  : 'Excel', style: TextStyle(color: Colors.white)),
+                      child: Obx(
+                            () =>
+                            Flexible(
+                              flex: 1,
+                              child: Center(
+                                child: Text(
+                                  controller.isExporting1.value
+                                      ? 'Exporting'
+                                      : 'Excel',
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13),
+                                ),
+                              ),
                             ),
-                        ),
-                      )
-                  )
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

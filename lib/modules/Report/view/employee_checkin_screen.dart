@@ -241,7 +241,7 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                   ),
                   Container(
                     height: 30,
-                    width: 80,
+                    width: 120,
                     decoration: BoxDecoration(
                       color: Colors.green.shade700,
                       borderRadius: BorderRadius.circular(8),
@@ -249,15 +249,29 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: TextButton(
                       onPressed: () async {
-                        await Future.microtask(() => ExportExcel1());
+                        controller.isExporting1.value = true;
+                        try {
+                          await ExportExcel1();
+                          Get.snackbar(
+                            'Success',
+                            'Excel exported successfully',
+                          );
+                        } catch (e) {
+                          Get.snackbar('Error', 'Export failed: $e');
+                        } finally {
+                          controller.isExporting1.value = false;
+                        }
                       },
                       child: Obx(
-                        () => Center(
-                          child: Text(
-                            controller.isExporting1.value
-                                ? 'Exporting'
-                                : 'Excel',
-                            style: TextStyle(color: Colors.white),
+                        () => Flexible(
+                          flex: 1,
+                          child: Center(
+                            child: Text(
+                              controller.isExporting1.value
+                                  ? 'Exporting'
+                                  : 'Excel',
+                              style: const TextStyle(color: Colors.white,fontSize: 13),
+                            ),
                           ),
                         ),
                       ),

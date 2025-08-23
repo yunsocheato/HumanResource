@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../Network/Method/method_internet_connection.dart';
 import '../API/employee_report_sql2.dart';
 import '../Model/employee_checkin_model.dart';
 
 class EmployeeReportController2 extends GetxController {
   final RxList<EmployeeCheckinModel> data = <EmployeeCheckinModel>[].obs;
   final empoloyeecheckINSQL2 employeeCheckinSQL2 = empoloyeecheckINSQL2();
+  final Nointernetmethod NointernetConnection = Nointernetmethod();
+
 
   int currentPage = 1;
   int pageSize = 100;
@@ -17,6 +20,8 @@ class EmployeeReportController2 extends GetxController {
 
   Rx<DateTime?> startDate = DateTime.now().obs;
   Rx<DateTime?> endDate = DateTime.now().obs;
+  RxBool checkinginternet = false.obs;
+
 
   final isPressed1 = false.obs;
   final isPressed2 = false.obs;
@@ -24,6 +29,7 @@ class EmployeeReportController2 extends GetxController {
   final showlogincard2 = true.obs;
   final showlogincard3 = true.obs;
   final showlogincard4 = true.obs;
+  final Imageasset = 'assets/images/unavailabledata.png'.obs;
 
   final verticalScrollController = ScrollController();
   final horizontalScrollController = ScrollController();
@@ -31,7 +37,6 @@ class EmployeeReportController2 extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     fetchData(page: currentPage, pageSize: pageSize);
 
     verticalScrollController.addListener(() {
@@ -42,6 +47,7 @@ class EmployeeReportController2 extends GetxController {
         loadMore();
       }
     });
+    checkNetworkAndData();
   }
 
   @override
@@ -49,6 +55,17 @@ class EmployeeReportController2 extends GetxController {
     verticalScrollController.dispose();
     horizontalScrollController.dispose();
     super.onClose();
+  }
+  Future<void> checkNetworkAndData() async {
+    await NointernetConnection.fetchData();
+
+    if (NointernetConnection.networkError.error.value.isNotEmpty) {
+      Imageasset.value = 'assets/images/unavailabledata.png';
+    } else if (data.isEmpty) {
+      Imageasset.value = 'assets/images/unavailabledata.png';
+    } else {
+      Imageasset.value = '';
+    }
   }
 
   Future<void> fetchData({required int page, required int pageSize}) async {

@@ -7,7 +7,7 @@ import '../API/DataSourceTableReport.dart';
 import '../controller/employee_report_controller2.dart';
 import 'ExportExcel2.dart';
 
-class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
+class EmployeeScreenLateReport extends GetView<EmployeeReportController2> {
   const EmployeeScreenLateReport({super.key});
 
   @override
@@ -15,11 +15,12 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
     return _buildResponsiveContent();
   }
 
-
   Widget _buildResponsiveContent() {
     final context = Get.context;
     final isMobile = MediaQuery.of(context!).size.width < 600;
-    return isMobile ?  _buildEmployeeCheckINMobile()  : _buildEmployeeCheckINOther() ;
+    return isMobile
+        ? _buildEmployeeCheckINMobile()
+        : _buildEmployeeCheckINOther();
   }
 
   Widget _buildEmployeeCheckINOther() {
@@ -30,15 +31,19 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
       elevation: 10,
       shadowColor: Colors.grey.withOpacity(0.6),
       margin: const EdgeInsets.all(16),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Obx(() {
-        if(controller.isLoading.value) {
+        if (controller.isLoading.value) {
           return Center(child: LoadingScreen());
         }
-        if (controller.data.isEmpty) {
-          return Center(child: Text('No data available'));
+        if (controller.Imageasset.isEmpty) {
+          return Center(
+            child: Image.asset(
+              controller.Imageasset.value,
+              height: 150,
+              width: 150,
+            ),
+          );
         }
 
         final dataSource = DataSourceTableReport(controller.data);
@@ -51,14 +56,12 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
                 minWidth: MediaQuery.of(Get.context!).size.width - 45,
               ),
               child: PaginatedDataTable(
-                header:  Row(
+                header: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Employee Late'),
-                      ],
+                      children: [Text('Employee Late')],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -79,11 +82,14 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (picked != null) controller.updateStartDate(picked);
+                              if (picked != null)
+                                controller.updateStartDate(picked);
                             },
-                            child: Text('StartDate', style: TextStyle(color: Colors.white)),
+                            child: Text(
+                              'StartDate',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
-
                         ),
                         SizedBox(width: 10),
                         Container(
@@ -102,110 +108,181 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (picked != null) controller.updateEndDate(picked);
+                              if (picked != null)
+                                controller.updateEndDate(picked);
                             },
-                            child: Text('EndDate', style: TextStyle(color: Colors.white)),
+                            child: Text(
+                              'EndDate',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                         SizedBox(width: 10),
-                        Obx(() => Container(
-                          height: 30,
-                          width: 170,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade700,
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          alignment: Alignment.centerLeft,
-                          child: Center(
-                            child: Text(
-                              '${controller.startDate.value?.toLocal().toString().split(' ')[0]} '
-                                  'To '
-                                  '${controller.endDate.value?.toLocal().toString().split(' ')[0]}',
-                              style: TextStyle(color: Colors.white,fontSize: 10),
+                        Obx(
+                          () => Container(
+                            height: 30,
+                            width: 170,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade700,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            alignment: Alignment.centerLeft,
+                            child: Center(
+                              child: Text(
+                                '${controller.startDate.value?.toLocal().toString().split(' ')[0]} '
+                                'To '
+                                '${controller.endDate.value?.toLocal().toString().split(' ')[0]}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                              ),
                             ),
                           ),
-                        )),
+                        ),
                         SizedBox(width: 10),
                         Container(
                           height: 30,
                           width: 120,
                           decoration: BoxDecoration(
-                            color: Colors.green.shade700,
+                            color: Colors.orange.shade700,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: TextButton(
-                              onPressed: () async {
-                                controller.isExporting1.value = true;
-                                try {
-                                  await Future.microtask(() => ExportExcel2());
-                                } finally {
-                                  controller.isExporting1.value = false;
-                                }
-                              },
-                              child: Obx(() => Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Center(
-                                      child: Text(
-                                        controller.isExporting1.value ? 'Exporting...' : 'Excel',
-                                        style: const TextStyle(color: Colors.white),
-                                      ),
+                            onPressed: () async {
+                              controller.isExporting1.value = true;
+                              try {
+                                await ExportExcel2();
+                                Get.snackbar(
+                                  'Success',
+                                  'Excel exported successfully',
+                                );
+                              } catch (e) {
+                                Get.snackbar('Error', 'Export failed: $e');
+                              } finally {
+                                controller.isExporting1.value = false;
+                              }
+                            },
+                            child: Obx(
+                              () => Flexible(
+                                flex: 1,
+                                child: Center(
+                                  child: Text(
+                                    controller.isExporting1.value
+                                        ? 'Exporting'
+                                        : 'Excel',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
                                     ),
                                   ),
-                                  const Icon(Icons.download_outlined, color: Colors.white),
-                                ],
-                              ))
+                                ),
+                              ),
+                            ),
                           ),
-                        )
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-                columns:  [
-                  DataColumn(label: Container(
+                columns: [
+                  DataColumn(
+                    label: Container(
                       width: 80,
                       height: 25,
                       decoration: BoxDecoration(
                         color: Colors.blue.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('ID', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
-                  DataColumn(label: Container(
+                      child: Center(
+                        child: Text(
+                          'ID',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Container(
                       width: 80,
                       height: 25,
                       decoration: BoxDecoration(
                         color: Colors.orange.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Fingerprint', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
-                  DataColumn(label: Container(
+                      child: Center(
+                        child: Text(
+                          'Fingerprint',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Container(
                       width: 80,
                       height: 25,
                       decoration: BoxDecoration(
                         color: Colors.yellow.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Username', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
-                  DataColumn(label: Container(
+                      child: Center(
+                        child: Text(
+                          'Username',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Container(
                       width: 85,
                       height: 25,
                       decoration: BoxDecoration(
                         color: Colors.green.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Check Type', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
-                  DataColumn(label: Container(
+                      child: Center(
+                        child: Text(
+                          'Check Type',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Container(
                       width: 85,
                       height: 25,
                       decoration: BoxDecoration(
                         color: Colors.red.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Date Time', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
+                      child: Center(
+                        child: Text(
+                          'Date Time',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
                 source: dataSource,
                 rowsPerPage: controller.pageSize,
@@ -227,10 +304,15 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
       if (controller.isLoading.value) {
         return Center(child: LoadingScreen());
       }
-      if (controller.data.isEmpty) {
-        return Center(child: Text('No data available'));
+      if (controller.Imageasset.isEmpty) {
+        return Center(
+          child: Image.asset(
+            controller.Imageasset.value,
+            height: 150,
+            width: 150,
+          ),
+        );
       }
-
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -242,7 +324,8 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             elevation: 2,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)),
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Row(
               children: [
                 Container(
@@ -286,7 +369,7 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           );
@@ -294,5 +377,4 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
       );
     });
   }
-
 }

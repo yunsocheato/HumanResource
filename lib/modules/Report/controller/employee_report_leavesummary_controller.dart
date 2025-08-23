@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../Network/Method/method_internet_connection.dart';
 import '../API/employee_report_sql3.dart';
 import '../Model/employee_leave_summary_model.dart';
 
 class leavesummarycontroller extends GetxController{
   final RxList<EmployeeLeaveSummaryModel> data = <EmployeeLeaveSummaryModel>[].obs;
   final EmployeeReportSql3 employeeleavesummarySQL3 = EmployeeReportSql3();
+  final Nointernetmethod NointernetConnection = Nointernetmethod();
 
   int currentPage = 1;
   int pageSize = 100;
@@ -21,6 +25,7 @@ class leavesummarycontroller extends GetxController{
 
   Rx<DateTime?> startDate = DateTime.now().obs;
   Rx<DateTime?> endDate = DateTime.now().obs;
+  RxBool checkinginternet = false.obs;
 
   final isPressed1 = false.obs;
   final isPressed2 = false.obs;
@@ -28,7 +33,7 @@ class leavesummarycontroller extends GetxController{
   final showlogincard2 = true.obs;
   final showlogincard3 = true.obs;
   final showlogincard4 = true.obs;
-
+  final Imageasset = 'assets/images/unavailabledata.png'.obs;
   final verticalScrollController = ScrollController();
   final horizontalScrollController = ScrollController();
 
@@ -46,6 +51,7 @@ class leavesummarycontroller extends GetxController{
         loadMore();
       }
     });
+    checkNetworkAndData();
   }
 
   @override
@@ -54,6 +60,7 @@ class leavesummarycontroller extends GetxController{
     horizontalScrollController.dispose();
     super.onClose();
   }
+
 
   Future<void> fetchData({required int page, required int pageSize}) async {
     if (startDate.value == null || endDate.value == null) return;
@@ -104,6 +111,17 @@ class leavesummarycontroller extends GetxController{
     await fetchDataForRange();
   }
 
+  Future<void> checkNetworkAndData() async {
+    await NointernetConnection.fetchData();
+
+    if (NointernetConnection.networkError.error.value.isNotEmpty) {
+      Imageasset.value = 'assets/images/unavailabledata.png';
+    } else if (data.isEmpty) {
+      Imageasset.value = 'assets/images/unavailabledata.png';
+    } else {
+      Imageasset.value = '';
+    }
+  }
   void refreshData() {
     fetchData(page: currentPage, pageSize: pageSize);
   }

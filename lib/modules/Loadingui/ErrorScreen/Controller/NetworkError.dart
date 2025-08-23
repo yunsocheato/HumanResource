@@ -6,6 +6,8 @@ class NetworkError extends GetxController {
   final RxString error = ''.obs;
   final RxString slow = ''.obs;
   final RxString DataLimit = ''.obs;
+  final RxBool isChecking = false.obs;
+
 
   Future<void>ErrorNetwork() async {
     await Get.dialog(

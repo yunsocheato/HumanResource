@@ -5,6 +5,7 @@ import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
+import '../widget/ExportExcel3.dart';
 import '../widget/employee_leave_summary_widget.dart';
 
 class EmployeeLeaveSummaryScreen extends GetView<leavesummarycontroller> {
@@ -243,7 +244,7 @@ class EmployeeLeaveSummaryScreen extends GetView<leavesummarycontroller> {
                   ),
                   Container(
                     height: 30,
-                    width: 80,
+                    width: 120,
                     decoration: BoxDecoration(
                       color: Colors.purple.shade700,
                       borderRadius: BorderRadius.circular(8),
@@ -251,20 +252,43 @@ class EmployeeLeaveSummaryScreen extends GetView<leavesummarycontroller> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: TextButton(
                       onPressed: () async {
-                        // await Future.microtask(() => ExportExcel1());
+                        controller.isExporting1.value = true;
+                        try {
+                          await ExportExcel3(
+                            page: controller.currentPage,
+                            pageSize: controller.pageSize,
+                            startDate: controller.startDate.value!,
+                            endDate: controller.endDate.value!,
+                            from: controller.from,
+                            to: controller.to,
+                          );
+                          Get.snackbar(
+                            'Success',
+                            'Excel exported successfully',
+                          );
+                        } catch (e) {
+                          Get.snackbar('Error', 'Export failed: $e');
+                        } finally {
+                          controller.isExporting1.value = false;
+                        }
                       },
                       child: Obx(
-                        () => Row(
-                          children: [
-                            Text(
-                              controller.isExporting1.value ? 'Exporting' : 'Excel',
-                              style: TextStyle(color: Colors.white),
+                            () =>
+                            Flexible(
+                              flex: 1,
+                              child: Center(
+                                child: Text(
+                                  controller.isExporting1.value
+                                      ? 'Exporting'
+                                      : 'Excel',
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13),
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
