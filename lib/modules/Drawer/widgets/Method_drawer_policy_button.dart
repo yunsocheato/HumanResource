@@ -210,7 +210,7 @@ Future<void> MethodButton7() async {
   );
   await Future.delayed(const Duration(seconds: 2));
   if (attendanceController.attendanceData.isEmpty) {
-    error.error.value = 'No Checkin Report Data Found';
+    error.error.value = 'No Late Report Data Found';
     error.buildErrorMessages();
     await Future.delayed(const Duration(seconds: 1));
   }

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
 import '../../Loadingui/ErrorScreen/Controller/ErrorMessage.dart';
 import '../../Loadingui/loading_controller.dart';
+import '../../Network/Method/method_internet_connection.dart';
 import '../services/login_service.dart';
 
 class LoginCardController extends GetxController {
@@ -12,6 +15,7 @@ class LoginCardController extends GetxController {
   final LoginService loginService = LoginService();
   final Error = Get.put<ErrormessageController>( ErrormessageController());
   final loadingUi = Get.put<LoadingUiController>( LoadingUiController());
+  final Nointernetmethod CheckingEnternetError =  Nointernetmethod();
 
   RxBool hide = true.obs;
   RxBool rememberMe = false.obs;
@@ -29,6 +33,7 @@ class LoginCardController extends GetxController {
     loadingUi.beginLoading();
 
     try {
+      await checkingEthernet();
       final result = await loginService.loginWithEmail(
         email: email,
         password: password,
@@ -51,13 +56,28 @@ class LoginCardController extends GetxController {
     }
   }
 
-  @override
+  Future<void> checkingEthernet() async {
+    try {
+      await CheckingEnternetError.fetchData();
+      error.value = '';
+    } on SocketException catch (_) {
+      Get.snackbar('Error', 'No internet connection');
+      error.value = 'No internet connection';
+      Error.buildErrorMessages();
+    } catch (e) {
+      Get.snackbar('Error', 'Unexpected error: $e');
+      error.value = 'Unexpected error: $e';
+      Error.buildErrorMessages();
+    }
+  }
+    @override
   void onInit() {
     super.onInit();
     Future.delayed(const Duration(milliseconds: 500), () {
+      checkingEthernet();
       showLoginCard.value = true;
     });
-  }
+    }
 
   @override
   void onClose() {

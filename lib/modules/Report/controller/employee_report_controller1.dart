@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../Network/Method/method_internet_connection.dart';
 import '../API/employee_report_sql1.dart';
 import '../Model/employee_checkin_model.dart';
+import 'employee_report_controller1.dart' as nointernetConnection;
 
 class EmployeeReportController extends GetxController {
   final RxList<EmployeeCheckinModel> data = <EmployeeCheckinModel>[].obs;
   final empoloyeecheckINSQL employeeCheckinSQL = empoloyeecheckINSQL();
+  final Nointernetmethod NointernetConnection = Nointernetmethod();
 
   int currentPage = 1;
   int pageSize = 100;
@@ -16,6 +19,7 @@ class EmployeeReportController extends GetxController {
 
   Rx<DateTime?> startDate = DateTime.now().obs;
   Rx<DateTime?> endDate = DateTime.now().obs;
+  RxBool checkinginternet = false.obs;
 
   final isPressed1 = false.obs;
   final isPressed2 = false.obs;
@@ -23,7 +27,7 @@ class EmployeeReportController extends GetxController {
   final showlogincard2 = true.obs;
   final showlogincard3 = true.obs;
   final showlogincard4 = true.obs;
-
+  final Imageasset = 'assets/images/unavailabledata.png'.obs;
   final verticalScrollController = ScrollController();
   final horizontalScrollController = ScrollController();
 
@@ -41,6 +45,7 @@ class EmployeeReportController extends GetxController {
         loadMore();
       }
     });
+    checkNetworkAndData();
   }
 
   @override
@@ -50,7 +55,18 @@ class EmployeeReportController extends GetxController {
     super.onClose();
   }
 
-  Future<void> fetchData({required int page, required int pageSize}) async {
+  Future<void> checkNetworkAndData() async {
+    await NointernetConnection.fetchData();
+
+    if (NointernetConnection.networkError.error.value.isNotEmpty) {
+      Imageasset.value = 'assets/images/unavailabledata.png';
+    } else if (data.isEmpty) {
+      Imageasset.value = 'assets/images/unavailabledata.png';
+    } else {
+      Imageasset.value = '';
+    }
+  }
+ Future<void> fetchData({required int page, required int pageSize}) async {
     if (startDate.value == null || endDate.value == null) return;
 
     try {
