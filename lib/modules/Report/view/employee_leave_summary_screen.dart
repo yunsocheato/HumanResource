@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/Report/controller/employee_report_leavesummary_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
-import '../controller/employee_report_controller1.dart';
-import '../widget/ExportExcel1.dart';
-import '../widget/employee_checkinreport_widget1.dart';
+import '../widget/employee_leave_summary_widget.dart';
 
-class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
-  const EmployeeCheckinScreen({super.key});
+class EmployeeLeaveSummaryScreen extends GetView<leavesummarycontroller> {
+  const EmployeeLeaveSummaryScreen({super.key});
 
-  static const String routeName = '/employeescreencheckin';
+  static const String routeName = '/LeaveSummary';
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +89,12 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                                   height: 50,
                                   width: 50,
                                   decoration: BoxDecoration(
-                                    color: Colors.green.shade100,
+                                    color: Colors.purple.shade100,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
                                     Icons.folder_copy,
-                                    color: Colors.green,
+                                    color: Colors.purple,
                                     size: 16,
                                   ),
                                 ),
@@ -103,18 +102,18 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                                 Stack(
                                   children: <Widget>[
                                     Text(
-                                      'CHRCK-IN REPORT',
+                                      'LEAVE-SUMMARY REPORT',
                                       style: TextStyle(
                                         fontSize: 16,
                                         foreground:
                                             Paint()
                                               ..style = PaintingStyle.stroke
                                               ..strokeWidth = 2
-                                              ..color = Colors.green[700]!,
+                                              ..color = Colors.purple[700]!,
                                       ),
                                     ),
                                     Text(
-                                      'CHECK-IN REPORT',
+                                      'LEAVE-SUMMARY REPORT',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.white,
@@ -129,18 +128,18 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                                 Stack(
                                   children: <Widget>[
                                     Text(
-                                      'CHECK-IN REPORT',
+                                      'LEAVE-SUMMARY REPORT',
                                       style: TextStyle(
                                         fontSize: 24,
                                         foreground:
                                             Paint()
                                               ..style = PaintingStyle.stroke
                                               ..strokeWidth = 2
-                                              ..color = Colors.green[700]!,
+                                              ..color = Colors.purple[700]!,
                                       ),
                                     ),
                                     Text(
-                                      'CHECK-IN REPORT',
+                                      'LEAVE-SUMMARY REPORT',
                                       style: TextStyle(
                                         fontSize: 24,
                                         color: Colors.white,
@@ -153,12 +152,12 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                                   height: 70,
                                   width: 70,
                                   decoration: BoxDecoration(
-                                    color: Colors.green.shade100,
+                                    color: Colors.purple.shade100,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
                                     Icons.folder_copy,
-                                    color: Colors.green,
+                                    color: Colors.purple,
                                     size: 24,
                                   ),
                                 ),
@@ -174,7 +173,7 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                               onPressed: () => controller.refreshData(),
                               icon: Icon(
                                 Icons.refresh,
-                                color: Colors.green,
+                                color: Colors.purple,
                                 size: 16,
                               ),
                             )
@@ -182,7 +181,7 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                               onPressed: () => controller.refreshData(),
                               icon: Icon(
                                 Icons.refresh,
-                                color: Colors.green,
+                                color: Colors.purple,
                                 size: 24,
                               ),
                             ),
@@ -226,16 +225,19 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                 children: [
                   Container(
                     height: 30,
-                    width: 160,
+                    width: 120,
                     decoration: BoxDecoration(
-                      color: Colors.green.shade900,
+                      color: Colors.purple.shade900,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Center(
                       child: Text(
-                        'Employee Check-ins',
-                        style: TextStyle(color: Colors.white),
+                        'Leave Summary',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -243,22 +245,22 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                     height: 30,
                     width: 80,
                     decoration: BoxDecoration(
-                      color: Colors.green.shade700,
+                      color: Colors.purple.shade700,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: TextButton(
                       onPressed: () async {
-                        await Future.microtask(() => ExportExcel1());
+                        // await Future.microtask(() => ExportExcel1());
                       },
                       child: Obx(
-                        () => Center(
-                          child: Text(
-                            controller.isExporting1.value
-                                ? 'Exporting'
-                                : 'Excel',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                        () => Row(
+                          children: [
+                            Text(
+                              controller.isExporting1.value ? 'Exporting' : 'Excel',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -269,13 +271,13 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
           SizedBox(height: 10),
           if (isMobile) SearchbarScreen(),
           SizedBox(height: 10),
-          EmployeeScreenCheckinReport(),
+          EmployeeLeaveSummaryReport(),
         ],
       ),
     );
   }
 
   Widget _buildDesktopTabletContent() {
-    return EmployeeScreenCheckinReport();
+    return EmployeeLeaveSummaryReport();
   }
 }

@@ -7,8 +7,8 @@ import '../API/DataSourceTableReport.dart';
 import '../controller/employee_report_controller2.dart';
 import 'ExportExcel2.dart';
 
-class EmployeeScreenCheckoutReport2 extends GetView<EmployeeReportController2>{
-  const EmployeeScreenCheckoutReport2({super.key});
+class EmployeeScreenLateReport extends GetView<EmployeeReportController2>{
+  const EmployeeScreenLateReport({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -267,19 +267,23 @@ class EmployeeScreenCheckoutReport2 extends GetView<EmployeeReportController2>{
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            record.id.toString(),
+                            'Logid: ${record.id.toString()}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                       const SizedBox(height: 5),
-                      Text(record.username ?? '-'),
-                      const SizedBox(height: 6),
-                      Text(record.fingerprint_id.toString()),
-                      const SizedBox(height: 6),
-                      Text(record.check_type ?? '-'),
-                      const SizedBox(height: 6),
-                      Text(record.created_at ?? '-'),
+                      Text('Username: ${record.username ?? '-'}'),
+                      const SizedBox(height: 5),
+                      Text('Fingerprint: ${record.fingerprint_id.toString()}'),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text('Check Type: ${record.check_type ?? '-'}'),
+                          const SizedBox(width: 5),
+                          Text('on date ${record.created_at ?? '-'}'),
+                        ],
+                      ),
                     ],
                   ),
                 )

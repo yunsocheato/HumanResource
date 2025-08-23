@@ -6,7 +6,6 @@ class EmployeeLeaveSummaryModel {
   final String request_type;
   final double leave_count;
 
-
   EmployeeLeaveSummaryModel({
     required this.staff_id,
     required this.name,
@@ -16,26 +15,25 @@ class EmployeeLeaveSummaryModel {
     required this.leave_count,
   });
 
-
   factory EmployeeLeaveSummaryModel.fromJson(Map<String, dynamic> json) {
     return EmployeeLeaveSummaryModel(
-      staff_id: json['staff_id'] as String,
-      name: json['name'] as String,
-      department: json['department'] as String,
-      position: json['position'] as String,
-      request_type: json['request_type'] as String,
-      leave_count: json['leave_count']! as double,
+      staff_id: json['staff_id'] ,
+      name: json['name'],
+      department: json['department'] ,
+      position: json['position'] ,
+      request_type: json['request_type'] ,
+      leave_count: (json['leave_count'] as num).toDouble(),
     );
   }
 
-  Map toJson() {
+  Map <String, dynamic> toJson() {
     return {
       'staff_id': staff_id,
       'name': name,
       'department': department,
       'position': position,
       'request_type': request_type,
-      'leave_count': leave_count,
+      'leave_count': leave_count.toDouble(),
     };
   }
 }

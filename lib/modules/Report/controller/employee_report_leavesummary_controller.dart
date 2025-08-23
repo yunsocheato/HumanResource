@@ -1,17 +1,21 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../API/employee_report_sql2.dart';
-import '../Model/employee_checkin_model.dart';
 
-class EmployeeReportController2 extends GetxController {
-  final RxList<EmployeeCheckinModel> data = <EmployeeCheckinModel>[].obs;
-  final empoloyeecheckINSQL2 employeeCheckinSQL2 = empoloyeecheckINSQL2();
+import '../API/employee_report_sql3.dart';
+import '../Model/employee_leave_summary_model.dart';
+
+class leavesummarycontroller extends GetxController{
+  final RxList<EmployeeLeaveSummaryModel> data = <EmployeeLeaveSummaryModel>[].obs;
+  final EmployeeReportSql3 employeeleavesummarySQL3 = EmployeeReportSql3();
 
   int currentPage = 1;
   int pageSize = 100;
+
   int from = 0;
   int to = 100;
+  
   bool hasMoreData = true;
+
   final isLoading = false.obs;
   final isExporting1 = false.obs;
 
@@ -57,22 +61,22 @@ class EmployeeReportController2 extends GetxController {
     try {
       isLoading.value = true;
 
-      final newData = await employeeCheckinSQL2.employeecheckin(
-        StartDate: startDate.value!,
+      final newData = await employeeleavesummarySQL3.employeeleavesummary(
+        startDate: startDate.value!,
         endDate: endDate.value!,
-        page: page,
-        pageSize: pageSize,
         from: from,
         to: to,
+        page: page,
+        pageSize: pageSize,
       );
 
       if (page == 1) {
         data.assignAll(
-          newData.map((e) => EmployeeCheckinModel.fromJson(e)).toList(),
+          newData.map((e) => EmployeeLeaveSummaryModel.fromJson(e)).toList(),
         );
       } else {
         data.addAll(
-          newData.map((e) => EmployeeCheckinModel.fromJson(e)).toList(),
+          newData.map((e) => EmployeeLeaveSummaryModel.fromJson(e)).toList(),
         );
       }
 

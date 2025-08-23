@@ -14,7 +14,7 @@ Future<void> ExportExcel2() async {
   final data = await employeeService2.employeeReportCheckin(StartDate: DateTime.now(), endDate: DateTime.now(),from: 0,to: 9999);
 
   final excel = Excel.createExcel();
-  final sheet = excel['Report-Checkin'];
+  final sheet = excel['Report-Late'];
   excel.delete('Sheet1');
 
   final Set<String> headerSet = {};
@@ -48,7 +48,7 @@ Future<void> ExportExcel2() async {
     sheet.appendRow(rowCells);
   }
 
-  final fileName = 'Report-Checkin_${DateTime.now().toIso8601String()}.xlsx';
+  final fileName = 'Report-Late-${DateTime.now().toIso8601String()}.xlsx';
   final bytes = excel.encode();
   if (bytes == null) return;
 

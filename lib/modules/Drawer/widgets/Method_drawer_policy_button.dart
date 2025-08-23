@@ -6,6 +6,7 @@ import 'package:hrms/modules/Department/views/department_screen.dart';
 import 'package:hrms/modules/LeaveRequest/views/leave_request_screen.dart';
 import 'package:hrms/modules/Report/view/employee_Late_screen.dart';
 import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
+import 'package:hrms/modules/Report/view/employee_leave_summary_screen.dart';
 import '../../Attendance/controllers/attendance_widget_controller.dart';
 import '../../Attendance/views/attendance_screen.dart';
 import '../../Employee/views/employee_screen.dart';
@@ -31,7 +32,7 @@ Future<void> MethodButton1() async {
   );
   await Future.delayed(const Duration(seconds: 2));
   if (attendanceController.attendanceData.isEmpty) {
-    error.error.value = 'No Employee Data Found';
+    error.error.value = 'No Dashboard Data Found';
     error.buildErrorMessages();
     await Future.delayed(const Duration(seconds: 1));
   }
@@ -39,7 +40,7 @@ Future<void> MethodButton1() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(AttendanceScreen.routeName));
+  Future.microtask(() => Get.offAllNamed(DashboardScreen.routeName));
 }
 
 Future<void> MethodButton2() async {
@@ -59,7 +60,7 @@ Future<void> MethodButton2() async {
   );
   await Future.delayed(const Duration(seconds: 2));
   if (attendanceController.attendanceData.isEmpty) {
-    error.error.value = 'No Attendance Data Found';
+    error.error.value = ' No Attendance Data Found';
     error.buildErrorMessages();
     await Future.delayed(const Duration(seconds: 1));
   }
@@ -67,7 +68,7 @@ Future<void> MethodButton2() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(DashboardScreen.routeName));
+  Future.microtask(() => Get.offAllNamed(AttendanceScreen.routeName));
 }
 
 
@@ -218,4 +219,33 @@ Future<void> MethodButton7() async {
     Get.back();
   }
   Future.microtask(() => Get.offAllNamed(EmployeeLateScreen.routeName));
+}
+
+Future<void> MethodButton8() async {
+  final error = Get.put<ErrormessageController>(ErrormessageController());
+  final attendanceController = Get.find<AttendanceController>();
+
+  if (!Get.isRegistered<LoadingUiController>()) {
+    Get.put(LoadingUiController());
+  }
+  final loading = Get.find<LoadingUiController>();
+  loading.isLoading.value = true;
+  Get.dialog(
+    const Dialog(
+      backgroundColor: Colors.transparent,
+      child: LoadingScreen(),
+    ),
+    barrierDismissible: false,
+  );
+  await Future.delayed(const Duration(seconds: 2));
+  if (attendanceController.attendanceData.isEmpty) {
+    error.error.value = 'No Leave Summary Report Data Found';
+    error.buildErrorMessages();
+    await Future.delayed(const Duration(seconds: 1));
+  }
+  loading.isLoading.value = false;
+  if (Get.isDialogOpen ?? false) {
+    Get.back();
+  }
+  Future.microtask(() => Get.offAllNamed(EmployeeLeaveSummaryScreen.routeName));
 }

@@ -27,6 +27,7 @@ import '../modules/Loginscreen/controllers/loginscreen_animation_controller.dart
 import '../modules/Loginscreen/services/logout_services.dart';
 import '../modules/Report/controller/employee_report_controller1.dart';
 import '../modules/Report/controller/employee_report_controller2.dart';
+import '../modules/Report/controller/employee_report_leavesummary_controller.dart';
 import '../modules/Searchbar/controller/search_bar_controller.dart';
 
 class BindingMain extends Bindings{
@@ -119,6 +120,9 @@ class BindingMain extends Bindings{
 
     Get.put(EmployeeReportController2());
     Get.lazyPut<EmployeeReportController2>(() => EmployeeReportController2());
+
+    Get.put(leavesummarycontroller());
+    Get.lazyPut<leavesummarycontroller>(() => leavesummarycontroller());
 
   }
 

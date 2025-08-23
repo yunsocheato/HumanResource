@@ -4,11 +4,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../API/DataSourceTableReport.dart';
-import '../controller/employee_report_controller1.dart';
-import 'ExportExcel1.dart';
+import '../API/DataSourceTableReportLeaveSummary.dart';
+import '../controller/employee_report_controller2.dart';
+import '../controller/employee_report_leavesummary_controller.dart';
 
-class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
-  const EmployeeScreenCheckinReport({super.key});
+class EmployeeLeaveSummaryReport extends GetView<leavesummarycontroller>{
+  const EmployeeLeaveSummaryReport({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +20,11 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
   Widget _buildResponsiveContent() {
     final context = Get.context;
     final isMobile = MediaQuery.of(context!).size.width < 600;
-    return isMobile ?  _buildEmployeeCheckINMobile()  : _buildEmployeeCheckINOther() ;
+    return isMobile ?  _buildEmployeeLeavesummaryMobile()  : _buildEmployeeLeavesummaryOther() ;
   }
 
-  Widget _buildEmployeeCheckINOther() {
-    final controller = Get.find<EmployeeReportController>();
+  Widget _buildEmployeeLeavesummaryOther() {
+    final controller = Get.find<leavesummarycontroller>();
 
     return Card(
       color: Colors.grey.withOpacity(0.4),
@@ -38,13 +39,10 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
           return Center(child: LoadingScreen());
         }
         if (controller.data.isEmpty) {
-          return Center(child: Container(
-              height: 100,
-              width: 100,
-              child: Image.asset('assets/images/unavailabledata.png')));
+          return Center(child: Text('No data available'));
         }
 
-        final dataSource = DataSourceTableReport(controller.data);
+        final dataSource = DataSourceTableReportSummary(controller.data);
         return SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
@@ -60,7 +58,7 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Employee Check-In'),
+                        Text('Leave Summary'),
                       ],
                     ),
                     Row(
@@ -139,36 +137,36 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: TextButton(
-                            onPressed: () async {
-                              controller.isExporting1.value = true;
-                              try {
-                                await Future.microtask(() => ExportExcel1());
-                              } finally {
-                                controller.isExporting1.value = false;
-                              }
-                            },
-                            child: Obx(() => Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Center(
-                                    child: Text(
-                                      controller.isExporting1.value ? 'Exporting...' : 'Excel',
-                                      style: const TextStyle(color: Colors.white),
+                              onPressed: () async {
+                                controller.isExporting1.value = true;
+                                try {
+                                  // await Future.microtask(() => ExportExcel2());
+                                } finally {
+                                  controller.isExporting1.value = false;
+                                }
+                              },
+                              child: Obx(() => Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Center(
+                                      child: Text(
+                                        controller.isExporting1.value ? 'Exporting...' : 'Excel',
+                                        style: const TextStyle(color: Colors.white),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const Icon(Icons.download_outlined, color: Colors.white),
-                              ],
-                            ))
+                                  const Icon(Icons.download_outlined, color: Colors.white),
+                                ],
+                              ))
                           ),
                         )
                       ],
                     )
                   ],
                 ),
-                columns: [
+                columns:  [
                   DataColumn(label: Container(
                       width: 80,
                       height: 25,
@@ -176,8 +174,7 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.blue.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('LOGID', style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white))))),
+                      child: Center(child: Text('Staff_ID', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
                   DataColumn(label: Container(
                       width: 80,
                       height: 25,
@@ -185,8 +182,7 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.orange.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Fingerprint', style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white))))),
+                      child: Center(child: Text('Username', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
                   DataColumn(label: Container(
                       width: 80,
                       height: 25,
@@ -194,8 +190,7 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.yellow.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Username', style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white))))),
+                      child: Center(child: Text('Department', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
                   DataColumn(label: Container(
                       width: 85,
                       height: 25,
@@ -203,23 +198,28 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.green.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Check Type', style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white))))),
+                      child: Center(child: Text('Position', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
                   DataColumn(label: Container(
-                      width: 85,
+                      width: 95,
                       height: 25,
                       decoration: BoxDecoration(
                         color: Colors.red.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('DateTime', style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white))))),
+                      child: Center(child: Text('Request_Type', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
+                  DataColumn(label: Container(
+                      width: 95,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade900,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(child: Text('Leave_Counts', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
                 ],
                 source: dataSource,
                 rowsPerPage: controller.pageSize,
                 onRowsPerPageChanged: (value) {
                   controller.updatePagination(value!, 1);
-                  controller.loadMore();
                 },
                 showCheckboxColumn: false,
               ),
@@ -230,8 +230,8 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
     );
   }
 
-  Widget _buildEmployeeCheckINMobile() {
-    final controller = Get.find<EmployeeReportController>();
+  Widget _buildEmployeeLeavesummaryMobile() {
+    final controller = Get.find<leavesummarycontroller>();
     return Obx(() {
       if (controller.isLoading.value) {
         return Center(child: LoadingScreen());
@@ -258,7 +258,7 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                   width: 6,
                   height: 140,
                   decoration: BoxDecoration(
-                    color: Colors.green.shade900,
+                    color: Colors.purple.shade900,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(12),
                       bottomLeft: Radius.circular(12),
@@ -276,23 +276,26 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Logid: ${record.id.toString()}',
+                            'Staff ID: ${record.staff_id ?? '-'}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                       const SizedBox(height: 5),
-                      Text('Username: ${record.username ?? '-'}'),
+                      Text('Username: ${record.name ?? '-'}'),
                       const SizedBox(height: 5),
-                      Text('Fingerprint: ${record.fingerprint_id.toString()}'),
+                      Text('Department: ${record.department ?? '-'}'),
+                      const SizedBox(height: 5),
+                      Text('Position: ${record.position ?? '-'}'),
                       const SizedBox(height: 5),
                       Row(
                         children: [
-                          Text('Check Type: ${record.check_type ?? '-'}'),
-                          const SizedBox(width: 5),
-                          Text('on date ${record.created_at != null ? record.created_at.toString().split(' ')[0] : '-'}'),
+                          Text('Request Type: ${record.request_type ?? '-'}'),
+                          SizedBox(width: 3),
+                          Text('${record.leave_count.toString() ?? 0.0} times'),
                         ],
                       ),
+
                     ],
                   ),
                 )

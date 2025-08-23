@@ -7,6 +7,8 @@ class EmployeeReportSql3 {
     required int pageSize,
     required int from,
     required int to,
+    required DateTime endDate,
+    required DateTime startDate,
   })
   async {
     final int currentPage = page < 1 ? 1 : page;

@@ -8,6 +8,8 @@ class empoloyeecheckINSQL2 {
     required int pageSize,
     required DateTime StartDate,
     required DateTime endDate,
+    required int from,
+    required int to,
   }) async {
 
     final int currentPage = page < 1 ? 1 : page;
