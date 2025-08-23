@@ -17,8 +17,8 @@ class Employeepolicy extends GetView<AppDrawerController> {
       final isExpanded1 = controller.isExpanded1('Employee');
       return Theme(
         data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent, // remove expansion tile divider
-          unselectedWidgetColor: Colors.white, // arrow color
+          dividerColor: Colors.transparent,
+          unselectedWidgetColor: Colors.white,
         ),
         child: ExpansionTile(
           initiallyExpanded: isExpanded1,
