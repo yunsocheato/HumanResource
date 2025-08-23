@@ -1,7 +1,10 @@
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Model/employee_checkin_model.dart';
+
 class empoloyeecheckINSQL {
-final _client = Supabase.instance.client;
+  final _client = Supabase.instance.client;
+
 
   Future<List<Map<String, dynamic>>> employeecheckin({
     required int page,
@@ -27,8 +30,6 @@ final _client = Supabase.instance.client;
       return [] ;
     }
   }
-
-
 Future<List<Map<String, dynamic>>> employeeReportCheckin({
   required DateTime StartDate,
   required DateTime endDate,
@@ -58,3 +59,5 @@ Future<List<Map<String, dynamic>>> employeeReportCheckin({
         event.map((e) => EmployeeCheckinCountModel.fromJson(e)).toList());
   }
 }
+
+

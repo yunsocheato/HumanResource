@@ -119,9 +119,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   controller.logoutWithConfirmation();
                 },
               ),
-
             SizedBox(width: 10),
-
             if (isMobile)
               IconButton(
                 icon: Icon(Icons.search, color: Colors.white),
@@ -135,8 +133,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   ),
                 ),
               ),
-          ]
-,
+          ],
         ),
         drawer: isMobile ? Drawer(child: _buildSidebar(context)) : null,
         body: Row(
@@ -250,8 +247,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                         SizedBox(width: 12),
                         Expanded(
                           child: Obx(() {
-                            final controller = Get.find<
-                                userprofilecontroller>();
+                            final controller = Get.find<userprofilecontroller>();
                             final profile = controller.userprofiles.value;
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
