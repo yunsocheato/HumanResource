@@ -40,6 +40,7 @@ class PolicySetup extends GetView<AppDrawerController> {
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
             ListTile(
+              leading: Icon(Icons.calendar_month_sharp, color: Colors.white),
               title: Text(
                 'Attendance Policy',
                 style: TextStyle(color: Colors.white),
@@ -47,6 +48,7 @@ class PolicySetup extends GetView<AppDrawerController> {
               onTap: () => Get.toNamed('/it-policy'),
             ),
             ListTile(
+              leading: Icon(Icons.calendar_today, color: Colors.white),
               title: Text(
                 'Leave Policy',
                 style: TextStyle(color: Colors.white),
@@ -54,6 +56,7 @@ class PolicySetup extends GetView<AppDrawerController> {
               onTap: () => DialogScreen(context,LeavePolicy())
             ),
             ListTile(
+              leading: Icon(Icons.perm_identity_outlined, color: Colors.white),
               title: Text(
                 'Employee Policy',
                 style: TextStyle(color: Colors.white),
@@ -61,10 +64,12 @@ class PolicySetup extends GetView<AppDrawerController> {
               onTap: () =>DialogScreen(context, EmployeePolicyScreen())
             ),
             ListTile(
+              leading: Icon(Icons.lock_clock, color: Colors.white),
               title: Text('OT Policy', style: TextStyle(color: Colors.white)),
               onTap: () => DialogScreen(context, OTPolicyScreen()),
             ),
             ListTile(
+              leading: Icon(Icons.picture_in_picture, color: Colors.white),
               title: Text('Access Feature Policy', style: TextStyle(color: Colors.white)),
               onTap: () => DialogScreen(context,AccessFeatureScreen()),
             ),

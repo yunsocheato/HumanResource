@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
+import 'package:hrms/modules/Report/view/employee_leave_summary_screen.dart';
 import '../../Report/view/employee_Late_screen.dart';
 import '../controllers/drawer_controller.dart';
 import 'Method_drawer_policy_button.dart';
@@ -65,11 +66,14 @@ class ReportPolicy extends GetView<AppDrawerController> {
               onTap: () => Get.toNamed('/hr-policy'),
             ),
             ListTile(
-              title: Text(
-                'Leave Summary',
-                style: TextStyle(color: Colors.white),
+              title: InkWell(
+                onTap: () => MethodButton8(),
+                child: Text(
+                  'Leave Summary',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
+              onTap: () => Get.toNamed(EmployeeLeaveSummaryScreen.routeName),
             ),
             ListTile(
               title: Text(

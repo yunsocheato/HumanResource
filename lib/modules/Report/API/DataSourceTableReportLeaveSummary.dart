@@ -16,7 +16,7 @@ class DataSourceTableReportSummary extends DataTableSource {
       DataCell(Text(user.department ?? '')),
       DataCell(Text(user.position ?? '')),
       DataCell(Text(user.request_type ?? '')),
-      DataCell(Text((user.leave_count ?? 0.0) as String)),
+      DataCell(Text('${user.leave_count.toString() ?? 0.0} times')),
     ]);
   }
 

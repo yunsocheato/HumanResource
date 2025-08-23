@@ -40,6 +40,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
             ListTile(
+              leading: Icon(Icons.person, color: Colors.white),
               title: Text(
                 'Employee Profile',
                 style: TextStyle(color: Colors.white),
@@ -47,6 +48,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
               onTap: () => Get.toNamed('/hr-policy'),
             ),
             ListTile(
+              leading: Icon(Icons.person_add, color: Colors.white),
               title: Text(
                 'Employee History',
                 style: TextStyle(color: Colors.white),

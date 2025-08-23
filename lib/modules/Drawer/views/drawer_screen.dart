@@ -170,14 +170,18 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   const SizedBox(height: 20),
                   _buildDrawerTile(
                     'Dashboard',
-                    Icons.home, () => MethodButton2()
+                    Icons.home, () => MethodButton1()
+                  ),
+                  _buildDrawerTile(
+                      'Attendance',
+                      Icons.calendar_month_sharp, () => MethodButton2()
                   ),
                   const SizedBox(height: 10),
                   PolicySetup(),
                   ReportPolicy(),
                   Employeepolicy(),
                   Departmentpolicy(),
-                  Attendancepolicy(),
+                  // Attendancepolicy(),
                   LeaveRequest(),
                   _buildDrawerTile(
                     'Schedule',

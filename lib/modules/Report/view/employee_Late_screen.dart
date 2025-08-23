@@ -6,7 +6,7 @@ import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
 import '../controller/employee_report_controller2.dart';
 import '../widget/ExportExcel2.dart';
-import '../widget/employee_checkoutreport_widget2.dart';
+import '../widget/employee_Latereport_widget2.dart';
 
 class EmployeeLateScreen extends GetView<EmployeeReportController2> {
   const EmployeeLateScreen({super.key});
@@ -74,30 +74,30 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(width: 20),
+                      const SizedBox(width: 10),
                       isMobile ? Row(
                         children: [
                           Container(
                               height: 50,
                               width: 50,
                               decoration: BoxDecoration(
-                                color: Colors.blue.shade100,
+                                color: Colors.orange.shade100,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
-                                  Icons.folder_copy, color: Colors.green,
+                                  Icons.folder_copy, color: Colors.orange,
                                   size: 16)),
                           SizedBox(width: 10,),
                           Stack(
                             children: <Widget>[
                               Text(
-                                'Late REPORT',
+                                'LATE REPORT',
                                 style: TextStyle(
                                   fontSize: 16,
                                   foreground: Paint()
                                     ..style = PaintingStyle.stroke
                                     ..strokeWidth = 2
-                                    ..color = Colors.blue[700]!,
+                                    ..color = Colors.orange[700]!,
                                 ),
                               ),
                               Text(
@@ -122,7 +122,7 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
                                   foreground: Paint()
                                     ..style = PaintingStyle.stroke
                                     ..strokeWidth = 2
-                                    ..color = Colors.blue[700]!,
+                                    ..color = Colors.orange[700]!,
                                 ),
                               ),
                               Text(
@@ -139,10 +139,10 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
                               height: 70,
                               width: 70,
                               decoration: BoxDecoration(
-                                color: Colors.blue.shade100,
+                                color: Colors.orange.shade100,
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(Icons.folder_copy, color: Colors.blue, size: 24)),
+                              child: Icon(Icons.folder_copy, color: Colors.orange, size: 24)),
                         ],
                       )
 
@@ -152,10 +152,10 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       isMobile ? IconButton(onPressed: () => controller.refreshData()
-                          , icon: Icon(Icons.refresh, color: Colors.blue, size: 16,)
+                          , icon: Icon(Icons.refresh, color: Colors.orange, size: 16,)
                       ):
                       IconButton(onPressed: () => controller.refreshData()
-                          , icon: Icon(Icons.refresh, color: Colors.blue, size: 24,)
+                          , icon: Icon(Icons.refresh, color: Colors.orange, size: 24,)
                       )
                     ],
                   )
@@ -190,41 +190,54 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (isMobile)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Employee Late',),
-                Container(
-                    height: 30,
-                    width: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade700,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: TextButton(onPressed: () async {
-                      await Future.microtask(() => ExportExcel2());
-                    },
-                      child: Obx(() =>
-                          Text(controller.isExporting1.value
-                              ? 'Exporting..'
-                              : 'Export',),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      height: 30,
+                      width: 140,
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade900,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    )
-                )
-              ],
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Center(child: Text('Employee Late',style: TextStyle(color: Colors.white),))),
+                  Container(
+                      height: 30,
+                      width: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade700,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: TextButton(onPressed: () async {
+                        await Future.microtask(() => ExportExcel2());
+                      },
+                        child: Obx(() =>
+                            Center(
+                              child: Text(controller.isExporting1.value
+                                  ? 'Exporting'
+                                  : 'Excel', style: TextStyle(color: Colors.white)),
+                            ),
+                        ),
+                      )
+                  )
+                ],
+              ),
             ),
           SizedBox(height: 10),
           if (isMobile)
             SearchbarScreen(),
           SizedBox(height: 10),
-          EmployeeScreenCheckoutReport2(),
+          EmployeeScreenLateReport(),
         ],
       ),
     );
   }
 
   Widget _buildDesktopTabletContent() {
-    return EmployeeScreenCheckoutReport2();
+    return EmployeeScreenLateReport();
   }
 }
