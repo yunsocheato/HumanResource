@@ -38,7 +38,10 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
           return Center(child: LoadingScreen());
         }
         if (controller.data.isEmpty) {
-          return Center(child: Text('No data available'));
+          return Center(child: Container(
+              height: 100,
+              width: 100,
+              child: Image.asset('assets/images/unavailabledata.png')));
         }
 
         final dataSource = DataSourceTableReport(controller.data);
@@ -165,7 +168,7 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                     )
                   ],
                 ),
-                columns:  [
+                columns: [
                   DataColumn(label: Container(
                       width: 80,
                       height: 25,
@@ -173,7 +176,8 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.blue.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('ID', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
+                      child: Center(child: Text('ID', style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white))))),
                   DataColumn(label: Container(
                       width: 80,
                       height: 25,
@@ -181,7 +185,8 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.orange.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Fingerprint', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
+                      child: Center(child: Text('Fingerprint', style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white))))),
                   DataColumn(label: Container(
                       width: 80,
                       height: 25,
@@ -189,7 +194,8 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.yellow.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Username', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
+                      child: Center(child: Text('Username', style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white))))),
                   DataColumn(label: Container(
                       width: 85,
                       height: 25,
@@ -197,7 +203,8 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.green.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Check Type', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
+                      child: Center(child: Text('Check Type', style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white))))),
                   DataColumn(label: Container(
                       width: 85,
                       height: 25,
@@ -205,12 +212,14 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController>{
                         color: Colors.red.shade900,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text('Date Time', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))))),
+                      child: Center(child: Text('Date Time', style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white))))),
                 ],
                 source: dataSource,
                 rowsPerPage: controller.pageSize,
                 onRowsPerPageChanged: (value) {
                   controller.updatePagination(value!, 1);
+                  controller.loadMore();
                 },
                 showCheckboxColumn: false,
               ),

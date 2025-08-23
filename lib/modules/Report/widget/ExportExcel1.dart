@@ -11,7 +11,7 @@ import '../API/employee_report_sql1.dart';
 
 Future<void> ExportExcel1() async {
   final employeeService = empoloyeecheckINSQL();
-  final data = await employeeService.employeeReportCheckin(StartDate: DateTime.now(), endDate: DateTime.now(),from: 0,to: 9999);
+  final data = await employeeService.employeeReportCheckin(StartDate: DateTime.now(), endDate: DateTime.now(), from: 0, to: 10000);
 
   final excel = Excel.createExcel();
   final sheet = excel['Report-Checkin'];

@@ -63,14 +63,12 @@ class EmployeeReportController extends GetxController {
         pageSize: pageSize,
       );
 
+      final mappedData = newData.map((e) => EmployeeCheckinModel.fromJson(e)).toList();
+
       if (page == 1) {
-        data.assignAll(
-          newData.map((e) => EmployeeCheckinModel.fromJson(e)).toList(),
-        );
+        data.assignAll(mappedData);
       } else {
-        data.addAll(
-          newData.map((e) => EmployeeCheckinModel.fromJson(e)).toList(),
-        );
+        data.addAll(mappedData);
       }
 
       hasMoreData = newData.length == pageSize;
@@ -116,6 +114,5 @@ class EmployeeReportController extends GetxController {
   void resetDates() {
     startDate.value = DateTime.now();
     endDate.value = DateTime.now();
-    fetchDataForRange();
   }
 }
