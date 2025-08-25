@@ -25,7 +25,7 @@ class DashboardController extends GetxController {
    }
 
    void refreshdata ()  async {
-     await MethodButton2();
+     await MethodButton1();
      update();
    }
 
