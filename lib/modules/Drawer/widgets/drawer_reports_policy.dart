@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
 import 'package:hrms/modules/Report/view/employee_leave_summary_screen.dart';
 import '../../Report/view/employee_Late_screen.dart';
+import '../../Report/view/employee_absent_screen.dart';
 import '../controllers/drawer_controller.dart';
 import 'Method_drawer_policy_button.dart';
 
@@ -59,11 +60,14 @@ class ReportPolicy extends GetView<AppDrawerController> {
               onTap: () => Get.toNamed(EmployeeLateScreen.routeName),
             ),
             ListTile(
-              title: Text(
-                'Employee Absent',
-                style: TextStyle(color: Colors.white),
+              title: InkWell(
+                onTap: () => MethodButton9(),
+                child: Text(
+                  'Employee Absent',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
+              onTap: () => Get.toNamed(EmployeeAbsentScreen.routeName),
             ),
             ListTile(
               title: InkWell(

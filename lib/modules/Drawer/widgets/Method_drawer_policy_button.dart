@@ -5,6 +5,7 @@ import 'package:hrms/modules/Dashboard/views/dashboard_screen.dart';
 import 'package:hrms/modules/Department/views/department_screen.dart';
 import 'package:hrms/modules/LeaveRequest/views/leave_request_screen.dart';
 import 'package:hrms/modules/Report/view/employee_Late_screen.dart';
+import 'package:hrms/modules/Report/view/employee_absent_screen.dart';
 import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
 import 'package:hrms/modules/Report/view/employee_leave_summary_screen.dart';
 import '../../Attendance/controllers/attendance_widget_controller.dart';
@@ -248,4 +249,32 @@ Future<void> MethodButton8() async {
     Get.back();
   }
   Future.microtask(() => Get.offAllNamed(EmployeeLeaveSummaryScreen.routeName));
+}
+Future<void> MethodButton9() async {
+  final error = Get.put<ErrormessageController>(ErrormessageController());
+  final attendanceController = Get.find<AttendanceController>();
+
+  if (!Get.isRegistered<LoadingUiController>()) {
+    Get.put(LoadingUiController());
+  }
+  final loading = Get.find<LoadingUiController>();
+  loading.isLoading.value = true;
+  Get.dialog(
+    const Dialog(
+      backgroundColor: Colors.transparent,
+      child: LoadingScreen(),
+    ),
+    barrierDismissible: false,
+  );
+  await Future.delayed(const Duration(seconds: 2));
+  if (attendanceController.attendanceData.isEmpty) {
+    error.error.value = 'No Absent Report Data Found';
+    error.buildErrorMessages();
+    await Future.delayed(const Duration(seconds: 1));
+  }
+  loading.isLoading.value = false;
+  if (Get.isDialogOpen ?? false) {
+    Get.back();
+  }
+  Future.microtask(() => Get.offAllNamed(EmployeeAbsentScreen.routeName));
 }

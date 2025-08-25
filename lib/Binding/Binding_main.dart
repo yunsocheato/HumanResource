@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Report/controller/employee_report_controller3.dart';
 import '../Core/user_profile_controller.dart';
 import '../Update/controller/update_controller.dart';
 import '../modules/Attendance/controllers/attendance_chart_controller.dart';
@@ -123,6 +124,9 @@ class BindingMain extends Bindings{
 
     Get.put(leavesummarycontroller());
     Get.lazyPut<leavesummarycontroller>(() => leavesummarycontroller());
+
+    Get.put(EmployeeReportController3());
+    Get.lazyPut<EmployeeReportController3>(() => EmployeeReportController3());
 
   }
 
