@@ -39,14 +39,14 @@ class PolicySetup extends GetView<AppDrawerController> {
           collapsedIconColor: Colors.white,
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
-            ListTile(
-              leading: Icon(Icons.calendar_month_sharp, color: Colors.white),
-              title: Text(
-                'Attendance Policy',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () => Get.toNamed('/it-policy'),
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.calendar_month_sharp, color: Colors.white),
+            //   title: Text(
+            //     'Attendance Policy',
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            //   onTap: () => Get.toNamed('/it-policy'),
+            // ),
             ListTile(
               leading: Icon(Icons.calendar_today, color: Colors.white),
               title: Text(

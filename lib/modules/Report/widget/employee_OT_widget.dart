@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import '../../Loadingui/Loading_Screen.dart';
-import '../API/DatableReportAbsent.dart';
-import '../controller/employee_report_controller3.dart';
+import '../API/DataTableReportOT.dart';
+import '../controller/employee_report_controller4.dart';
 import 'ExportExcel4.dart';
 
-class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
-  const EmployeeAbsentWidget({super.key});
+class EmployeeOTWidget extends GetView<EmployeeReportController4> {
+  const EmployeeOTWidget({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,11 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
   Widget _buildResponsiveContent() {
     final context = Get.context;
     final isMobile = MediaQuery.of(context!).size.width < 600;
-    return isMobile ? _buildEmployeeAbsentMobile() : _buildEmployeeAbsentOther();
+    return isMobile ? _buildEmployeeOTMobile() : _buildEmployeeOTOther();
   }
 
-  Widget _buildEmployeeAbsentMobile() {
-    final controller = Get.find<EmployeeReportController3>();
+  Widget _buildEmployeeOTMobile() {
+    final controller = Get.find<EmployeeReportController4>();
 
     return Card(
       color: Colors.grey.withOpacity(0.4),
@@ -44,7 +44,7 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
           );
         }
 
-        final dataSource = DataSourceTableReportAbsent(controller.data);
+        final dataSource = DataTableReportOT(controller.data);
         return SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
@@ -59,7 +59,7 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [Text('Employee-Absent')],
+                      children: [Text('Employee-OT')],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -80,8 +80,9 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (picked != null)
+                              if (picked != null) {
                                 controller.updateStartDate(picked);
+                              }
                             },
                             child: Text(
                               'StartDate',
@@ -106,9 +107,8 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (picked != null) {
+                              if (picked != null)
                                 controller.updateEndDate(picked);
-                              }
                             },
                             child: Text(
                               'EndDate',
@@ -280,7 +280,64 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
                       ),
                       child: Center(
                         child: Text(
-                          'Absent_Date',
+                          'StartDate',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Container(
+                      width: 85,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade900,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'StartTime',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Container(
+                      width: 85,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade900,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'EndDate',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Container(
+                      width: 85,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade900,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'EndTime',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -318,7 +375,7 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
                       ),
                       child: Center(
                         child: Text(
-                          'DateTime',
+                          'CreateAt',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -342,8 +399,8 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
     );
   }
 
-  Widget _buildEmployeeAbsentOther() {
-    final controller = Get.find<EmployeeReportController3>();
+  Widget _buildEmployeeOTOther() {
+    final controller = Get.find<EmployeeReportController4>();
     return Obx(() {
       if (controller.isLoading.value) {
         return Center(child: LoadingScreen());
@@ -402,19 +459,25 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
                       const SizedBox(height: 5),
                       Text('Username: ${record.staff_name ?? '-'}'),
                       const SizedBox(height: 5),
-                      Text('Position: ${record.position ?? '-'}'),
                       const SizedBox(height: 5),
-                      Text('Department: ${record.department ?? '-'}'),
-                      const SizedBox(height: 5),
+                      Text('Reason: ${record.reason ?? '-'}'),
                       Row(
                         children: [
-                          Text('AbsentDate: ${record.absent_date ?? '-'}'),
+                          Text('StartDate: ${record.start_date ?? '-'}'),
                           const SizedBox(width: 5),
-                          Text(' Reason ${record.reason ?? '-'}'),
+                          Text('EndDate${record.end_date ?? '-'}'),
+                        ],
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text('StartTime: ${record.time_start ?? '-'}'),
+                          const SizedBox(width: 5),
+                          Text('EndTime${record.end_time ?? '-'}'),
                         ],
                       ),
                       const SizedBox(height: 5),
-                      Text('Created At: ${record.created_at ?? '-'}'),
+                      Text('CreateAt: ${record.created_at ?? '-'}'),
                     ],
                   ),
                 ),

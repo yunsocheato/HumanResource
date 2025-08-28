@@ -53,10 +53,10 @@ import 'modules/Routes/Routes.dart';
         ),
         darkTheme: ThemeData.dark(),
         themeMode: ThemeMode.light,
-        builder: (context, child) {
+        builder: (context, data) {
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-            child: child!,
+            child: data!,
           );
         },
       );

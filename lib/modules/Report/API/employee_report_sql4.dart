@@ -15,7 +15,7 @@ class EmployeeReportSQL4 {
     final int from = (currentPage - 1) * pageSize;
     final int to = from + pageSize - 1;
     final response = await data
-        .from('employee_absent')
+        .from('employees_absent')
         .select(
         'staff_id,staff_name, position, department,absent_date, reason, created_at')
         .order('absent_date', ascending: true).range(from, to)

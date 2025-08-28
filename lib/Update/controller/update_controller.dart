@@ -27,7 +27,7 @@ class UpdateController extends GetxController{
   void onInit() {
     super.onInit();
     gitHubAPI = UpdateGitHubAPI(
-      githubToken: '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'
+      githubToken: ''
     );
     CheckForUpdate();
     Timer.periodic(Duration(seconds: 60), (_) => CheckForUpdate());
@@ -64,7 +64,7 @@ class UpdateController extends GetxController{
     try {
       final response = await http.get(url, headers: {
         'Authorization':
-        'token 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'
+        ' '
       });
       if (response.statusCode == 200) {
         final List data = jsonDecode(response.body);

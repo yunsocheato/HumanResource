@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../API/employee_report_sql3.dart';
+import '../API/employee_report_sql4.dart';
 
-Future<void> ExportExcel3({
+Future<void> ExportExcel4({
   required int page,
   required int pageSize,
   required DateTime endDate,
@@ -17,8 +17,8 @@ Future<void> ExportExcel3({
   required int from,
   required int to,
 }) async {
-  final employeeService3 = EmployeeReportSql3();
-  final data = await employeeService3.employeeleavesummary(
+  final employeeService4 = EmployeeReportSQL4();
+  final data = await employeeService4.employeeabsent(
     startDate: startDate,
     endDate: endDate,
     page: page,
@@ -33,7 +33,7 @@ Future<void> ExportExcel3({
   }
 
   final excel = Excel.createExcel();
-  final sheet = excel['Summary-Leave'];
+  final sheet = excel['Absent-Report'];
   excel.delete('Sheet1');
 
   final headers = data.first.keys.toList();
@@ -59,7 +59,7 @@ Future<void> ExportExcel3({
     sheet.appendRow(rowCells);
   }
 
-  final fileName = 'Leave-Summary-Reports-${DateTime.now().toIso8601String()}.xlsx';
+  final fileName = 'Absents-Reports-${DateTime.now().toIso8601String()}.xlsx';
   final bytes = excel.encode();
   if (bytes == null) return;
 
@@ -71,7 +71,7 @@ Future<void> ExportExcel3({
       ..click();
     html.Url.revokeObjectUrl(url);
   } else if (Platform.isAndroid || Platform.isIOS || Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
-    final dir = await getApplicationDocumentsDirectory(); 
+    final dir = await getApplicationDocumentsDirectory();
     final path = p.join(dir.path, fileName);
     final file = File(path);
     await file.writeAsBytes(bytes);

@@ -11,12 +11,12 @@ class userprofilecontroller extends GetxController{
   void onInit() {
     super.onInit();
     _fetchuserProfile();
-
   }
 
   void _fetchuserProfile() async{
     final email = _profileSql.userEmail;
     if (email == null) return;
-    userprofiles.bindStream(_profileSql.getProfileUser(email));
+    final profile = await _profileSql.getProfileUser(email);
+    userprofiles.value = profile;
   }
 }
