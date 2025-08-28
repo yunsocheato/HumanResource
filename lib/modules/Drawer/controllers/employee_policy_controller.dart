@@ -6,8 +6,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 class EmployeePolicyController extends GetxController{
-  final employeepolicysql _sql = employeepolicysql();
 
+  final employeepolicysql _sql = employeepolicysql();
   final NameController = TextEditingController();
   final UserIDController = TextEditingController();
   final EmailController = TextEditingController();
@@ -26,7 +26,6 @@ class EmployeePolicyController extends GetxController{
 
   var isLoading = false.obs;
   var suggestionList = <String>[].obs;
-
   var Username = ''.obs;
 
 

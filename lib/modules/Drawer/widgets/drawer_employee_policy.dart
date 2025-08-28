@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Drawer/widgets/Method_drawer_policy_button.dart';
+import 'package:hrms/modules/Employee/views/employee_profile_screen.dart';
+import '../../DialogScreen/DialogScreen.dart';
 import '../../Employee/views/employee_screen.dart';
+import '../../Employee/widgets/employee_profile_widget.dart';
 import '../controllers/drawer_controller.dart';
+import '../views/Leave_Policy_screen.dart';
 
 class Employeepolicy extends GetView<AppDrawerController> {
   const Employeepolicy({super.key});
@@ -45,15 +49,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
                 'Employee Profile',
                 style: TextStyle(color: Colors.white),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
-            ),
-            ListTile(
-              leading: Icon(Icons.person_add, color: Colors.white),
-              title: Text(
-                'Employee History',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () => Get.toNamed('/it-policy'),
+              onTap: () =>  DialogScreen(context,EmployeeProfileWidget()) ,
             ),
           ],
         ),

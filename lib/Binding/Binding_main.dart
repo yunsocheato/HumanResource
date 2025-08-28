@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Dashboard/controllers/dashboard_screen_controller.dart';
 import 'package:hrms/modules/Report/controller/employee_report_controller3.dart';
 import '../Core/user_profile_controller.dart';
 import '../Update/controller/update_controller.dart';
@@ -16,6 +17,7 @@ import '../modules/Drawer/controllers/employee_policy_controller.dart';
 import '../modules/Drawer/controllers/fingerprint_setup_controller.dart';
 import '../modules/Drawer/controllers/payroll_policy_controller.dart';
 import '../modules/Employee/Controller/Employeetable_controller.dart';
+import '../modules/Employee/Controller/employee_profile_controller.dart';
 import '../modules/Employee/Controller/employeefiltercontroller.dart';
 import '../modules/LeaveRequest/controllers/leave_controller.dart';
 import '../modules/Loadingui/ErrorScreen/Controller/DataUnavaiable.dart';
@@ -28,12 +30,15 @@ import '../modules/Loginscreen/controllers/loginscreen_animation_controller.dart
 import '../modules/Loginscreen/services/logout_services.dart';
 import '../modules/Report/controller/employee_report_controller1.dart';
 import '../modules/Report/controller/employee_report_controller2.dart';
+import '../modules/Report/controller/employee_report_controller4.dart';
 import '../modules/Report/controller/employee_report_leavesummary_controller.dart';
 import '../modules/Searchbar/controller/search_bar_controller.dart';
 
 class BindingMain extends Bindings{
   @override
   void dependencies() {
+    Get.put(DashboardController());
+    Get.lazyPut<DashboardController>(() => DashboardController());
 
     Get.put(AppDrawerController());
     Get.lazyPut<AppDrawerController>(() => AppDrawerController());
@@ -128,6 +133,11 @@ class BindingMain extends Bindings{
     Get.put(EmployeeReportController3());
     Get.lazyPut<EmployeeReportController3>(() => EmployeeReportController3());
 
+    Get.put(EmployeeReportController4());
+    Get.lazyPut<EmployeeReportController4>(() => EmployeeReportController4());
+
+    Get.put(EmployeeProfileController());
+    Get.lazyPut<EmployeeProfileController>(() => EmployeeProfileController());
   }
 
 }

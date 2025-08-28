@@ -4,12 +4,14 @@ import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
 import '../Attendance/views/attendance_screen.dart';
 import '../Dashboard/views/dashboard_screen.dart';
 import '../Department/views/department_screen.dart';
+import '../Employee/views/employee_profile_screen.dart';
 import '../Employee/views/employee_screen.dart';
 import '../LeaveRequest/views/leave_request_screen.dart';
 import '../Loginscreen/views/login_screen.dart';
 import '../Report/view/employee_Late_screen.dart';
 import '../Report/view/employee_absent_screen.dart';
 import '../Report/view/employee_leave_summary_screen.dart';
+import '../Report/view/employee_ot_screen.dart';
 import '../Schedule/views/schedule_screen.dart';
 
 final List<GetPage> appRoutes = [
@@ -24,7 +26,8 @@ final List<GetPage> appRoutes = [
   GetPage(name: EmployeeLateScreen.routeName, page: () => EmployeeLateScreen(),transition: Transition.rightToLeft),
   GetPage(name: EmployeeLeaveSummaryScreen.routeName, page: () => EmployeeLeaveSummaryScreen(),transition: Transition.rightToLeft),
   GetPage(name: EmployeeAbsentScreen.routeName, page: () => EmployeeAbsentScreen(),transition: Transition.rightToLeft),
-
+  GetPage(name: EmployeeOTScreen.routeName, page: () => EmployeeOTScreen(),transition: Transition.rightToLeft),
+  GetPage(name: EmployeeProfileScreen.routeName, page: () => EmployeeProfileScreen(),transition: Transition.rightToLeft),
 ];
 
 

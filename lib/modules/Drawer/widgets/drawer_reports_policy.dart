@@ -20,8 +20,8 @@ class ReportPolicy extends GetView<AppDrawerController> {
       final isExpanded1 = controller.isExpanded1('Leave');
       return Theme(
         data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent, // remove expansion tile divider
-          unselectedWidgetColor: Colors.white, // arrow color
+          dividerColor: Colors.transparent,
+          unselectedWidgetColor: Colors.white,
         ),
         child: ExpansionTile(
           initiallyExpanded: isExpanded1,
@@ -80,11 +80,14 @@ class ReportPolicy extends GetView<AppDrawerController> {
               onTap: () => Get.toNamed(EmployeeLeaveSummaryScreen.routeName),
             ),
             ListTile(
-              title: Text(
-                'OT Reports',
-                style: TextStyle(color: Colors.white),
+              title: InkWell(
+                onTap: () => MethodButton10(),
+                child: Text(
+                  'OT Reports',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
+              onTap: () => Get.toNamed('/employeeOT'),
             ),
           ],
         ),

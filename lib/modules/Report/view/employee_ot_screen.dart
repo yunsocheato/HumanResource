@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Report/controller/employee_report_controller3.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
-import '../controller/employee_report_controller1.dart';
+import '../controller/employee_report_controller4.dart';
 import '../widget/ExportExcel4.dart';
-import '../widget/employee_absent_widget.dart';
+import '../widget/employee_OT_widget.dart';
 
-class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
-  const EmployeeAbsentScreen({super.key});
+class EmployeeOTScreen extends GetView<EmployeeReportController4> {
+  const EmployeeOTScreen({super.key});
 
-  static const String routeName = '/employeeabsent';
+  static const String routeName = '/employeeOT';
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +90,12 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                               height: 50,
                               width: 50,
                               decoration: BoxDecoration(
-                                color: Colors.green.shade100,
+                                color: Colors.blue.shade100,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.folder_copy,
-                                color: Colors.green,
+                                color: Colors.blue,
                                 size: 16,
                               ),
                             ),
@@ -104,18 +103,18 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                             Stack(
                               children: <Widget>[
                                 Text(
-                                  'ABSENT REPORT',
+                                  'OT REPORT',
                                   style: TextStyle(
                                     fontSize: 16,
                                     foreground:
                                     Paint()
                                       ..style = PaintingStyle.stroke
                                       ..strokeWidth = 2
-                                      ..color = Colors.green[700]!,
+                                      ..color = Colors.blue[700]!,
                                   ),
                                 ),
                                 Text(
-                                  'ABSENT REPORT',
+                                  'OT REPORT',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
@@ -130,18 +129,18 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                             Stack(
                               children: <Widget>[
                                 Text(
-                                  'ABSENT REPORT',
+                                  'OT REPORT',
                                   style: TextStyle(
                                     fontSize: 24,
                                     foreground:
                                     Paint()
                                       ..style = PaintingStyle.stroke
                                       ..strokeWidth = 2
-                                      ..color = Colors.green[700]!,
+                                      ..color = Colors.blue[700]!,
                                   ),
                                 ),
                                 Text(
-                                  'ABSENT REPORT',
+                                  'OT REPORT',
                                   style: TextStyle(
                                     fontSize: 24,
                                     color: Colors.white,
@@ -154,12 +153,12 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                               height: 70,
                               width: 70,
                               decoration: BoxDecoration(
-                                color: Colors.green.shade100,
+                                color: Colors.blue.shade100,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.folder_copy,
-                                color: Colors.green,
+                                color: Colors.blue,
                                 size: 24,
                               ),
                             ),
@@ -175,7 +174,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                           onPressed: () => controller.refreshData(),
                           icon: Icon(
                             Icons.refresh,
-                            color: Colors.green,
+                            color: Colors.blue,
                             size: 16,
                           ),
                         )
@@ -183,7 +182,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                           onPressed: () => controller.refreshData(),
                           icon: Icon(
                             Icons.refresh,
-                            color: Colors.green,
+                            color: Colors.blue,
                             size: 24,
                           ),
                         ),
@@ -235,7 +234,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Center(
                       child: Text(
-                        'Employee Absents',
+                        'Employee OT',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -294,13 +293,13 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
           SizedBox(height: 10),
           if (isMobile) SearchbarScreen(),
           SizedBox(height: 10),
-          EmployeeAbsentWidget(),
+          EmployeeOTWidget(),
         ],
       ),
     );
   }
 
   Widget _buildDesktopTabletContent() {
-    return EmployeeAbsentWidget();
+    return EmployeeOTWidget();
   }
 }
