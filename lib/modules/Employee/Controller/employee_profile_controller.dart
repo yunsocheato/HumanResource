@@ -32,11 +32,14 @@ class EmployeeProfileController extends GetxController {
   final fingerprintidController = TextEditingController();
   final RoleUserTextController = TextEditingController();
 
+  final ScrollController horizontalScrollController = ScrollController();
   final ScrollController verticalScrollController = ScrollController();
+  var showlogincard1 = true.obs;
 
   var nameText = ''.obs;
   var emailText = ''.obs;
   var positionText = ''.obs;
+  var addressText = ''.obs;
   var phoneText = ''.obs;
   var idCardText = ''.obs;
   var departmentText = ''.obs;
@@ -48,12 +51,16 @@ class EmployeeProfileController extends GetxController {
     debounce(Username, (value) {
       fetchSuggestionsProfile(value);
     }, time: const Duration(milliseconds: 300));
-
+    Future.delayed(Duration(milliseconds: 500), () {
+      showlogincard1.value = true;
+    });
     nameController.addListener(() => nameText.value = nameController.text);
     emailController.addListener(() => emailText.value = emailController.text);
     positionController.addListener(() => positionText.value = positionController.text);
     phoneController.addListener(() => phoneText.value = phoneController.text);
     idCardController.addListener(() => idCardText.value = idCardController.text);
+    addressController.addListener(() => addressText.value = addressController.text);
+    fingerprintidController.addListener(() => fingerprintidController.text = fingerprintidController.text);
     departmentController.addListener(() => departmentText.value = departmentController.text);
     RoleUserTextController.addListener(() => roleText.value = RoleUserTextController.text);
   }
@@ -120,6 +127,8 @@ class EmployeeProfileController extends GetxController {
       final updates = {
         'name': nameController.text.trim(),
         'email': emailController.text.trim(),
+        'address': addressController.text.trim(),
+        'fingerprint_id': fingerprintidController.text.trim(),
         'position': positionController.text.trim(),
         'phone': phoneController.text.trim(),
         'id_card': idCardController.text.trim(),
@@ -177,7 +186,6 @@ class EmployeeProfileController extends GetxController {
   void toggleEnable() => isEnabled.value = !isEnabled.value;
 
   void clearDataFields() {
-    // Clear all text controllers
     nameController.clear();
     emailController.clear();
     positionController.clear();
@@ -194,6 +202,7 @@ class EmployeeProfileController extends GetxController {
     phoneText.value = '';
     idCardText.value = '';
     departmentText.value = '';
+    addressText.value = '';
     roleText.value = '';
     profileImageUrl.value = '';
     Username.value = '';
@@ -208,8 +217,10 @@ class EmployeeProfileController extends GetxController {
     phoneController.text = data.phone ?? '';
     idCardController.text = data.id_card ?? '';
     departmentController.text = data.department ?? '';
-    fingerprintidController.text = data.fingerprint_id.toString() ?? '';
+    fingerprintidController.text = data.fingerprint_id.toString();
     RoleUserTextController.text = data.Role ?? '';
     profileImageUrl.value = data.photo_url ?? '';
   }
+
+  void refreshData() => updateUserInfo();
 }

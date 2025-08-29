@@ -136,7 +136,7 @@ class BindingMain extends Bindings{
     Get.put(EmployeeReportController4());
     Get.lazyPut<EmployeeReportController4>(() => EmployeeReportController4());
 
-    Get.put(EmployeeProfileController());
+    Get.put(EmployeeProfileController(), permanent: true);
     Get.lazyPut<EmployeeProfileController>(() => EmployeeProfileController());
   }
 

@@ -26,11 +26,11 @@ class UpdateController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    gitHubAPI = UpdateGitHubAPI(
-      githubToken: ''
-    );
-    CheckForUpdate();
-    Timer.periodic(Duration(seconds: 60), (_) => CheckForUpdate());
+    // gitHubAPI = UpdateGitHubAPI(
+    //   githubToken: ''
+    // );
+    // CheckForUpdate();
+    // Timer.periodic(Duration(seconds: 60), (_) => CheckForUpdate());
   }
 
   Future<void> CheckForUpdate() async {

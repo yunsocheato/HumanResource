@@ -1,16 +1,14 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Report/controller/employee_report_controller3.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
 import '../Controller/employee_profile_controller.dart';
 
-class EmployeeProfileScreen extends GetView<EmployeeReportController3> {
+class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
   const EmployeeProfileScreen({super.key});
 
   static const String routeName = '/employeeprofile';
@@ -34,15 +32,15 @@ class EmployeeProfileScreen extends GetView<EmployeeReportController3> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10),
-                    if (isMobile) _buildHeader(),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
+                    if (isMobile)
+                      _buildHeader(),
                     if (!isMobile)
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: _buildHeader(),
                       ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     _buildResponsiveContent(),
                   ],
                 ),
@@ -204,8 +202,7 @@ class EmployeeProfileScreen extends GetView<EmployeeReportController3> {
   Widget _buildResponsiveContent() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 600;
-        if (isMobile) {
+        if (constraints.maxWidth < 600) {
           return _buildMobileContent();
         } else {
           return _buildDesktopTabletContent();
@@ -223,662 +220,565 @@ class EmployeeProfileScreen extends GetView<EmployeeReportController3> {
         children: [
           if (isMobile)
           SizedBox(height: 10),
-          if (isMobile) SearchbarScreen(),
-          SizedBox(height: 10),
-          _buildUserInfoFields(),
+          _buildUserInfoFieldsMobile(),
+        ],
+      ),
+    );
+  }
+  Widget _buildDesktopTabletContent() {
+    return _buildUserInfoFieldsDesktop();
+  }
+
+  Widget _buildUserInfoFieldsMobile() {
+    final controller = Get.find<EmployeeProfileController>();
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Obx(() => CircleAvatar(
+                radius: 60,
+                backgroundImage:
+                controller.profileImageUrl.value.startsWith('https')
+                    ? NetworkImage(controller.profileImageUrl.value)
+                    : FileImage(File(controller.profileImageUrl.value))
+                as ImageProvider,
+              )),
+              IconButton(
+                onPressed: () => controller.pickerImageProfile(),
+                icon: const Icon(Boxicons.bx_camera, color: Colors.blue),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Obx(() => _buildTextField(
+            controller.nameController,
+            controller.nameText.value,
+            'Name',
+            controller.isEnabled.value,
+          )),
+          const SizedBox(height: 10),
+          Obx(() => _buildTextField(
+            controller.emailController,
+            controller.emailText.value,
+            'Email',
+            controller.isEnabled.value,
+          )),
+          const SizedBox(height: 10),
+          Obx(() => _buildTextField(
+            controller.phoneController,
+            controller.phoneText.value,
+            'Phone',
+            controller.isEnabled.value,
+          )),
+          const SizedBox(height: 10),
+          Obx(() => _buildTextField(
+            controller.positionController,
+            controller.positionText.value,
+            'Position',
+            controller.isEnabled.value,
+          )),
+          const SizedBox(height: 10),
+          Obx(() => _buildTextField(
+            controller.departmentController,
+            controller.departmentText.value,
+            'Department',
+            controller.isEnabled.value,
+          )),
+          const SizedBox(height: 20),
+          _buildButtons(controller),
         ],
       ),
     );
   }
 
-  Widget _buildDesktopTabletContent() {
-    return _buildUserInfoFields();
-  }
-  Widget _buildUserInfoFields() {
+  Widget _buildUserInfoFieldsDesktop() {
     final controller = Get.find<EmployeeProfileController>();
 
-    return Obx(() {
-      if (controller.isLoading.value) {
-        return Center(child: CircularProgressIndicator(color: Colors.blue.shade900));
-      }
-
-      return SingleChildScrollView(
+    return Scrollbar(
+      controller: controller.verticalScrollController,
+      thumbVisibility: true,
+      child: SingleChildScrollView(
+        controller: controller.verticalScrollController,
         scrollDirection: Axis.vertical,
-        padding: const EdgeInsets.all(16),
-        child: Container(
-          width: double.infinity,
-          height: Get.height * 1.0,
-          child: Card(
-            color: Colors.white,
-            elevation: 10,
-            shadowColor: Colors.grey.withOpacity(0.5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Scrollbar(
+              controller: controller.horizontalScrollController,
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: controller.horizontalScrollController,
+                scrollDirection: Axis.horizontal,
+                child: Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          Obx(()
-
-                          => CircleAvatar(
-                            radius: 70,
-                            backgroundImage: controller.profileImageUrl.value != null
-                                ? (controller.profileImageUrl.value!.startsWith('https')
-                                ? NetworkImage(controller.profileImageUrl.value!)
-                                : FileImage(File(controller.profileImageUrl.value!)) as ImageProvider)
-                                : const AssetImage('assets/images/profileuser.png'),
-                          )),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: IconButton(
-                              onPressed: () => controller.pickerImageProfile(),
-                              icon: const Icon(Boxicons.bx_camera, color: Colors.blue),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 30),
-
-                         Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Row(
-                              spacing: 30,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Obx(() => SizedBox(
-                                      width: 230,
-                                      child: TextFormField(
-                                        controller: controller.RoleUserTextController,
-                                        decoration: InputDecoration(
-                                          labelText: 'Role',
-                                          hintText: controller.roleText.value,
-                                          filled: true,
-                                          fillColor: Colors.grey.shade200,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.blue),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.grey),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.blue),
-                                          ),
-                                        ),
-                                        enabled: controller.isEnabled.value,
-                                      ),
-                                    )
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Obx(() => SizedBox(
-                                      width: 230,
-                                      child: TextFormField(
-                                        controller: controller.departmentController,
-                                        decoration: InputDecoration(
-                                          labelText: 'Department',
-                                          hintText: controller.departmentText.value,
-                                          filled: true,
-                                          fillColor: Colors.grey.shade200,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.blue),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.grey),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.blue),
-                                          ),
-                                        ),
-                                        enabled: controller.isEnabled.value,
-                                      ),
-                                    )
-                                    ),
-                                  ],
+                    SizedBox(
+                      width: Get.width * 0.5,
+                      height: 250,
+                      child: Card(
+                        elevation: 10,
+                        shadowColor: Colors.grey.withOpacity(0.5),
+                        color: Colors.white,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 250,
+                              decoration: BoxDecoration(
+                                color: Colors.orange.shade900,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  bottomLeft: Radius.circular(12),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Obx(() => SizedBox(
-                                      width: 230,
-                                      child: TextFormField(
-                                        controller: controller.RoleUserTextController,
-                                        decoration: InputDecoration(
-                                          labelText: 'Role',
-                                          hintText: controller.roleText.value,
-                                          filled: true,
-                                          fillColor: Colors.grey.shade200,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.blue),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.grey),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.blue),
-                                          ),
-                                        ),
-                                        enabled: controller.isEnabled.value,
-                                      ),
-                                    )
+                              ),
+                            ),
+                            const SizedBox(width: 15),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 140,
+                                  height: 23,
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange.shade900,
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      bottomRight: Radius.circular(8),
                                     ),
-                                    const SizedBox(height: 10),
-                                    Obx(() => SizedBox(
-                                      width: 230,
-                                      child: TextFormField(
-                                        controller: controller.departmentController,
-                                        decoration: InputDecoration(
-                                          labelText: 'Department',
-                                          hintText: controller.departmentText.value,
-                                          filled: true,
-                                          fillColor: Colors.grey.shade200,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.blue),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.grey),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                            borderSide: const BorderSide(color: Colors.blue),
-                                          ),
-                                        ),
-                                        enabled: controller.isEnabled.value,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'PROFILE',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 18,
+
                                       ),
-                                    )
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox( height: 16),
+                                Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    Obx(() =>
+                                        CircleAvatar(
+                                          radius: 70,
+                                          backgroundImage: controller.profileImageUrl
+                                              .value
+                                              .startsWith('https')
+                                              ? NetworkImage(
+                                              controller.profileImageUrl.value)
+                                              : FileImage(
+                                              File(controller.profileImageUrl.value))
+                                          as ImageProvider,
+                                        )),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: IconButton(
+                                        onPressed: () =>
+                                            controller.pickerImageProfile(),
+                                        icon: const Icon(
+                                            Boxicons.bx_camera, color: Colors.blue),
+                                        iconSize: 20,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                          ),
+
+                            const SizedBox(height: 15,width: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Obx(() =>
+                                      SizedBox(
+                                        width: 270,
+                                        child: _buildTextField(
+                                          controller.nameController,
+                                          controller.nameText.value,
+                                          'Name',
+                                          controller.isEnabled.value,
+                                        ),
+                                      )),
+                                  const SizedBox(height: 10),
+                                  Obx(() =>
+                                      SizedBox(
+                                        width: 270,
+                                        child: _buildTextField(
+                                          controller.positionController,
+                                          controller.positionText.value,
+                                          'Position',
+                                          controller.isEnabled.value,
+                                        ),
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 15,width: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Obx(() =>
+                                      SizedBox(
+                                        width: 270,
+                                        child: _buildTextField(
+                                          controller.departmentController,
+                                          controller.departmentText.value,
+                                          'Department',
+                                          controller.isEnabled.value,
+                                        ),
+                                      )),
+                                  const SizedBox(height: 10),
+                                  Obx(() =>
+                                      SizedBox(
+                                        width: 270,
+                                        child: _buildTextField(
+                                          controller.RoleUserTextController,
+                                          controller.roleText.value,
+                                          'Role',
+                                          controller.isEnabled.value,
+                                        ),
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                          ],
                         ),
                       ),
+                    ),
+
+                    const SizedBox(width: 30),
+                    SizedBox(
+                      width: Get.width * 0.4,
+                      height: 250,
+                      child: Card(
+                        elevation: 10,
+                        shadowColor: Colors.grey.withOpacity(0.5),
+                        color: Colors.white,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 250,
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade900,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  bottomLeft: Radius.circular(12),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 15),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 140,
+                                  height: 23,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.shade900,
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      bottomRight: Radius.circular(8),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'PROGRESS',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 18,
+
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                const SizedBox(height: 25),
-                Container(
-                  width: Get.width * 9,
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 10,
-                    shadowColor: Colors.grey.withOpacity(0.5),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
+              ),
+            ),
+            const SizedBox(height: 25),
+            Card(
+              elevation: 10,
+              shadowColor: Colors.grey.withOpacity(0.5),
+              color: Colors.white,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 6,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade900,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: const Text('Employee Information',
-                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 24)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Obx(() => SizedBox(
-                                    width: 280,
-                                    child: TextFormField(
-                                      controller: controller.nameController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Name',
-                                        hintText: controller.nameText.value,
-                                        filled: true,
-                                        fillColor: Colors.grey.shade200,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.blue),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.grey),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.blue),
-                                        ),
-                                      ),
-                                      enabled: controller.isEnabled.value,
-                                    ),
-                                  )
-                                  ),
+                          Container(
+                            width: 220,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade900,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Employee Information',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20,
                                 ),
-                                const SizedBox(width: 20),
-                                Expanded(
-                                  child: Obx(() => SizedBox(
-                                    width: 280,
-                                    child: TextFormField(
-                                      controller: controller.emailController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Email',
-                                        hintText: controller.emailText.value,
-                                        filled: true,
-                                        fillColor: Colors.grey.shade200,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.blue),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.grey),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.blue),
-                                        ),
-                                      ),
-                                      enabled: controller.isEnabled.value,
-                                    ),
-                                  )
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Obx(() =>SizedBox(
-                                    width: 280,
-                                    child: TextFormField(
-                                      controller: controller.phoneController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Phonenumber',
-                                        hintText: controller.phoneText.value,
-                                        filled: true,
-                                        fillColor: Colors.grey.shade200,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.blue),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.grey),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.blue),
-                                        ),
-                                      ),
-                                      enabled: controller.isEnabled.value,
-                                    ),
-                                  )
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                Expanded(
-                                  child: Obx(() => SizedBox(
-                                    width: 280,
-                                    child: TextFormField(
-                                      controller: controller.positionController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Position',
-                                        hintText: controller.positionText.value,
-                                        filled: true,
-                                        fillColor: Colors.grey.shade200,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.blue),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.grey),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: const BorderSide(color: Colors.blue),
-                                        ),
-                                      ),
-                                      enabled: controller.isEnabled.value,
-                                    ),
-                                  )
-                                  ),
-                                ),
-                              ],
-                            ),
+                          const SizedBox(height: 16),
+                          _buildTextFieldRow3(
+                            controller.addressController,
+                            controller.addressText.value,
+                            'Address',
+                            controller.emailController,
+                            controller.emailText.value,
+                            'Email',
+                            controller.phoneController,
+                            controller.phoneText.value,
+                            'Phone',
+                            controller.isEnabled.value,
                           ),
-
+                          const SizedBox(height: 12),
+                          _buildTextFieldRow3(
+                            controller.positionController,
+                            controller.positionText.value,
+                            'Position',
+                            controller.departmentController,
+                            controller.departmentText.value,
+                            'Department',
+                            controller.RoleUserTextController,
+                            controller.roleText.value,
+                            'Role',
+                            controller.isEnabled.value,
+                          ),
+                          const SizedBox(height: 12),
+                          _buildTextFieldRow3(
+                            controller.idCardController,
+                            controller.idCardText.value,
+                            'Staff ID',
+                            controller.nameController,
+                            controller.nameText.value,
+                            'Join Date',
+                            controller.positionController,
+                            controller.positionText.value,
+                            'Salary',
+                            controller.isEnabled.value,
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: Get.width * 7,
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 10,
-                    shadowColor: Colors.grey.withOpacity(0.5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: const Text('Employee History',
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 24)),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Obx(() => SizedBox(
-                                  width: 280,
-                                  child: TextFormField(
-                                    controller: controller.nameController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Name',
-                                      hintText: controller.nameText.value,
-                                      filled: true,
-                                      fillColor: Colors.grey.shade200,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                    ),
-                                    enabled: controller.isEnabled.value,
-                                  ),
-                                )
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Obx(() => SizedBox(
-                                  width: 280,
-                                  child: TextFormField(
-                                    controller: controller.emailController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Email',
-                                      hintText: controller.emailText.value,
-                                      filled: true,
-                                      fillColor: Colors.grey.shade200,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                    ),
-                                    enabled: controller.isEnabled.value,
-                                  ),
-                                )
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Obx(() =>SizedBox(
-                                  width: 280,
-                                  child: TextFormField(
-                                    controller: controller.phoneController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Phonenumber',
-                                      hintText: controller.phoneText.value,
-                                      filled: true,
-                                      fillColor: Colors.grey.shade200,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                    ),
-                                    enabled: controller.isEnabled.value,
-                                  ),
-                                )
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Obx(() => SizedBox(
-                                  width: 280,
-                                  child: TextFormField(
-                                    controller: controller.positionController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Position',
-                                      hintText: controller.positionText.value,
-                                      filled: true,
-                                      fillColor: Colors.grey.shade200,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                    ),
-                                    enabled: controller.isEnabled.value,
-                                  ),
-                                )
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Obx(() => SizedBox(
-                                  width: 280,
-                                  child: TextFormField(
-                                    controller: controller.nameController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Name',
-                                      hintText: controller.nameText.value,
-                                      filled: true,
-                                      fillColor: Colors.grey.shade200,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                    ),
-                                    enabled: controller.isEnabled.value,
-                                  ),
-                                )
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Obx(() => SizedBox(
-                                  width: 280,
-                                  child: TextFormField(
-                                    controller: controller.emailController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Email',
-                                      hintText: controller.emailText.value,
-                                      filled: true,
-                                      fillColor: Colors.grey.shade200,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                    ),
-                                    enabled: controller.isEnabled.value,
-                                  ),
-                                )
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Obx(() => SizedBox(
-                                  width: 280,
-                                  child: TextFormField(
-                                    controller: controller.nameController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Name',
-                                      hintText: controller.nameText.value,
-                                      filled: true,
-                                      fillColor: Colors.grey.shade200,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                    ),
-                                    enabled: controller.isEnabled.value,
-                                  ),
-                                )
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Obx(() => SizedBox(
-                                  width: 280,
-                                  child: TextFormField(
-                                    controller: controller.emailController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Email',
-                                      hintText: controller.emailText.value,
-                                      filled: true,
-                                      fillColor: Colors.grey.shade200,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(color: Colors.blue),
-                                      ),
-                                    ),
-                                    enabled: controller.isEnabled.value,
-                                  ),
-                                )
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
+            Card(
+              elevation: 10,
+              shadowColor: Colors.grey.withOpacity(0.5),
+              color: Colors.white,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 6,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade900,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
+                      ),
                     ),
                   ),
-                ),
-
-                SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                          onPressed: controller.toggleEnable,
-                          child: const Text('Enable Editing', style: TextStyle(color: Colors.white))),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue.shade900),
-                          onPressed: controller.updateUserInfo,
-                          child: const Text('Save Changes', style: TextStyle(color: Colors.white))),
-                      const SizedBox(width: 10),
-                      OutlinedButton(
-                          style: OutlinedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                          onPressed: () => Get.back(),
-                          child: const Text('Cancel', style: TextStyle(color: Colors.white))),
-                    ],
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 220,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade900,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Employee History',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextFieldRow3(
+                            controller.addressController,
+                            controller.addressText.value,
+                            'Address',
+                            controller.emailController,
+                            controller.emailText.value,
+                            'Email',
+                            controller.phoneController,
+                            controller.phoneText.value,
+                            'Phone',
+                            controller.isEnabled.value,
+                          ),
+                          const SizedBox(height: 12),
+                          _buildTextFieldRow3(
+                            controller.positionController,
+                            controller.positionText.value,
+                            'Position',
+                            controller.departmentController,
+                            controller.departmentText.value,
+                            'Department',
+                            controller.RoleUserTextController,
+                            controller.roleText.value,
+                            'Role',
+                            controller.isEnabled.value,
+                          ),
+                          const SizedBox(height: 12),
+                          _buildTextFieldRow3(
+                            controller.idCardController,
+                            controller.idCardText.value,
+                            'Staff ID',
+                            controller.nameController,
+                            controller.nameText.value,
+                            'Join Date',
+                            controller.positionController,
+                            controller.positionText.value,
+                            'Salary',
+                            controller.isEnabled.value,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+            const SizedBox(height: 30),
+            _buildButtons(controller),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
+  Widget _buildTextField(
+      TextEditingController ctrl, String text, String label, bool isEnabled) {
+    if (ctrl.text != text) {
+      ctrl.text = text;
+    }
+    return TextField(
+      controller: ctrl,
+      enabled: isEnabled,
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldRow3(
+      TextEditingController ctrl1,
+      String text1,
+      String label1,
+      TextEditingController ctrl2,
+      String text2,
+      String label2,
+      TextEditingController ctrl3,
+      String text3,
+      String label3,
+      bool isEnabled,
+      ) {
+    if (ctrl1.text != text1) ctrl1.text = text1;
+    if (ctrl2.text != text2) ctrl2.text = text2;
+    if (ctrl3.text != text3) ctrl3.text = text3;
+
+    return Row(
+      children: [
+        Expanded(child: _buildTextField(ctrl1, text1, label1, isEnabled)),
+        const SizedBox(width: 12),
+        Expanded(child: _buildTextField(ctrl2, text2, label2, isEnabled)),
+        const SizedBox(width: 12),
+        Expanded(child: _buildTextField(ctrl3, text3, label3, isEnabled)),
+      ],
+    );
+  }
+
+  Widget _buildButtons(EmployeeProfileController controller) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+          onPressed: (){
+            controller.toggleEnable();
+          },
+          child: const Text('Enable Editing',
+              style: TextStyle(color: Colors.white)),
+        ),
+        const SizedBox(width: 10),
+        ElevatedButton(
+          style:
+          ElevatedButton.styleFrom(backgroundColor: Colors.blue.shade900),
+          onPressed: controller.updateUserInfo,
+          child:
+          const Text('Save Changes', style: TextStyle(color: Colors.white)),
+        ),
+        const SizedBox(width: 10),
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(backgroundColor: Colors.blueGrey),
+          onPressed: () => Get.back(),
+          child: const Text('Cancel', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    );
+  }
 
 }
