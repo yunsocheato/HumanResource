@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
-import '../../Searchbar/view/search_bar_screen.dart';
 import '../Controller/employee_profile_controller.dart';
 
 class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
@@ -307,213 +306,211 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Scrollbar(
-              controller: controller.horizontalScrollController,
-              thumbVisibility: true,
-              child: SingleChildScrollView(
+            Container(
+              width: Get.width * 0.9,
+              height: 290,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Scrollbar(
                 controller: controller.horizontalScrollController,
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: Get.width * 0.5,
-                      height: 250,
-                      child: Card(
-                        elevation: 10,
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        color: Colors.white,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 6,
-                              height: 250,
-                              decoration: BoxDecoration(
-                                color: Colors.orange.shade900,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Column(
-                              children: [
-                                Container(
-                                  width: 140,
-                                  height: 23,
-                                  decoration: BoxDecoration(
-                                    color: Colors.orange.shade900,
-                                    borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(8),
-                                      bottomRight: Radius.circular(8),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'PROFILE',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18,
-
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox( height: 16),
-                                Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    Obx(() =>
-                                        CircleAvatar(
-                                          radius: 70,
-                                          backgroundImage: controller.profileImageUrl
-                                              .value
-                                              .startsWith('https')
-                                              ? NetworkImage(
-                                              controller.profileImageUrl.value)
-                                              : FileImage(
-                                              File(controller.profileImageUrl.value))
-                                          as ImageProvider,
-                                        )),
-                                    Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: IconButton(
-                                        onPressed: () =>
-                                            controller.pickerImageProfile(),
-                                        icon: const Icon(
-                                            Boxicons.bx_camera, color: Colors.blue),
-                                        iconSize: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 15,width: 20),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  controller: controller.horizontalScrollController,
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: Get.width * 0.5,
+                        height: 250,
+                        child: Card(
+                          elevation: 10,
+                          shadowColor: Colors.grey.withOpacity(0.5),
+                          color: Colors.white,
+                          child: Scrollbar(
+                            controller: controller.profileHCtrl,
+                            thumbVisibility: true,
+                            child: SingleChildScrollView(
+                              controller: controller.profileHCtrl,
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
                                 children: [
-                                  Obx(() =>
-                                      SizedBox(
-                                        width: 270,
-                                        child: _buildTextField(
-                                          controller.nameController,
-                                          controller.nameText.value,
-                                          'Name',
-                                          controller.isEnabled.value,
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 140,
+                                        height: 23,
+                                        decoration: BoxDecoration(
+                                          color: Colors.orange.shade900,
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                          ),
                                         ),
-                                      )),
-                                  const SizedBox(height: 10),
-                                  Obx(() =>
-                                      SizedBox(
-                                        width: 270,
-                                        child: _buildTextField(
-                                          controller.positionController,
-                                          controller.positionText.value,
-                                          'Position',
-                                          controller.isEnabled.value,
+                                        child: Center(
+                                          child: Text(
+                                            'PROFILE',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 18,
+
+                                            ),
+                                          ),
                                         ),
-                                      )
+                                      ),
+                                      const SizedBox( width: 15,height: 16),
+                                      Stack(
+                                        alignment: Alignment.bottomRight,
+                                        children: [
+                                          Obx(() =>
+                                              CircleAvatar(
+                                                radius: 60,
+                                                backgroundImage: controller.profileImageUrl
+                                                    .value
+                                                    .startsWith('https')
+                                                    ? NetworkImage(
+                                                    controller.profileImageUrl.value)
+                                                    : FileImage(
+                                                    File(controller.profileImageUrl.value))
+                                                as ImageProvider,
+                                              )),
+                                          Positioned(
+                                            bottom: 0,
+                                            right: 0,
+                                            child: IconButton(
+                                              onPressed: () =>
+                                                  controller.pickerImageProfile(),
+                                              icon: const Icon(
+                                                  Boxicons.bx_camera, color: Colors.blue),
+                                              iconSize: 20,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
+
+                                  const SizedBox(height: 15,width: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Obx(() =>
+                                            SizedBox(
+                                              width: 270,
+                                              child: _buildTextField(
+                                                controller.nameController,
+                                                controller.nameText.value,
+                                                'Name',
+                                                controller.isEnabled.value,
+                                              ),
+                                            )),
+                                        const SizedBox(height: 10),
+                                        Obx(() =>
+                                            SizedBox(
+                                              width: 270,
+                                              child: _buildTextField(
+                                                controller.positionController,
+                                                controller.positionText.value,
+                                                'Position',
+                                                controller.isEnabled.value,
+                                              ),
+                                            )
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15,width: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Obx(() =>
+                                            SizedBox(
+                                              width: 270,
+                                              child: _buildTextField(
+                                                controller.departmentController,
+                                                controller.departmentText.value,
+                                                'Department',
+                                                controller.isEnabled.value,
+                                              ),
+                                            )),
+                                        const SizedBox(height: 10),
+                                        Obx(() =>
+                                            SizedBox(
+                                              width: 270,
+                                              child: _buildTextField(
+                                                controller.RoleUserTextController,
+                                                controller.roleText.value,
+                                                'Role',
+                                                controller.isEnabled.value,
+                                              ),
+                                            )
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 20),
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 15,width: 20),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Obx(() =>
-                                      SizedBox(
-                                        width: 270,
-                                        child: _buildTextField(
-                                          controller.departmentController,
-                                          controller.departmentText.value,
-                                          'Department',
-                                          controller.isEnabled.value,
-                                        ),
-                                      )),
-                                  const SizedBox(height: 10),
-                                  Obx(() =>
-                                      SizedBox(
-                                        width: 270,
-                                        child: _buildTextField(
-                                          controller.RoleUserTextController,
-                                          controller.roleText.value,
-                                          'Role',
-                                          controller.isEnabled.value,
-                                        ),
-                                      )
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
 
-                    const SizedBox(width: 30),
-                    SizedBox(
-                      width: Get.width * 0.4,
-                      height: 250,
-                      child: Card(
-                        elevation: 10,
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        color: Colors.white,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 6,
-                              height: 250,
-                              decoration: BoxDecoration(
-                                color: Colors.green.shade900,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Column(
-                              children: [
-                                Container(
-                                  width: 140,
-                                  height: 23,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.shade900,
-                                    borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(8),
-                                      bottomRight: Radius.circular(8),
+                      const SizedBox(width: 15),
+                      SizedBox(
+                        width: Get.width * 0.4,
+                        height: 250,
+                        child: Card(
+                          elevation: 10,
+                          shadowColor: Colors.grey.withOpacity(0.5),
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    width: 140,
+                                    height: 23,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.shade900,
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                      ),
                                     ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'PROGRESS',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18,
+                                    child: Center(
+                                      child: Text(
+                                        'PROGRESS',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 18,
 
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 16),
-                              ],
-                            )
-                          ],
+                                  const SizedBox(height: 16),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

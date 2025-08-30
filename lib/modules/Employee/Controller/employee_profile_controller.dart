@@ -34,6 +34,8 @@ class EmployeeProfileController extends GetxController {
 
   final ScrollController horizontalScrollController = ScrollController();
   final ScrollController verticalScrollController = ScrollController();
+  final profileHCtrl = ScrollController();
+
   var showlogincard1 = true.obs;
 
   var nameText = ''.obs;
@@ -64,7 +66,11 @@ class EmployeeProfileController extends GetxController {
     departmentController.addListener(() => departmentText.value = departmentController.text);
     RoleUserTextController.addListener(() => roleText.value = RoleUserTextController.text);
   }
-
+  @override
+  void onClose() {
+    profileHCtrl.dispose();
+    super.onClose();
+  }
   EmployeeProfileModel? get userProfile => _userprofiles.value;
 
   Future<void> loadUserProfile() async {
