@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/Update/view/update_screen.dart';
 import 'package:hrms/modules/Drawer/widgets/Method_drawer_policy_button.dart';
-
 import '../../../Core/user_profile_controller.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
 import '../../Loginscreen/services/logout_services.dart';
 import '../../Schedule/views/schedule_screen.dart';
 import '../controllers/drawer_controller.dart';
-import '../widgets/drawer_attendance_policy.dart';
 import '../widgets/drawer_department_policy.dart';
 import '../widgets/drawer_employee_policy.dart';
 import '../widgets/drawer_leave_request.dart';
@@ -50,14 +47,14 @@ class Drawerscreen extends GetView<AppDrawerController> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               SizedBox(width: 20),
-              UpdateButtonScreen()
+              // UpdateButtonScreen()
             ],
           ),
           backgroundColor: Color(0xFF242C40),
           actions: [
             if (!isMobile)
               Obx(() {
-                final controller = Get.find<userprofilecontroller>();
+                final controller = Get.find<UserProfileController>();
                 final profile = controller.userprofiles.value;
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,7 +85,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
             SizedBox(width: 15),
             if (!isMobile)
             Obx(() {
-              final controller = Get.find<userprofilecontroller>();
+              final controller = Get.find<UserProfileController>();
               final image = controller.userprofiles.value?.image;
 
               if (image == null || image.isEmpty) {
@@ -230,7 +227,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                     child: Row(
                       children: [
                         Obx(() {
-                          final controller = Get.find<userprofilecontroller>();
+                          final controller = Get.find<UserProfileController>();
                           final image = controller.userprofiles.value?.image;
 
                           if (image == null || image.isEmpty) {
@@ -251,7 +248,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                         SizedBox(width: 12),
                         Expanded(
                           child: Obx(() {
-                            final controller = Get.find<userprofilecontroller>();
+                            final controller = Get.find<UserProfileController>();
                             final profile = controller.userprofiles.value;
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,

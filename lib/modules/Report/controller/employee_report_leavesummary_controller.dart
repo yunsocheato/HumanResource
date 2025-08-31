@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
 import '../../Network/Method/method_internet_connection.dart';
 import '../API/employee_report_sql3.dart';
 import '../Model/employee_leave_summary_model.dart';
@@ -112,7 +109,7 @@ class leavesummarycontroller extends GetxController{
   }
 
   Future<void> checkNetworkAndData() async {
-    await NointernetConnection.fetchData();
+    await NointernetConnection.checkServer();
 
     if (NointernetConnection.networkError.error.value.isNotEmpty) {
       Imageasset.value = 'assets/images/unavailabledata.png';

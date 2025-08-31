@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
@@ -6,6 +6,7 @@ import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../Controller/employee_profile_controller.dart';
+import '../widgets/employee_profile_circleavatar.dart';
 
 class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
   const EmployeeProfileScreen({super.key});
@@ -238,14 +239,7 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
           Stack(
             alignment: Alignment.bottomRight,
             children: [
-              Obx(() => CircleAvatar(
-                radius: 60,
-                backgroundImage:
-                controller.profileImageUrl.value.startsWith('https')
-                    ? NetworkImage(controller.profileImageUrl.value)
-                    : FileImage(File(controller.profileImageUrl.value))
-                as ImageProvider,
-              )),
+              Obx(() => buildProfileAvatar(controller.profileImageUrl.value)),
               IconButton(
                 onPressed: () => controller.pickerImageProfile(),
                 icon: const Icon(Boxicons.bx_camera, color: Colors.blue),
@@ -357,7 +351,7 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'PROFILE',
+                                            'PROFILES',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
@@ -371,18 +365,8 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
                                       Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
-                                          Obx(() =>
-                                              CircleAvatar(
-                                                radius: 60,
-                                                backgroundImage: controller.profileImageUrl
-                                                    .value
-                                                    .startsWith('https')
-                                                    ? NetworkImage(
-                                                    controller.profileImageUrl.value)
-                                                    : FileImage(
-                                                    File(controller.profileImageUrl.value))
-                                                as ImageProvider,
-                                              )),
+                                          Obx(() => buildProfileAvatar(controller.profileImageUrl.value)
+                                          ),
                                           Positioned(
                                             bottom: 0,
                                             right: 0,
@@ -749,7 +733,8 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
   }
 
   Widget _buildButtons(EmployeeProfileController controller) {
-    return Row(
+    final isMobile = Get.width < 600;
+    final Button = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton(
@@ -776,6 +761,14 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
         ),
       ],
     );
+    if(!isMobile){
+      return Button;
+    }else {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Button,
+      );
+    }
   }
 
 }

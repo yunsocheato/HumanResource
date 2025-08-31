@@ -1,17 +1,17 @@
-import 'dart:io';
+import 'package:cross_file/cross_file.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/employee_profile_model.dart';
 
 class EmployeeProfilesql {
-  final String? userEmail = Supabase.instance.client.auth.currentUser?.email;
-
-  final profile = Supabase.instance.client;
+  String? get userEmail => Supabase.instance.client.auth.currentUser?.email;
+    final profile = Supabase.instance.client;
 
   Future<List<String>> fetchUsernameSuggestionsEmployeeProfile(String query) async {
     final result = await Supabase.instance.client
         .from('signupuser')
         .select('name')
         .ilike('name', query.isEmpty ? '%' : '%$query%');
+
     return List<String>.from(result.map((e) => e['name']));
   }
 
@@ -24,25 +24,20 @@ class EmployeeProfilesql {
 
     if (results.isNotEmpty) {
       return EmployeeProfileModel.fromJson(results.first);
-    } else {
-      return null;
     }
+    return null;
   }
 
-  Future<EmployeeProfileModel?> getEmployeeProfile(String email) async {
-    final response =
-        await profile
-            .from('signupuser')
-            .select()
-            .eq('email', email)
-            .maybeSingle();
-    if (response != null) {
-      return EmployeeProfileModel.fromJson(response);
-    } else {
+  Future<EmployeeProfileModel?> getEmployeeProfile() async {
+    final email = userEmail;
+    if (email == null) {
+      print("ERROR: getEmployeeProfile called but currentUser is null!");
       return null;
     }
-  }
 
+    final response = await profile.from('signupuser').select().eq('email', email).maybeSingle();
+    return response != null ? EmployeeProfileModel.fromJson(response) : null;
+  }
   Future<String?> loadProfileImage(String email) async {
     final response = await Supabase.instance.client
         .from('signupuser')
@@ -50,24 +45,31 @@ class EmployeeProfilesql {
         .eq('email', email)
         .maybeSingle();
 
-    if (response != null) {
-      return response['photo_url'] as String?;
+    return response?['photo_url'] as String?;
+  }
+
+  Future<void> updateUserInfo(String userId, Map<String, dynamic> updates) async {
+    updates.removeWhere((key, value) => value == null || (value is String && value.isEmpty));
+
+    try {
+      await profile.from('signupuser').update(updates).eq('user_id', userId);
+    } catch (e, st) {
+      print("ERROR in updateUserInfo: $e\n$st");
+      rethrow;
     }
-    return null;
   }
 
-  Future<void> UpdateUserInfo(String userId, Map<String, dynamic> updates) async {
-    await profile.from('signupuser').update(updates).eq('user_id', userId);
-  }
-
-  Future<String> uploadImage(File file) async {
+  Future<String> uploadImage(XFile file) async {
     final fileName = DateTime.now().millisecondsSinceEpoch.toString();
     final path = 'uploads/$fileName.jpg';
 
-    await profile.storage.from('photo').upload(
+    final Bytes = await file.readAsBytes();
+
+
+    await profile.storage.from('photo').updateBinary(
       path,
-      file,
-      fileOptions: const FileOptions(upsert: true),
+      Bytes,
+      fileOptions: FileOptions(upsert: true),
     );
 
     return profile.storage.from('photo').getPublicUrl(path);

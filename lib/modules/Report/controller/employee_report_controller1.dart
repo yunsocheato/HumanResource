@@ -56,7 +56,7 @@ class EmployeeReportController extends GetxController {
   }
 
   Future<void> checkNetworkAndData() async {
-    await NointernetConnection.fetchData();
+    await NointernetConnection.checkServer();
 
     if (NointernetConnection.networkError.error.value.isNotEmpty) {
       Imageasset.value = 'assets/images/unavailabledata.png';

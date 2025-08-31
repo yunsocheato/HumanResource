@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Employee/views/employee_profile_screen.dart';
-
 import '../Controller/employee_profile_controller.dart';
 
 class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
