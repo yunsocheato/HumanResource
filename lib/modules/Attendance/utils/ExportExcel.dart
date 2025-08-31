@@ -1,13 +1,12 @@
-import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:excel/excel.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:path/path.dart';
 import '../API/attendance_stream_api_sql.dart';
 
 Future<Center> exportToExcel({required RxList<Map<String, dynamic>> attendaData}) async {
-  final data = await getAttendanceData(limit: 500, page: 0, offset: 0 );
+  final data = await getAttendanceData(limit: 500, page: 0, offset: 0);
 
   final excel = Excel.createExcel();
   final sheet = excel['Attendance'];
@@ -45,17 +44,18 @@ Future<Center> exportToExcel({required RxList<Map<String, dynamic>> attendaData}
     sheet.appendRow(rowCells);
   }
 
-  String fileName = 'Attendance${DateTime.now().toIso8601String()}.xlsx';
+  String fileName = 'Attendance${DateTime.now().toIso8601String()}';
   List<int>? fileBytes = excel.save();
   if (fileBytes != null) {
-    File(join(Directory.current.path, fileName))
-      ..createSync(recursive: true)
-      ..writeAsBytesSync(fileBytes);
+    await FileSaver.instance.saveFile(
+      name: fileName,
+      bytes: Uint8List.fromList(fileBytes),
+      ext: "xlsx",
+      mimeType: MimeType.microsoftExcel,
+    );
 
     return Center(child: Text('Excel exported: $fileName'));
   } else {
-    return Center(child: Text('cannot exported: $fileName'));
+    return Center(child: Text('Failed to generate Excel'));
   }
 }
-
-

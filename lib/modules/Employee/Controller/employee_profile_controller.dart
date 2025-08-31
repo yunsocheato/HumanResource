@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../API/employee_profile_sql.dart';
 import '../models/employee_profile_model.dart';
 
@@ -20,8 +18,7 @@ class EmployeeProfileController extends GetxController {
   RxBool isEnabled = false.obs;
 
   RxString profileImageUrl = ''.obs;
-  File? imageFile;
-
+  XFile? imageFile;
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final positionController = TextEditingController();
@@ -46,16 +43,22 @@ class EmployeeProfileController extends GetxController {
   var idCardText = ''.obs;
   var departmentText = ''.obs;
   var roleText = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
     loadUserProfile();
-    debounce(Username, (value) {
-      fetchSuggestionsProfile(value);
-    }, time: const Duration(milliseconds: 300));
-    Future.delayed(Duration(milliseconds: 500), () {
+
+    debounce(
+      Username,
+          (value) => fetchSuggestionsProfile(value),
+      time: const Duration(milliseconds: 300),
+    );
+
+    Future.delayed(const Duration(milliseconds: 500), () {
       showlogincard1.value = true;
     });
+
     nameController.addListener(() => nameText.value = nameController.text);
     emailController.addListener(() => emailText.value = emailController.text);
     positionController.addListener(() => positionText.value = positionController.text);
@@ -66,20 +69,29 @@ class EmployeeProfileController extends GetxController {
     departmentController.addListener(() => departmentText.value = departmentController.text);
     RoleUserTextController.addListener(() => roleText.value = RoleUserTextController.text);
   }
+
   @override
   void onClose() {
     profileHCtrl.dispose();
+    horizontalScrollController.dispose();
+    verticalScrollController.dispose();
     super.onClose();
   }
+
   EmployeeProfileModel? get userProfile => _userprofiles.value;
 
   Future<void> loadUserProfile() async {
     try {
       isLoading.value = true;
-      final email = _employeeProfilesql.userEmail;
-      if (email == null) return;
 
-      final profile = await _employeeProfilesql.getEmployeeProfile(email);
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null || user.email == null) {
+        Get.snackbar('Error', 'User not logged in!');
+        return;
+      }
+
+      final profile = await _employeeProfilesql.getEmployeeProfile();
+
       _userprofiles.value = profile;
 
       if (profile != null) {
@@ -92,7 +104,7 @@ class EmployeeProfileController extends GetxController {
         departmentController.text = profile.department ?? '';
         fingerprintidController.text = profile.fingerprint_id?.toString() ?? '';
         RoleUserTextController.text = profile.Role ?? '';
-        profileImageUrl.value = profile.photo_url!;
+        profileImageUrl.value = profile.photo_url ?? '';
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to load profile: $e');
@@ -100,6 +112,7 @@ class EmployeeProfileController extends GetxController {
       isLoading.value = false;
     }
   }
+
   Future<void> fetchSuggestionsProfile(String query) async {
     suggestionList.value =
     await _employeeProfilesql.fetchUsernameSuggestionsEmployeeProfile(query);
@@ -107,18 +120,17 @@ class EmployeeProfileController extends GetxController {
 
   Future<void> fetchbyusersemployeeProfile(String name) async {
     isLoading.value = true;
-
     clearDataFields();
 
     try {
-      var data = await _employeeProfilesql.fetchUserByEmployeeProfile(name);
+      final data = await _employeeProfilesql.fetchUserByEmployeeProfile(name);
       if (data != null) {
         mapDataFields(data);
       } else {
         Get.snackbar('Error', 'User Not Found');
       }
     } catch (e) {
-      Get.snackbar("Error", "Failed to load user: $e");
+      Get.snackbar('Error', 'Failed to load user: $e');
     } finally {
       isLoading.value = false;
     }
@@ -127,23 +139,34 @@ class EmployeeProfileController extends GetxController {
   Future<void> updateUserInfo() async {
     try {
       isLoading.value = true;
+
       final user = Supabase.instance.client.auth.currentUser;
-      if (user == null) return;
+      if (user == null) {
+        Get.snackbar('Error', 'User not logged in!');
+        return;
+      }
 
       final updates = {
         'name': nameController.text.trim(),
         'email': emailController.text.trim(),
         'address': addressController.text.trim(),
-        'fingerprint_id': fingerprintidController.text.trim(),
+        'fingerprint_id': fingerprintidController.text.trim().isEmpty
+            ? null
+            : fingerprintidController.text.trim(),
         'position': positionController.text.trim(),
         'phone': phoneController.text.trim(),
         'id_card': idCardController.text.trim(),
         'department': departmentController.text.trim(),
         'role': RoleUserTextController.text.trim(),
-        'photo_url': profileImageUrl.value,
+        'photo_url': profileImageUrl.value.isEmpty ? null : profileImageUrl.value,
       };
 
-      await _employeeProfilesql.UpdateUserInfo(user.id, updates);
+      updates.removeWhere((key, value) => value == null || (value.isEmpty));
+
+      print("DEBUG: update payload -> $updates");
+
+      await _employeeProfilesql.updateUserInfo(user.id, updates);
+
       Get.snackbar('Success', 'Profile updated!');
       isEnabled.value = false;
     } catch (e) {
@@ -152,39 +175,52 @@ class EmployeeProfileController extends GetxController {
       isLoading.value = false;
     }
   }
+
   Future<void> pickerImageProfile() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-
+    final pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery);
     if (pickedFile != null) {
-      imageFile = File(pickedFile.path);
-
+      imageFile = XFile(pickedFile.path);
       Get.dialog(
-        AlertDialog(
-          title: const Text('Upload Image'),
-          content: Image.file(imageFile!),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                try {
-                  final imageUrl = await _employeeProfilesql.uploadImage(imageFile!);
-                  profileImageUrl.value = imageUrl;
-                  imageFile = null;
-                  Get.back();
-                  Get.snackbar('Success', 'Image uploaded successfully!');
-                } catch (e) {
-                  Get.snackbar('Error', 'Failed to upload image: $e');
-                }
-              },
-              child: const Text('Upload'),
-            ),
-            TextButton(
-              onPressed: () => Get.back(),
-              child: const Text('Cancel'),
-            ),
-          ],
-        ),
+          AlertDialog(
+              title: const Text('Upload Image'),
+              content: FutureBuilder(
+                  future: imageFile!.readAsBytes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (snapshot.hasData || snapshot.data == null) {
+                      return Image.asset('assets/images/profileuser.png');
+                    }
+                    return Image.memory(snapshot.data!);
+                  }
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    try{
+                      final imageUrl = await _employeeProfilesql.uploadImage(imageFile!);
+                      profileImageUrl.value = imageUrl;
+                      imageFile = null;
+                      Get.back();
+                    }catch(e){
+                      Get.snackbar('Error', 'Failed to upload image: $e');
+                    }
+                  },
+                  child: const Text('Upload'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    imageFile = null;
+                    Get.back();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ]
+          )
       );
-    } else {
+    }else {
       Get.snackbar('Error', 'No image selected');
     }
   }
@@ -223,7 +259,7 @@ class EmployeeProfileController extends GetxController {
     phoneController.text = data.phone ?? '';
     idCardController.text = data.id_card ?? '';
     departmentController.text = data.department ?? '';
-    fingerprintidController.text = data.fingerprint_id.toString();
+    fingerprintidController.text = data.fingerprint_id?.toString() ?? '';
     RoleUserTextController.text = data.Role ?? '';
     profileImageUrl.value = data.photo_url ?? '';
   }

@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import '../../Dashboard/views/dashboard_screen.dart';
 import '../../Loadingui/ErrorScreen/Controller/ErrorMessage.dart';
 import '../../Loadingui/loading_controller.dart';
@@ -33,7 +32,7 @@ class LoginCardController extends GetxController {
     loadingUi.beginLoading();
 
     try {
-      await checkingEthernet();
+      await checkServer();
       final result = await loginService.loginWithEmail(
         email: email,
         password: password,
@@ -56,25 +55,20 @@ class LoginCardController extends GetxController {
     }
   }
 
-  Future<void> checkingEthernet() async {
+  Future<bool> checkServer() async {
     try {
-      await CheckingEnternetError.fetchData();
-      error.value = '';
-    } on SocketException catch (_) {
-      Get.snackbar('Error', 'No internet connection');
-      error.value = 'No internet connection';
-      Error.buildErrorMessages();
-    } catch (e) {
-      Get.snackbar('Error', 'Unexpected error: $e');
-      error.value = 'Unexpected error: $e';
-      Error.buildErrorMessages();
+      final response = await http.get(Uri.parse('http://172.20.20.98')).timeout(Duration(seconds: 5));
+      return response.statusCode == 200;
+    } catch (_) {
+      return false;
     }
   }
-    @override
+
+  @override
   void onInit() {
     super.onInit();
     Future.delayed(const Duration(milliseconds: 500), () {
-      checkingEthernet();
+      checkServer();
       showLoginCard.value = true;
     });
     }

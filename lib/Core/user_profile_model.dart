@@ -3,7 +3,7 @@ class UserProfileModel {
   final String name ;
   final String role ;
   final String Position ;
-  late String ? image ;
+  late String  image ;
 
   UserProfileModel({
     required this.name,
@@ -16,7 +16,7 @@ class UserProfileModel {
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
       email: json['email']?.toString() ?? 'No Email',
-      image: json['photo_url'],
+      image: json['photo_url'] ?? 'No Image',
       name: json['name'] ?? 'No Name',
       role: json['role'] ?? 'No Role',
       Position: json['position'] ?? 'No Position',
