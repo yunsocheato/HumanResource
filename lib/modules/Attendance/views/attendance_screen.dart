@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/controllers/drawer_controller.dart';
@@ -6,52 +7,32 @@ import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
+import '../controllers/attendance_widget_controller.dart';
 import '../controllers/attendane_screen_controller.dart';
 import 'attendance_chart.dart';
 import 'attendance_chart_pie.dart';
 import 'attendance_filter_view.dart';
 import 'attendance_record.dart';
 
-class AttendanceScreen extends StatefulWidget {
-  static const String routeName = '/AttendanceScreen';
-
+class AttendanceScreen extends GetView<AttendanceScreenController> {
   const AttendanceScreen({super.key});
-
-  @override
-  State<AttendanceScreen> createState() => _AttendanceScreenState();
-}
-
-class _AttendanceScreenState extends State<AttendanceScreen>
-    with TickerProviderStateMixin {
-  final ScrollController _horizontalScrollController = ScrollController();
-  final ScrollController _verticalScrollController = ScrollController();
-  final AppDrawerController controller = Get.find<AppDrawerController>();
-  final AttendanceScreenController controllers =
-  Get.put(AttendanceScreenController());
-
-
-  @override
-  void dispose() {
-    _horizontalScrollController.dispose();
-    _verticalScrollController.dispose();
-    super.dispose();
-  }
+  static const String routeName = '/AttendanceScreen';
 
   @override
   Widget build(BuildContext context) {
     final isMobile = Get.width < 600;
     final loading = Get.find<LoadingUiController>();
-
+    final controllers = Get.find<AttendanceScreenController>();
     return Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
           children: [
             Scrollbar(
-              controller: _verticalScrollController,
+              controller: controllers.verticalScrollController,
               thumbVisibility: true,
               child: SingleChildScrollView(
-                controller: _verticalScrollController,
+                controller: controllers.verticalScrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 child: Column(
@@ -121,6 +102,8 @@ class _AttendanceScreenState extends State<AttendanceScreen>
   }
 
   Widget _CardinfoColumn() {
+    final ctx = Get.context ?? Get.overlayContext;
+    final controllers = Get.find<AttendanceScreenController>();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -136,17 +119,17 @@ class _AttendanceScreenState extends State<AttendanceScreen>
           ],
         ),
           child: Scrollbar(
-            controller: _horizontalScrollController,
+            controller: controllers.horizontalScrollController,
             thumbVisibility: true,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              controller: _horizontalScrollController,
+              controller: controllers.horizontalScrollController,
             child: Center(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width - 100,
-                  maxWidth: MediaQuery.of(context).size.width,
-                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                  minWidth: MediaQuery.of(ctx!).size.width - 100,
+                  maxWidth: MediaQuery.of(ctx!).size.width,
+                  maxHeight: MediaQuery.of(ctx!).size.height * 0.8,
                 ),
                 child: Card(
                   color: Colors.white,
@@ -238,68 +221,128 @@ class _AttendanceScreenState extends State<AttendanceScreen>
     );
   }
   Widget _buildHeader() {
-    final isMobile = MediaQuery.of(context).size.width < 600;
+    final ctx = Get.context ?? Get.overlayContext;
+    final isMobile = ctx != null
+        ? MediaQuery.of(ctx).size.width < 600
+        : Get.width < 600;
+
     return Obx(
           () => AnimatedOpacity(
         duration: const Duration(seconds: 2),
-        opacity: controllers.showlogincard2.value ? 1.0 : 0.0,
+        opacity: controller.showlogincard1.value ? 1.0 : 0.0,
         child: AnimatedPadding(
           duration: const Duration(seconds: 2),
           padding: EdgeInsets.only(
-            top: controllers.showlogincard2.value ? 0 : 100,
+            top: controller.showlogincard1.value ? 0 : 100,
           ),
           child: SizedBox(
             height: 70,
             child: Card(
               color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 8,
-              shadowColor: Colors.grey.withOpacity(0.2),
+              elevation: 10,
+              shadowColor: Colors.grey.withOpacity(0.5),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(width: 20),
-                        isMobile ? Text(
-                          'ATTENDANCE DASHBOARD',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ) : Text(
-                          'ATTENDANCE DASHBOARD',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        const SizedBox(width: 5),
+                        isMobile
+                            ? Row(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.yellow.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Boxicons.bx_calendar_check,
+                                color: Colors.yellow,
+                                size: 16,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Stack(
+                              children: <Widget>[
+                                Text(
+                                  'ATTENDANCE',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    foreground: Paint()
+                                      ..style = PaintingStyle.stroke
+                                      ..strokeWidth = 2
+                                      ..color = Colors.yellow[700]!,
+                                  ),
+                                ),
+                                const Text(
+                                  'ATTENDANCE',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         )
-
+                            : Row(
+                          children: [
+                            Stack(
+                              children: <Widget>[
+                                Text(
+                                  'ATTENDANCE DASHBOARD',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    foreground: Paint()
+                                      ..style = PaintingStyle.stroke
+                                      ..strokeWidth = 2
+                                      ..color = Colors.yellow[700]!,
+                                  ),
+                                ),
+                                const Text(
+                                  'ATTENDANCE DASHBOARD',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 10),
+                            Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.yellow.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.person_2_outlined,
+                                color: Colors.yellow,
+                                size: 24,
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        isMobile ? TextButton(
-                          onPressed: () => controllers.refreshdata(),
-                          child: const Text(
-                            'Refresh',
-                            style: TextStyle(color: Colors.black, fontSize: 16),
+                        IconButton(
+                          onPressed: () => controller.refreshdata(),
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.yellow,
+                            size: isMobile ? 16 : 24,
                           ),
-                        ): TextButton(
-                          onPressed: () => controllers.refreshdata(),
-                          child: const Text(
-                            'Refresh',
-                            style: TextStyle(color: Colors.black, fontSize: 20),
-                          ),
-                        ),
+                        )
                       ],
                     )
                   ],

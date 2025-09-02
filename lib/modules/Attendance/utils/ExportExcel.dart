@@ -44,13 +44,12 @@ Future<Center> exportToExcel({required RxList<Map<String, dynamic>> attendaData}
     sheet.appendRow(rowCells);
   }
 
-  String fileName = 'Attendance${DateTime.now().toIso8601String()}';
+  String fileName = 'Attendance${DateTime.now().toIso8601String()}.xlsx';
   List<int>? fileBytes = excel.save();
   if (fileBytes != null) {
     await FileSaver.instance.saveFile(
       name: fileName,
       bytes: Uint8List.fromList(fileBytes),
-      ext: "xlsx",
       mimeType: MimeType.microsoftExcel,
     );
 

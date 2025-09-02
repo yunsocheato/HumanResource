@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../Network/Method/method_internet_connection.dart';
 import '../API/employee_report_sql1.dart';
 import '../Model/employee_checkin_model.dart';
@@ -9,6 +10,7 @@ class EmployeeReportController extends GetxController {
   final RxList<EmployeeCheckinModel> data = <EmployeeCheckinModel>[].obs;
   final empoloyeecheckINSQL employeeCheckinSQL = empoloyeecheckINSQL();
   final Nointernetmethod NointernetConnection = Nointernetmethod();
+  final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
   int currentPage = 1;
   int pageSize = 100;
@@ -131,4 +133,22 @@ class EmployeeReportController extends GetxController {
     startDate.value = DateTime.now();
     endDate.value = DateTime.now();
   }
-}
+  String formatDateTime(dynamic date) {
+    if (date == null) return '-';
+
+    try {
+      if (date is DateTime) {
+        return dateFormat.format(date.toLocal());
+      }
+      if (date is String) {
+        final parsed = DateTime.tryParse(date);
+        if (parsed != null) {
+          return dateFormat.format(parsed.toLocal());
+        }
+      }
+
+      return '-';
+    } catch (e) {
+      return '-';
+    }
+  }}

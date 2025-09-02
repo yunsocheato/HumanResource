@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'Binding/Binding_main.dart';
@@ -6,14 +7,24 @@ import 'modules/Dashboard/views/dashboard_screen.dart';
 import 'modules/Loginscreen/views/login_screen.dart';
 import 'modules/Routes/Routes.dart';
 
-void main() async {
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
+
+  final supabaseUrl = dotenv.env['SUPABASE_URL'];
+  final supabaseKey = dotenv.env['SUPABASE_ANON_KEY'];
+
+  if (supabaseUrl == null || supabaseKey == null) {
+    throw Exception('Data environment variables are missing!');
+  }
+
   await Supabase.initialize(
-    url: 'http://172.20.20.98:54321',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
+    url: supabaseUrl,
+    anonKey: supabaseKey,
   );
-  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
@@ -25,6 +36,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final supabase = Supabase.instance.client;
   @override
   void initState() {
     super.initState();

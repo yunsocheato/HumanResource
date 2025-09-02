@@ -5,7 +5,7 @@ import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
 import '../controller/employee_report_controller4.dart';
-import '../widget/ExportExcel4.dart';
+import '../utils/ExportExcel4.dart';
 import '../widget/employee_OT_widget.dart';
 
 class EmployeeOTScreen extends GetView<EmployeeReportController4> {
@@ -90,12 +90,12 @@ class EmployeeOTScreen extends GetView<EmployeeReportController4> {
                               height: 50,
                               width: 50,
                               decoration: BoxDecoration(
-                                color: Colors.blue.shade100,
+                                color: Colors.red.shade100,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.folder_copy,
-                                color: Colors.blue,
+                                color: Colors.red,
                                 size: 16,
                               ),
                             ),
@@ -110,7 +110,7 @@ class EmployeeOTScreen extends GetView<EmployeeReportController4> {
                                     Paint()
                                       ..style = PaintingStyle.stroke
                                       ..strokeWidth = 2
-                                      ..color = Colors.blue[700]!,
+                                      ..color = Colors.red[700]!,
                                   ),
                                 ),
                                 Text(
@@ -136,7 +136,7 @@ class EmployeeOTScreen extends GetView<EmployeeReportController4> {
                                     Paint()
                                       ..style = PaintingStyle.stroke
                                       ..strokeWidth = 2
-                                      ..color = Colors.blue[700]!,
+                                      ..color = Colors.red[700]!,
                                   ),
                                 ),
                                 Text(
@@ -153,12 +153,12 @@ class EmployeeOTScreen extends GetView<EmployeeReportController4> {
                               height: 70,
                               width: 70,
                               decoration: BoxDecoration(
-                                color: Colors.blue.shade100,
+                                color: Colors.red.shade100,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.folder_copy,
-                                color: Colors.blue,
+                                color: Colors.red,
                                 size: 24,
                               ),
                             ),
@@ -174,7 +174,7 @@ class EmployeeOTScreen extends GetView<EmployeeReportController4> {
                           onPressed: () => controller.refreshData(),
                           icon: Icon(
                             Icons.refresh,
-                            color: Colors.blue,
+                            color: Colors.red,
                             size: 16,
                           ),
                         )
@@ -182,7 +182,7 @@ class EmployeeOTScreen extends GetView<EmployeeReportController4> {
                           onPressed: () => controller.refreshData(),
                           icon: Icon(
                             Icons.refresh,
-                            color: Colors.blue,
+                            color: Colors.red,
                             size: 24,
                           ),
                         ),
@@ -228,7 +228,7 @@ class EmployeeOTScreen extends GetView<EmployeeReportController4> {
                     height: 30,
                     width: 160,
                     decoration: BoxDecoration(
-                      color: Colors.green.shade900,
+                      color: Colors.red.shade900,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -243,7 +243,7 @@ class EmployeeOTScreen extends GetView<EmployeeReportController4> {
                     height: 30,
                     width: 120,
                     decoration: BoxDecoration(
-                      color: Colors.green.shade700,
+                      color: Colors.red.shade700,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8),

@@ -46,13 +46,12 @@ Future<void> ExportExcel1() async {
     sheet.appendRow(rowCells);
   }
 
-  String fileName = 'Report-Checkin${DateTime.now().toIso8601String()}';
+  String fileName = 'Report-Checkin${DateTime.now().toIso8601String()}.xlsx';
   List<int>? fileBytes = excel.save();
   if (fileBytes != null) {
     await FileSaver.instance.saveFile(
       name: fileName,
       bytes: Uint8List.fromList(fileBytes),
-      ext: "xlsx",
       mimeType: MimeType.microsoftExcel,
     );
     Get.snackbar('Success', 'Excel exported: $fileName');

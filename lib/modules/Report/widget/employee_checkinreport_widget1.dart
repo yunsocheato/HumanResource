@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../API/DataSourceTableReport.dart';
 import '../controller/employee_report_controller1.dart';
-import 'ExportExcel1.dart';
+import '../utils/ExportExcel1.dart';
 
 class EmployeeScreenCheckinReport extends GetView<EmployeeReportController> {
   const EmployeeScreenCheckinReport({super.key});
@@ -306,15 +304,6 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController> {
       if (controller.isLoading.value) {
         return Center(child: LoadingScreen());
       }
-      if (controller.Imageasset.isEmpty) {
-        return Center(
-          child: Image.asset(
-            controller.Imageasset.value,
-            height: 150,
-            width: 150,
-          ),
-        );
-      }
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -366,9 +355,7 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController> {
                         children: [
                           Text('Check Type: ${record.check_type ?? '-'}'),
                           const SizedBox(width: 5),
-                          Text(
-                            'on date ${record.created_at != null ? record.created_at.toString().split(' ')[0] : '-'}',
-                          ),
+                          Text('on date ${controller.formatDateTime(record.created_at)}'),
                         ],
                       ),
                     ],

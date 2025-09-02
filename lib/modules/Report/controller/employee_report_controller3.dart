@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Report/Model/employee_absent_model.dart';
+import 'package:intl/intl.dart';
 import '../../Network/Method/method_internet_connection.dart';
 import '../API/employee_report_sql4.dart';
 
@@ -8,6 +9,7 @@ class EmployeeReportController3 extends GetxController {
   final RxList<EmployeeAbsentModel> data = <EmployeeAbsentModel>[].obs;
   final EmployeeReportSQL4 employeeabsentsql = EmployeeReportSQL4();
   final Nointernetmethod NointernetConnection = Nointernetmethod();
+  final dateTimeformat = DateFormat('yyyy-MM-dd HH:mm');
 
 
   int currentPage = 1;
@@ -137,5 +139,26 @@ class EmployeeReportController3 extends GetxController {
     startDate.value = DateTime.now();
     endDate.value = DateTime.now();
     fetchDataForRange();
+  }
+
+  String formatDateTime(dynamic datetimes) {
+    if (datetimes == null) return '-';
+
+    try {
+      if (datetimes is DateTime) {
+        return dateTimeformat.format(datetimes.toLocal());
+      }
+
+      if (datetimes is String) {
+        final parsed = DateTime.tryParse(datetimes);
+        if (parsed != null) {
+          return dateTimeformat.format(parsed.toLocal());
+        }
+      }
+
+      return 'No Date';
+    } catch (e) {
+      return 'No Date';
+    }
   }
 }

@@ -6,7 +6,7 @@ import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
 import '../controller/employee_report_controller1.dart';
-import '../widget/ExportExcel4.dart';
+import '../utils/ExportExcel4.dart';
 import '../widget/employee_absent_widget.dart';
 
 class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
@@ -91,12 +91,12 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                               height: 50,
                               width: 50,
                               decoration: BoxDecoration(
-                                color: Colors.green.shade100,
+                                color: Colors.lightBlue.shade100,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.folder_copy,
-                                color: Colors.green,
+                                color: Colors.lightBlue,
                                 size: 16,
                               ),
                             ),
@@ -111,7 +111,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                                     Paint()
                                       ..style = PaintingStyle.stroke
                                       ..strokeWidth = 2
-                                      ..color = Colors.green[700]!,
+                                      ..color = Colors.lightBlue[700]!,
                                   ),
                                 ),
                                 Text(
@@ -137,7 +137,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                                     Paint()
                                       ..style = PaintingStyle.stroke
                                       ..strokeWidth = 2
-                                      ..color = Colors.green[700]!,
+                                      ..color = Colors.lightBlue[700]!,
                                   ),
                                 ),
                                 Text(
@@ -154,12 +154,12 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                               height: 70,
                               width: 70,
                               decoration: BoxDecoration(
-                                color: Colors.green.shade100,
+                                color: Colors.lightBlue.shade100,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.folder_copy,
-                                color: Colors.green,
+                                color: Colors.lightBlue,
                                 size: 24,
                               ),
                             ),
@@ -175,7 +175,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                           onPressed: () => controller.refreshData(),
                           icon: Icon(
                             Icons.refresh,
-                            color: Colors.green,
+                            color: Colors.lightBlue,
                             size: 16,
                           ),
                         )
@@ -183,7 +183,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                           onPressed: () => controller.refreshData(),
                           icon: Icon(
                             Icons.refresh,
-                            color: Colors.green,
+                            color: Colors.lightBlue,
                             size: 24,
                           ),
                         ),
@@ -229,7 +229,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                     height: 30,
                     width: 160,
                     decoration: BoxDecoration(
-                      color: Colors.green.shade900,
+                      color: Colors.lightBlue.shade900,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -244,7 +244,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
                     height: 30,
                     width: 120,
                     decoration: BoxDecoration(
-                      color: Colors.green.shade700,
+                      color: Colors.lightBlue.shade700,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8),

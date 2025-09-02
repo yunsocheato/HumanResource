@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Attendance/controllers/attendane_screen_controller.dart';
+import 'package:hrms/modules/Bottomappbar/controller/bottomappbar_controller.dart';
 import 'package:hrms/modules/Dashboard/controllers/dashboard_screen_controller.dart';
+import 'package:hrms/modules/Department/controllers/department_controller.dart';
 import 'package:hrms/modules/Report/controller/employee_report_controller3.dart';
 import '../Core/user_profile_controller.dart';
 // import '../Update/controller/update_controller.dart';
@@ -18,6 +21,7 @@ import '../modules/Drawer/controllers/fingerprint_setup_controller.dart';
 import '../modules/Drawer/controllers/payroll_policy_controller.dart';
 import '../modules/Employee/Controller/Employeetable_controller.dart';
 import '../modules/Employee/Controller/employee_profile_controller.dart';
+import '../modules/Employee/Controller/employee_screen_controller.dart';
 import '../modules/Employee/Controller/employeefiltercontroller.dart';
 import '../modules/LeaveRequest/controllers/leave_controller.dart';
 import '../modules/Loadingui/ErrorScreen/Controller/DataUnavaiable.dart';
@@ -118,8 +122,8 @@ class BindingMain extends Bindings{
     Get.put(UserProfileController());
     Get.lazyPut<UserProfileController>(() => UserProfileController());
 
-    // Get.put(UpdateController());
-    // Get.lazyPut<UpdateController>(() => UpdateController());
+    Get.put(EmployeeScreenController());
+    Get.lazyPut<EmployeeScreenController>(() => EmployeeScreenController());
 
     Get.put(EmployeeReportController());
     Get.lazyPut<EmployeeReportController>(() => EmployeeReportController());
@@ -138,6 +142,18 @@ class BindingMain extends Bindings{
 
     Get.put(EmployeeProfileController(), permanent: true);
     Get.lazyPut<EmployeeProfileController>(() => EmployeeProfileController());
+
+    Get.put(DepartmentScreenController());
+    Get.lazyPut<DepartmentScreenController>(() => DepartmentScreenController());
+
+    Get.put(AttendanceScreenController());
+    Get.lazyPut<AttendanceScreenController>(() => AttendanceScreenController());
+
+    Get.put(LeaveController());
+    Get.lazyPut<LeaveController>(() => LeaveController());
+
+    Get.put(BottomAppBarController());
+    Get.lazyPut<BottomAppBarController>(() => BottomAppBarController());
   }
 
 }

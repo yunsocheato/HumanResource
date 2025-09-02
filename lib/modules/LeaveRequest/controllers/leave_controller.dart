@@ -2,7 +2,8 @@
   import 'package:get/get.dart';
   import 'package:intl/intl.dart';
   import 'package:supabase_flutter/supabase_flutter.dart';
-  import '../API/leave_stream_rpc_sql.dart';
+  import '../../Drawer/widgets/Method_drawer_policy_button.dart';
+import '../API/leave_stream_rpc_sql.dart';
   import '../views/leave_request_screen.dart';
 
   class LeaveController extends GetxController {
@@ -14,11 +15,18 @@
     var selectedStatus = ''.obs;
     var selectedDepartment = ''.obs;
     var selectedPosition = ''.obs;
+    var  showlogincard1 = true.obs;
+    var showCards = true.obs;
+    var recentDataLoaded = false.obs;
+
+    final verticalScrollController = ScrollController();
+    final horizontalScrollController = ScrollController();
 
     @override
     void onInit() {
       super.onInit();
       fetchLeaveRequests();
+
     }
 
     Future<void> fetchLeaveRequests() async {
@@ -174,5 +182,19 @@
       } finally {
         isLoading.value = false;
       }
+    }
+
+    void toogleShowlogincard1 () {
+      showlogincard1.value = !showlogincard1.value;
+    }
+
+    void refreshdata ()  async {
+      await MethodButton5();
+      update();
+    }
+
+    void loaddata() async {
+      await Future.delayed(Duration(seconds: 2));
+      isLoading.value = false;
     }
   }

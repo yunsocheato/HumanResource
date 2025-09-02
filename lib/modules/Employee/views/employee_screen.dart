@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Dashboard/controllers/dashboard_screen_controller.dart';
 
@@ -9,8 +10,9 @@ import '../../Employee/widgets/employee_record.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
+import '../Controller/employee_screen_controller.dart';
 
-class EmployeeScreen extends GetView<DashboardController> {
+class EmployeeScreen extends GetView<EmployeeScreenController> {
   const EmployeeScreen({super.key});
   static const String routeName = '/EmployeeScreen';
 
@@ -49,8 +51,6 @@ class EmployeeScreen extends GetView<DashboardController> {
                 ),
               ),
             ),
-
-            /// ✅ Safe reactive loading
             Obx(() => loading.isLoading.value
                 ? const LoadingScreen()
                 : const SizedBox.shrink()),
@@ -61,7 +61,6 @@ class EmployeeScreen extends GetView<DashboardController> {
   }
 
   Widget _buildHeader() {
-    // ✅ Use safe context fallback
     final ctx = Get.context ?? Get.overlayContext;
     final isMobile = ctx != null
         ? MediaQuery.of(ctx).size.width < 600
@@ -91,7 +90,7 @@ class EmployeeScreen extends GetView<DashboardController> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 5),
                         isMobile
                             ? Row(
                           children: [
@@ -108,11 +107,11 @@ class EmployeeScreen extends GetView<DashboardController> {
                                 size: 16,
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 5),
                             Stack(
                               children: <Widget>[
                                 Text(
-                                  'EMPLOYEE\nDASHBOARD',
+                                  'EMPLOYEE',
                                   style: TextStyle(
                                     fontSize: 16,
                                     foreground: Paint()
@@ -122,7 +121,7 @@ class EmployeeScreen extends GetView<DashboardController> {
                                   ),
                                 ),
                                 const Text(
-                                  'EMPLOYEE\nDASHBOARD',
+                                  'EMPLOYEE',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
@@ -164,7 +163,7 @@ class EmployeeScreen extends GetView<DashboardController> {
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
-                                Icons.person_2_outlined,
+                                Boxicons.bx_user_check,
                                 color: Colors.green,
                                 size: 24,
                               ),

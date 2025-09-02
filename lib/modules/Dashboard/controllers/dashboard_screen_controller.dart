@@ -1,11 +1,10 @@
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../Drawer/widgets/Method_drawer_policy_button.dart';
 
 class DashboardController extends GetxController {
-   var  showlogincard1 = true.obs;
+   var showlogincard1 = true.obs;
    var showCards = true.obs;
    var recentDataLoaded = false.obs;
    var isLoading = true.obs;
@@ -19,12 +18,18 @@ class DashboardController extends GetxController {
      super.onInit();
    }
 
+   @override
+   void onClose() {
+     verticalScrollController.dispose();
+     horizontalScrollController.dispose();
+     super.onClose();
+   }
 
    void toogleShowlogincard1 () {
      showlogincard1.value = !showlogincard1.value;
    }
 
-   void refreshdata ()  async {
+   void refreshdata()  async {
      await MethodButton1();
      update();
    }

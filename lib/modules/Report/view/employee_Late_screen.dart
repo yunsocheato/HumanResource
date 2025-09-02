@@ -5,7 +5,7 @@ import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
 import '../controller/employee_report_controller2.dart';
-import '../widget/ExportExcel2.dart';
+import '../utils/ExportExcel2.dart';
 import '../widget/employee_Latereport_widget2.dart';
 
 class EmployeeLateScreen extends GetView<EmployeeReportController2> {

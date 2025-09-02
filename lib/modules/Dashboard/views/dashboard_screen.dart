@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:hrms/modules/Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../CardInfo/views/card_screen.dart';
-import '../../Drawer/controllers/drawer_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../controllers/dashboard_screen_controller.dart';
 import 'dashboard_recent_employee.dart';
@@ -10,41 +9,14 @@ import 'dashboard_recently_screen1.dart';
 import 'dashboard_recently_screen2.dart';
 import 'dashboard_recently_screen3.dart';
 
-class DashboardScreen extends StatefulWidget {
-  static const String routeName = '/DashboardScreen';
-
+class DashboardScreen extends GetView<DashboardController> {
   const DashboardScreen({super.key});
-
-  @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProviderStateMixin {
-  final ScrollController _horizontalScrollController = ScrollController();
-  final ScrollController _verticalScrollController = ScrollController();
-  final AppDrawerController controller = Get.find<AppDrawerController>();
-  final DashboardController Dcontroller = Get.put(DashboardController());
-
-
-  @override
-  void initState() {
-    super.initState();
-    if (!Get.isRegistered<AppDrawerController>()) {
-      Get.put(AppDrawerController());
-    }
-  }
-
-  @override
-  void dispose() {
-    _horizontalScrollController.dispose();
-    _verticalScrollController.dispose();
-    super.dispose();
-  }
+  static const String routeName = '/DashboardScreen';
 
   @override
   Widget build(BuildContext context) {
     final isMobile = Get.width < 600;
-    return Drawerscreen(
+    final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body:  SingleChildScrollView(
@@ -69,7 +41,9 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
         ),
       )
     );
-
+    return isMobile
+        ? BottomAppBarWidget(body: contents)
+        : contents;
   }
 
   Widget _buildcardinfo() {
@@ -90,7 +64,6 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   }
 
   Widget _buildcardinfoColoum() {
-    final isMobile = Get.width < 600;
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       child: Column(
@@ -162,14 +135,16 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   }
 
   Widget _buildHeader() {
-    final isMobile = MediaQuery.of(context).size.width < 600;
+    final Controller = Get.find<DashboardController>();
+    final ctx = Get.context ?? Get.overlayContext;
+    final isMobile = MediaQuery.of(ctx!).size.width < 600;
     return Obx(() => AnimatedOpacity(
         duration: const Duration(seconds: 2),
-        opacity: Dcontroller.showlogincard1.value ? 1.0 : 0.0,
+        opacity: Controller.showlogincard1.value ? 1.0 : 0.0,
         child: AnimatedPadding(
           duration: const Duration(seconds: 2),
           padding: EdgeInsets.only(
-            top: Dcontroller.showlogincard1.value ? 0 : 100,
+            top: Controller.showlogincard1.value ? 0 : 100,
           ),
           child: SizedBox(
             height: 70,
@@ -256,85 +231,88 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
 
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        isMobile ? InkWell(
-                          onTap: (){},
-                          child: Container(
-                            height: 45,
-                            width: 45,
-                            decoration: BoxDecoration(
-                              color: Colors.green.withOpacity(0.6),
-                              shape: BoxShape.circle,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          isMobile ? InkWell(
+                            onTap: (){},
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                color: Colors.green.withOpacity(0.6),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(child: Icon(Icons.calendar_month, color: Colors.white, size: 16)),
                             ),
-                            child: Center(child: Icon(Icons.calendar_month, color: Colors.white, size: 16)),
-                          ),
-                        ): Container(
-                          height: 30,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('Calendar',style: TextStyle(color: Colors.white, fontSize: 18),),
-                              SizedBox(width: 5,),
-                              Icon(Icons.calendar_month, color: Colors.white, size: 18)
-                            ],
-                          ),
-                        ),
-                        if(isMobile)
-                          SizedBox(width: 5),
-                        if(!isMobile)
-                          SizedBox(width: 20),
-                        isMobile ? InkWell(
-                          onTap: (){},
-                          child: Container(
-                            height: 45,
-                            width: 45,
-                            decoration: BoxDecoration(
-                              color: Colors.yellow.withOpacity(0.6),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                                child: Icon(Icons.logout, color: Colors.white, size: 16)),
-                          ),
-                        ) :
-                        InkWell(
-                          onTap: (){},
-                          child: Container(
+                          ): Container(
                             height: 30,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Colors.green,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text('Apply Leave',style: TextStyle(color: Colors.white, fontSize: 18),),
+                                Text('Calendar',style: TextStyle(color: Colors.white, fontSize: 18),),
                                 SizedBox(width: 5,),
-                                Icon(Icons.logout, color: Colors.white, size: 18)
+                                Icon(Icons.calendar_month, color: Colors.white, size: 18)
                               ],
                             ),
                           ),
-                        ),
-                        if(isMobile)
-                        SizedBox(width: 5),
-                        if(!isMobile)
-                        SizedBox(width: 20),
-                        isMobile ? IconButton(onPressed: () => Dcontroller.refreshdata()
-                            , icon: Icon(Icons.refresh, color: Colors.blue, size: 16,)
-                        ):
-                        IconButton(onPressed: () => Dcontroller.refreshdata()
-                            , icon: Icon(Icons.refresh, color: Colors.blue, size: 24,)
-                        )
-                      ],
+                          if(isMobile)
+                            SizedBox(width: 5),
+                          if(!isMobile)
+                            SizedBox(width: 20),
+                          isMobile ? InkWell(
+                            onTap: (){},
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                color: Colors.yellow.withOpacity(0.6),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                  child: Icon(Icons.logout, color: Colors.white, size: 16)),
+                            ),
+                          ) :
+                          InkWell(
+                            onTap: (){},
+                            child: Container(
+                              height: 30,
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text('Apply Leave',style: TextStyle(color: Colors.white, fontSize: 18),),
+                                  SizedBox(width: 5,),
+                                  Icon(Icons.logout, color: Colors.white, size: 18)
+                                ],
+                              ),
+                            ),
+                          ),
+                          if(isMobile)
+                          SizedBox(width: 5),
+                          if(!isMobile)
+                          SizedBox(width: 20),
+                          isMobile ? IconButton(onPressed: () => Controller.refreshdata()
+                              , icon: Icon(Icons.refresh, color: Colors.blue, size: 16,)
+                          ):
+                          IconButton(onPressed: () => Controller.refreshdata()
+                              , icon: Icon(Icons.refresh, color: Colors.blue, size: 24,)
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),

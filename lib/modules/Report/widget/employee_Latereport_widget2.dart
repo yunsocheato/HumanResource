@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../API/DataSourceTableReport.dart';
 import '../controller/employee_report_controller2.dart';
-import 'ExportExcel2.dart';
+import '../utils/ExportExcel2.dart';
 
 class EmployeeScreenLateReport extends GetView<EmployeeReportController2> {
   const EmployeeScreenLateReport({super.key});
@@ -304,15 +303,6 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2> {
       if (controller.isLoading.value) {
         return Center(child: LoadingScreen());
       }
-      if (controller.Imageasset.isEmpty) {
-        return Center(
-          child: Image.asset(
-            controller.Imageasset.value,
-            height: 150,
-            width: 150,
-          ),
-        );
-      }
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -364,7 +354,7 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2> {
                         children: [
                           Text('Check Type: ${record.check_type ?? '-'}'),
                           const SizedBox(width: 5),
-                          Text('on date ${record.created_at ?? '-'}'),
+                          Text('on date ${controller.formatDate(record.created_at)}'),
                         ],
                       ),
                     ],

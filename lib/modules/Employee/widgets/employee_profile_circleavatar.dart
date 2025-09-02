@@ -17,7 +17,6 @@ Widget buildProfileAvatar(String path) {
     );
   }
 
-  // Local file → use XFile
   return FutureBuilder<Uint8List>(
     future: XFile(path).readAsBytes(),
     builder: (context, snapshot) {

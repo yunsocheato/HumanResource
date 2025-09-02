@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../API/DataSourceTableReportLeaveSummary.dart';
 import '../controller/employee_report_leavesummary_controller.dart';
-import 'ExportExcel3.dart';
+import '../utils/ExportExcel3.dart';
 
 class EmployeeLeaveSummaryReport extends GetView<leavesummarycontroller> {
   const EmployeeLeaveSummaryReport({super.key});
@@ -329,15 +328,6 @@ class EmployeeLeaveSummaryReport extends GetView<leavesummarycontroller> {
     return Obx(() {
       if (controller.isLoading.value) {
         return Center(child: LoadingScreen());
-      }
-      if (controller.Imageasset.isEmpty) {
-        return Center(
-          child: Image.asset(
-            controller.Imageasset.value,
-            height: 150,
-            width: 150,
-          ),
-        );
       }
       return ListView.builder(
         shrinkWrap: true,

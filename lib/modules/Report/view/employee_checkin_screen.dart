@@ -5,7 +5,7 @@ import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../../Searchbar/view/search_bar_screen.dart';
 import '../controller/employee_report_controller1.dart';
-import '../widget/ExportExcel1.dart';
+import '../utils/ExportExcel1.dart';
 import '../widget/employee_checkinreport_widget1.dart';
 
 class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
