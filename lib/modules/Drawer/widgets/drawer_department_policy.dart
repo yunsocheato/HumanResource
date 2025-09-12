@@ -1,3 +1,4 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Department/views/department_screen.dart';
@@ -17,14 +18,14 @@ class Departmentpolicy extends GetView<AppDrawerController> {
       final isExpanded1 = controller.isExpanded1('Department');
       return Theme(
         data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent, // remove expansion tile divider
-          unselectedWidgetColor: Colors.white, // arrow color
+          dividerColor: Colors.transparent,
+          unselectedWidgetColor: Colors.white,
         ),
         child: ExpansionTile(
           initiallyExpanded: isExpanded1,
           onExpansionChanged:
               (bool expanded) => controller.toggleTile1('Department'),
-          leading: Icon(Icons.apartment, color: Colors.white),
+          leading: Icon(EneftyIcons.buildings_2_bold, color: Colors.white),
           title: InkWell(
             onTap: () => MethodButton4(),
             child: Text(
@@ -47,6 +48,7 @@ class Departmentpolicy extends GetView<AppDrawerController> {
             //   onTap: () => Get.toNamed('/hr-policy'),
             // ),
             ListTile(
+              leading: Icon(EneftyIcons.home_3_outline, color: Colors.white),
               title: Text(
                 'Department Announcement',
                 style: TextStyle(color: Colors.white),

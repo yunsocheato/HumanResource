@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
-
+import 'package:flutter/material.dart';
 class AppDrawerController extends GetxController {
   var selectedIndex = 0.obs;
   var loadingTile = ''.obs;
   var expandedTile = ''.obs;
+
+  final Color Selectedcolors = Colors.blue.shade900;
+  final Color Unselectedcolors = Colors.white;
 
   get expandedStates => <String, bool>{}.obs;
 
@@ -34,5 +37,14 @@ class AppDrawerController extends GetxController {
 
   void clearLoading() {
     loadingTile.value = '';
+  }
+
+  void setSelected(int index) {
+    selectedIndex.value = index;
+
+  }
+
+  Color iconColor(int index){
+    return selectedIndex.value == index ? Selectedcolors : Unselectedcolors;
   }
 }

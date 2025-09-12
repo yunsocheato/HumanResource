@@ -34,7 +34,6 @@ class EmployeeProfileController extends GetxController {
   final profileHCtrl = ScrollController();
 
   var showlogincard1 = true.obs;
-
   var nameText = ''.obs;
   var emailText = ''.obs;
   var positionText = ''.obs;

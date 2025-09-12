@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
@@ -18,7 +19,7 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
     final loading = Get.find<LoadingUiController>();
     final isMobile = Get.width < 600;
 
-    return Drawerscreen(
+    final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -51,6 +52,9 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
         ),
       ),
     );
+    return isMobile
+        ? BottomAppBarWidget(body: contents)
+        : contents;
   }
 
   Widget _buildHeader() {

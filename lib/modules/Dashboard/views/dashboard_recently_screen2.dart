@@ -113,28 +113,31 @@ class Recentscreen2 extends GetView<RecentlyControllerScreen> {
 
   Widget buildOBxResponsiveColumn(BuildContext context, {required bool isMobile}) {
     final controller = Get.find<RecentlyControllerScreen>();
-    final Dcontroller = Get.find<DashboardController>();
-
     Widget header = Container(
       margin: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Activity',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () => Dcontroller.refreshdata(),
-                child: const Text(
-                  '. . .',
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+          Container(
+            height: 40,
+            width: 145,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blue.shade700,
+                  Colors.blue.shade100,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.topRight,
               ),
-            ],
+            ),
+            child: Center(
+              child: const Text(
+                'Activity',
+                style: TextStyle(fontSize: 16,color: Colors.white ,fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
@@ -16,7 +17,7 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
     final loading = Get.find<LoadingUiController>();
     final isMobile = Get.width < 600;
 
-    return Drawerscreen(
+    final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -47,6 +48,7 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
         ),
       ),
     );
+    return isMobile ? BottomAppBarWidget(body: contents) : contents;
   }
 
   Widget _buildHeader() {

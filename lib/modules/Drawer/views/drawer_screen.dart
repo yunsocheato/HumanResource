@@ -1,3 +1,4 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Drawer/widgets/Method_drawer_policy_button.dart';
@@ -106,7 +107,9 @@ class Drawerscreen extends GetView<AppDrawerController> {
 
             IconButton(
               icon: Icon(Icons.notifications, color: Colors.white),
-              onPressed: () {},
+              onPressed: () {
+
+              },
             ),
 
             if (!isMobile)
@@ -132,13 +135,15 @@ class Drawerscreen extends GetView<AppDrawerController> {
               ),
           ],
         ),
-        drawer: isMobile ? Drawer(child: _buildSidebar(context)) : null,
+        drawer: isMobile
+            ? Drawer(child: _buildSidebarMobile(context))
+            : null,
         body: Row(
           children: [
             if (!isMobile)
               SizedBox(
                 width: isDesktop ? 320 : 260,
-                child: _buildSidebar(context),
+                child: _buildSidebarWeb(context),
               ),
             Expanded(child: content),
           ],
@@ -147,8 +152,150 @@ class Drawerscreen extends GetView<AppDrawerController> {
     });
   }
 
-  Widget _buildSidebar(BuildContext context) {
+  Widget _buildSidebarWeb(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 1024;
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    final controllers = Get.find<AuthController>();
+    return SafeArea(
+      child: Container(
+        color:  Color(0xFF1B2230),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 90),
+              child: ListView(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                children: [
+                  SizedBox(width: isDesktop ? 320 : 260, child: _buildSearchBox()),
+                  const SizedBox(height: 20),
+                  _buildDrawerTile(
+                    'Dashboard',
+                    EneftyIcons.home_2_bold, () => MethodButton1(),index: 0,
+                  ),
+                  _buildDrawerTile(
+                      'Attendance',
+                      EneftyIcons.calendar_2_bold, () => MethodButton2(),index: 1
+                  ),
+                  PolicySetup(),
+                  ReportPolicy(),
+                  Employeepolicy(),
+                  Departmentpolicy(),
+                  LeaveRequest(),
+                  _buildDrawerTile(
+                    'Schedule',
+                    EneftyIcons.calendar_edit_bold,
+                        () {
+                      Get.toNamed(schedulescreen.routeName);
+                      if (Scaffold.of(context).isDrawerOpen) Navigator.pop(context);
+                    },
+                  ),
+                  _buildDrawerTile(
+                    'History',
+                    EneftyIcons.document_2_bold,
+                        () {
+                      Get.toNamed(DashboardScreen.routeName);
+                      if (Scaffold.of(context).isDrawerOpen) Navigator.pop(context);
+                    },
+                  ),
+                  _buildDrawerTile(
+                    'Setting',
+                    EneftyIcons.setting_3_bold,
+                        () {
+                      if (Scaffold.of(context).isDrawerOpen) Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            if (isMobile)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 90,
+                  decoration: const BoxDecoration(
+                    color:  Color(0xFF1B2230),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Obx(() {
+                          final controller = Get.find<UserProfileController>();
+                          final image = controller.userprofiles.value?.image;
+
+                          if (image == null || image.isEmpty) {
+                            return CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 25,
+                              backgroundImage: AssetImage(
+                                  'assets/images/profileuser.png'),
+                            );
+                          }
+
+                          return CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage(image),
+                          );
+                        }),
+
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Obx(() {
+                            final controller = Get.find<UserProfileController>();
+                            final profile = controller.userprofiles.value;
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  profile?.name ?? 'No Name',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  profile?.role ?? 'No Role',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            );
+                          }
+                          ),
+                        ),
+                        IconButton(
+
+                          icon: const Icon(Icons.logout, color: Colors.white),
+                          onPressed: () => controllers.logoutWithConfirmation(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _buildSidebarMobile(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
     final controller = Get.find<AuthController>();
 
@@ -162,47 +309,17 @@ class Drawerscreen extends GetView<AppDrawerController> {
               child: ListView(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 children: [
-                  if (!isMobile)
-                  SizedBox(width: isDesktop ? 320 : 260, child: _buildSearchBox()),
-                  const SizedBox(height: 20),
-                  _buildDrawerTile(
-                    'Dashboard',
-                    Icons.home, () => MethodButton1()
-                  ),
+                  SizedBox(height: 180,),
                   _buildDrawerTile(
                       'Attendance',
-                      Icons.calendar_month_sharp, () => MethodButton2()
+                      Icons.calendar_month_sharp, () => MethodButton2(),index: 0
                   ),
                   const SizedBox(height: 10),
                   PolicySetup(),
                   ReportPolicy(),
                   Employeepolicy(),
                   Departmentpolicy(),
-                  // Attendancepolicy(),
                   LeaveRequest(),
-                  _buildDrawerTile(
-                    'Schedule',
-                    Icons.calendar_today,
-                        () {
-                      Get.toNamed(schedulescreen.routeName);
-                      if (Scaffold.of(context).isDrawerOpen) Navigator.pop(context);
-                    },
-                  ),
-                  _buildDrawerTile(
-                    'History',
-                    Icons.history,
-                        () {
-                      Get.toNamed(DashboardScreen.routeName);
-                      if (Scaffold.of(context).isDrawerOpen) Navigator.pop(context);
-                    },
-                  ),
-                  _buildDrawerTile(
-                    'Self Services',
-                    Icons.settings_accessibility_outlined,
-                        () {
-                      if (Scaffold.of(context).isDrawerOpen) Navigator.pop(context);
-                    },
-                  ),
                 ],
               ),
             ),
@@ -295,6 +412,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
     );
   }
 
+
   Widget _buildSearchBox() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -317,30 +435,42 @@ class Drawerscreen extends GetView<AppDrawerController> {
       ),
     );
   }
-
   Widget _buildDrawerTile(String title, IconData icon, VoidCallback? onTap,
-      {List<Widget>? children}) {
+      {List<Widget>? children, int? index}) {
     return Obx(() {
+      final controller = Get.find<AppDrawerController>();
       final expanded = controller.isExpanded(title);
+      final isSelected = index != null && controller.selectedIndex.value == index;
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            leading: Icon(icon, color: Colors.white),
+            leading: Icon(
+              icon,
+              color: isSelected ? controller.Selectedcolors : controller.Unselectedcolors,
+            ),
             title: Text(
               title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+              style: TextStyle(
+                color: isSelected ? controller.Selectedcolors :  controller.Unselectedcolors,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
             trailing: children == null
                 ? null
                 : Icon(
               expanded ? Icons.expand_less : Icons.expand_more,
-              color: Colors.white,
+              color: isSelected ? controller.Selectedcolors : controller.Unselectedcolors,
             ),
-            onTap: children == null ? onTap : () => controller.toggleExpand(title),
+            onTap: () {
+              if (index != null) controller.setSelected(index);
+              if (children == null) {
+                onTap?.call();
+              } else {
+                controller.toggleExpand(title);
+              }
+            },
           ),
           if (expanded && children != null)
             Padding(
@@ -352,3 +482,5 @@ class Drawerscreen extends GetView<AppDrawerController> {
     });
   }
 }
+
+

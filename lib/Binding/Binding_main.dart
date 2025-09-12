@@ -23,6 +23,7 @@ import '../modules/Employee/Controller/Employeetable_controller.dart';
 import '../modules/Employee/Controller/employee_profile_controller.dart';
 import '../modules/Employee/Controller/employee_screen_controller.dart';
 import '../modules/Employee/Controller/employeefiltercontroller.dart';
+import '../modules/LeaveRequest/controllers/apply_leave_screen_controller.dart';
 import '../modules/LeaveRequest/controllers/leave_controller.dart';
 import '../modules/Loadingui/ErrorScreen/Controller/DataUnavaiable.dart';
 import '../modules/Loadingui/ErrorScreen/Controller/ErrorMessage.dart';
@@ -154,6 +155,9 @@ class BindingMain extends Bindings{
 
     Get.put(BottomAppBarController());
     Get.lazyPut<BottomAppBarController>(() => BottomAppBarController());
+
+    Get.put(ApplyLeaveScreenController());
+    Get.lazyPut<ApplyLeaveScreenController>(() => ApplyLeaveScreenController());
   }
 
 }

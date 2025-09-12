@@ -8,6 +8,7 @@ class DashboardModel {
   final String email;
   final String position;
   final String department;
+  final String? photo_url;
   final Color color1;
   final Color color2;
   final Color iconBgColor;
@@ -25,6 +26,7 @@ class DashboardModel {
     required this.color1,
     required this.color2,
     required this.icondata,
+    this.photo_url,
     required this.iconBgColor,
     required this.created_at
 
@@ -37,6 +39,7 @@ class DashboardModel {
       position: json['position'] ?? '',
       department: json['department'] ?? '',
       id_card: json['id_card'] ?? '',
+      photo_url: json['photo_url'] ?? '',
       created_at: json['created_at'] != null
           ? DateTime.parse(json['created_at']).toLocal()
           : DateTime.now(),
@@ -54,6 +57,8 @@ class DashboardModel {
       'id_card': id_card,
       'position': position,
       'department': department,
+      'photo_url': photo_url,
+      'from_date': created_at.toLocal().toIso8601String(),
       'to_date': created_at.toLocal().toIso8601String(),
     };
   }

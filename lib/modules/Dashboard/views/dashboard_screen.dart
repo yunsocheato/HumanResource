@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Bottomappbar/widget/bottomappbar_widget.dart';
+import '../../Attendance/views/attendance_chart.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../controllers/dashboard_screen_controller.dart';
@@ -77,9 +78,9 @@ class DashboardScreen extends GetView<DashboardController> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Recentlyscreen1(),
+                  child: AttendacneChart(),
                 ),
-                const SizedBox(width: 15),
+                const SizedBox(height: 15,width: 15),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Recentscreen2(),
@@ -106,7 +107,7 @@ class DashboardScreen extends GetView<DashboardController> {
     final recentWidgets = const [
       Padding(
         padding: EdgeInsets.all(12.0),
-        child: Recentlyscreen1(),
+        child: AttendacneChart(),
       ),
       Padding(
         padding: EdgeInsets.all(8.0),
@@ -231,88 +232,17 @@ class DashboardScreen extends GetView<DashboardController> {
 
                       ],
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          isMobile ? InkWell(
-                            onTap: (){},
-                            child: Container(
-                              height: 45,
-                              width: 45,
-                              decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.6),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(child: Icon(Icons.calendar_month, color: Colors.white, size: 16)),
-                            ),
-                          ): Container(
-                            height: 30,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('Calendar',style: TextStyle(color: Colors.white, fontSize: 18),),
-                                SizedBox(width: 5,),
-                                Icon(Icons.calendar_month, color: Colors.white, size: 18)
-                              ],
-                            ),
-                          ),
-                          if(isMobile)
-                            SizedBox(width: 5),
-                          if(!isMobile)
-                            SizedBox(width: 20),
-                          isMobile ? InkWell(
-                            onTap: (){},
-                            child: Container(
-                              height: 45,
-                              width: 45,
-                              decoration: BoxDecoration(
-                                color: Colors.yellow.withOpacity(0.6),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Icon(Icons.logout, color: Colors.white, size: 16)),
-                            ),
-                          ) :
-                          InkWell(
-                            onTap: (){},
-                            child: Container(
-                              height: 30,
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text('Apply Leave',style: TextStyle(color: Colors.white, fontSize: 18),),
-                                  SizedBox(width: 5,),
-                                  Icon(Icons.logout, color: Colors.white, size: 18)
-                                ],
-                              ),
-                            ),
-                          ),
-                          if(isMobile)
-                          SizedBox(width: 5),
-                          if(!isMobile)
-                          SizedBox(width: 20),
-                          isMobile ? IconButton(onPressed: () => Controller.refreshdata()
-                              , icon: Icon(Icons.refresh, color: Colors.blue, size: 16,)
-                          ):
-                          IconButton(onPressed: () => Controller.refreshdata()
-                              , icon: Icon(Icons.refresh, color: Colors.blue, size: 24,)
-                          )
-                        ],
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(width: 20),
+                        isMobile ? IconButton(onPressed: () => Controller.refreshdata()
+                            , icon: Icon(Icons.refresh, color: Colors.blue, size: 16,)
+                        ):
+                        IconButton(onPressed: () => Controller.refreshdata()
+                            , icon: Icon(Icons.refresh, color: Colors.blue, size: 24,)
+                        )
+                      ],
                     )
                   ],
                 ),

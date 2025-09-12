@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
-import '../../Attendance/controllers/attendane_screen_controller.dart';
+import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
@@ -20,7 +20,7 @@ class LeaveRequest extends GetView<LeaveController> {
     final controller = Get.find<LeaveController>();
     final loading = Get.find<LoadingUiController>();
     final isMobile = MediaQuery.of(context).size.width < 600;
-    return Drawerscreen(
+    final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -50,6 +50,10 @@ class LeaveRequest extends GetView<LeaveController> {
         ),
       ),
     );
+    return isMobile
+        ? BottomAppBarWidget(body: contents)
+        : contents;
+
   }
 
   Widget _buildHeader() {
@@ -98,7 +102,7 @@ class LeaveRequest extends GetView<LeaveController> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
-                                    Icons.person_2_outlined,
+                                    Boxicons.bx_walk,
                                     color: Colors.red,
                                     size: 16,
                                   ),

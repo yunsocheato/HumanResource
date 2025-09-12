@@ -142,7 +142,6 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header container with gradient background
               Container(
                 height: 60,
                 width: double.infinity,
@@ -174,7 +173,6 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                   ),
                 ),
               ),
-              // Expanded scrollable list area for user cards
               Expanded(
                 child: Obx(() {
                   if (controller.isLoading.value) {

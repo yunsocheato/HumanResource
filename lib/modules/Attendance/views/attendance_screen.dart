@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
+import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/controllers/drawer_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
@@ -23,7 +24,7 @@ class AttendanceScreen extends GetView<AttendanceScreenController> {
     final isMobile = Get.width < 600;
     final loading = Get.find<LoadingUiController>();
     final controllers = Get.find<AttendanceScreenController>();
-    return Drawerscreen(
+    final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -55,6 +56,9 @@ class AttendanceScreen extends GetView<AttendanceScreenController> {
           ],
         )),
       );
+    return isMobile
+        ? BottomAppBarWidget(body: contents)
+        : contents;
   }
   Widget _buildcardinfo() {
     return LayoutBuilder(

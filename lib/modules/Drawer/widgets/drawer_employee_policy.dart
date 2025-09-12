@@ -1,3 +1,4 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Drawer/widgets/Method_drawer_policy_button.dart';
@@ -44,7 +45,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
             ListTile(
-              leading: Icon(Icons.person, color: Colors.white),
+              leading: Icon(EneftyIcons.security_user_bold, color: Colors.white),
               title: Text(
                 'Employee Profile',
                 style: TextStyle(color: Colors.white),

@@ -1,12 +1,15 @@
 import '../../LeaveRequest/API/leave_stream_rpc_sql.dart';
 import '../models/dashboard_model.dart';
 
-Stream<List<DashboardModel>> streamSignupUserAsModel() {
-  return supabase
-      .from('signupuser')
-      .stream(primaryKey: ['user_id'])
-      .order('email', ascending: true)
-      .map((rows) => rows.map((row) => DashboardModel.fromJson(row)).toList());
-
+Future<List<DashboardModel>> FetchUserasModel() async {
+ try{
+   final response = await supabase
+       .from('signupuser')
+       .select()
+       .order('email', ascending: true);
+   return (response as List).map((e) => DashboardModel.fromJson(e)).toList();
+ } catch(e){
+   return [];
+ }
 }
 

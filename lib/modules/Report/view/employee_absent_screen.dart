@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Report/controller/employee_report_controller3.dart';
+import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
@@ -19,7 +20,7 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
     final loading = Get.find<LoadingUiController>();
     final isMobile = Get.width < 600;
 
-    return Drawerscreen(
+    final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -52,6 +53,9 @@ class EmployeeAbsentScreen extends GetView<EmployeeReportController3> {
         ),
       ),
     );
+    return isMobile
+        ? BottomAppBarWidget(body: contents)
+        : contents;
   }
 
   Widget _buildHeader() {

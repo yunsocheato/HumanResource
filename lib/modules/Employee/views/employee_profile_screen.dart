@@ -55,147 +55,149 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
 
   Widget _buildHeader() {
     final context = Get.context;
-    final isMobile = MediaQuery.of(context!).size.width < 600;
-    return Obx(
-          () =>
-          AnimatedOpacity(
+    final isMobile = MediaQuery
+        .of(context!)
+        .size
+        .width < 600;
+    return Obx(() =>
+        AnimatedOpacity(
+          duration: const Duration(seconds: 2),
+          opacity: controller.showlogincard1.value ? 1.0 : 0.0,
+          child: AnimatedPadding(
             duration: const Duration(seconds: 2),
-            opacity: controller.showlogincard1.value ? 1.0 : 0.0,
-            child: AnimatedPadding(
-              duration: const Duration(seconds: 2),
-              padding: EdgeInsets.only(
-                top: controller.showlogincard1.value ? 0 : 100,
-              ),
-              child: SizedBox(
-                height: 70,
-                child: Card(
-                  color: Colors.white,
-                  elevation: 10,
-                  shadowColor: Colors.grey.withOpacity(0.5),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(width: 10),
-                            isMobile
-                                ? Row(
-                              children: [
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.shade100,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.folder_copy,
-                                    color: Colors.green,
-                                    size: 16,
-                                  ),
+            padding: EdgeInsets.only(
+              top: controller.showlogincard1.value ? 0 : 100,
+            ),
+            child: SizedBox(
+              height: 70,
+              child: Card(
+                color: Colors.white,
+                elevation: 10,
+                shadowColor: Colors.grey.withOpacity(0.5),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(width: 10),
+                          isMobile
+                              ? Row(
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.green.shade100,
+                                  shape: BoxShape.circle,
                                 ),
-                                SizedBox(width: 10),
-                                Stack(
-                                  children: <Widget>[
-                                    Text(
-                                      'PROFILE EMPLOYEE',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        foreground:
-                                        Paint()
-                                          ..style = PaintingStyle.stroke
-                                          ..strokeWidth = 2
-                                          ..color = Colors.green[700]!,
-                                      ),
-                                    ),
-                                    Text(
-                                      'PROFILE EMPLOYEE',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
+                                child: Icon(
+                                  Icons.folder_copy,
+                                  color: Colors.green,
+                                  size: 16,
                                 ),
-                              ],
-                            )
-                                : Row(
-                              children: [
-                                Stack(
-                                  children: <Widget>[
-                                    Text(
-                                      'PROFILE EMPLOYEE',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        foreground:
-                                        Paint()
-                                          ..style = PaintingStyle.stroke
-                                          ..strokeWidth = 2
-                                          ..color = Colors.green[700]!,
-                                      ),
-                                    ),
-                                    Text(
-                                      'PROFILE EMPLOYEE',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 10),
-                                Container(
-                                  height: 70,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.shade100,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.folder_copy,
-                                    color: Colors.green,
-                                    size: 24,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            isMobile
-                                ? IconButton(
-                              onPressed: () => controller.refreshData(),
-                              icon: Icon(
-                                Icons.refresh,
-                                color: Colors.green,
-                                size: 16,
                               ),
-                            )
-                                : IconButton(
-                              onPressed: () => controller.refreshData(),
-                              icon: Icon(
-                                Icons.refresh,
-                                color: Colors.green,
-                                size: 24,
+                              SizedBox(width: 10),
+                              Stack(
+                                children: <Widget>[
+                                  Text(
+                                    'PROFILE EMPLOYEE',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      foreground:
+                                      Paint()
+                                        ..style = PaintingStyle.stroke
+                                        ..strokeWidth = 2
+                                        ..color = Colors.green[700]!,
+                                    ),
+                                  ),
+                                  Text(
+                                    'PROFILE EMPLOYEE',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
+                            ],
+                          )
+                              : Row(
+                            children: [
+                              Stack(
+                                children: <Widget>[
+                                  Text(
+                                    'PROFILE EMPLOYEE',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      foreground:
+                                      Paint()
+                                        ..style = PaintingStyle.stroke
+                                        ..strokeWidth = 2
+                                        ..color = Colors.green[700]!,
+                                    ),
+                                  ),
+                                  Text(
+                                    'PROFILE EMPLOYEE',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 10),
+                              Container(
+                                height: 70,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                  color: Colors.green.shade100,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.folder_copy,
+                                  color: Colors.green,
+                                  size: 24,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          isMobile
+                              ? IconButton(
+                            onPressed: () => controller.refreshData(),
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Colors.green,
+                              size: 16,
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          )
+                              : IconButton(
+                            onPressed: () => controller.refreshData(),
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Colors.green,
+                              size: 24,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
+        ),
     );
   }
 

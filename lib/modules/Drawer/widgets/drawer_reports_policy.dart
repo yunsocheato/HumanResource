@@ -1,97 +1,114 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
-import 'package:hrms/modules/Report/view/employee_leave_summary_screen.dart';
-import '../../Report/view/employee_Late_screen.dart';
-import '../../Report/view/employee_absent_screen.dart';
-import '../controllers/drawer_controller.dart';
-import 'Method_drawer_policy_button.dart';
+  import 'package:enefty_icons/enefty_icons.dart';
+  import 'package:flutter/material.dart';
+  import 'package:flutter_boxicons/flutter_boxicons.dart';
+  import 'package:get/get.dart';
+  import '../controllers/drawer_controller.dart';
+  import 'Method_drawer_policy_button.dart';
 
-class ReportPolicy extends GetView<AppDrawerController> {
-  const ReportPolicy({super.key});
+  class ReportPolicy extends GetView<AppDrawerController> {
+    const ReportPolicy({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return _buildDrawerTile(controller, context);
-  }
+    @override
+    Widget build(BuildContext context) {
+      return _buildDrawerTile(controller, context);
+    }
 
-  Widget _buildDrawerTile(BuildContext, context) {
-    return Obx(() {
-      final isExpanded1 = controller.isExpanded1('Leave');
-      return Theme(
-        data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent,
-          unselectedWidgetColor: Colors.white,
-        ),
-        child: ExpansionTile(
-          initiallyExpanded: isExpanded1,
-          onExpansionChanged:
-              (bool expanded) => controller.toggleTile1('Report'),
-          leading: Icon(Icons.folder, color: Colors.white),
-          title: Text(
-            'Report',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+    Widget _buildDrawerTile(BuildContext, context) {
+      return Obx(() {
+        final controller = Get.find<AppDrawerController>();
+        final isExpanded1 = controller.isExpanded1('Report');
+
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dividerColor: Colors.transparent,
+            unselectedWidgetColor: Colors.white,
           ),
-          iconColor: Colors.white,
-          collapsedIconColor: Colors.white,
-          childrenPadding: EdgeInsets.only(left: 32),
-          children: [
-            ListTile(
-              title: InkWell(
+          child: ExpansionTile(
+            initiallyExpanded: isExpanded1,
+            onExpansionChanged: (bool expanded) =>
+                controller.toggleTile1('Report'),
+            leading: Icon(
+              EneftyIcons.document_2_bold,
+              color: controller.selectedIndex.value == 9
+                  ? Colors.blue.shade900
+                  : Colors.white,
+            ),
+            title: Text(
+              'Report',
+              style: TextStyle(
+                color: controller.selectedIndex.value == 9
+                    ? Colors.blue.shade900
+                    : Colors.white,
+                fontWeight: controller.selectedIndex.value == 9
+                    ? FontWeight.bold
+                    : FontWeight.normal,
+              ),
+            ),
+            iconColor: Colors.white,
+            collapsedIconColor: Colors.white,
+            childrenPadding: const EdgeInsets.only(left: 32),
+            children: [
+              _buildSubTile(
+                title: 'Employee Checkin',
+                icon: EneftyIcons.user_tick_bold,
+                index: 10,
                 onTap: () => MethodButton6(),
-                child: Text(
-                  'Employee Checkin',
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
-              onTap: () => Get.toNamed(EmployeeCheckinScreen.routeName),
-            ),
-            ListTile(
-              title: InkWell(
+              _buildSubTile(
+                title: 'Employee Late',
+                icon: EneftyIcons.user_minus_bold,
+                index: 11,
                 onTap: () => MethodButton7(),
-                child: Text(
-                  'Employee Late',
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
-              onTap: () => Get.toNamed(EmployeeLateScreen.routeName),
-            ),
-            ListTile(
-              title: InkWell(
+              _buildSubTile(
+                title: 'Employee Absent',
+                icon: EneftyIcons.clock_bold,
+                index: 12,
                 onTap: () => MethodButton9(),
-                child: Text(
-                  'Employee Absent',
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
-              onTap: () => Get.toNamed(EmployeeAbsentScreen.routeName),
-            ),
-            ListTile(
-              title: InkWell(
+              _buildSubTile(
+                title: 'Leave Summary',
+                icon: Boxicons.bx_walk,
+                index: 13,
                 onTap: () => MethodButton8(),
-                child: Text(
-                  'Leave Summary',
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
-              onTap: () => Get.toNamed(EmployeeLeaveSummaryScreen.routeName),
-            ),
-            ListTile(
-              title: InkWell(
+              _buildSubTile(
+                title: 'OT Report',
+                icon: EneftyIcons.alarm_bold,
+                index: 14,
                 onTap: () => MethodButton10(),
-                child: Text(
-                  'OT Reports',
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
-              onTap: () => Get.toNamed('/employeeOT'),
-            ),
-          ],
+            ],
+          ),
+        );
+      });
+    }
+
+
+    Widget _buildSubTile({
+      required String title,
+      required IconData icon,
+      required int index,
+      required VoidCallback onTap,
+    }) {
+      final controller = Get.find<AppDrawerController>();
+      final isSelected = controller.selectedIndex.value == index;
+
+      return ListTile(
+        leading: Icon(
+            icon, color: isSelected ? Colors.blue.shade900 : Colors.white),
+        title: Text(
+          title,
+          style: TextStyle(
+            color: isSelected ? Colors.blue.shade900 : Colors.white,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
         ),
+        onTap: () {
+          controller.setSelected(index);
+          onTap();
+        },
       );
-    });
+    }
+
   }
-}

@@ -70,8 +70,6 @@ Widget _buildOBxResponsiveRow(BuildContext context) {
           ),
 
           const SizedBox(height: 10),
-
-          // Stream content
           Expanded(
             child: Obx(() {
               if (controller.isLoading3.value) {
@@ -152,10 +150,7 @@ Widget _buildOBxResponsiveColumn(BuildContext context) {
                 ),
               ),
             ),
-
             const SizedBox(height: 10),
-
-            // Stream content
             Expanded(
               child: Obx(() {
                 if (controller.isLoading3.value) {
@@ -178,10 +173,10 @@ Widget _buildOBxResponsiveColumn(BuildContext context) {
                     return _buildcardinfo(
                       item.title,
                       item.description,
-                      item.icon ?? Icons.group_add,
-                      item.color1 ?? Colors.blue,
-                      item.color2 ?? Colors.blueAccent,
-                      item.iconBgColor ?? Colors.grey,
+                      item.icon,
+                      item.color1,
+                      item.color2,
+                      item.iconBgColor,
                     );
                   },
                 );

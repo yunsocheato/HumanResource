@@ -1,4 +1,3 @@
-import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
 import '../Attendance/views/attendance_screen.dart';
@@ -6,6 +5,7 @@ import '../Dashboard/views/dashboard_screen.dart';
 import '../Department/views/department_screen.dart';
 import '../Employee/views/employee_profile_screen.dart';
 import '../Employee/views/employee_screen.dart';
+import '../LeaveRequest/views/apply_leave_screen.dart';
 import '../LeaveRequest/views/leave_request_screen.dart';
 import '../Loginscreen/views/login_screen.dart';
 import '../Report/view/employee_Late_screen.dart';
@@ -28,6 +28,7 @@ final List<GetPage> appRoutes = [
   GetPage(name: EmployeeAbsentScreen.routeName, page: () => EmployeeAbsentScreen(),transition: Transition.rightToLeft),
   GetPage(name: EmployeeOTScreen.routeName, page: () => EmployeeOTScreen(),transition: Transition.rightToLeft),
   GetPage(name: EmployeeProfileScreen.routeName, page: () => EmployeeProfileScreen(),transition: Transition.rightToLeft),
+  GetPage(name: ApplyLeaveScreen.routeName, page: () => ApplyLeaveScreen(),transition: Transition.rightToLeft),
 ];
 
 

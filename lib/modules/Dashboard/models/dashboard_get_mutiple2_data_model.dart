@@ -4,7 +4,7 @@ class MutipleModel2 {
   final String title;
   final String description;
   final IconData icon;
-  final String? photo;
+  final String  photo;
   final Color color1;
   final Color color2;
   final Color iconBgColor;

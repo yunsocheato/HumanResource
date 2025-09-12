@@ -30,39 +30,41 @@ class RecentlyControllerScreen extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    StreamUsers();
-    CombinesStream1();
-    CombinesStream2();
+    loadUsers();
+    loadCombine1();
+    loadCombine2();
   }
-  void StreamUsers() async {
-    streamSignupUserAsModel().listen((event) {
-      users.value = event;
-      isLoading.value = false;
-    }, onError: (_) {
+  Future<void> loadUsers() async {
+    try {
+      final result = await FetchUserasModel();
+      users.value = result;
+    } catch (e) {
+      errorMessage1.value = "User fetch error: $e";
+    } finally {
       isLoading.value = false;
     }
-    );
   }
 
-
-
-  void CombinesStream1() async {
-    combinedStream1.listen((data) {
-      items1.value = data;
+  Future<void> loadCombine1() async {
+    try {
+      final result = await fetchCombined1();
+      items1.value = result;
+    } catch (e) {
+      errorMessage1.value = "Combine1 fetch error: $e";
+    } finally {
       isLoading2.value = false;
-    }, onError: (error) {
-      errorMessage1.value = error.toString();
-      isLoading2.value = false;
-    });
+    }
   }
 
-  void CombinesStream2() async {
-    combinedStream2.listen((data) {
-      items2.value = data;
+  Future<void> loadCombine2() async {
+    try {
+      final result = await fetchEmployeeScanRecords();
+      items2.value = result;
+    } catch (e) {
+      errorMessage2.value = "Combine2 fetch error: $e";
+    } finally {
       isLoading3.value = false;
-    }, onError: (error) {
-      errorMessage2.value = error.toString();
-      isLoading3.value = false;
-    });
+    }
   }
+
 }

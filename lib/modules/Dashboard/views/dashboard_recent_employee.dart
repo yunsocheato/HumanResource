@@ -28,58 +28,36 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
   Widget buildOBxResponsiveRow(BuildContext context) {
     final controller = Get.find<RecentlyControllerScreen>();
     return Card (
-      elevation: 4,
+      elevation: 10,
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 50,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-              gradient: LinearGradient(
-                colors: [
-                  Colors.deepPurple.shade700,
-                  Colors.deepPurpleAccent.shade100,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.topRight,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                height: 30,
+                width: 145,
+                decoration: BoxDecoration(
+                  color: Colors.red.shade700,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                  )
+                ),
+                child: Center(
+                  child: Text(
                     'Recent Employees',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 16,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      // Action for View All
-                    },
-                    child: Text(
-                      'View All',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
 
           Obx(() {
@@ -105,15 +83,109 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
                 ),
                 child: DataTable(
                   columnSpacing: 24,
-                  columns: const [
-                    DataColumn(label: Text('Name')),
-                    DataColumn(label: Text('Email')),
-                    DataColumn(label: Text('Position')),
-                    DataColumn(label: Text('Department')),
+                  columns: [
+                    DataColumn(
+                      label: Container(
+                        height: 28,
+                        width: 70,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: const Text(
+                            'Photo',
+                            style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Container(
+                        height: 28,
+                        width: 70,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[900],
+                          borderRadius: BorderRadius.circular(5),
+
+                        ),
+                        child: Center(
+                          child: const Text(
+                            'Name',
+                            style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Container(
+                        height: 28,
+                        width: 70,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.yellow[900],
+                        ),
+                        child: Center(
+                          child: const Text(
+                            'Email',
+                            style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Container(
+                        height: 28,
+                        width: 70,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.red[900],
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: const Text(
+                            'Position',
+                            style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Container(
+                        height: 28,
+                        width: 70,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.blue[900],
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: const Text(
+                            'Department',
+                            style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                   rows: controller.users.map((user) {
                     return DataRow(
                       cells: [
+                        DataCell(
+                          CircleAvatar(
+                            radius: 15,
+                            backgroundColor: Colors.grey[200],
+                            backgroundImage: user.photo_url != null && user.photo_url!.isNotEmpty
+                                ? NetworkImage(user.photo_url!)
+                                : null,
+                            child: user.photo_url == null || user.photo_url!.isEmpty
+                                ? Icon(Icons.person, color: Colors.grey)
+                                : null,
+                          ),
+                        ),
                         DataCell(Text(user.name)),
                         DataCell(Text(user.email)),
                         DataCell(Text(user.position)),
@@ -133,8 +205,6 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
 
   Widget buildOBxResponsiveColumn(BuildContext context, {required bool isMobile}) {
     final controller = Get.find<RecentlyControllerScreen>();
-    final Dcontroller = Get.find<DashboardController>();
-
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
@@ -153,20 +223,26 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(
-                    'Recent Employee',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(
-                    onPressed: () => Dcontroller.refreshdata(),
-                    child: const Text(
-                      'View All',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                  Container(
+                    height: 40,
+                    width: 145,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.deepPurple.shade700,
+                          Colors.deepPurpleAccent.shade100,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.topRight,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Recent Employee',
+                        style: TextStyle(fontSize: 16,color: Colors.white ,fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -212,10 +288,15 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
                             color: user.iconBgColor,
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(
-                            user.icondata,
-                            color: Colors.white,
-                            size: 20,
+                          child:  CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Colors.grey[200],
+                            backgroundImage: user.photo_url != null && user.photo_url!.isNotEmpty
+                                ? NetworkImage(user.photo_url!)
+                                : null,
+                            child: user.photo_url == null || user.photo_url!.isEmpty
+                                ? Icon(Icons.person, color: Colors.grey)
+                                : null,
                           ),
                         ),
                         const SizedBox(width: 15),

@@ -1,48 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/dashboard_get_mutiple1_data_model.dart';
 
 final SupabaseClient supabase = Supabase.instance.client;
 
-Stream<List<MutipleModel1>> employeeStream() {
-  return supabase
-      .from('signupuser')
-      .stream(primaryKey: ['user_id'])
-      .order('created_at', ascending: false)
-      .map((rows) =>
-      rows.map((row) =>
-          MutipleModel1(
-            title: row['name'] ?? 'name',
-            photo: row['photo_url'] ?? '',
-            description: 'join as ${row['position'] ?? ''}',
-            icon: Icons.person,
-            color1: Colors.deepPurple,
-            color2: Colors.deepPurpleAccent,
-            iconBgColor: Colors.grey,
-          )).toList());
+Future<List<MutipleModel1>> fetchLeaveRequests() async {
+  try {
+    final response = await supabase
+        .from('signupuser')
+        .select()
+        .order('created_at', ascending: false);
+
+    final List rows = response as List;
+
+    return await Future.wait(rows.map((row) async {
+
+      return MutipleModel1(
+        title: row['name'] ?? 'name',
+        photo: row['photo_url'] ?? '',
+        description: 'Join as ${row['position'] ?? ''}',
+        icon: Icons.person,
+        color1: Colors.deepPurple,
+        color2: Colors.deepPurpleAccent,
+        iconBgColor: Colors.grey,
+      );
+    }));
+  } catch (e) {
+    print("Fetch employees error: $e");
+    return [];
+  }
 }
 
-Stream<List<MutipleModel1>> leaveRequestStream() {
-  return supabase
-      .from('leave_requests')
-      .stream(primaryKey: ['user_id'])
-      .order('created_at', ascending: false)
-      .map((rows) =>
-      rows.map((row) =>
-          MutipleModel1(
-            photo: row['photo_url'] ?? '',
-            title: row['name'] ?? 'name',
-            description: 'Request Leave Type: ${row['request_type'] ?? ''}\nReason: ${row['reason'] ?? ''}',
-            icon: Icons.calendar_month,
-            color1: Colors.green,
-            color2: Colors.lightGreen,
-            iconBgColor: Colors.grey,
-          )).toList());}
+Future<List<MutipleModel1>> leaveRequestFuture() async {
+  try {
+    final response = await supabase
+        .from('leave_requests')
+        .select()
+        .order('created_at', ascending: false);
 
-final Stream<List<MutipleModel1>> combinedStream1 = Rx.combineLatest2(
-  employeeStream(),
-  leaveRequestStream(),
-      (List<MutipleModel1> e, List<MutipleModel1> l) => [...e, ...l],
-).asBroadcastStream();
+    final List rows = response as List;
 
+    return await Future.wait(rows.map((row) async {
+
+      return MutipleModel1(
+        photo: row['photo_url'] ?? '',
+        title: row['name'] ?? 'name',
+        description:
+        'Request Leave Type: ${row['request_type'] ?? ''}\nReason: ${row['reason'] ?? ''}',
+        icon: Icons.calendar_month,
+        color1: Colors.green,
+        color2: Colors.lightGreen,
+        iconBgColor: Colors.grey,
+      );
+    }));
+  } catch (e) {
+    print("Fetch leave requests error: $e");
+    return [];
+  }
+}
+
+Future<List<MutipleModel1>> fetchCombined1() async {
+  try {
+    final results = await Future.wait([
+      fetchLeaveRequests(),
+      leaveRequestFuture(),
+    ]);
+
+    return [...results[0], ...results[1]];
+  } catch (e) {
+    print("Fetch combined1 error: $e");
+    return [];
+  }
+}

@@ -1,6 +1,10 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import '../../Attendance/views/attendance_screen.dart';
+import '../../DialogScreen/DialogScreen.dart';
+import '../../LeaveRequest/widgets/apply_leave_screen_widget.dart';
 import '../controllers/drawer_controller.dart';
 import 'Method_drawer_policy_button.dart';
 
@@ -24,7 +28,7 @@ class LeaveRequest extends GetView<AppDrawerController> {
           initiallyExpanded: isExpanded1,
           onExpansionChanged:
               (bool expanded) => controller.toggleTile1('Leave'),
-          leading: Icon(Icons.stop_circle, color: Colors.white),
+          leading: Icon(Boxicons.bx_walk, color: Colors.white),
           title: InkWell(
             onTap: () => MethodButton5(),
             child: Text(
@@ -40,25 +44,27 @@ class LeaveRequest extends GetView<AppDrawerController> {
           childrenPadding: EdgeInsets.only(left: 32),
           children: [
             ListTile(
+              leading: Icon(EneftyIcons.clock_2_bold, color: Colors.white),
               title: Text(
                 'Apply Leave',
                 style: TextStyle(color: Colors.white),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
+              onTap: () => DialogScreen(context,ApplyLeaveWidget())
             ),
             ListTile(
+              leading: Icon(EneftyIcons.user_tick_bold, color: Colors.white),
               title: Text(
                 'Leave Approved',
                 style: TextStyle(color: Colors.white),
               ),
-              onTap: () => Get.toNamed('/it-policy'),
+              onTap: () => Get.toNamed('/Approved'),
             ),
             ListTile(
+              leading: Icon(EneftyIcons.user_minus_bold, color: Colors.white),
               title: Text(
                 'Leave Reject',
                 style: TextStyle(color: Colors.white),
               ),
-              onTap: () => Get.toNamed('/hr-policy'),
             ),
           ],
         ),

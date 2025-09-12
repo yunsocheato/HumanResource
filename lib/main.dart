@@ -10,14 +10,13 @@ import 'modules/Routes/Routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await dotenv.load(fileName: ".env");
 
   final supabaseUrl = dotenv.env['SUPABASE_URL'];
   final supabaseKey = dotenv.env['SUPABASE_ANON_KEY'];
-
-  if (supabaseUrl == null || supabaseKey == null) {
-    throw Exception('Data environment variables are missing!');
+  final bucket = dotenv.env['SUPABASE_BUCKET'];
+  if (supabaseUrl == null || supabaseKey == null || bucket == null) {
+    throw Get.snackbar('Error','Data environment variables are missing!');
   }
 
   await Supabase.initialize(

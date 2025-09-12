@@ -1,8 +1,8 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Dashboard/controllers/dashboard_screen_controller.dart';
-
+import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Employee/views/employee_filter_view.dart';
@@ -14,14 +14,14 @@ import '../Controller/employee_screen_controller.dart';
 
 class EmployeeScreen extends GetView<EmployeeScreenController> {
   const EmployeeScreen({super.key});
-  static const String routeName = '/EmployeeScreen';
+  static const String routeName = '/Employee';
 
   @override
   Widget build(BuildContext context) {
     final loading = Get.find<LoadingUiController>();
     final isMobile = Get.width < 600;
 
-    return Drawerscreen(
+    final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -58,6 +58,10 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
         ),
       ),
     );
+    return isMobile
+        ? BottomAppBarWidget(body: contents)
+        : contents;
+
   }
 
   Widget _buildHeader() {
@@ -102,7 +106,7 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
-                                Icons.person_2_outlined,
+                                EneftyIcons.user_tick_bold,
                                 color: Colors.green,
                                 size: 16,
                               ),

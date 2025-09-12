@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/Department/controllers/department_controller.dart';
 import '../../Attendance/controllers/attendane_screen_controller.dart';
+import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/controllers/drawer_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
@@ -21,7 +22,7 @@ class DepartmentScreen extends GetView<DepartmentScreenController> {
     final controllers = Get.find<DepartmentScreenController>();
     final isMobile = Get.width < 600;
 
-    return Drawerscreen(
+    final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -48,6 +49,9 @@ class DepartmentScreen extends GetView<DepartmentScreenController> {
         ),
       ),
     );
+    return isMobile
+        ? BottomAppBarWidget(body: contents)
+        : contents;
   }
 
 
