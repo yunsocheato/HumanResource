@@ -9,12 +9,11 @@ import '../../Employee/widgets/employee_record.dart';
 import '../Controller/employee_screen_controller.dart';
 
 class EmployeeScreen extends GetView<EmployeeScreenController> {
-   const EmployeeScreen({super.key,});
+  const EmployeeScreen({super.key});
   static const String routeName = '/employee';
 
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final isMobile = width < 600;
 
@@ -40,6 +39,7 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
     );
     return isMobile ? BottomAppBarWidget(body: contents) : contents;
   }
+
   double _getTitleFontSize(double width) {
     if (width < 600) return 14;
     if (width < 1024) return 18;
@@ -53,7 +53,7 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
     final isMobile = width < 600;
 
     return Obx(
-          () => AnimatedOpacity(
+      () => AnimatedOpacity(
         duration: const Duration(seconds: 2),
         opacity: controller.showlogincard1.value ? 1.0 : 0.0,
         child: AnimatedPadding(
@@ -101,10 +101,10 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
                               style: TextStyle(
                                 fontSize: titleFontSize,
                                 foreground:
-                                Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 2
-                                  ..color = Colors.green[700]!,
+                                    Paint()
+                                      ..style = PaintingStyle.stroke
+                                      ..strokeWidth = 2
+                                      ..color = Colors.green[700]!,
                               ),
                             ),
                             Text(
@@ -152,83 +152,77 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
     );
   }
 
-   Widget _buildResponsiveCardInfo(BuildContext context, double width) {
-     final isMobile = width < 600;
-     final isTablet = width >= 600 && width < 1024;
-     final isLaptop = width >= 1024 && width < 1440;
-     final isDesktop = width >= 1440 && width < 2560;
-     final isLargeDesktop = width >= 2560;
+  Widget _buildResponsiveCardInfo(BuildContext context, double width) {
+    final isMobile = width < 600;
+    final isTablet = width >= 600 && width < 1024;
+    final isLaptop = width >= 1024 && width < 1440;
+    final isDesktop = width >= 1440 && width < 2560;
+    final isLargeDesktop = width >= 2560;
 
-     double cardWidthFactor;
-     double cardHeight = 350;
+    double cardWidthFactor;
+    double cardHeight = 350;
 
-     if (isMobile) {
-       cardWidthFactor = 1.0;
-       cardHeight = 220;
-     } else if (isTablet) {
-       cardWidthFactor = 0.5;
-       cardHeight = 300;
-     } else if (isLaptop) {
-       cardWidthFactor = 0.38;
-     } else if (isDesktop) {
-       cardWidthFactor = 0.25;
-     } else {
-       cardWidthFactor = 0.2;
-     }
+    if (isMobile) {
+      cardWidthFactor = 1.0;
+      cardHeight = 220;
+    } else if (isTablet) {
+      cardWidthFactor = 0.5;
+      cardHeight = 300;
+    } else if (isLaptop) {
+      cardWidthFactor = 0.38;
+    } else if (isDesktop) {
+      cardWidthFactor = 0.25;
+    } else {
+      cardWidthFactor = 0.2;
+    }
 
-     final cardWidth = width * cardWidthFactor;
-     final safeCardWidth = cardWidth < 350.0 ? cardWidth : 350.0;
+    final cardWidth = width * cardWidthFactor;
+    final safeCardWidth = cardWidth < 350.0 ? cardWidth : 350.0;
 
-     const employeeList = EmployeeList();
+    const employeeList = EmployeeList();
 
-     if (isMobile) {
-       return Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-           const AttendanceFilterView(),
-           const SizedBox(height: 10),
-           const EmployeeList(),
-         ],
-       );
-     }
+    if (isMobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AttendanceFilterView(),
+          const SizedBox(height: 10),
+          const EmployeeList(),
+        ],
+      );
+    }
 
-     if (isTablet) {
-       return SingleChildScrollView(
-         scrollDirection: Axis.horizontal,
-         child: Center(
-           child: SizedBox(
-             width: safeCardWidth,
-             height: cardHeight,
-             child: Card(
-               elevation: 4,
-               child: employeeList,
-             ),
-           ),
-         ),
-       );
-     }
+    if (isTablet) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Center(
+          child: SizedBox(
+            width: safeCardWidth,
+            height: cardHeight,
+            child: Card(elevation: 4, child: employeeList),
+          ),
+        ),
+      );
+    }
 
-     if (isLaptop || isDesktop) {
-       return Row(
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-           Expanded(child: employeeList),
-         ],
-       );
-     }
-     return Row(
-       crossAxisAlignment: CrossAxisAlignment.start,
-       children: [
-         Expanded(child: employeeList),
-         const SizedBox(width: 12),
-         Expanded(
-           child: Card(
-             elevation: 2,
-             child: Center(child: Text("Extra Space / Future Widget")),
-           ),
-         ),
-       ],
-     );
-   }
-
+    if (isLaptop || isDesktop) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [Expanded(child: employeeList)],
+      );
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(child: employeeList),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Card(
+            elevation: 2,
+            child: Center(child: Text("Extra Space / Future Widget")),
+          ),
+        ),
+      ],
+    );
+  }
 }

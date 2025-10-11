@@ -60,7 +60,6 @@ class _MyAppState extends State<MyApp> {
       title: 'DeamHR Web',
       initialRoute: session == null ? AppRoutes.dashboard : AppRoutes.login,
       getPages: AppPages.pages,
-
       initialBinding: BindingMain(),
       theme: ThemeData(primarySwatch: Colors.orange),
       darkTheme: ThemeData.dark(),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Attendance/utils/ExportExcel.dart';
@@ -13,11 +14,11 @@ class EmployeeFilterController extends GetxController {
   final ScrollController _verticalController = ScrollController();
   final RxString errorMessage1 = ''.obs;
   final RxList<Map<String, dynamic>> allData = <Map<String, dynamic>>[].obs;
-  final RxList<Map<String, dynamic>> filteredData = <Map<String, dynamic>>[].obs;
+  final RxList<Map<String, dynamic>> filteredData =
+      <Map<String, dynamic>>[].obs;
 
   RxList<DashboardModel> users = <DashboardModel>[].obs;
   var isLoading = false.obs;
-
 
   @override
   void onInit() {
@@ -41,21 +42,22 @@ class EmployeeFilterController extends GetxController {
       filteredData.assignAll(allData);
     } else {
       filteredData.assignAll(
-          allData.where((element) =>
-          element['status']?.toString().toLowerCase() ==
-              selectedFilter.value.toLowerCase())
+        allData.where(
+          (element) =>
+              element['status']?.toString().toLowerCase() ==
+              selectedFilter.value.toLowerCase(),
+        ),
       );
     }
   }
 
-
-    void exportSheet() {
-      if (selectedExport.value == 'PDF') {
-        ExportPDF(attendaData: filteredData);
-      } else {
-        exportToExcel(attendaData: filteredData);
-      }
+  void exportSheet() {
+    if (selectedExport.value == 'PDF') {
+      ExportPDF(attendaData: filteredData);
+    } else {
+      exportToExcel(attendaData: filteredData);
     }
+  }
 
   Future<void> loadUsers() async {
     try {
@@ -67,7 +69,4 @@ class EmployeeFilterController extends GetxController {
       isLoading.value = false;
     }
   }
-
-
 }
-

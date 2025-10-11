@@ -7,7 +7,7 @@ import '../Controller/Employeetable_controller.dart';
 import '../Controller/employeefiltercontroller.dart';
 
 class EmployeeList extends GetView<EmployeeFilterController> {
-  const EmployeeList({super.key ,});
+  const EmployeeList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,9 @@ class EmployeeList extends GetView<EmployeeFilterController> {
           child: Expanded(
             child: Card(
               elevation: 10,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
               color: Colors.grey[200],
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,11 +90,16 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                     width: 145,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.green.shade700, Colors.greenAccent.shade100],
+                        colors: [
+                          Colors.green.shade700,
+                          Colors.greenAccent.shade100,
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.topRight,
                       ),
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10)),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                      ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -135,8 +142,9 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                                 child: const Text(
                                   'Email',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -152,8 +160,9 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                                 child: const Text(
                                   'Name',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -169,8 +178,9 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                                 child: const Text(
                                   'ID Card',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -186,8 +196,9 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                                 child: const Text(
                                   'Position',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -203,28 +214,36 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                                 child: const Text(
                                   'Details',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ],
-                          rows: controller.users.map((user) {
-                            return DataRow(
-                              cells: [
-                                DataCell(Text(user.email)),
-                                DataCell(Text(user.name)),
-                                DataCell(Text(user.id_card)),
-                                DataCell(Text(user.position )),
-                                DataCell(
-                                  IconButton(
-                                    onPressed: () => controller1.showLeaveDialog(user.toJson()),
-                                    icon: const Icon(Icons.info, color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }).toList(),
+                          rows:
+                              controller.users.map((user) {
+                                return DataRow(
+                                  cells: [
+                                    DataCell(Text(user.email)),
+                                    DataCell(Text(user.name)),
+                                    DataCell(Text(user.id_card)),
+                                    DataCell(Text(user.position)),
+                                    DataCell(
+                                      IconButton(
+                                        onPressed:
+                                            () => controller1.showLeaveDialog(
+                                              user.toJson(),
+                                            ),
+                                        icon: const Icon(
+                                          Icons.info,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
                         ),
                       ),
                     ),
@@ -235,12 +254,15 @@ class EmployeeList extends GetView<EmployeeFilterController> {
           ),
         ),
       );
-
     });
   }
 
   Widget _buildMobile(
-      BuildContext context, double cardHeight, double titleFontSize, double cardWidth) {
+    BuildContext context,
+    double cardHeight,
+    double titleFontSize,
+    double cardWidth,
+  ) {
     final controller1 = Get.find<EmployeeTalbeController>();
 
     return Obx(() {
@@ -271,7 +293,10 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                 child: Text(
                   'Employee Records',
                   style: TextStyle(
-                      fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.white),
+                    fontSize: titleFontSize,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -288,7 +313,8 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                 child: Card(
                   elevation: 3,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -297,8 +323,9 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                         decoration: BoxDecoration(
                           color: user.color1,
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomLeft: Radius.circular(12)),
+                            topLeft: Radius.circular(12),
+                            bottomLeft: Radius.circular(12),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -310,15 +337,21 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
                                     user.email,
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   IconButton(
-                                    onPressed: () => controller1.showLeaveDialog(user.toJson()),
+                                    onPressed:
+                                        () => controller1.showLeaveDialog(
+                                          user.toJson(),
+                                        ),
                                     icon: const Icon(
                                       Icons.info_rounded,
                                       color: Colors.grey,
@@ -344,6 +377,4 @@ class EmployeeList extends GetView<EmployeeFilterController> {
       );
     });
   }
-
-
 }

@@ -45,7 +45,7 @@ import '../modules/Report/controller/employee_report_leavesummary_controller.dar
 import '../modules/Schedule/controller/schedule_screen_controller.dart';
 import '../modules/Searchbar/controller/search_bar_controller.dart';
 
-class BindingMain extends Bindings{
+class BindingMain extends Bindings {
   @override
   void dependencies() {
     Get.put(DashboardController());
@@ -185,7 +185,5 @@ class BindingMain extends Bindings{
 
     Get.put(UserSetupController());
     Get.lazyPut<UserSetupController>(() => UserSetupController());
-
   }
-
 }
