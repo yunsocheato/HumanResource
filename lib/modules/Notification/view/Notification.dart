@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class NotificationScreen extends StatefulWidget {
+class NotificationScreen extends GetView<NotificationController> {
   static const String routeName = '/NotificationScreen';
   const NotificationScreen({super.key});
 
@@ -11,6 +12,6 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return ValueN();
   }
 }

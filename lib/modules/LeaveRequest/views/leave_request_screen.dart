@@ -10,7 +10,7 @@ import '../widgets/leave_request_view.dart';
 import '../../Drawer/views/drawer_screen.dart';
 
 class LeaveRequest extends GetView<LeaveController> {
-  static const String routeName = '/LeaveRequest';
+  static const String routeName = '/leave-request';
   const LeaveRequest({super.key});
 
 

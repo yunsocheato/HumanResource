@@ -4,12 +4,14 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/Dashboard/views/dashboard_screen.dart';
 import 'package:hrms/modules/Department/views/department_screen.dart';
 import 'package:hrms/modules/Employee/views/employee_profile_screen.dart';
+import 'package:hrms/modules/History/view/history_screen.dart';
 import 'package:hrms/modules/LeaveRequest/views/leave_request_screen.dart';
 import 'package:hrms/modules/Report/view/employee_Late_screen.dart';
 import 'package:hrms/modules/Report/view/employee_absent_screen.dart';
 import 'package:hrms/modules/Report/view/employee_checkin_screen.dart';
 import 'package:hrms/modules/Report/view/employee_leave_summary_screen.dart';
 import 'package:hrms/modules/Report/view/employee_ot_screen.dart';
+import 'package:hrms/modules/Schedule/views/schedule_screen.dart';
 import '../../Attendance/controllers/attendance_widget_controller.dart';
 import '../../Attendance/views/attendance_screen.dart';
 import '../../Employee/views/employee_screen.dart';
@@ -338,3 +340,93 @@ Future<void> MethodButton11() async {
   }
   Future.microtask(() => Get.offAllNamed(EmployeeProfileScreen.routeName));
 }
+
+
+Future<void> MethodButton12() async {
+  final error = Get.put<ErrormessageController>(ErrormessageController());
+  final attendanceController = Get.find<AttendanceController>();
+
+  if (!Get.isRegistered<LoadingUiController>()) {
+    Get.put(LoadingUiController());
+  }
+  final loading = Get.find<LoadingUiController>();
+  loading.isLoading.value = true;
+  Get.dialog(
+    const Dialog(
+      backgroundColor: Colors.transparent,
+      child: LoadingScreen(),
+    ),
+    barrierDismissible: false,
+  );
+  await Future.delayed(const Duration(seconds: 2));
+  if (attendanceController.attendanceData.isEmpty) {
+    error.error.value = 'No Schedule Found';
+    error.buildErrorMessages();
+    await Future.delayed(const Duration(seconds: 1));
+  }
+  loading.isLoading.value = false;
+  if (Get.isDialogOpen ?? false) {
+    Get.back();
+  }
+  Future.microtask(() => Get.offAllNamed(ScheduleScreen.routeName));
+}
+
+Future<void> MethodButton13() async {
+  final error = Get.put<ErrormessageController>(ErrormessageController());
+  final attendanceController = Get.find<AttendanceController>();
+
+  if (!Get.isRegistered<LoadingUiController>()) {
+    Get.put(LoadingUiController());
+  }
+  final loading = Get.find<LoadingUiController>();
+  loading.isLoading.value = true;
+  Get.dialog(
+    const Dialog(
+      backgroundColor: Colors.transparent,
+      child: LoadingScreen(),
+    ),
+    barrierDismissible: false,
+  );
+  await Future.delayed(const Duration(seconds: 2));
+  if (attendanceController.attendanceData.isEmpty) {
+    error.error.value = 'No History Data';
+    error.buildErrorMessages();
+    await Future.delayed(const Duration(seconds: 1));
+  }
+  loading.isLoading.value = false;
+  if (Get.isDialogOpen ?? false) {
+    Get.back();
+  }
+  Future.microtask(() => Get.offAllNamed(HistoryScreen.routeName));
+}
+
+Future<void> MethodButton14() async {
+  final error = Get.put<ErrormessageController>(ErrormessageController());
+  final attendanceController = Get.find<AttendanceController>();
+
+  if (!Get.isRegistered<LoadingUiController>()) {
+    Get.put(LoadingUiController());
+  }
+  final loading = Get.find<LoadingUiController>();
+  loading.isLoading.value = true;
+  Get.dialog(
+    const Dialog(
+      backgroundColor: Colors.transparent,
+      child: LoadingScreen(),
+    ),
+    barrierDismissible: false,
+  );
+  await Future.delayed(const Duration(seconds: 2));
+  if (attendanceController.attendanceData.isEmpty) {
+    error.error.value = 'No History Data';
+    error.buildErrorMessages();
+    await Future.delayed(const Duration(seconds: 1));
+  }
+  loading.isLoading.value = false;
+  if (Get.isDialogOpen ?? false) {
+    Get.back();
+  }
+  Future.microtask(() => Get.offAllNamed(ScheduleScreen.routeName));
+}
+
+

@@ -5,109 +5,103 @@
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <meta name="description" content="A new Flutter project.">
-
-    <!-- iOS meta tags & icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="hrms">
-    <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <title>hrms</title>
-    <link rel="manifest" href="manifest.json">
+    <meta name="description" content="Attendance Flutter Web">
+    <title>Attendance</title>
 
     <style>
-        @keyframes ldio-spinner {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+        .absolute { position: absolute; }
+        .inline-block { display: inline-block; }
+        .loader { display: flex; margin: 0.25em 0; justify-content:center; align-items:center; height:100vh; background:#0D47A1; }
+        .w-2 { width: 0.5em; }
+        .dash {
+          animation: dashArray 2s ease-in-out infinite,
+                     dashOffset 2s linear infinite;
+          stroke-width: 8;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          fill:none;
+        }
+        .spin {
+          animation: spinDashArray 2s ease-in-out infinite,
+                     spin 8s ease-in-out infinite,
+                     dashOffset 2s linear infinite;
+          stroke-width: 10;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          fill:none;
+          transform-origin: center;
         }
 
-        .loading-screen {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: #0070e2;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 9999;
+        @keyframes dashArray {
+          0% { stroke-dasharray: 0 1 359 0; }
+          50% { stroke-dasharray: 0 359 1 0; }
+          100% { stroke-dasharray: 359 1 0 0; }
         }
-
-        .spinner-container {
-          width: 200px;
-          height: 200px;
-          position: relative;
+        @keyframes spinDashArray {
+          0% { stroke-dasharray: 270 90; }
+          50% { stroke-dasharray: 0 360; }
+          100% { stroke-dasharray: 270 90; }
         }
-
-        .spinner-container > div {
-          position: absolute;
-          width: 200px;
-          height: 200px;
-          border-radius: 50%;
-          border: 20px solid #ffffff;
-          border-color: #ffffff transparent #ffffff transparent;
-          animation: ldio-spinner 1s linear infinite;
-          box-sizing: border-box !important;
+        @keyframes dashOffset {
+          0% { stroke-dashoffset: 365; }
+          100% { stroke-dashoffset: 5; }
         }
-
-        .spinner-container > div:nth-child(2) {
-          border-color: transparent;
-        }
-
-        .spinner-container > div:nth-child(2) div {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          transform: rotate(45deg);
-        }
-
-        .spinner-container > div:nth-child(2) div:before,
-        .spinner-container > div:nth-child(2) div:after {
-          content: "";
-          display: block;
-          position: absolute;
-          width: 20px;
-          height: 20px;
-          background: #ffffff;
-          border-radius: 50%;
-        }
-
-        .spinner-container > div:nth-child(2) div:before {
-          top: -20px;
-          left: 70px;
-          box-shadow: 0 160px 0 0 #ffffff;
-        }
-
-        .spinner-container > div:nth-child(2) div:after {
-          top: 70px;
-          left: -20px;
-          box-shadow: 160px 0 0 0 #ffffff;
+        @keyframes spin {
+          0% { rotate:0deg; }
+          12.5%,25% { rotate:270deg; }
+          37.5%,50% { rotate:540deg; }
+          62.5%,75% { rotate:810deg; }
+          87.5%,100% { rotate:1080deg; }
         }
     </style>
 </head>
 <body>
+<div class="loader">
+    <svg height="64" width="64" class="absolute">
+        <defs>
+            <linearGradient id="b" y2="2" x2="0" y1="62" x1="0">
+                <stop stop-color="#973BED"></stop>
+                <stop stop-color="#007CFF" offset="1"></stop>
+            </linearGradient>
+            <linearGradient id="c" y2="0" x2="0" y1="64" x1="0">
+                <stop stop-color="#FFC800"></stop>
+                <stop stop-color="#F0F" offset="1"></stop>
+            </linearGradient>
+            <linearGradient id="d" y2="2" x2="0" y1="62" x1="0">
+                <stop stop-color="#00E0ED"></stop>
+                <stop stop-color="#00DA72" offset="1"></stop>
+            </linearGradient>
+        </defs>
+    </svg>
 
-<div class="loading-screen">
-    <div class="spinner-container">
-        <div></div>
-        <div>
-            <div></div>
-        </div>
+    <div class="loader" style="flex-direction: column; align-items: center;">
+        <img src="favicon.png" alt="DEAM Logo"
+             style="width:100px; margin-bottom:10px;
+              animation: bounceSpin 1.5s ease-in-out infinite alternate;" />
+
+
+        <svg viewBox="0 0 320 64" width="320" height="64" class="inline-block">
+            <text x="0" y="50" font-size="48" font-weight="bold" font-family="Arial" stroke="white" class="dash">D</text>
+            <text x="80" y="50" font-size="48" font-weight="bold" font-family="Arial" stroke="white" class="dash">E</text>
+            <text x="160" y="50" font-size="48" font-weight="bold" font-family="Arial" stroke="white" class="dash">A</text>
+            <text x="240" y="50" font-size="48" font-weight="bold" font-family="Arial" stroke="white" class="dash">M</text>
+
+        </svg>
     </div>
-</div>
 
-=<script src="flutter_bootstrap.js"></script>
+    <style>
+        @keyframes bounceSpin {
+          0%   { transform: translateY(0) rotate(0deg); }
+          50%  { transform: translateY(-15px) rotate(180deg); }
+          100% { transform: translateY(0) rotate(360deg); }
+        }
+    </style>
 
-<script>
-    window.addEventListener('flutter-first-frame', function () {
-      const loader = document.querySelector('.loading-screen');
-      if (loader) loader.remove();
-    });
-</script>
-
+    <script src="flutter_bootstrap.js" async></script>
+    <script>
+        window.addEventListener('flutter-first-frame', function () {
+        const loader = document.querySelector('.loader');
+        if(loader) loader.style.display = 'none';  });
+    </script>
 </body>
 </html>

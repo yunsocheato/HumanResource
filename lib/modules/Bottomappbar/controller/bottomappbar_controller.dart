@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/History/view/history_screen.dart';
+import 'package:hrms/modules/Schedule/views/schedule_screen.dart';
+import 'package:hrms/modules/Setting/view/setting_screen_mobile.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
 
 class BottomAppBarController extends GetxController{
@@ -9,6 +12,7 @@ class BottomAppBarController extends GetxController{
   final Color Unselectedcolors = Colors.black54;
   final tabCount = 4;
   final double indicatorWidth = 50;
+  final context = Get.context;
 
 
   void SelectedIndex(int index){
@@ -20,13 +24,13 @@ class BottomAppBarController extends GetxController{
         Get.toNamed(DashboardScreen.routeName);
         break;
       case 1:
-        Get.toNamed(DashboardScreen.routeName);
+        Get.toNamed(ScheduleScreen.routeName);
         break;
       case 2:
-        Get.toNamed(DashboardScreen.routeName);
+        Get.toNamed(HistoryScreen.routeName);
         break;
       case 3:
-        Get.toNamed(DashboardScreen.routeName);
+        Get.toNamed(SettingScreenMobile.routeName);
         break;
     }
   }
@@ -37,4 +41,8 @@ class BottomAppBarController extends GetxController{
 
   double indicatorAlignmentX(int index) {
     return (2 / (tabCount - 1)) * index - 1;
-  }}
+  }
+
+
+
+}

@@ -3,17 +3,17 @@ import 'package:get/get.dart';
 
 import '../controllers/employee_policy_controller.dart';
 
-class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
+class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
-   EmployeePolicyScreen({Key? key}) : super(key: key);
+  EmployeePolicyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _buildResponsiveEmployeePolicy();
   }
 
-  Widget _buildResponsiveEmployeePolicy(){
+  Widget _buildResponsiveEmployeePolicy() {
     final isMobile = Get.width < 600;
     return isMobile ? _buildPopDialogMobile() : _buildPopDialogOther();
   }
@@ -56,59 +56,71 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
             const Divider(height: 1),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: controller.isLoading.value
-                  ? Center(child: CircularProgressIndicator(color: Colors.blue.shade900))
-                  : Form(
-                key: _formKey1,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: _buildUsernameAutoSuggestField(controller),),
-                    _buildUserInfoFields(controller),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          child: const Text('Close', style: TextStyle(color: Colors.red)),
-                          onPressed: () => Get.back(),
+              child:
+                  controller.isLoading.value
+                      ? Center(
+                        child: LinearProgressIndicator(
+                          color: Colors.blue.shade900,
                         ),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green.shade900,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                      )
+                      : Form(
+                        key: _formKey1,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                              ),
+                              child: _buildUsernameAutoSuggestField(controller),
                             ),
-                          ),
-                          child: const Text('CREATE'),
-                          onPressed: () async {
-                            await controller.UpdateChange();
-                            Get.snackbar(
-                              'New Create',
-                              'Set Employee Policy on: ${controller.NameController.text} Successfully',
-                              snackPosition: SnackPosition.TOP,
-                              backgroundColor: Colors.white.withOpacity(0.3),
-                              colorText: Colors.black,
-                            );
-                            Get.close(0);
-                          },
+                            _buildUserInfoFields(controller),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  child: const Text(
+                                    'Close',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () => Get.back(),
+                                ),
+                                const SizedBox(width: 8),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green.shade900,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Text('CREATE'),
+                                  onPressed: () async {
+                                    await controller.UpdateChange();
+                                    Get.snackbar(
+                                      'New Create',
+                                      'Set Employee Policy on: ${controller.NameController.text} Successfully',
+                                      snackPosition: SnackPosition.TOP,
+                                      backgroundColor: Colors.white.withOpacity(
+                                        0.3,
+                                      ),
+                                      colorText: Colors.black,
+                                    );
+                                    Get.close(0);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                      ),
             ),
           ],
         ),
       );
     });
   }
-
 
   Widget _buildPopDialogOther() {
     final controller = Get.find<EmployeePolicyController>();
@@ -148,53 +160,65 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
             const Divider(height: 1),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: controller.isLoading.value
-                  ? Center(child: CircularProgressIndicator(color: Colors.blue.shade900))
-                  : Form(
-                key: _formKey2,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child:_buildUsernameAutoSuggestField(controller),
-                    ),
-                    _buildUserInfoFields(controller),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          child: const Text('Close', style: TextStyle(color: Colors.red)),
-                          onPressed: () => Get.back(),
+              child:
+                  controller.isLoading.value
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blue.shade900,
                         ),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green.shade900,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                      )
+                      : Form(
+                        key: _formKey2,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                              ),
+                              child: _buildUsernameAutoSuggestField(controller),
                             ),
-                          ),
-                          child: const Text('CREATE'),
-                          onPressed: () async {
-                              await controller.UpdateChange();
-                              Get.snackbar(
-                                'New Create',
-                                'Set Employee Policy on: ${controller.NameController.text} Successfully',
-                                snackPosition: SnackPosition.TOP,
-                                backgroundColor: Colors.white.withOpacity(0.3),
-                                colorText: Colors.black,
-                              );
-                              Get.close(0);
-                          },
+                            _buildUserInfoFields(controller),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  child: const Text(
+                                    'Close',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () => Get.back(),
+                                ),
+                                const SizedBox(width: 8),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green.shade900,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Text('CREATE'),
+                                  onPressed: () async {
+                                    await controller.UpdateChange();
+                                    Get.snackbar(
+                                      'New Create',
+                                      'Set Employee Policy on: ${controller.NameController.text} Successfully',
+                                      snackPosition: SnackPosition.TOP,
+                                      backgroundColor: Colors.white.withOpacity(
+                                        0.3,
+                                      ),
+                                      colorText: Colors.black,
+                                    );
+                                    Get.close(0);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                      ),
             ),
           ],
         ),
@@ -202,40 +226,59 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
     });
   }
 
-
   Widget _buildUserInfoFields(EmployeePolicyController controller) {
     return Column(
       children: [
-        _buildField(label: 'USER-ID',
-            icon: Icons.verified_user,
-            controller: controller.UserIDController),
-        _buildField(label: 'USERNAME',
-            icon: Icons.person,
-            controller: controller.NameController),
-        _buildField(label: 'EMAIL',
-            icon: Icons.email,
-            controller: controller.EmailController),
-        _buildField(label: 'DEPARTMENT',
-            icon: Icons.apartment,
-            controller: controller.DepartmentController),
-        _buildField(label: 'ID CARD',
-            icon: Icons.photo_camera_front_rounded,
-            controller: controller.id_cardController),
-        _buildField(label: 'FINGER PRINT',
-            icon: Icons.fingerprint,
-          controller: controller.fingerprint_idController,),
-        _buildField(label: 'PHONE',
-            icon: Icons.phone,
-            controller: controller.PhoneController),
-        _buildField(label: 'ADDRESS',
-            icon: Icons.add_location_alt_outlined,
-            controller: controller.AddressController),
-        _buildField(label: 'ROLE',
-            icon: Icons.star,
-            controller: controller.RoleController),
-        _buildField(label: 'JOIN DATE',
-            icon: Icons.calendar_month,
-            controller: controller.createAtController),
+        _buildField(
+          label: 'USER-ID',
+          icon: Icons.verified_user,
+          controller: controller.UserIDController,
+        ),
+        _buildField(
+          label: 'USERNAME',
+          icon: Icons.person,
+          controller: controller.NameController,
+        ),
+        _buildField(
+          label: 'EMAIL',
+          icon: Icons.email,
+          controller: controller.EmailController,
+        ),
+        _buildField(
+          label: 'DEPARTMENT',
+          icon: Icons.apartment,
+          controller: controller.DepartmentController,
+        ),
+        _buildField(
+          label: 'ID CARD',
+          icon: Icons.photo_camera_front_rounded,
+          controller: controller.id_cardController,
+        ),
+        _buildField(
+          label: 'FINGER PRINT',
+          icon: Icons.fingerprint,
+          controller: controller.fingerprint_idController,
+        ),
+        _buildField(
+          label: 'PHONE',
+          icon: Icons.phone,
+          controller: controller.PhoneController,
+        ),
+        _buildField(
+          label: 'ADDRESS',
+          icon: Icons.add_location_alt_outlined,
+          controller: controller.AddressController,
+        ),
+        _buildField(
+          label: 'ROLE',
+          icon: Icons.star,
+          controller: controller.RoleController,
+        ),
+        _buildField(
+          label: 'JOIN DATE',
+          icon: Icons.calendar_month,
+          controller: controller.createAtController,
+        ),
         // Column(
         //   children: [
         //     Row(
@@ -311,22 +354,29 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
       ],
     );
   }
-  Widget _buildField( {required String label, required IconData icon,required TextEditingController controller
+
+  Widget _buildField({
+    required String label,
+    required IconData icon,
+    required TextEditingController controller,
   }) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: TextFormField(
-            controller: controller,
-            decoration: InputDecoration(
-              labelText: label,
-              prefixIcon: Icon(icon, color: Colors.green.shade900),
-              border: const OutlineInputBorder(),
-            )
-        )
-        );
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon, color: Colors.green.shade900),
+          border: const OutlineInputBorder(),
+        ),
+      ),
+    );
   }
+
   Widget _buildUsernameAutoSuggestField(EmployeePolicyController controller) {
-    final TextEditingController textController = TextEditingController(text: controller.Username.value);
+    final TextEditingController textController = TextEditingController(
+      text: controller.Username.value,
+    );
 
     return Obx(() {
       return Column(
@@ -379,5 +429,4 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyScreen>{
       );
     });
   }
-
 }

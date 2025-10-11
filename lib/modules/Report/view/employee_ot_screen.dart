@@ -12,7 +12,7 @@ import '../widget/employee_OT_widget.dart';
 class EmployeeOTScreen extends GetView<EmployeeReportController4> {
   const EmployeeOTScreen({super.key});
 
-  static const String routeName = '/employeeOT';
+  static const String routeName = '/employeeot';
 
   @override
   Widget build(BuildContext context) {

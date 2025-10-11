@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:hrms/modules/LeaveRequest/controllers/leave_controller.dart';
 import 'package:intl/intl.dart';
+import '../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../views/Leave_view_filter.dart';
 
 
@@ -34,154 +36,160 @@ class leaverequesttable extends GetView<LeaveController>{
   Widget _buildLeaveRequestsTableOther(BuildContext context) {
     final controller = Get.find<LeaveController>();
     final ScrollController _horizontalController = ScrollController();
+    final HoverMouseController controller1 = Get.put(HoverMouseController());
+
     return Obx(() {
       final requests = controller.leaveRequests;
-      return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.5,
-        width: double.infinity,
-        child: Card(
-          color: Colors.white,
-          margin: const EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  gradient: LinearGradient(
-                    colors: [Colors.red.shade900, Colors.red.shade300],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+      return MouseHover(
+        keyId: 12,
+        controller: controller1,
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: double.infinity,
+          child: Card(
+            color: Colors.white,
+            margin: const EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    gradient: LinearGradient(
+                      colors: [Colors.blue.shade900, Colors.blue.shade300],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: const Text(
-                            'Leave Records',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: const Text(
+                              'Leave Records',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: LeaveViewFilter(),
-              ),
-          SizedBox(height: 10,),
-          Expanded(
-            child: Scrollbar(
-              thumbVisibility: true,
-              controller: _horizontalController,
-              child: SingleChildScrollView(
+                SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LeaveViewFilter(),
+                ),
+            SizedBox(height: 10,),
+            Expanded(
+              child: Scrollbar(
+                thumbVisibility: true,
                 controller: _horizontalController,
-                scrollDirection: Axis.horizontal,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width,
-                  ),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: DataTable(
-                      headingRowHeight: 30,
-                      sortAscending: true,
-                      columnSpacing: 12.0,
-                      dataRowMaxHeight: double.infinity,
-                      dataRowMinHeight: 60,
-                      dividerThickness: 1,
-                      headingTextStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                      dataTextStyle: const TextStyle(fontSize: 12),
-                      columns: const [
-                        DataColumn(label: Text('Employee')),
-                        DataColumn(label: Text('Department')),
-                        DataColumn(label: Text('Position')),
-                        DataColumn(label: Text('Status')),
-                        DataColumn(label: Text('Start Date')),
-                        DataColumn(label: Text('End Date')),
-                        DataColumn(label: Text('Actions')),
-                      ],
-                      rows: requests.map((request) {
-                        return DataRow(
-                          cells: [
-                            DataCell(Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(request['name'] ?? '-', style: const TextStyle(fontWeight: FontWeight.bold)),
-                                Text(request['user_email'] ?? '-', style: const TextStyle(fontSize: 10, color: Colors.grey)),
-                              ],
-                            )),
-                            DataCell(Text(request['department'] ?? '-')),
-                            DataCell(Text(request['position'] ?? '-')),
-                            DataCell(Text(request['status'] ?? '-')),
-                            DataCell(Text(
-                                request['from_date'] != null
-                                    ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['from_date']))
-                                    : '-')),
-                            DataCell(Text(
-                                request['to_date'] != null
-                                    ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['to_date']))
-                                    : '-')),
-                            DataCell(Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.check_circle_outline),
-                                  color: Colors.green,
-                                  tooltip: 'Approve',
-                                  onPressed: () async {
-                                    try {
-                                      await controller.updateStatus(request['request_id'], 'approved');
-                                      Get.snackbar('Success', 'Request approved');
-                                    } catch (e) {
-                                      Get.snackbar('Error', 'Error: $e');
-                                    }
-                                  },
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.cancel_outlined),
-                                  color: Colors.red,
-                                  tooltip: 'Reject',
-                                  onPressed: () async {
-                                    try {
-                                      await controller.updateStatus(request['request_id'], 'rejected');
-                                      Get.snackbar('Success', 'Request rejected');
-                                    } catch (e) {
-                                      Get.snackbar('Error', 'Error: $e');
-                                    }
-                                  },
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.info_outline),
-                                  tooltip: 'View Details',
-                                  onPressed: () => controller.showLeaveDialog(request),
-                                ),
-                              ],
-                            )),
-                          ],
-                        );
-                      }).toList(),
+                child: SingleChildScrollView(
+                  controller: _horizontalController,
+                  scrollDirection: Axis.horizontal,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width,
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: DataTable(
+                        headingRowHeight: 30,
+                        sortAscending: true,
+                        columnSpacing: 12.0,
+                        dataRowMaxHeight: double.infinity,
+                        dataRowMinHeight: 60,
+                        dividerThickness: 1,
+                        headingTextStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        dataTextStyle: const TextStyle(fontSize: 12),
+                        columns: const [
+                          DataColumn(label: Text('Employee')),
+                          DataColumn(label: Text('Department')),
+                          DataColumn(label: Text('Position')),
+                          DataColumn(label: Text('Status')),
+                          DataColumn(label: Text('Start Date')),
+                          DataColumn(label: Text('End Date')),
+                          DataColumn(label: Text('Actions')),
+                        ],
+                        rows: requests.map((request) {
+                          return DataRow(
+                            cells: [
+                              DataCell(Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(request['name'] ?? '-', style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  Text(request['user_email'] ?? '-', style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                                ],
+                              )),
+                              DataCell(Text(request['department'] ?? '-')),
+                              DataCell(Text(request['position'] ?? '-')),
+                              DataCell(Text(request['status'] ?? '-')),
+                              DataCell(Text(
+                                  request['from_date'] != null
+                                      ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['from_date']))
+                                      : '-')),
+                              DataCell(Text(
+                                  request['to_date'] != null
+                                      ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['to_date']))
+                                      : '-')),
+                              DataCell(Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.check_circle_outline),
+                                    color: Colors.green,
+                                    tooltip: 'Approve',
+                                    onPressed: () async {
+                                      try {
+                                        await controller.updateStatus(request['request_id'], 'approved');
+                                        Get.snackbar('Success', 'Request approved');
+                                      } catch (e) {
+                                        Get.snackbar('Error', 'Error: $e');
+                                      }
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.cancel_outlined),
+                                    color: Colors.red,
+                                    tooltip: 'Reject',
+                                    onPressed: () async {
+                                      try {
+                                        await controller.updateStatus(request['request_id'], 'rejected');
+                                        Get.snackbar('Success', 'Request rejected');
+                                      } catch (e) {
+                                        Get.snackbar('Error', 'Error: $e');
+                                      }
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.info_outline),
+                                    tooltip: 'View Details',
+                                    onPressed: () => controller.showLeaveDialog(request),
+                                  ),
+                                ],
+                              )),
+                            ],
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-            ],
+              ],
+            ),
           ),
         ),
       );

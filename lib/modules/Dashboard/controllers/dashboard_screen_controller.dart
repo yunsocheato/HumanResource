@@ -38,5 +38,21 @@ class DashboardController extends GetxController {
      await Future.delayed(Duration(seconds: 2));
      isLoading.value = false;
    }
+   BoxConstraints safeConstraints({
+     required double minW,
+     required double maxW,
+     double? minH,
+     double? maxH,
+   }) {
+     final safeMaxW = maxW < minW ? minW : maxW;
+     final safeMaxH =
+     (maxH != null && minH != null && maxH < minH) ? minH : maxH ?? double.infinity;
 
+     return BoxConstraints(
+       minWidth: minW,
+       maxWidth: safeMaxW,
+       minHeight: minH ?? 0,
+       maxHeight: safeMaxH ?? double.infinity,
+     );
+   }
 }

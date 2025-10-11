@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../controllers/dashboard_recently_screen_controller.dart';
+import 'modules/Dashboard/controllers/dashboard_recently_screen_controller.dart';
 
 class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
   const Recentlyscreen1({super.key});

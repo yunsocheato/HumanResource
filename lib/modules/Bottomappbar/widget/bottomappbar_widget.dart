@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-
 import '../controller/bottomappbar_controller.dart';
 
 class BottomAppBarWidget extends GetView<BottomAppBarController> {
@@ -18,16 +17,17 @@ class BottomAppBarWidget extends GetView<BottomAppBarController> {
         Padding(padding: const EdgeInsets.only(bottom: 90), child: body),
         Positioned(
           bottom: 0,
-          left: 10,
-          right: 10,
+          left: 0,
+          right: 0,
           child: Obx(
             () => Container(
-              height: 80,
+              height: 90,
+              width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
                 ),
               ),
               child: Row(
@@ -40,13 +40,13 @@ class BottomAppBarWidget extends GetView<BottomAppBarController> {
                     icon: Column(
                       children: [
                         Icon(
-                          EneftyIcons.home_2_bold,
+                          Icons.dashboard,
                           size: 30,
                           color: controller.iconColor(0),
                         ),
                         Center(
                           child: Text(
-                            "Home",
+                            "Dashboard",
                             style: TextStyle(
                               fontSize: 12,
                               color: controller.iconColor(0),

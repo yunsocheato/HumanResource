@@ -37,13 +37,13 @@ class EmployeeTalbeController extends GetxController {
                     topRight: Radius.circular(20),
                   ),
                   gradient: LinearGradient(
-                    colors: [Colors.purple.shade900, Colors.purpleAccent.shade200],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                    colors: [Colors.green.shade900, Colors.greenAccent.shade200],
+                    begin: Alignment.topLeft,
+                    end: Alignment.topRight,
                   ),
                 ),
                 child: const Text(
-                  'Employee Detail',
+                  'Staff Detail',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

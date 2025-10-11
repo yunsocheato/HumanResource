@@ -7,7 +7,7 @@ import '../controllers/loginscreen_animation_controller.dart';
 import '../widgets/login_decor_widget.dart';
 
 class LoginScreen extends GetView<LoginScreenWidgetDecor> {
-  static const String routeName = '/LoginScreen';
+  static const String routeName = '/login';
   const LoginScreen({super.key});
 
   @override

@@ -6,203 +6,143 @@ import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../controllers/dashboard_screen_controller.dart';
 import 'dashboard_recent_employee.dart';
-import 'dashboard_recently_screen1.dart';
 import 'dashboard_recently_screen2.dart';
 import 'dashboard_recently_screen3.dart';
 
 class DashboardScreen extends GetView<DashboardController> {
   const DashboardScreen({super.key});
-  static const String routeName = '/DashboardScreen';
+  static const String routeName = '/dashboard';
+
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Get.width < 600;
+    final isMobile = MediaQuery
+        .of(context)
+        .size
+        .width < 600;
     final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
-        body:  SingleChildScrollView(
+        body: isMobile ? RefreshIndicator(
+          onRefresh: () async {
+            controller.refreshdata();
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _buildHeader(context, isMobile ? 14 : 24),
+                ),
+                const SizedBox(height: 10),
+                Cardinfo(),
+                const SizedBox(height: 10),
+                _buildResponsiveCardInfo(context),
+              ],
+            ),
+          ),
+        ) : SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
-              if(isMobile)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: _buildHeader(),
+                child: _buildHeader(context, isMobile ? 14 : 24),
               ),
-              SizedBox(height: 10),
-              if(!isMobile)
-                _buildHeader(),
-              SizedBox(height: 15),
+              const SizedBox(height: 10),
               Cardinfo(),
-              SizedBox(height: 15),
-              _buildcardinfo(),
+              const SizedBox(height: 10),
+              _buildResponsiveCardInfo(context),
             ],
           ),
         ),
-      )
+      ),
     );
+
     return isMobile
         ? BottomAppBarWidget(body: contents)
         : contents;
   }
+  Widget _buildHeader(BuildContext context, double titleFontSize) {
+    final controller = Get.find<DashboardController>();
+    final isMobile = MediaQuery
+        .of(context)
+        .size
+        .width < 600;
 
-  Widget _buildcardinfo() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 600;
-        final isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 1024;
-        final isDesktop = constraints.maxWidth >= 1024;
-
-        if (isMobile) {
-          return _buildcardinfoRow();
-        } else if (isTablet || isDesktop) {
-          return _buildcardinfoColoum();
-        }
-        return _buildcardinfoColoum();
-      },
-    );
-  }
-
-  Widget _buildcardinfoColoum() {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: AttendacneChart(),
-                ),
-                const SizedBox(height: 15,width: 15),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Recentscreen2(),
-                ),
-                const SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Recentscreen3(),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Recentemployee(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildcardinfoRow() {
-    final recentWidgets = const [
-      Padding(
-        padding: EdgeInsets.all(12.0),
-        child: AttendacneChart(),
-      ),
-      Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Recentscreen2(),
-      ),
-      Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Recentscreen3(),
-      ),
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ...recentWidgets.map(
-              (widget) => Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: widget,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: const Recentemployee(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHeader() {
-    final Controller = Get.find<DashboardController>();
-    final ctx = Get.context ?? Get.overlayContext;
-    final isMobile = MediaQuery.of(ctx!).size.width < 600;
-    return Obx(() => AnimatedOpacity(
-        duration: const Duration(seconds: 2),
-        opacity: Controller.showlogincard1.value ? 1.0 : 0.0,
-        child: AnimatedPadding(
-          duration: const Duration(seconds: 2),
-          padding: EdgeInsets.only(
-            top: Controller.showlogincard1.value ? 0 : 100,
-          ),
-          child: SizedBox(
-            height: 70,
-            child: Card(
-              color: Colors.white,
-              elevation: 10,
-              shadowColor: Colors.grey.withOpacity(0.5),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+    return Obx(
+          () =>
+          AnimatedOpacity(
+            duration: const Duration(seconds: 2),
+            opacity: controller.showlogincard1.value ? 1.0 : 0.0,
+            child: AnimatedPadding(
+              duration: const Duration(seconds: 2),
+              padding: EdgeInsets.only(
+                  top: controller.showlogincard1.value ? 0 : 100),
+              child: SizedBox(
+                height: 70,
+                child: Card(
+                  color: Colors.white,
+                  elevation: 10,
+                  shadowColor: Colors.grey.withOpacity(0.5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        isMobile ? Row(
-                          children: [
-                            Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade100,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(Icons.home_outlined, color: Colors.blue, size: 16)
-                            ),
-                            Stack(
-                              children: <Widget>[
-                                Text(
-                                  'DASHBOARD',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    foreground: Paint()
-                                      ..style = PaintingStyle.stroke
-                                      ..strokeWidth = 2
-                                      ..color = Colors.blue[700]!,
-                                  ),
-                                ),
-                                Text(
-                                  'DASHBOARD',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ) :
                         Row(
-                          children: [
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: isMobile
+                              ? [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue.shade100,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.home_outlined,
+                                    color: Colors.blue,
+                                    size: 16,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Stack(
+                                  children: <Widget>[
+                                    Text(
+                                      'DASHBOARD',
+                                      style: TextStyle(
+                                        fontSize: titleFontSize,
+                                        foreground: Paint()
+                                          ..style = PaintingStyle.stroke
+                                          ..strokeWidth = 2
+                                          ..color = Colors.blue[700]!,
+                                      ),
+                                    ),
+                                    Text(
+                                      'DASHBOARD',
+                                      style: TextStyle(
+                                        fontSize: titleFontSize,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ]
+                              : [
                             Stack(
                               children: <Widget>[
                                 Text(
                                   'DASHBOARD',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: titleFontSize,
                                     foreground: Paint()
                                       ..style = PaintingStyle.stroke
                                       ..strokeWidth = 2
@@ -212,45 +152,148 @@ class DashboardScreen extends GetView<DashboardController> {
                                 Text(
                                   'DASHBOARD',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: titleFontSize,
                                     color: Colors.white,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(width: 10,),
+                            const SizedBox(width: 10),
                             Container(
-                                height: 70,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade100,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(Icons.home_outlined, color: Colors.blue, size: 24)),
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.home_outlined,
+                                color: Colors.blue,
+                                size: 24,
+                              ),
+                            ),
                           ],
-                        )
-
+                        ),
+                        IconButton(
+                          onPressed: () => controller.refreshdata(),
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.blue,
+                            size: isMobile ? 16 : 24,
+                          ),
+                        ),
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        SizedBox(width: 20),
-                        isMobile ? IconButton(onPressed: () => Controller.refreshdata()
-                            , icon: Icon(Icons.refresh, color: Colors.blue, size: 16,)
-                        ):
-                        IconButton(onPressed: () => Controller.refreshdata()
-                            , icon: Icon(Icons.refresh, color: Colors.blue, size: 24,)
-                        )
-                      ],
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
     );
+  }
+
+  Widget _buildResponsiveCardInfo(BuildContext context) {
+    final controller = Get.find<DashboardController>();
+    final width = MediaQuery.of(context).size.width;
+
+    final isMobile = width < 600;
+    final isTablet = width >= 600 && width < 1024;
+    final isLaptop = width >= 1024 && width < 1440;
+    final isDesktop = width >= 1440 && width < 2560;
+    final isLargeDesktop = width >= 2560;
+
+    return LayoutBuilder(builder: (context, constraints) {
+      final maxWidth = constraints.maxWidth;
+      final maxHeight = constraints.maxHeight;
+
+      if (isMobile) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            AttendanceChart(),
+            SizedBox(height: 12),
+            Recentscreen2(),
+            SizedBox(height: 12),
+            Recentscreen3(),
+            SizedBox(height: 20),
+            Recentemployee(),
+          ],
+        );
+      }
+
+      double minCardWidth = 235;
+      double minCardHeight = 350;
+      double widthFactor;
+      double heightFactor = 0.4;
+
+      if (isTablet) {
+        widthFactor = 0.7;
+      } else if (isLaptop) {
+        widthFactor = 0.6;
+      } else if (isDesktop) {
+        widthFactor = 0.89;
+      } else {
+        widthFactor = 0.9;
+      }
+
+      final maxCardWidth = maxWidth * widthFactor;
+      final maxCardHeight = maxHeight * heightFactor;
+
+      final cardWidgets = [
+        ConstrainedBox(
+          constraints: controller.safeConstraints(
+            minW: minCardWidth,
+            maxW: maxCardWidth,
+            minH: minCardHeight,
+            maxH: maxCardHeight,
+          ),
+          child: const AttendanceChart(),
+        ),
+        const SizedBox(width: 5),
+        ConstrainedBox(
+          constraints: controller.safeConstraints(
+            minW: minCardWidth,
+            maxW: maxCardWidth,
+            minH: minCardHeight,
+            maxH: maxCardHeight,
+          ),
+          child: const Recentscreen2(),
+        ),
+        const SizedBox(width: 5),
+        ConstrainedBox(
+          constraints: controller.safeConstraints(
+            minW: minCardWidth,
+            maxW: maxCardWidth,
+            minH: minCardHeight,
+            maxH: maxCardHeight,
+          ),
+          child: const Recentscreen3(),
+        ),
+      ];
+
+      if (isTablet || isLaptop ) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: cardWidgets),
+              const SizedBox(height: 10),
+              const Recentemployee(),
+            ],
+
+          ),
+        );
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: cardWidgets),
+            const SizedBox(height: 10),
+            const Recentemployee(),
+          ],
+        );
+      }
+    });
   }
 }

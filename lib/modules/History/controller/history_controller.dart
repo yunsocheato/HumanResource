@@ -1,0 +1,45 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../Drawer/widgets/Method_drawer_policy_button.dart';
+import '../Api/history_sql.dart';
+import '../model/history_model.dart';
+
+class HistoryController extends GetxController{
+  HistorySql historySql = HistorySql();
+  final ScrollController horizontalScrollController = ScrollController();
+  final ScrollController verticalScrollController = ScrollController();
+  var showHeader = false.obs;
+  var  showlogincard1 = true.obs;
+  var showCards = true.obs;
+  @override
+  void onInit() {
+    super.onInit();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      showHeader = true.obs;
+
+    });
+  }
+
+  @override
+  void dispose() {
+    horizontalScrollController.dispose();
+    verticalScrollController.dispose();
+    super.dispose();
+  }
+
+  void refreshdata ()  async {
+    await MethodButton12();
+    update();
+  }
+
+  void toogleShowlogincard1 () {
+    showlogincard1.value = !showlogincard1.value;
+  }
+
+  Future<List<HistoryModel>> fetchHistory() async {
+    return await historySql.fetchHistory();
+  }
+
+
+}

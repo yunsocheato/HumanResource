@@ -201,6 +201,7 @@ class AttendanceFilterView extends GetView<AttendanceController> {
         child: Obx(() => DropdownButton<String>(
           value: selectedValue.value,
           icon: icon,
+          dropdownColor: Colors.blue,
           style: const TextStyle(color: Colors.white),
           items: options.map((String value) {
             return DropdownMenuItem<String>(
@@ -224,7 +225,35 @@ class AttendanceFilterView extends GetView<AttendanceController> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2101),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogTheme: DialogThemeData(
+              backgroundColor: Colors.blue.shade900,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            colorScheme: ColorScheme.light(
+              primary: Colors.teal,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.teal,
+                textStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (picked != null) {
       controller.updateDate(isStart, picked);
     }

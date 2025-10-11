@@ -1,70 +1,192 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:get/get.dart';
+import 'package:hrms/modules/Schedule/controller/schedule_screen_controller.dart';
+import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/views/drawer_screen.dart';
-import '../widgets/schedule_upcoming.dart';
+import '../../Loadingui/Loading_Screen.dart';
+import '../../Loadingui/loading_controller.dart';
 
-class schedulescreen extends StatefulWidget {
-  static const String routeName = '/schedulescreen';
-  const schedulescreen({super.key});
-
-  @override
-  State<schedulescreen> createState() => _schedulescreenState();
-}
-
-class _schedulescreenState extends State<schedulescreen> {
-  final ScrollController _horizontalScrollController = ScrollController();
-  final ScrollController _verticalScrollController = ScrollController();
-  bool _showHeader = false;
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        _showHeader = true;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _horizontalScrollController.dispose();
-    _verticalScrollController.dispose();
-    super.dispose();
-  }
+class ScheduleScreen extends GetView<ScheduleController> {
+  static const String routeName = '/schedule';
+  const ScheduleScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Drawerscreen(
-      content: Scrollbar(
-        thumbVisibility: true,
-        controller: _verticalScrollController,
-        child: SingleChildScrollView(
-          controller: _verticalScrollController,
-          scrollDirection: Axis.vertical,
-          child: Scrollbar(
-            thumbVisibility: true,
-            controller: _horizontalScrollController,
-            child: SingleChildScrollView(
-              controller: _horizontalScrollController,
-              scrollDirection: Axis.horizontal,
-              child: IntrinsicWidth(
-                stepWidth: MediaQuery.of(context).size.width,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 10),
-                      _buildHeader(),
-                      SizedBox(height: 10),
-                      Cardinfo(),
-                      SizedBox(height: 10),
-                      _buildcardinfo1(),
-                    ],
-                  ),
+    final loading = Get.find<LoadingUiController>();
+    final isMobile = Get.width < 600;
+
+    final contents = Drawerscreen(
+      content: Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            Scrollbar(
+              controller: controller.verticalScrollController,
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: controller.verticalScrollController,
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    if (isMobile) _buildHeader(),
+                    const SizedBox(height: 10),
+                    if (!isMobile)
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: _buildHeader(),
+                      ),
+                    const SizedBox(height: 15),
+                    const Cardinfo(),
+                    const SizedBox(height: 15),
+                    _buildResponsiveContent(),
+                  ],
+                ),
+              ),
+            ),
+            Obx(() => loading.isLoading.value
+                ? const LoadingScreen()
+                : const SizedBox.shrink()),
+          ],
+        ),
+      ),
+    );
+    return isMobile
+        ? BottomAppBarWidget(body: contents)
+        : contents;
+
+  }
+
+  Widget _buildHeader() {
+    final ctx = Get.context ?? Get.overlayContext;
+    final isMobile = ctx != null
+        ? MediaQuery.of(ctx).size.width < 600
+        : Get.width < 600;
+
+    return Obx(
+          () => AnimatedOpacity(
+        duration: const Duration(seconds: 2),
+        opacity: controller.showlogincard1.value ? 1.0 : 0.0,
+        child: AnimatedPadding(
+          duration: const Duration(seconds: 2),
+          padding: EdgeInsets.only(
+            top: controller.showlogincard1.value ? 0 : 100,
+          ),
+          child: SizedBox(
+            height: 70,
+            child: Card(
+              color: Colors.white,
+              elevation: 10,
+              shadowColor: Colors.grey.withOpacity(0.5),
+              child: Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 5),
+                        isMobile
+                            ? Row(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.purple.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                EneftyIcons.user_tick_bold,
+                                color: Colors.purple,
+                                size: 16,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            Stack(
+                              children: <Widget>[
+                                Text(
+                                  'SCHEDULE',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    foreground: Paint()
+                                      ..style = PaintingStyle.stroke
+                                      ..strokeWidth = 2
+                                      ..color = Colors.purple[700]!,
+                                  ),
+                                ),
+                                const Text(
+                                  'SCHEDULE',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                            : Row(
+                          children: [
+                            Stack(
+                              children: <Widget>[
+                                Text(
+                                  'SCHEDULE',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    foreground: Paint()
+                                      ..style = PaintingStyle.stroke
+                                      ..strokeWidth = 2
+                                      ..color = Colors.purple[700]!,
+                                  ),
+                                ),
+                                const Text(
+                                  'SCHEDULE',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 10),
+                            Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.purple.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Boxicons.bx_user_check,
+                                color: Colors.purple,
+                                size: 24,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () => controller.refreshdata(),
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.green,
+                            size: isMobile ? 16 : 24,
+                          ),
+                        )
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
@@ -74,67 +196,38 @@ class _schedulescreenState extends State<schedulescreen> {
     );
   }
 
-  Widget _buildHeader() {
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 600),
-      opacity: _showHeader ? 1.0 : 0.0,
-      child: AnimatedPadding(
-        duration: const Duration(milliseconds: 600),
-        padding: EdgeInsets.only(top: _showHeader ? 0 : 100),
-        child: SizedBox(
-          height: 70,
-          child: Card(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 8,
-            shadowColor: Colors.grey.withOpacity(0.2),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    ' SCHEDULE DASHBOARD',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    child: const Text(
-                      'Refresh',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+
+  Widget _buildResponsiveContent() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 600;
+        if (isMobile) {
+          return _buildMobileContent();
+        } else {
+          return _buildDesktopTabletContent();
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileContent() {
+    final isMobile = Get.width < 600;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // if (isMobile) const EmployeefilterView(),
+          // const SizedBox(height: 10),
+          // if (isMobile) const SearchbarScreen(),
+          // const SizedBox(height: 10),
+          // const EmployeeList(),
+        ],
       ),
     );
   }
 
-  Widget _buildcardinfo1() {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-        ),
-        color: Colors.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [const Upcomingschedules()],
-      ),
-    );
+  Widget _buildDesktopTabletContent() {
+    return  Container();
   }
 }

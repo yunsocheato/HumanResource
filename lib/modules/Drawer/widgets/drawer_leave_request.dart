@@ -8,8 +8,8 @@ import '../../LeaveRequest/widgets/apply_leave_screen_widget.dart';
 import '../controllers/drawer_controller.dart';
 import 'Method_drawer_policy_button.dart';
 
-class LeaveRequest extends GetView<AppDrawerController> {
-  const LeaveRequest({super.key});
+class TableLeaveRequest extends GetView<AppDrawerController> {
+  const TableLeaveRequest({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,58 +17,128 @@ class LeaveRequest extends GetView<AppDrawerController> {
   }
 
   Widget _buildDrawerTile(BuildContext, context) {
-    return Obx(() {
-      final isExpanded1 = controller.isExpanded1('Leave');
-      return Theme(
-        data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent,
-          unselectedWidgetColor: Colors.white,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+
+        final isMobile = width < 600;
+        final isTablet = width >= 600 && width < 1024;
+        final isDesktop = width >= 1024 && width < 2560;
+        final isLargeDesktop = width >= 2560 && width < 3840;
+        double fontSizeTitle;
+        double fontSizeBody;
+        double iconSize;
+
+        if (isMobile) {
+          fontSizeTitle = 15;
+          fontSizeBody = 12;
+          iconSize = 22;
+        } else if (isTablet) {
+          fontSizeTitle = 16;
+          fontSizeBody = 13;
+          iconSize = 24;
+        } else if (isDesktop) {
+          fontSizeTitle = 18;
+          fontSizeBody = 14;
+          iconSize = 26;
+        } else if (isLargeDesktop) {
+          fontSizeTitle = 20;
+          fontSizeBody = 16;
+          iconSize = 28;
+        } else {
+          fontSizeTitle = 22;
+          fontSizeBody = 18;
+          iconSize = 32;
+        }
+
+        return Obx(() {
+          final isExpanded1 = controller.isExpanded1('Leave');
+          return Theme(
+            data: Theme.of(context).copyWith(
+              dividerColor: Colors.transparent,
+              unselectedWidgetColor: Colors.white,
+            ),
+            child: ExpansionTile(
+              initiallyExpanded: isExpanded1,
+              onExpansionChanged:
+                  (bool expanded) => controller.toggleTile1('Leave'),
+              leading: Icon(
+                Boxicons.bx_walk,
+                size: iconSize,
+                color:
+                    controller.selectedIndex == 19
+                        ? Colors.blue.shade900
+                        : Colors.white,
+              ),
+              title: InkWell(
+                onTap: () {
+                  controller.selectedIndex.value = 19;
+                  MethodButton5();
+                },
+                child: Text(
+                  'Leave Request',
+                  style: TextStyle(
+                    fontSize: fontSizeTitle,
+                    color:
+                        controller.selectedIndex.value == 19
+                            ? Colors.blue.shade900
+                            : Colors.white,
+                    fontWeight:
+                        controller.selectedIndex.value == 19
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                  ),
+                ),
+              ),
+              iconColor: Colors.white,
+              collapsedIconColor: Colors.white,
+              childrenPadding: EdgeInsets.only(left: 32),
+              children: [
+                _buildSubTile(
+                  iconSize: iconSize,
+                  fontSize: fontSizeBody,
+                  title: 'Apply Leave',
+                  icon: Boxicons.bx_walk,
+                  index: 20,
+                  onTap: () => DialogScreen(context, ApplyLeaveWidget()),
+                ),
+              ],
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  Widget _buildSubTile({
+    required String title,
+    required IconData icon,
+    required int index,
+    required VoidCallback onTap,
+    double fontSize = 14,
+    double iconSize = 22,
+  }) {
+    final controller = Get.find<AppDrawerController>();
+    final isSelected = controller.selectedIndex.value == index;
+
+    return ListTile(
+      leading: Icon(
+        size: iconSize,
+        icon,
+        color: isSelected ? Colors.blue.shade900 : Colors.white,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: isSelected ? Colors.blue.shade900 : Colors.white,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
-        child: ExpansionTile(
-          initiallyExpanded: isExpanded1,
-          onExpansionChanged:
-              (bool expanded) => controller.toggleTile1('Leave'),
-          leading: Icon(Boxicons.bx_walk, color: Colors.white),
-          title: InkWell(
-            onTap: () => MethodButton5(),
-            child: Text(
-              'Leave Request',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          iconColor: Colors.white,
-          collapsedIconColor: Colors.white,
-          childrenPadding: EdgeInsets.only(left: 32),
-          children: [
-            ListTile(
-              leading: Icon(EneftyIcons.clock_2_bold, color: Colors.white),
-              title: Text(
-                'Apply Leave',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () => DialogScreen(context,ApplyLeaveWidget())
-            ),
-            ListTile(
-              leading: Icon(EneftyIcons.user_tick_bold, color: Colors.white),
-              title: Text(
-                'Leave Approved',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () => Get.toNamed('/Approved'),
-            ),
-            ListTile(
-              leading: Icon(EneftyIcons.user_minus_bold, color: Colors.white),
-              title: Text(
-                'Leave Reject',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      );
-    });
+      ),
+      onTap: () {
+        controller.setSelected(index);
+        onTap();
+      },
+    );
   }
 }

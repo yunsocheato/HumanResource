@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
+import '../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../controller/employee_report_controller3.dart';
 
@@ -96,6 +98,8 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
 
   Widget _buildEmployeeAbsentOther() {
     final controller = Get.find<EmployeeReportController3>();
+    final HoverMouseController controller1 = Get.put(HoverMouseController());
+
     return Obx(() {
       if (controller.isLoading.value) {
         return Center(child: LoadingScreen());
@@ -115,62 +119,66 @@ class EmployeeAbsentWidget extends GetView<EmployeeReportController3> {
         itemCount: controller.data.length,
         itemBuilder: (context, index) {
           final record = controller.data[index];
-          return Card(
-            color: Colors.white,
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 6,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    color: Colors.orange.shade900,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomLeft: Radius.circular(12),
+          return MouseHover(
+            keyId: 13,
+            controller: controller1,
+            child: Card(
+              color: Colors.white,
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 6,
+                    height: 140,
+                    decoration: BoxDecoration(
+                      color: Colors.orange.shade900,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Staff_ID: ${record.staff_id ?? '-'}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      Text('Username: ${record.staff_name ?? '-'}'),
-                      const SizedBox(height: 5),
-                      Text('Position: ${record.position ?? '-'}'),
-                      const SizedBox(height: 5),
-                      Text('Department: ${record.department ?? '-'}'),
-                      const SizedBox(height: 5),
-                      Row(
-                        children: [
-                          Text('AbsentDate: ${record.absent_date ?? '-'}'),
-                          const SizedBox(width: 5),
-                          Text(' Reason ${record.reason ?? '-'}'),
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      Text('Created At: ${record.created_at ?? '-'}'),
-                    ],
+                  const SizedBox(width: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Staff_ID: ${record.staff_id ?? '-'}',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text('Username: ${record.staff_name ?? '-'}'),
+                        const SizedBox(height: 5),
+                        Text('Position: ${record.position ?? '-'}'),
+                        const SizedBox(height: 5),
+                        Text('Department: ${record.department ?? '-'}'),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text('AbsentDate: ${record.absent_date ?? '-'}'),
+                            const SizedBox(width: 5),
+                            Text(' Reason ${record.reason ?? '-'}'),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text('Created At: ${record.created_at ?? '-'}'),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

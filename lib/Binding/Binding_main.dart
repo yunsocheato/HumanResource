@@ -3,9 +3,14 @@ import 'package:hrms/modules/Attendance/controllers/attendane_screen_controller.
 import 'package:hrms/modules/Bottomappbar/controller/bottomappbar_controller.dart';
 import 'package:hrms/modules/Dashboard/controllers/dashboard_screen_controller.dart';
 import 'package:hrms/modules/Department/controllers/department_controller.dart';
+import 'package:hrms/modules/History/controller/history_controller.dart';
 import 'package:hrms/modules/Report/controller/employee_report_controller3.dart';
+import 'package:hrms/modules/Setting/controller/setting_controller.dart';
+import 'package:hrms/modules/UserSetup/Controller/user_setup_controller.dart';
 import '../Core/user_profile_controller.dart';
-// import '../Update/controller/update_controller.dart';
+// import '../Update/HoverMouse/update_controller.dart';
+import '../SplashScreen/controller/splash_controller.dart';
+import '../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../modules/Attendance/controllers/attendance_chart_controller.dart';
 import '../modules/Attendance/controllers/attendance_chart_pie_controller.dart';
 import '../modules/Attendance/controllers/attendance_widget_controller.dart';
@@ -37,6 +42,7 @@ import '../modules/Report/controller/employee_report_controller1.dart';
 import '../modules/Report/controller/employee_report_controller2.dart';
 import '../modules/Report/controller/employee_report_controller4.dart';
 import '../modules/Report/controller/employee_report_leavesummary_controller.dart';
+import '../modules/Schedule/controller/schedule_screen_controller.dart';
 import '../modules/Searchbar/controller/search_bar_controller.dart';
 
 class BindingMain extends Bindings{
@@ -158,6 +164,28 @@ class BindingMain extends Bindings{
 
     Get.put(ApplyLeaveScreenController());
     Get.lazyPut<ApplyLeaveScreenController>(() => ApplyLeaveScreenController());
+
+    Get.put(DepartmentScreenController());
+    Get.lazyPut<DepartmentScreenController>(() => DepartmentScreenController());
+
+    Get.put(ScheduleController());
+    Get.lazyPut<ScheduleController>(() => ScheduleController());
+
+    Get.put(HistoryController());
+    Get.lazyPut<HistoryController>(() => HistoryController());
+
+    Get.put(SettingController());
+    Get.lazyPut<SettingController>(() => SettingController());
+
+    Get.put(HoverMouseController());
+    Get.lazyPut<HoverMouseController>(() => HoverMouseController());
+
+    Get.put(SplashController());
+    Get.lazyPut<SplashController>(() => SplashController());
+
+    Get.put(UserSetupController());
+    Get.lazyPut<UserSetupController>(() => UserSetupController());
+
   }
 
 }

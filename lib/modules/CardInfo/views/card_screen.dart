@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../controllers/card_controller.dart';
 import '../widgets/card_list_view.dart';
+
+
 
 class Cardinfo extends GetView<CardController> {
   const Cardinfo({super.key});
@@ -16,44 +20,88 @@ class Cardinfo extends GetView<CardController> {
   Widget _buildRowlist() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 600;
-        final isTablet = constraints.maxWidth >= 600 &&
-            constraints.maxWidth < 1024;
-        final isDesktop = constraints.maxWidth >= 1024;
+        final width = constraints.maxWidth;
+
+        final isMobile = width < 600;
+        final isTablet = width >= 600 && width < 1024;
+        final isLaptop = width >= 1024 && width < 1440;
+        final isDesktop = width >= 1440 && width < 2560;
+        final isLargeDesktop = width >= 2560 && width < 3840;
+
+        int crossAxisCount;
+        double aspectRatio;
+        double cardHeight;
+        double fontSizeTitle;
+        double fontSizeNumber;
+        double fontSizeSubtitle;
+        double iconSize;
 
         if (isMobile) {
-          return _buildOBxResponsiveColoum();
+          crossAxisCount = 2;
+          aspectRatio = 1.5;
+          cardHeight = 110;
+          fontSizeTitle = 12;
+          fontSizeNumber = 13;
+          fontSizeSubtitle = 9;
+          iconSize = 14;
         } else if (isTablet) {
-          return _buildOBxResponsiveRow();
+          crossAxisCount = 4;
+          aspectRatio = 1.6;
+          cardHeight = 250;
+          fontSizeTitle = 13;
+          fontSizeNumber = 14;
+          fontSizeSubtitle = 10;
+          iconSize = 15;
+        } else if (isLaptop) {
+          crossAxisCount = 4;
+          aspectRatio = 2.1;
+          cardHeight = 210;
+          fontSizeTitle = 13;
+          fontSizeNumber = 18;
+          fontSizeSubtitle = 12;
+          iconSize = 21;
+
         } else if (isDesktop) {
-          return _buildOBxResponsiveRow();
+          crossAxisCount = 4;
+          aspectRatio = 2.6;
+          cardHeight = 220;
+          fontSizeTitle = 18;
+          fontSizeNumber = 24;
+          fontSizeSubtitle = 15;
+          iconSize = 24;
+        } else if (isLargeDesktop) {
+          crossAxisCount = 4;
+          aspectRatio = 3.0;
+          cardHeight = 250;
+          fontSizeTitle = 20;
+          fontSizeNumber = 28;
+          fontSizeSubtitle = 16;
+          iconSize = 26;
         } else {
-          return _buildOBxResponsiveRow(); // fallback, empty widget
+          crossAxisCount = 4;
+          aspectRatio = 3.2;
+          cardHeight = 280;
+          fontSizeTitle = 22;
+          fontSizeNumber = 30;
+          fontSizeSubtitle = 18;
+          iconSize = 28;
         }
-      },
-    );
-  }
-
-
-  Widget _buildOBxResponsiveRow() {
-    final cardData = getCardDataListview(controller);
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Obx(() {
+        return Obx(() {
           if (controller.isLoading.value ||
               controller.isLoading1.value ||
               controller.isLoading3.value) {
             return const Center(child: CircularProgressIndicator());
           }
-      
+
+          final cardData = getCardDataListview(controller);
+
           return GridView.count(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            crossAxisCount: 4,
-            childAspectRatio: 2.5,
-            mainAxisSpacing: 1,
-            crossAxisSpacing: 4,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: aspectRatio,
+            mainAxisSpacing: 3,
+            crossAxisSpacing: 3,
             children: List.generate(cardData.length, (index) {
               final item = cardData[index];
               return _buildCardInfo(
@@ -66,49 +114,16 @@ class Cardinfo extends GetView<CardController> {
                 iconBgColor: item['iconBgColor'],
                 subtitleColor: Colors.grey.shade600,
                 iconColor: item['iconColor'](controller),
+                cardHeight: cardHeight,
+                fontSizeTitle: fontSizeTitle,
+                fontSizeNumber: fontSizeNumber,
+                fontSizeSubtitle: fontSizeSubtitle,
+                iconSize: iconSize,
               );
             }),
           );
-        }),
-      ),
-    );
-  }
-
-
-  Widget _buildOBxResponsiveColoum() {
-    final cardData = getCardDataListview(controller);
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Obx(() {
-        if (controller.isLoading.value ||
-            controller.isLoading1.value ||
-            controller.isLoading3.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        return GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          childAspectRatio: 1.5,
-          mainAxisSpacing: 3,
-          crossAxisSpacing: 1,
-          children: List.generate(cardData.length, (index) {
-            final item = cardData[index];
-            return _buildCardInfo(
-              index: index,
-              title: item['title'],
-              subtitle: item['subtitle'](controller),
-              number: item['number'](controller),
-              icon: item['icon'](controller),
-              bgColor: Colors.white,
-              iconBgColor: item['iconBgColor'],
-              subtitleColor: Colors.grey.shade600,
-              iconColor: item['iconColor'](controller),
-            );
-          }),
-        );
-      }),
+        });
+      },
     );
   }
 
@@ -122,18 +137,25 @@ class Cardinfo extends GetView<CardController> {
     required Color iconBgColor,
     required Color subtitleColor,
     required Color iconColor,
+    required double cardHeight,
+    required double fontSizeTitle,
+    required double fontSizeNumber,
+    required double fontSizeSubtitle,
+    required double iconSize,
   }) {
-    return Card(
-      color: iconColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 8,
-      shadowColor: Colors.grey.withOpacity(0.2),
-      child: SizedBox(
-        height: 150,
-        width: 356,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: SingleChildScrollView(
+    final HoverMouseController controller = Get.find<HoverMouseController>();
+    return MouseHover(
+      keyId: 18,
+      controller: controller,
+      child: Card(
+        color: iconColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 6,
+        shadowColor: Colors.grey.withOpacity(0.2),
+        child: SizedBox(
+          height: cardHeight,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -145,29 +167,30 @@ class Cardinfo extends GetView<CardController> {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 15,
+                        style: TextStyle(
+                          fontSize: fontSizeTitle,
                           color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                     Container(
-                      height: 40,
-                      width: 40,
+                      height: iconSize * 1.3,
+                      width: iconSize * 1.3,
                       decoration: BoxDecoration(
                         color: iconBgColor.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(icon, size: 20, color: bgColor),
+                      child: Icon(icon, size: iconSize, color: bgColor),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const Spacer(),
                 Text(
                   number,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
-                    fontSize: 20,
+                    fontSize: fontSizeNumber,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -178,8 +201,8 @@ class Cardinfo extends GetView<CardController> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: subtitleColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                    fontSize: fontSizeSubtitle,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
@@ -189,6 +212,4 @@ class Cardinfo extends GetView<CardController> {
       ),
     );
   }
-
-
 }

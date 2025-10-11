@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:hrms/modules/LeaveRequest/controllers/apply_leave_screen_controller.dart';
+import '../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../Employee/widgets/employee_profile_circleavatar.dart';
 
 class LeaveRecord extends GetView<ApplyLeaveScreenController> {
@@ -21,59 +23,64 @@ class LeaveRecord extends GetView<ApplyLeaveScreenController> {
 
   Widget _buildUserInfoFieldsMobile() {
     final controller = Get.find<ApplyLeaveScreenController>();
+    final HoverMouseController controller1 = Get.put(HoverMouseController());
 
-    return Card(
-      elevation: 10,
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Obx(() => buildProfileAvatar(controller.profileImageUrl.value)),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Obx(() => _buildTextField(
-              controller.nameController,
-              controller.nameText.value,
-              'Name',
-              controller.isEnabled.value,
-            )),
-            const SizedBox(height: 10),
-            Obx(() => _buildTextField(
-              controller.emailController,
-              controller.emailText.value,
-              'Email',
-              controller.isEnabled.value,
-            )),
-            const SizedBox(height: 10),
-            Obx(() => _buildTextField(
-              controller.phoneController,
-              controller.phoneText.value,
-              'Phone',
-              controller.isEnabled.value,
-            )),
-            const SizedBox(height: 10),
-            Obx(() => _buildTextField(
-              controller.positionController,
-              controller.positionText.value,
-              'Position',
-              controller.isEnabled.value,
-            )),
-            const SizedBox(height: 10),
-            Obx(() => _buildTextField(
-              controller.departmentController,
-              controller.departmentText.value,
-              'Department',
-              controller.isEnabled.value,
-            )),
-            const SizedBox(height: 20),
-            // buildApplyLeave(),
-            _buildButtons(controller),
-          ],
+    return MouseHover(
+      keyId: 11,
+      controller: controller1,
+      child: Card(
+        elevation: 10,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Obx(() => buildProfileAvatar(controller.profileImageUrl.value)),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Obx(() => _buildTextField(
+                controller.nameController,
+                controller.nameText.value,
+                'Name',
+                controller.isEnabled.value,
+              )),
+              const SizedBox(height: 10),
+              Obx(() => _buildTextField(
+                controller.emailController,
+                controller.emailText.value,
+                'Email',
+                controller.isEnabled.value,
+              )),
+              const SizedBox(height: 10),
+              Obx(() => _buildTextField(
+                controller.phoneController,
+                controller.phoneText.value,
+                'Phone',
+                controller.isEnabled.value,
+              )),
+              const SizedBox(height: 10),
+              Obx(() => _buildTextField(
+                controller.positionController,
+                controller.positionText.value,
+                'Position',
+                controller.isEnabled.value,
+              )),
+              const SizedBox(height: 10),
+              Obx(() => _buildTextField(
+                controller.departmentController,
+                controller.departmentText.value,
+                'Department',
+                controller.isEnabled.value,
+              )),
+              const SizedBox(height: 20),
+              // buildApplyLeave(),
+              _buildButtons(controller),
+            ],
+          ),
         ),
       ),
     );

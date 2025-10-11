@@ -11,7 +11,7 @@ import '../widget/employee_Latereport_widget2.dart';
 
 class EmployeeLateScreen extends GetView<EmployeeReportController2> {
   const EmployeeLateScreen({super.key});
-  static const String routeName = '/employeeLatescreen';
+  static const String routeName = '/employeelate';
   @override
   Widget build(BuildContext context) {
     final loading = Get.find<LoadingUiController>();

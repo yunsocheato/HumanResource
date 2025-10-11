@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../Utils/HoverMouse/Widget/mouse_hover_widget.dart';
+import '../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../API/DataSourceTableReport.dart';
 import '../controller/employee_report_controller1.dart';
@@ -23,278 +25,283 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController> {
 
   Widget _buildEmployeeCheckINOther() {
     final controller = Get.find<EmployeeReportController>();
+    final HoverMouseController controller1 = Get.put(HoverMouseController());
 
-    return Card(
-      color: Colors.grey.withOpacity(0.4),
-      elevation: 10,
-      shadowColor: Colors.grey.withOpacity(0.6),
-      margin: const EdgeInsets.all(16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Obx(() {
-        if (controller.isLoading.value) {
-          return Center(child: LoadingScreen());
-        }
-        if (controller.Imageasset.isEmpty) {
-          return Center(
-            child: Image.asset(
-              controller.Imageasset.value,
-              height: 150,
-              width: 150,
-            ),
-          );
-        }
-        final dataSource = DataSourceTableReport(controller.data);
-        return SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: MediaQuery.of(Get.context!).size.width - 45,
+    return MouseHover(
+      keyId: 14,
+      controller: controller1,
+      child: Card(
+        color: Colors.grey.withOpacity(0.4),
+        elevation: 10,
+        shadowColor: Colors.grey.withOpacity(0.6),
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(child: LoadingScreen());
+          }
+          if (controller.Imageasset.isEmpty) {
+            return Center(
+              child: Image.asset(
+                controller.Imageasset.value,
+                height: 150,
+                width: 150,
               ),
-              child: PaginatedDataTable(
-                header: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [Text('Employee Check-In')],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: 30,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade900,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: TextButton(
-                            onPressed: () async {
-                              final picked = await showDatePicker(
-                                context: Get.context!,
-                                initialDate: controller.startDate.value,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
-                              );
-                              if (picked != null)
-                                controller.updateStartDate(picked);
-                            },
-                            child: Text(
-                              'StartDate',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Container(
-                          height: 30,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade900,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: TextButton(
-                            onPressed: () async {
-                              final picked = await showDatePicker(
-                                context: Get.context!,
-                                initialDate: controller.endDate.value,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
-                              );
-                              if (picked != null)
-                                controller.updateEndDate(picked);
-                            },
-                            child: Text(
-                              'EndDate',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Obx(
-                          () => Container(
+            );
+          }
+          final dataSource = DataSourceTableReport(controller.data);
+          return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.of(Get.context!).size.width - 45,
+                ),
+                child: PaginatedDataTable(
+                  header: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [Text('Employee Check-In')],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
                             height: 30,
-                            width: 170,
+                            width: 120,
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade700,
-                              borderRadius: BorderRadius.circular(3),
+                              color: Colors.red.shade900,
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 8),
-                            alignment: Alignment.centerLeft,
-                            child: Center(
+                            child: TextButton(
+                              onPressed: () async {
+                                final picked = await showDatePicker(
+                                  context: Get.context!,
+                                  initialDate: controller.startDate.value,
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (picked != null)
+                                  controller.updateStartDate(picked);
+                              },
                               child: Text(
-                                '${controller.startDate.value?.toLocal().toString().split(' ')[0]} '
-                                'To '
-                                '${controller.endDate.value?.toLocal().toString().split(' ')[0]}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
+                                'StartDate',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Container(
+                            height: 30,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade900,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: TextButton(
+                              onPressed: () async {
+                                final picked = await showDatePicker(
+                                  context: Get.context!,
+                                  initialDate: controller.endDate.value,
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (picked != null)
+                                  controller.updateEndDate(picked);
+                              },
+                              child: Text(
+                                'EndDate',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Obx(
+                            () => Container(
+                              height: 30,
+                              width: 170,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade700,
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              alignment: Alignment.centerLeft,
+                              child: Center(
+                                child: Text(
+                                  '${controller.startDate.value?.toLocal().toString().split(' ')[0]} '
+                                  'To '
+                                  '${controller.endDate.value?.toLocal().toString().split(' ')[0]}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        Container(
-                          height: 30,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade700,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child:TextButton(
-                            onPressed: () async {
-                              controller.isExporting1.value = true;
-                              try {
-                                await ExportExcel1();
-                                Get.snackbar(
-                                  'Success',
-                                  'Excel exported successfully',
-                                );
-                              } catch (e) {
-                                Get.snackbar(
-                                  'Error',
-                                  'Export failed: $e',
-                                );
-                              } finally {
-                                controller.isExporting1.value = false;
-                              }
-                            },
-                            child: Obx(
-                                  () => Flexible(
-                                flex: 1,
-                                child: Center(
-                                  child: Text(
-                                    controller.isExporting1.value
-                                        ? 'Exporting'
-                                        : 'Excel',
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                          SizedBox(width: 10),
+                          Container(
+                            height: 30,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade700,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child:TextButton(
+                              onPressed: () async {
+                                controller.isExporting1.value = true;
+                                try {
+                                  await ExportExcel1();
+                                  Get.snackbar(
+                                    'Success',
+                                    'Excel exported successfully',
+                                  );
+                                } catch (e) {
+                                  Get.snackbar(
+                                    'Error',
+                                    'Export failed: $e',
+                                  );
+                                } finally {
+                                  controller.isExporting1.value = false;
+                                }
+                              },
+                              child: Obx(
+                                    () => Flexible(
+                                  flex: 1,
+                                  child: Center(
+                                    child: Text(
+                                      controller.isExporting1.value
+                                          ? 'Exporting'
+                                          : 'Excel',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  columns: [
+                    DataColumn(
+                      label: Container(
+                        width: 80,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade900,
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                      ],
+                        child: Center(
+                          child: Text(
+                            'LOGID',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Container(
+                        width: 80,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.orange.shade900,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Fingerprint',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Container(
+                        width: 80,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.yellow.shade900,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Username',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Container(
+                        width: 85,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade900,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Check Type',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Container(
+                        width: 85,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade900,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'DateTime',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
+                  source: dataSource,
+                  rowsPerPage: controller.pageSize,
+                  onRowsPerPageChanged: (value) {
+                    controller.updatePagination(value!, 1);
+                    controller.loadMore();
+                  },
+                  showCheckboxColumn: false,
                 ),
-                columns: [
-                  DataColumn(
-                    label: Container(
-                      width: 80,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade900,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'LOGID',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Container(
-                      width: 80,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        color: Colors.orange.shade900,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Fingerprint',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Container(
-                      width: 80,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        color: Colors.yellow.shade900,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Username',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Container(
-                      width: 85,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade900,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Check Type',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Container(
-                      width: 85,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade900,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'DateTime',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-                source: dataSource,
-                rowsPerPage: controller.pageSize,
-                onRowsPerPageChanged: (value) {
-                  controller.updatePagination(value!, 1);
-                  controller.loadMore();
-                },
-                showCheckboxColumn: false,
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 

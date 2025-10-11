@@ -180,7 +180,7 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
 
   // Widget _buildUserInfoFields() {
   //   return Obx(() {
-  //     if (controller.isLoading.value) {
+  //     if (HoverMouse.isLoading.value) {
   //       return Center(
   //         child: CircularProgressIndicator(color: Colors.blue.shade900),
   //       );
@@ -210,15 +210,15 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
   //                   children: [
   //                     CircleAvatar(
   //                       radius: 50,
-  //                       backgroundImage: controller.userProfile?.image != null &&
-  //                           controller.userProfile!.image!.isNotEmpty
-  //                           ? NetworkImage(controller.userProfile!.image!)
+  //                       backgroundImage: HoverMouse.userProfile?.image != null &&
+  //                           HoverMouse.userProfile!.image!.isNotEmpty
+  //                           ? NetworkImage(HoverMouse.userProfile!.image!)
   //                           : const AssetImage(
   //                           'assets/images/default_avatar.png')
   //                       as ImageProvider,
   //                     ),
   //                     IconButton(
-  //                       onPressed: () => controller.updateUserInfo(),
+  //                       onPressed: () => HoverMouse.updateUserInfo(),
   //                       icon: const Icon(Boxicons.bx_camera,
   //                           color: Colors.blue),
   //                     ),
@@ -231,7 +231,7 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
   //               const Text('Role', style: TextStyle(fontWeight: FontWeight.bold)),
   //               const SizedBox(height: 3),
   //               TextFormField(
-  //                 initialValue: controller.RoleUserTextController.text,
+  //                 initialValue: HoverMouse.RoleUserTextController.text,
   //                 decoration: const InputDecoration(labelText: 'Role'),
   //                 enabled: false,
   //               ),
@@ -242,9 +242,9 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
   //                   style: TextStyle(fontWeight: FontWeight.bold)),
   //               const SizedBox(height: 3),
   //               TextFormField(
-  //                 initialValue: controller.departmentController.text,
+  //                 initialValue: HoverMouse.departmentController.text,
   //                 decoration: const InputDecoration(labelText: 'Department'),
-  //                 onChanged: (val) => controller.updateUserInfo(),
+  //                 onChanged: (val) => HoverMouse.updateUserInfo(),
   //               ),
   //
   //               const SizedBox(height: 20),
@@ -253,22 +253,22 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
   //               const SizedBox(height: 8),
   //
   //               TextFormField(
-  //                 initialValue: controller.nameController.text,
+  //                 initialValue: HoverMouse.nameController.text,
   //                 decoration: const InputDecoration(labelText: 'First Name'),
   //                 enabled: false,
   //               ),
   //               TextFormField(
-  //                 initialValue: controller.emailController.text,
+  //                 initialValue: HoverMouse.emailController.text,
   //                 decoration: const InputDecoration(labelText: 'Email Address'),
   //                 enabled: false,
   //               ),
   //               TextFormField(
-  //                 initialValue: controller.phoneController.text,
+  //                 initialValue: HoverMouse.phoneController.text,
   //                 decoration: const InputDecoration(labelText: 'Phone Number'),
   //                 enabled: false,
   //               ),
   //               TextFormField(
-  //                 initialValue: controller.positionController.text,
+  //                 initialValue: HoverMouse.positionController.text,
   //                 decoration: const InputDecoration(labelText: 'Position'),
   //                 enabled: false,
   //               ),
@@ -278,12 +278,12 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
   //                 mainAxisAlignment: MainAxisAlignment.end,
   //                 children: [
   //                   ElevatedButton(
-  //                     onPressed: () => controller.isEnabled(),
+  //                     onPressed: () => HoverMouse.isEnabled(),
   //                     child: const Text('Enable Editing'),
   //                   ),
   //                   const SizedBox(width: 10),
   //                   ElevatedButton(
-  //                     onPressed: () => controller.updateUserInfo(),
+  //                     onPressed: () => HoverMouse.updateUserInfo(),
   //                     child: const Text('Save Changes'),
   //                   ),
   //                   const SizedBox(width: 10),

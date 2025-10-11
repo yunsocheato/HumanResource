@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/Loginscreen/views/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -5,15 +6,16 @@ import '../../Dashboard/views/dashboard_screen.dart';
 import '../../Loadingui/loading_controller.dart';
 import '../services/login_service.dart';
 
-class LoginController extends GetxController {
+class LoginController extends GetxController with SingleGetTickerProviderMixin {
   var Loading = ''.obs;
   var email = ''.obs;
   var password = ''.obs;
   var isLogin = false.obs;
   var isPassword = true.obs;
   var isVisible = false.obs;
+  late AnimationController controller1;
+  late Animation<double> blurAnimation;
 
-  final SupabaseClient _client = Supabase.instance.client;
 
   void login() async {
     Loading.value = 'Loading...';
@@ -34,7 +36,7 @@ class LoginController extends GetxController {
 
       if (role == 'admin') {
         await Future.delayed(const Duration(seconds: 5));
-        Get.find<LoadingUiController>().terminateLoading(); // ✅ hide loader
+        Get.find<LoadingUiController>().terminateLoading();
         Get.to(() => DashboardScreen());
       } else {
         await Future.delayed(const Duration(seconds: 6));
@@ -61,6 +63,24 @@ class LoginController extends GetxController {
   void toggleLogin() {
     isLogin.value = !isLogin.value;
   }
+  @override
+  void onInit() {
+    super.onInit();
 
+    controller1 = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    blurAnimation = Tween<double>(begin: 0.0, end: 10.0).animate(
+      CurvedAnimation(parent: controller1, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    controller1.dispose();
+    super.dispose();
+  }
 
 }

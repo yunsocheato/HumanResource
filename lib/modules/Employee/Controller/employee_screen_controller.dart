@@ -25,7 +25,7 @@ class EmployeeScreenController extends GetxController {
   }
 
   void refreshdata ()  async {
-    await MethodButton1();
+    await MethodButton6();
     update();
   }
 

@@ -10,7 +10,7 @@ import '../controllers/apply_leave_screen_controller.dart';
 
 class ApplyLeaveScreen extends GetView<ApplyLeaveScreenController> {
   const ApplyLeaveScreen({super.key});
-  static const String routeName = '/ApplyLeave';
+  static const String routeName = '/applyleave';
 
   @override
   Widget build(BuildContext context) {

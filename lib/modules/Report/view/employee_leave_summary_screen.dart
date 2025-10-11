@@ -11,8 +11,7 @@ import '../widget/employee_leave_summary_widget.dart';
 
 class EmployeeLeaveSummaryScreen extends GetView<leavesummarycontroller> {
   const EmployeeLeaveSummaryScreen({super.key});
-
-  static const String routeName = '/LeaveSummary';
+  static const String routeName = '/employeeleavesummary';
 
   @override
   Widget build(BuildContext context) {

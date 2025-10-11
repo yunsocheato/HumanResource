@@ -1,150 +1,285 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
+
+import '../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../Loadingui/ErrorScreen/Controller/DataUnavaiable.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Searchbar/controller/search_bar_controller.dart';
 import '../controllers/attendance_widget_controller.dart';
-
+import 'attendance_filter_view.dart';
 
 class AttendanceRecords extends GetView<AttendanceController> {
-   AttendanceRecords({super.key});
+  AttendanceRecords({super.key});
 
   @override
   Widget build(BuildContext context) {
     Get.put(SearchBarController());
     Get.put(DataUnavailable());
-    return BuildResponsiveObxTable();
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+
+        final isMobile = width < 600;
+        final isTablet = width >= 600 && width < 1024;
+        final isLaptop = width >= 1024 && width < 1440;
+        final isDesktop = width >= 1440 && width < 2560;
+        final isLargeDesktop = width >= 2560;
+        double maxTableWidth;
+        if (isMobile) {
+          maxTableWidth = double.infinity;
+        } else if (isTablet) {
+          maxTableWidth = width * 0.85;
+        } else if (isLaptop) {
+          maxTableWidth = width * 0.85;
+        } else if (isDesktop) {
+          maxTableWidth = width * 0.8;
+        } else if (isLargeDesktop) {
+          maxTableWidth = width * 0.8;
+        } else {
+          maxTableWidth = width * 0.9;
+        }
+        if (isMobile) {
+          return _buildAttendanceTableColumn();
+        } else {
+          return _buildAttendanceTableDesktop(maxTableWidth);
+        }
+      },
+    );
   }
 
-  Widget BuildResponsiveObxTable() {
-    final isMobile = Get.width < 600;
-    return isMobile ? _buildAttendanceTableColumn() : _buildAttendanceTableRow();
+  Widget _buildAttendanceTableDesktop(double maxTableWidth) {
+    final controller = Get.find<AttendanceController>();
+    final data1 = Get.put(DataUnavailable());
+
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: LoadingScreen());
+      } else if (controller.dataSource.value == null || controller.attendanceData.isEmpty) {
+        return data1.imageNotFound.value
+            ? SizedBox(
+          width: 150,
+          height: 150,
+          child: Center(child: Image.asset(data1.imageUrl, fit: BoxFit.cover)),
+        )
+            : const Text("No Data Found", style: TextStyle(color: Colors.red));
+      }
+      final HoverMouseController controller1 = Get.put(HoverMouseController());
+      final context = Get.context!;
+      return MouseHover(
+        keyId: 3,
+        controller: controller1,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Card(
+            elevation: 10,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            color: Colors.grey.shade200,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 40,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.teal.shade700, Colors.tealAccent.shade100],
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight,
+                    ),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Text(
+                      "Attendance Records",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: AttendanceFilterView(),
+                ),
+                const SizedBox(height: 5),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: MediaQuery.of(context).size.width - 350,
+                      ),
+                      child: PaginatedDataTable(
+                         rowsPerPage: controller.currentLimit,
+                         availableRowsPerPage: const [10, 20, 50, 100, 200],
+                         onPageChanged: (firstRowIndex) {
+                           final newPage = (firstRowIndex ~/ controller.currentLimit);
+                           controller.updatePagination(controller.currentLimit, newPage);
+                         },
+                         onRowsPerPageChanged: (value) {
+                           if (value != null) controller.updatePagination(value, 0);
+                         },
+                         columns: [
+                           DataColumn(
+                             label: Container(
+                               height: 30,
+                               width: 90,
+                               alignment: Alignment.center,
+                               decoration: BoxDecoration(
+                                 color: Colors.blue,
+                                 borderRadius: BorderRadius.circular(6),
+                               ),
+                               child: const Text(
+                                 'Log ID',
+                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                               ),
+                             ),
+                           ),
+                           DataColumn(
+                             label: Container(
+                               height: 30,
+                               width: 125,
+                               alignment: Alignment.center,
+                               decoration: BoxDecoration(
+                                 color: Colors.green,
+                                 borderRadius: BorderRadius.circular(6),
+                               ),
+                               child: const Text(
+                                 'ID Fingerprint',
+                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                               ),
+                             ),
+                           ),
+                           DataColumn(
+                             label: Container(
+                               height: 30,
+                               width: 100,
+                               alignment: Alignment.center,
+                               decoration: BoxDecoration(
+                                 color: Colors.red,
+                                 borderRadius: BorderRadius.circular(6),
+                               ),
+                               child: const Text(
+                                 'Username',
+                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                               ),
+                             ),
+                           ),
+                           DataColumn(
+                             label: Container(
+                               height: 30,
+                               width: 100,
+                               alignment: Alignment.center,
+                               decoration: BoxDecoration(
+                                 color: Colors.orange,
+                                 borderRadius: BorderRadius.circular(6),
+                               ),
+                               child: const Text(
+                                 'Clock IN',
+                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                               ),
+                             ),
+                           ),
+                           DataColumn(
+                             label: Container(
+                               height: 30,
+                               width: 100,
+                               alignment: Alignment.center,
+                               decoration: BoxDecoration(
+                                 color: Colors.purple,
+                                 borderRadius: BorderRadius.circular(6),
+                               ),
+                               child: const Text(
+                                 'Check Type',
+                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                               ),
+                             ),
+                           ),
+                         ],
+                         source: controller.dataSource.value!,
+                       ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 
+  Widget _buildAttendanceTableColumn() {
+    final controller = Get.find<AttendanceController>();
+    final data = controller.attendanceData;
+    final data1 = Get.put(DataUnavailable());
 
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: LoadingScreen());
+      } else if (controller.dataSource.value == null || controller.attendanceData.isEmpty) {
+        return data1.imageNotFound.value
+            ? SizedBox(
+          width: 150,
+          height: 150,
+          child: Center(child: Image.asset(data1.imageUrl, fit: BoxFit.cover)),
+        )
+            : const Text("No Data Found", style: TextStyle(color: Colors.red));
+      }
 
-   Widget _buildAttendanceTableRow() {
-     final controller = Get.find<AttendanceController>();
-     final data1 = Get.put(DataUnavailable());
-     return Obx(() {
-       if (controller.isLoading.value) {
-         return const Center(child: LoadingScreen());
-       } else if (controller.dataSource.value == null || controller.attendanceData.isEmpty) {
-         return Obx(() {
-           return data1.imageNotFound.value
-               ? SizedBox(
-             width: 150,
-             height: 150,
-             child: Center(child: Image.asset(data1.imageUrl, fit: BoxFit.cover)),
-           )
-               : const Text("No Data Found", style: TextStyle(color: Colors.red));
-         });
-       }
-         final context = Get.context!;
-         return SingleChildScrollView(
-           scrollDirection: Axis.vertical,
-           child: Padding(
-             padding: const EdgeInsets.all(32.0),
-             child: ConstrainedBox(
-               constraints: BoxConstraints(minWidth: MediaQuery
-                   .of(context)
-                   .size
-                   .width - 30,
-               ),
-               child: PaginatedDataTable(
-                 rowsPerPage: controller.currentLimit,
-                 availableRowsPerPage: const [10, 20, 50, 100, 200],
-                 onPageChanged: (firstRowIndex) {
-                   final newPage = (firstRowIndex ~/ controller.currentLimit);
-                   controller.updatePagination(controller.currentLimit, newPage);
-                 },
-                 onRowsPerPageChanged: (value) {
-                   if (value != null) {
-                     controller.updatePagination(value, 0);
-                   }
-                 },
-                 columns: const [
-                   DataColumn(label: Text('Log ID')),
-                   DataColumn(label: Text('ID Fingerprint')),
-                   DataColumn(label: Text('Username')),
-                   DataColumn(label: Text('Clock IN')),
-                   DataColumn(label: Text('Check Type')),
-                 ],
-                 source: controller.dataSource.value!,
-               ),
-             ),
-           ),
-         );
-
-     });
-   }
-
-
-   Widget _buildAttendanceTableColumn() {
-     final controller = Get.find<AttendanceController>();
-     final data = controller.attendanceData;
-     final data1 = Get.put(DataUnavailable());
-     return Obx(() {
-       if (controller.isLoading.value) {
-         return const Center(child: LoadingScreen());
-       } else if (controller.dataSource.value == null || controller.attendanceData.isEmpty) {
-         return Obx(() {
-           return data1.imageNotFound.value
-               ? SizedBox(
-             width: 150,
-             height: 150,
-             child: Center(child: Image.asset(data1.imageUrl, fit: BoxFit.cover)),
-           )
-               : const Text("No Data Found", style: TextStyle(color: Colors.red));
-         });
-       }
-
-       return ListView.builder(
-         shrinkWrap: true,
-         physics: const NeverScrollableScrollPhysics(),
-         itemCount: data.length,
-         itemBuilder: (context, index) {
-           final record = data[index];
-           return Card(
-             color: Colors.white,
-             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-             elevation: 2,
-             shape: RoundedRectangleBorder(
-                 borderRadius: BorderRadius.circular(12)),
-             child: Row(
-               children: [
-                 Container(
-                   width: 6,
-                   height: 98,
-                   decoration: BoxDecoration(
-                     color: Colors.blue.shade900,
-                     borderRadius: const BorderRadius.only(
-                       topLeft: Radius.circular(12),
-                       bottomLeft: Radius.circular(12),
-                     ),
-                   ),
-                 ),
-                 const SizedBox(width: 20),
-                 Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Text("Username: ${record['name'] ?? '-'}",
-                           style: const TextStyle(fontWeight: FontWeight.bold)),
-                       const SizedBox(height: 4),
-                       Text('FingerPrintID: ${record['fingerprint_id']}'),
-                       Text("Clock In: ${record['timestamp'] ?? '-'}"),
-                       Text("Check Type: ${record['check_type'] ?? '-'}"),
-                     ],
-                   ),
-                 ),
-               ],
-             ),
-           );
-         },
-       );
-     });
-   }
-
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          final record = data[index];
+          return Card(
+            color: Colors.white,
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            elevation: 2,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                Container(
+                  width: 6,
+                  height: 98,
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade900,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      bottomLeft: Radius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Username: ${record['name'] ?? '-'}",
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 4),
+                      Text('FingerPrintID: ${record['fingerprint_id']}'),
+                      Text("Clock In: ${record['timestamp'] ?? '-'}"),
+                      Text("Check Type: ${record['check_type'] ?? '-'}"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    });
+  }
 }

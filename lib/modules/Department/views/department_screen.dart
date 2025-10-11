@@ -3,35 +3,33 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/Department/controllers/department_controller.dart';
-import '../../Attendance/controllers/attendane_screen_controller.dart';
 import '../../Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../CardInfo/views/card_screen.dart';
-import '../../Drawer/controllers/drawer_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../../Loadingui/Loading_Screen.dart';
 import '../../Loadingui/loading_controller.dart';
+import '../widgets/department_mutiple_button_widget.dart';
 
 class DepartmentScreen extends GetView<DepartmentScreenController> {
-  static const String routeName = '/DepartmentScreen';
-
+  static const String routeName = '/department';
   const DepartmentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final loading = Get.find<LoadingUiController>();
-    final controllers = Get.find<DepartmentScreenController>();
     final isMobile = Get.width < 600;
 
     final contents = Drawerscreen(
       content: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
+          fit: StackFit.loose,
           children: [
             Scrollbar(
-              controller: controllers.verticalScrollController,
+              controller: controller.verticalScrollController,
               thumbVisibility: true,
               child: SingleChildScrollView(
-                controller: controllers.verticalScrollController,
+                controller: controller.verticalScrollController,
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +37,8 @@ class DepartmentScreen extends GetView<DepartmentScreenController> {
                     if (isMobile) _buildHeader(),
                     if (!isMobile) Padding(padding: const EdgeInsets.all(8), child: _buildHeader()),
                     const Cardinfo(),
-                    // _buildResponsiveContent(),
+                    const SizedBox(height: 20),
+                    ButtonWidget(),
                   ],
                 ),
               ),
@@ -57,7 +56,6 @@ class DepartmentScreen extends GetView<DepartmentScreenController> {
 
   Widget _buildHeader() {
     final ctx = Get.context ?? Get.overlayContext;
-    final controller = Get.find<DepartmentScreenController>();
     final isMobile = ctx != null ? MediaQuery.of(ctx).size.width < 600 : Get.width < 600;
     return Obx(
           () => AnimatedOpacity(
@@ -129,7 +127,7 @@ class DepartmentScreen extends GetView<DepartmentScreenController> {
                             Stack(
                               children: <Widget>[
                                 Text(
-                                  'DEPARTMENT DASHBOARD',
+                                  'DEPARTMENT',
                                   style: TextStyle(
                                     fontSize: 24,
                                     foreground: Paint()
@@ -139,7 +137,7 @@ class DepartmentScreen extends GetView<DepartmentScreenController> {
                                   ),
                                 ),
                                 const Text(
-                                  'DEPARTMENT DASHBOARD',
+                                  'DEPARTMENT',
                                   style: TextStyle(
                                     fontSize: 24,
                                     color: Colors.white,
@@ -188,72 +186,4 @@ class DepartmentScreen extends GetView<DepartmentScreenController> {
     );
   }
 
-  // Widget _buildResponsiveContent() {
-  //   return LayoutBuilder(
-  //     builder: (context, constraints) {
-  //       final isMobile = constraints.maxWidth < 600;
-  //       if (isMobile) {
-  //         return _buildMobileContent();
-  //       } else {
-  //         return _buildDesktopTabletContent();
-  //       }
-  //     },
-  //   );
-  // }
-  //
-  // Widget _buildMobileContent() {
-  //   final isMobile = Get.width < 600;
-  //   return Padding(
-  //     padding:  EdgeInsets.all(8.0),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         if (isMobile)
-  //           EmployeefilterView(),
-  //         SizedBox(height: 10),
-  //         if (isMobile)
-  //           SearchbarScreen(),
-  //         SizedBox(height: 10),
-  //         EmployeeList(),
-  //       ],
-  //     ),
-  //   );
-  // }
-  //
-  // Widget _buildDesktopTabletContent() {
-  //   return Padding(
-  //     padding:  EdgeInsets.all(8.0),
-  //     child: Container(
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(12),
-  //       ),
-  //       child:  Scrollbar(
-  //         controller: _horizontalScrollController,
-  //         thumbVisibility: true,
-  //         child: Scrollbar(
-  //           controller: _verticalScrollController,
-  //           thumbVisibility: true,
-  //           child: SingleChildScrollView(
-  //             controller: _verticalScrollController,
-  //             child: SingleChildScrollView(
-  //               controller: _horizontalScrollController,
-  //               scrollDirection: Axis.horizontal,
-  //               child: ConstrainedBox(
-  //                 constraints: BoxConstraints(
-  //                   minWidth: MediaQuery.of(context).size.width,
-  //                   maxWidth: MediaQuery.of(context).size.width * 1.5,
-  //                 ),
-  //                 child: Padding(
-  //                   padding: const EdgeInsets.all(12.0),
-  //                   child: EmployeeList(),
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       )
-  //       ,
-  //     ),
-  //   );
-  // }
 }

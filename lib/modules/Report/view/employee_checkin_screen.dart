@@ -12,7 +12,7 @@ import '../widget/employee_checkinreport_widget1.dart';
 class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
   const EmployeeCheckinScreen({super.key});
 
-  static const String routeName = '/employeescreencheckin';
+  static const String routeName = '/employeecheckin';
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +52,7 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
         ),
       ),
     );
-    return isMobile
-        ? BottomAppBarWidget(body: contents)
-        : contents;
+    return isMobile ? BottomAppBarWidget(body: contents) : contents;
   }
 
   Widget _buildHeader() {
@@ -274,7 +272,10 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                               controller.isExporting1.value
                                   ? 'Exporting'
                                   : 'Excel',
-                              style: const TextStyle(color: Colors.white,fontSize: 13),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
                             ),
                           ),
                         ),

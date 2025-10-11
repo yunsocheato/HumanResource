@@ -22,19 +22,19 @@ class LoadingScreen extends StatelessWidget {
           width: 130,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white12,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: LoadingAnimationWidget.threeRotatingDots(
+          child: LoadingAnimationWidget.beat(
             color: Colors.blue.shade900,
-            size: 60,
+            size: 67,
           ),
         ) : SizedBox(
           height: 150,
           width: 150,
-          child: LoadingAnimationWidget.inkDrop(
+          child: LoadingAnimationWidget.staggeredDotsWave(
             color: Colors.blue.shade900,
-            size: 90,
+            size: 50,
           ),
         ),
       );
