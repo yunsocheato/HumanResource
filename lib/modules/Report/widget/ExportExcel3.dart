@@ -63,7 +63,6 @@ Future<void> ExportExcel3({
     await FileSaver.instance.saveFile(
       name: fileName,
       bytes: Uint8List.fromList(fileBytes),
-      ext: "xlsx",
       mimeType: MimeType.microsoftExcel,
     );
     Get.snackbar('Success', 'Excel exported: $fileName');

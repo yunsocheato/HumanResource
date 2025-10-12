@@ -8,6 +8,9 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
 
   @override
   Widget build(BuildContext context) {
+    if (!Get.isRegistered<EmployeeProfileController>()) {
+      Get.put(EmployeeProfileController());
+    }
     final isMobile = Get.width < 600;
     return isMobile ? _buildMobile(context) : _buildDesktop(context);
   }
@@ -126,7 +129,7 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            initialValue: controller.Username.value,
+            controller: controller.usernameSearchController,
             decoration: InputDecoration(
               labelText: 'FIND USERNAME',
               suffixIcon: IconButton(
@@ -165,6 +168,8 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
                     title: Text(suggestion),
                     onTap: () {
                       controller.Username.value = suggestion;
+                      controller.usernameSearchController.text = suggestion;
+
                       controller.fetchbyusersemployeeProfile(suggestion);
                       controller.suggestionList.clear();
                       Get.to(() => EmployeeProfileScreen());
@@ -177,127 +182,4 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
       );
     });
   }
-
-  // Widget _buildUserInfoFields() {
-  //   return Obx(() {
-  //     if (HoverMouse.isLoading.value) {
-  //       return Center(
-  //         child: CircularProgressIndicator(color: Colors.blue.shade900),
-  //       );
-  //     } else {
-  //       return Container(
-  //         decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.circular(8),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.withOpacity(0.5),
-  //               spreadRadius: 2,
-  //               blurRadius: 5,
-  //               offset: const Offset(0, 3),
-  //             ),
-  //           ],
-  //         ),
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(16.0),
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               /// Avatar
-  //               Center(
-  //                 child: Stack(
-  //                   alignment: Alignment.bottomRight,
-  //                   children: [
-  //                     CircleAvatar(
-  //                       radius: 50,
-  //                       backgroundImage: HoverMouse.userProfile?.image != null &&
-  //                           HoverMouse.userProfile!.image!.isNotEmpty
-  //                           ? NetworkImage(HoverMouse.userProfile!.image!)
-  //                           : const AssetImage(
-  //                           'assets/images/default_avatar.png')
-  //                       as ImageProvider,
-  //                     ),
-  //                     IconButton(
-  //                       onPressed: () => HoverMouse.updateUserInfo(),
-  //                       icon: const Icon(Boxicons.bx_camera,
-  //                           color: Colors.blue),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               const SizedBox(height: 20),
-  //
-  //               /// Role
-  //               const Text('Role', style: TextStyle(fontWeight: FontWeight.bold)),
-  //               const SizedBox(height: 3),
-  //               TextFormField(
-  //                 initialValue: HoverMouse.RoleUserTextController.text,
-  //                 decoration: const InputDecoration(labelText: 'Role'),
-  //                 enabled: false,
-  //               ),
-  //
-  //               /// Department
-  //               const SizedBox(height: 12),
-  //               const Text('Department',
-  //                   style: TextStyle(fontWeight: FontWeight.bold)),
-  //               const SizedBox(height: 3),
-  //               TextFormField(
-  //                 initialValue: HoverMouse.departmentController.text,
-  //                 decoration: const InputDecoration(labelText: 'Department'),
-  //                 onChanged: (val) => HoverMouse.updateUserInfo(),
-  //               ),
-  //
-  //               const SizedBox(height: 20),
-  //               const Text('Employee Information',
-  //                   style: TextStyle(fontWeight: FontWeight.bold)),
-  //               const SizedBox(height: 8),
-  //
-  //               TextFormField(
-  //                 initialValue: HoverMouse.nameController.text,
-  //                 decoration: const InputDecoration(labelText: 'First Name'),
-  //                 enabled: false,
-  //               ),
-  //               TextFormField(
-  //                 initialValue: HoverMouse.emailController.text,
-  //                 decoration: const InputDecoration(labelText: 'Email Address'),
-  //                 enabled: false,
-  //               ),
-  //               TextFormField(
-  //                 initialValue: HoverMouse.phoneController.text,
-  //                 decoration: const InputDecoration(labelText: 'Phone Number'),
-  //                 enabled: false,
-  //               ),
-  //               TextFormField(
-  //                 initialValue: HoverMouse.positionController.text,
-  //                 decoration: const InputDecoration(labelText: 'Position'),
-  //                 enabled: false,
-  //               ),
-  //
-  //               const SizedBox(height: 20),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.end,
-  //                 children: [
-  //                   ElevatedButton(
-  //                     onPressed: () => HoverMouse.isEnabled(),
-  //                     child: const Text('Enable Editing'),
-  //                   ),
-  //                   const SizedBox(width: 10),
-  //                   ElevatedButton(
-  //                     onPressed: () => HoverMouse.updateUserInfo(),
-  //                     child: const Text('Save Changes'),
-  //                   ),
-  //                   const SizedBox(width: 10),
-  //                   OutlinedButton(
-  //                     onPressed: () => Get.back(),
-  //                     child: const Text('Cancel'),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   });
-  // }
 }

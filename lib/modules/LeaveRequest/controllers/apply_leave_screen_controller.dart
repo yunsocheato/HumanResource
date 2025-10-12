@@ -12,8 +12,6 @@ class ApplyLeaveScreenController extends GetxController{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final Rxn<ApplyLeaveModel> userprofiles = Rxn<ApplyLeaveModel>();
 
-  RxList<ApplyLeaveModel> users = <ApplyLeaveModel>[].obs;
-
   ApplyLeaveModel? get userProfile => userprofiles.value;
 
   final profileHCtrl = ScrollController();
@@ -24,6 +22,7 @@ class ApplyLeaveScreenController extends GetxController{
   final IconData icon = Icons.search;
   final Color color = Colors.green.shade900;
   final RxString Username = ''.obs;
+  final isNotEmpty = false.obs;
   final RxList<String> suggestionList = <String>[].obs;
   RxString profileImageUrl = ''.obs;
   XFile? imageFile;
@@ -38,6 +37,9 @@ class ApplyLeaveScreenController extends GetxController{
   var departmentText = ''.obs;
   var roleText = ''.obs;
   var joinDateText = ''.obs;
+  var fingerprintidText = ''.obs;
+  var RoleUserText = ''.obs;
+
 
   var requestNumberText = ''.obs;
   var requestDateText = ''.obs;
@@ -46,9 +48,6 @@ class ApplyLeaveScreenController extends GetxController{
   var startDateText = ''.obs;
   var endDateText = ''.obs;
   var leaveCountText = ''.obs;
-  var fingerprintidText = ''.obs;
-  var RoleUserText = ''.obs;
-
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -59,18 +58,17 @@ class ApplyLeaveScreenController extends GetxController{
   final departmentController = TextEditingController();
   final fingerprintidController = TextEditingController();
   final RoleUserTextController = TextEditingController();
+  final joinDateController = TextEditingController();
 
   final requestNumberController = TextEditingController();
   final requestDateController = TextEditingController();
   final locationController = TextEditingController();
-  final selectedRequestType = RxnString();
-  // final selectedRequestType = ''.obs;
+  var selectedRequestType = ''.obs;
   final reasonController = TextEditingController();
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
   final leaveCountController = TextEditingController();
 
-  final joinDateController = TextEditingController();
   final ScrollController verticalScrollController = ScrollController();
   final ScrollController horizontalScrollController = ScrollController();
 
@@ -95,9 +93,13 @@ class ApplyLeaveScreenController extends GetxController{
     phoneController.addListener(() => phoneText.value = phoneController.text);
     idCardController.addListener(() => idCardText.value = idCardController.text);
     addressController.addListener(() => addressText.value = addressController.text);
-    fingerprintidController.addListener(() => fingerprintidController.text = fingerprintidController.text);
+    fingerprintidController.addListener(() => fingerprintidText.value = fingerprintidController.text);
     departmentController.addListener(() => departmentText.value = departmentController.text);
     RoleUserTextController.addListener(() => roleText.value = RoleUserTextController.text);
+
+    reasonController.addListener(() => reasonText.value = reasonController.text);
+    startDateController.addListener(() => startDateText.value = startDateController.text);
+    endDateController.addListener(() => endDateText.value = endDateController.text);
   }
 
   Future<void> loadUserProfile() async {
@@ -125,6 +127,7 @@ class ApplyLeaveScreenController extends GetxController{
         fingerprintidController.text = profile.fingerprint_id?.toString() ?? '';
         RoleUserTextController.text = profile.Role ?? '';
         profileImageUrl.value = profile.photo_url ?? '';
+        // joinDateController.text = profile.join_date ?? '';
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to load profile: $e');
@@ -167,7 +170,17 @@ class ApplyLeaveScreenController extends GetxController{
     fingerprintidController.text = data.fingerprint_id?.toString() ?? '';
     RoleUserTextController.text = data.Role ?? '';
     profileImageUrl.value = data.photo_url ?? '';
+
+    selectedRequestType.value = '';
+    requestNumberController.clear();
+    requestDateController.clear();
+    locationController.clear();
+    reasonController.clear();
+    startDateController.clear();
+    endDateController.clear();
+    leaveCountController.clear();
   }
+
   void clearDataFields(){
     nameController.clear();
     emailController.clear();
@@ -178,7 +191,9 @@ class ApplyLeaveScreenController extends GetxController{
     departmentController.clear();
     fingerprintidController.clear();
     RoleUserTextController.clear();
+    joinDateController.clear();
 
+    selectedRequestType.value = '';
     requestNumberController.clear();
     requestDateController.clear();
     locationController.clear();
@@ -194,4 +209,6 @@ class ApplyLeaveScreenController extends GetxController{
   }
 
   void toggleEnable() => isEnabled.value = !isEnabled.value;
+
+
 }

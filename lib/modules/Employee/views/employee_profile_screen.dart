@@ -336,24 +336,33 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
             ),
           ),
           const Divider(height: 32),
-          _buildSidebarItem('Status', 'Onboarding', Colors.black54, Icons.star),
           _buildSidebarItem(
-            'Email',
-            controller.emailText.value,
-            Colors.blue,
-            Icons.email,
+            'Status',
+            'Onboarding'.obs,
+            Colors.black54,
+            Icons.star,
+            null,
           ),
           _buildSidebarItem(
-            'Phone Number',
-            controller.phoneText.value,
-            Colors.black54,
+            'Email',
+            controller.emailText,
+            Colors.blue,
+            Icons.email,
+            controller.emailController,
+          ),
+          _buildSidebarItem(
+            'Phone',
+            controller.phoneText,
+            Colors.blue,
             Icons.phone,
+            controller.phoneController,
           ),
           _buildSidebarItem(
             'Address',
-            controller.addressText.value,
+            controller.addressText,
             Colors.blue,
             Icons.location_on,
+            controller.addressController,
           ),
         ],
       ),
@@ -362,9 +371,10 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
 
   Widget _buildSidebarItem(
     String label,
-    String value,
+    RxString observable,
     Color valueColor,
     IconData icon,
+    TextEditingController? ctrl,
   ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
@@ -373,8 +383,8 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.yellow.shade200, size: 10),
-              const SizedBox(width: 5),
+              Icon(icon, color: Colors.yellow, size: 14),
+              const SizedBox(width: 8),
               Text(
                 label,
                 style: const TextStyle(fontSize: 12, color: Colors.black45),
@@ -383,13 +393,15 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
           ),
           const SizedBox(height: 4),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              value,
-              style: TextStyle(
-                fontSize: 14,
-                color: valueColor,
-                fontWeight: FontWeight.w500,
+            padding: const EdgeInsets.only(left: 22.0),
+            child: Obx(
+              () => Text(
+                observable.value,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: valueColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
@@ -455,7 +467,8 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
             ...fields.map((field) {
               return _buildInfoRow(
                 field['label'] as String,
-                field['text'] as String,
+                field['icon'] as IconData,
+                field['observable'] as RxString,
                 field['controller'] as TextEditingController,
               );
             }).toList(),
@@ -465,13 +478,23 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value, TextEditingController ctrl) {
+  Widget _buildInfoRow(
+    String label,
+    IconData icon,
+    RxString observable,
+    TextEditingController ctrl,
+  ) {
     return Obx(() {
       final isEnabled = controller.isEnabled.value;
+      final value = observable.value;
+
       if (isEnabled) {
+        if (ctrl.text != value) {
+          ctrl.text = value;
+        }
         return Padding(
           padding: const EdgeInsets.only(bottom: 12.0),
-          child: _buildTextField(ctrl, value, label, isEnabled),
+          child: _buildTextField(ctrl, label, isEnabled),
         );
       } else {
         return Padding(
@@ -481,19 +504,28 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
             children: [
               Expanded(
                 flex: 2,
-                child: Text(
-                  '$label:',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black54,
-                    fontSize: 15,
-                  ),
+                child: Row(
+                  children: [
+                    Icon(icon, size: 18, color: Colors.blueGrey.shade400),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        '$label:',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          fontSize: 15,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
                 flex: 3,
                 child: Text(
-                  value,
+                  value.isEmpty ? 'N/A' : value,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black87,
@@ -512,27 +544,32 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
     return [
       {
         'label': 'Full Name',
-        'text': controller.nameText.value,
+        'icon': Icons.person,
+        'observable': controller.nameText,
         'controller': controller.nameController,
       },
       {
         'label': 'Employee ID',
-        'text': controller.idCardText.value,
+        'icon': Icons.badge,
+        'observable': controller.idCardText,
         'controller': controller.idCardController,
       },
       {
         'label': 'Position',
-        'text': controller.positionText.value,
+        'icon': Icons.work,
+        'observable': controller.positionText,
         'controller': controller.positionController,
       },
       {
         'label': 'Department',
-        'text': controller.departmentText.value,
+        'icon': Icons.apartment,
+        'observable': controller.departmentText,
         'controller': controller.departmentController,
       },
       {
         'label': 'Role',
-        'text': controller.roleText.value,
+        'icon': Icons.star,
+        'observable': controller.roleText,
         'controller': controller.RoleUserTextController,
       },
     ];
@@ -542,17 +579,20 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
     return [
       {
         'label': 'Email',
-        'text': controller.emailText.value,
+        'icon': Icons.email,
+        'observable': controller.emailText,
         'controller': controller.emailController,
       },
       {
         'label': 'Phone',
-        'text': controller.phoneText.value,
+        'icon': Icons.phone,
+        'observable': controller.phoneText,
         'controller': controller.phoneController,
       },
       {
         'label': 'Address',
-        'text': controller.addressText.value,
+        'icon': Icons.location_on,
+        'observable': controller.addressText,
         'controller': controller.addressController,
       },
     ];
@@ -562,17 +602,20 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
     return [
       {
         'label': 'Join Date',
-        'text': controller.joinDateText.value,
-        'controller': controller.nameController,
+        'icon': Icons.date_range,
+        'observable': controller.joinDateText,
+        'controller': controller.joinDateController,
       },
-      {
-        'label': 'Position',
-        'text': controller.phoneText.value,
-        'controller': controller.positionController,
-      },
+      // {
+      //   'label': 'Fingerprint ID',
+      //   'icon': Icons.fingerprint,
+      //   'observable': controller.fingerprintidController,
+      //   'controller': controller.fingerprintidController
+      // },
       {
         'label': 'Parking No.',
-        'text': 'P1-21',
+        'icon': Icons.car_rental,
+        'observable': ''.obs, // Using an empty mock RxString for static data
         'controller': controller.departmentController,
       },
     ];
@@ -580,13 +623,9 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
 
   Widget _buildTextField(
     TextEditingController ctrl,
-    String text,
     String label,
     bool isEnabled,
   ) {
-    if (ctrl.text != text) {
-      ctrl.text = text;
-    }
     return TextField(
       controller: ctrl,
       enabled: isEnabled,
@@ -595,34 +634,10 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
+        filled: true,
+        fillColor: Colors.grey.shade50,
       ),
-    );
-  }
-
-  Widget _buildTextFieldRow3(
-    TextEditingController ctrl1,
-    String text1,
-    String label1,
-    TextEditingController ctrl2,
-    String text2,
-    String label2,
-    TextEditingController ctrl3,
-    String text3,
-    String label3,
-    bool isEnabled,
-  ) {
-    if (ctrl1.text != text1) ctrl1.text = text1;
-    if (ctrl2.text != text2) ctrl2.text = text2;
-    if (ctrl3.text != text3) ctrl3.text = text3;
-
-    return Row(
-      children: [
-        Expanded(child: _buildTextField(ctrl1, text1, label1, isEnabled)),
-        const SizedBox(width: 12),
-        Expanded(child: _buildTextField(ctrl2, text2, label2, isEnabled)),
-        const SizedBox(width: 12),
-        Expanded(child: _buildTextField(ctrl3, text3, label3, isEnabled)),
-      ],
+      style: const TextStyle(fontSize: 15),
     );
   }
 

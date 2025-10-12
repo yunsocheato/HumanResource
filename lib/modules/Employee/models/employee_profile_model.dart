@@ -6,7 +6,7 @@ class EmployeeProfileModel {
   final String? phone;
   final String? position;
   final String? department;
-  final int? fingerprint_id;
+  // final int? fingerprint_id;
   final String? join_date;
   final String? Role;
   final String? photo_url;
@@ -19,7 +19,7 @@ class EmployeeProfileModel {
     required this.phone,
     required this.position,
     required this.department,
-    required this.fingerprint_id,
+    // required this.fingerprint_id,
     required this.Role,
     required this.join_date,
     required this.photo_url,
@@ -34,7 +34,7 @@ class EmployeeProfileModel {
       id_card: json['id_card'] as String?,
       address: json['address'] as String?,
       phone: json['phone'] as String?,
-      fingerprint_id: json['fingerprints_id'] as int?,
+      // fingerprint_id: json['fingerprints_id'] as int?,
       Role: json['role'] as String?,
       photo_url: json['photo_url'] as String?,
       join_date: json['created_at'] as String?,
@@ -50,7 +50,6 @@ class EmployeeProfileModel {
       'id_card': id_card,
       'address': address,
       'phone': phone,
-      'fingerprints_id': fingerprint_id,
       'Role': Role,
       'photo_url': photo_url,
       'created_at': join_date,

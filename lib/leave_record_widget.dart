@@ -1,10 +1,13 @@
+// leave_record_widget.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:hrms/modules/LeaveRequest/controllers/apply_leave_screen_controller.dart';
-import '../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
-import '../../Employee/widgets/employee_profile_circleavatar.dart';
+import 'Utils/HoverMouse/controller/hover_mouse_controller.dart';
+import 'modules/Employee/widgets/employee_profile_circleavatar.dart';
+import 'modules/LeaveRequest/widgets/RequestLeaveWidget.dart';
 
 class LeaveRecord extends GetView<ApplyLeaveScreenController> {
   const LeaveRecord({super.key});
@@ -77,7 +80,9 @@ class LeaveRecord extends GetView<ApplyLeaveScreenController> {
                 controller.isEnabled.value,
               )),
               const SizedBox(height: 20),
-              // buildApplyLeave(),
+              const RequestLeaveFormWidget(),
+              const SizedBox(height: 20),
+
               _buildButtons(controller),
             ],
           ),
@@ -139,7 +144,6 @@ class LeaveRecord extends GetView<ApplyLeaveScreenController> {
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontSize: 18,
-
                                           ),
                                         ),
                                       ),
@@ -258,34 +262,9 @@ class LeaveRecord extends GetView<ApplyLeaveScreenController> {
               ),
             ),
             const SizedBox(height: 15),
-            Card(
-              elevation: 10,
-              shadowColor: Colors.grey.withOpacity(0.5),
-              color: Colors.white,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 6,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade900,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        bottomLeft: Radius.circular(12),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: buildApplyLeave(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
+            const RequestLeaveFormWidget(),
+
             const SizedBox(height: 30),
             _buildButtons(controller),
           ],
@@ -294,163 +273,7 @@ class LeaveRecord extends GetView<ApplyLeaveScreenController> {
     );
   }
 
-  Widget buildApplyLeave() {
-    final controller = Get.find<ApplyLeaveScreenController>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 220,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.blue.shade900,
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-          ),
-          child: Center(
-            child: Text(
-              'Apply Leave',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-          ),),
 
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                controller: controller.requestNumberController,
-                decoration: const InputDecoration(
-                  labelText: 'Request Number',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (val) =>
-                val == null || val.isEmpty ? "Required" : null,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: TextFormField(
-                controller: controller.requestDateController,
-                readOnly: true,
-                onTap: () async {
-                  final date = await showDatePicker(
-                    context: Get.context!,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                    initialDate: DateTime.now(),
-                  );
-                  if (date != null) {
-                    controller.requestDateController.text =
-                        date.toIso8601String().split("T").first;
-                  }
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Request Date',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (val) =>
-                val == null || val.isEmpty ? "Required" : null,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 15),
-        TextFormField(
-          controller: controller.locationController,
-          decoration: const InputDecoration(
-            labelText: 'Location',
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height: 15),
-        DropdownButtonFormField<String>(
-          value: controller.selectedRequestType.value,
-          decoration: const InputDecoration(
-            labelText: 'Request Type',
-            border: OutlineInputBorder(),
-          ),
-          items: ["Sick Leave", "Casual Leave", "Annual Leave"]
-              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              .toList(),
-          onChanged: (val) {
-            controller.selectedRequestType.value = val;
-          },
-        ),
-        const SizedBox(height: 15),
-        TextFormField(
-          controller: controller.reasonController,
-          decoration: const InputDecoration(
-            labelText: 'Reason (optional)',
-            border: OutlineInputBorder(),
-          ),
-          maxLines: 2,
-        ),
-        const SizedBox(height: 15),
-        Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                controller: controller.startDateController,
-                readOnly: true,
-                onTap: () async {
-                  final date = await showDatePicker(
-                    context: Get.context!,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                    initialDate: DateTime.now(),
-                  );
-                  if (date != null) {
-                    controller.startDateController.text =
-                        date.toIso8601String().split("T").first;
-                  }
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Start Date',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: TextFormField(
-                controller: controller.endDateController,
-                readOnly: true,
-                onTap: () async {
-                  final date = await showDatePicker(
-                    context: Get.context!,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                    initialDate: DateTime.now(),
-                  );
-                  if (date != null) {
-                    controller.endDateController.text =
-                        date.toIso8601String().split("T").first;
-                  }
-                },
-                decoration: const InputDecoration(
-                  labelText: 'End Date',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 15),
-        TextFormField(
-          controller: controller.leaveCountController,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            labelText: 'Leave Count',
-            border: OutlineInputBorder(),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildTextField(TextEditingController ctrl, String text, String label,
       bool isEnabled) {
@@ -475,7 +298,6 @@ class LeaveRecord extends GetView<ApplyLeaveScreenController> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.blue.shade900),
           onPressed: (){},
-          // onPressed: controller.applyLeave,
           child: const Text('Apply Leave',
               style: TextStyle(color: Colors.white)),
         ),
@@ -503,5 +325,4 @@ class LeaveRecord extends GetView<ApplyLeaveScreenController> {
       );
     }
   }
-
 }

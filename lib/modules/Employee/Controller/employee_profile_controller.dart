@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../API/employee_profile_sql.dart';
 import '../models/employee_profile_model.dart';
 
@@ -19,6 +22,7 @@ class EmployeeProfileController extends GetxController {
 
   RxString profileImageUrl = ''.obs;
   XFile? imageFile;
+  final  usernameSearchController = TextEditingController();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final positionController = TextEditingController();
@@ -45,6 +49,7 @@ class EmployeeProfileController extends GetxController {
   var departmentText = ''.obs;
   var roleText = ''.obs;
 
+
   @override
   void onInit() {
     super.onInit();
@@ -52,7 +57,7 @@ class EmployeeProfileController extends GetxController {
 
     debounce(
       Username,
-      (value) => fetchSuggestionsProfile(value),
+          (value) => fetchSuggestionsProfile(value),
       time: const Duration(milliseconds: 300),
     );
 
@@ -63,26 +68,23 @@ class EmployeeProfileController extends GetxController {
     nameController.addListener(() => nameText.value = nameController.text);
     emailController.addListener(() => emailText.value = emailController.text);
     positionController.addListener(
-      () => positionText.value = positionController.text,
+          () => positionText.value = positionController.text,
     );
     phoneController.addListener(() => phoneText.value = phoneController.text);
     idCardController.addListener(
-      () => idCardText.value = idCardController.text,
+          () => idCardText.value = idCardController.text,
     );
     addressController.addListener(
-      () => addressText.value = addressController.text,
+          () => addressText.value = addressController.text,
     );
     joinDateController.addListener(
-      () => joinDateText.value = joinDateController.text,
-    );
-    fingerprintidController.addListener(
-      () => fingerprintidController.text = fingerprintidController.text,
+          () => joinDateText.value = joinDateController.text,
     );
     departmentController.addListener(
-      () => departmentText.value = departmentController.text,
+          () => departmentText.value = departmentController.text,
     );
     RoleUserTextController.addListener(
-      () => roleText.value = RoleUserTextController.text,
+          () => roleText.value = RoleUserTextController.text,
     );
   }
 
@@ -91,6 +93,17 @@ class EmployeeProfileController extends GetxController {
     profileHCtrl.dispose();
     horizontalScrollController.dispose();
     verticalScrollController.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    positionController.dispose();
+    addressController.dispose();
+    phoneController.dispose();
+    idCardController.dispose();
+    joinDateController.dispose();
+    departmentController.dispose();
+    fingerprintidController.dispose();
+    RoleUserTextController.dispose();
+
     super.onClose();
   }
 
@@ -111,17 +124,7 @@ class EmployeeProfileController extends GetxController {
       _userprofiles.value = profile;
 
       if (profile != null) {
-        nameController.text = profile.name ?? '';
-        emailController.text = profile.email ?? '';
-        positionController.text = profile.position ?? '';
-        addressController.text = profile.address ?? '';
-        phoneController.text = profile.phone ?? '';
-        joinDateController.text = profile.join_date ?? '';
-        idCardController.text = profile.id_card ?? '';
-        departmentController.text = profile.department ?? '';
-        fingerprintidController.text = profile.fingerprint_id?.toString() ?? '';
-        RoleUserTextController.text = profile.Role ?? '';
-        profileImageUrl.value = profile.photo_url ?? '';
+        mapDataFields(profile);
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to load profile: $e');
@@ -167,25 +170,27 @@ class EmployeeProfileController extends GetxController {
         'name': nameController.text.trim(),
         'email': emailController.text.trim(),
         'address': addressController.text.trim(),
-        'fingerprint_id':
-            fingerprintidController.text.trim().isEmpty
-                ? null
-                : fingerprintidController.text.trim(),
+        // 'fingerprint_id':
+        // fingerprintidController.text.trim().isEmpty
+        //     ? null
+        //     : fingerprintidController.text.trim(),
         'position': positionController.text.trim(),
         'phone': phoneController.text.trim(),
         'id_card': idCardController.text.trim(),
         'department': departmentController.text.trim(),
         'role': RoleUserTextController.text.trim(),
-        'join_date': joinDateController.text.trim(),
+        'created_at': joinDateController.text.trim(),
         'photo_url':
-            profileImageUrl.value.isEmpty ? null : profileImageUrl.value,
+        profileImageUrl.value.isEmpty ? null : profileImageUrl.value,
       };
 
       updates.removeWhere((key, value) => value == null || (value.isEmpty));
 
       print("DEBUG: update payload -> $updates");
 
-      await _employeeProfilesql.updateUserInfo(user.id, updates);
+      final userId = user.id;
+
+      await _employeeProfilesql.updateUserInfo(userId, updates);
 
       Get.snackbar('Success', 'Profile updated!');
       isEnabled.value = false;
@@ -205,16 +210,22 @@ class EmployeeProfileController extends GetxController {
       Get.dialog(
         AlertDialog(
           title: const Text('Upload Image'),
-          content: FutureBuilder(
+          content: FutureBuilder<List<int>?>(
             future: imageFile!.readAsBytes(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               }
-              if (snapshot.hasData || snapshot.data == null) {
-                return Image.asset('assets/images/profileuser.png');
+              if (snapshot.hasError) {
+                return const Text('Error loading image');
               }
-              return Image.memory(snapshot.data!);
+              if (snapshot.hasData && snapshot.data != null) {
+                return Image.memory(
+                  Uint8List.fromList(snapshot.data!),
+                  fit: BoxFit.contain,
+                );
+              }
+              return Image.asset('assets/images/profileuser.png'); // Fallback
             },
           ),
           actions: [
@@ -285,10 +296,21 @@ class EmployeeProfileController extends GetxController {
     idCardController.text = data.id_card ?? '';
     departmentController.text = data.department ?? '';
     joinDateController.text = data.join_date ?? '';
-    fingerprintidController.text = data.fingerprint_id?.toString() ?? '';
+    // fingerprintidController.text = data.fingerprint_id?.toString() ?? '';
     RoleUserTextController.text = data.Role ?? '';
     profileImageUrl.value = data.photo_url ?? '';
+
+
+    nameText.value = data.name ?? '';
+    emailText.value = data.email ?? '';
+    positionText.value = data.position ?? '';
+    addressText.value = data.address ?? '';
+    phoneText.value = data.phone ?? '';
+    idCardText.value = data.id_card ?? '';
+    departmentText.value = data.department ?? '';
+    joinDateText.value = data.join_date ?? '';
+    roleText.value = data.Role ?? '';
   }
 
-  void refreshData() => updateUserInfo();
+  void refreshData() => loadUserProfile();
 }
