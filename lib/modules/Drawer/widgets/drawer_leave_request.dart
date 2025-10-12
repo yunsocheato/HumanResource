@@ -97,7 +97,7 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
                 _buildSubTile(
                   iconSize: iconSize,
                   fontSize: fontSizeBody,
-                  title: 'Apply Leave',
+                  title: 'Create Leave Request',
                   icon: Boxicons.bx_walk,
                   index: 20,
                   onTap: () => DialogScreen(context, ApplyLeaveWidget()),

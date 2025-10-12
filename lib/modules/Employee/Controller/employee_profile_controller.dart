@@ -25,6 +25,7 @@ class EmployeeProfileController extends GetxController {
   final addressController = TextEditingController();
   final phoneController = TextEditingController();
   final idCardController = TextEditingController();
+  final joinDateController = TextEditingController();
   final departmentController = TextEditingController();
   final fingerprintidController = TextEditingController();
   final RoleUserTextController = TextEditingController();
@@ -40,6 +41,7 @@ class EmployeeProfileController extends GetxController {
   var addressText = ''.obs;
   var phoneText = ''.obs;
   var idCardText = ''.obs;
+  var joinDateText = ''.obs;
   var departmentText = ''.obs;
   var roleText = ''.obs;
 
@@ -50,7 +52,7 @@ class EmployeeProfileController extends GetxController {
 
     debounce(
       Username,
-          (value) => fetchSuggestionsProfile(value),
+      (value) => fetchSuggestionsProfile(value),
       time: const Duration(milliseconds: 300),
     );
 
@@ -60,13 +62,28 @@ class EmployeeProfileController extends GetxController {
 
     nameController.addListener(() => nameText.value = nameController.text);
     emailController.addListener(() => emailText.value = emailController.text);
-    positionController.addListener(() => positionText.value = positionController.text);
+    positionController.addListener(
+      () => positionText.value = positionController.text,
+    );
     phoneController.addListener(() => phoneText.value = phoneController.text);
-    idCardController.addListener(() => idCardText.value = idCardController.text);
-    addressController.addListener(() => addressText.value = addressController.text);
-    fingerprintidController.addListener(() => fingerprintidController.text = fingerprintidController.text);
-    departmentController.addListener(() => departmentText.value = departmentController.text);
-    RoleUserTextController.addListener(() => roleText.value = RoleUserTextController.text);
+    idCardController.addListener(
+      () => idCardText.value = idCardController.text,
+    );
+    addressController.addListener(
+      () => addressText.value = addressController.text,
+    );
+    joinDateController.addListener(
+      () => joinDateText.value = joinDateController.text,
+    );
+    fingerprintidController.addListener(
+      () => fingerprintidController.text = fingerprintidController.text,
+    );
+    departmentController.addListener(
+      () => departmentText.value = departmentController.text,
+    );
+    RoleUserTextController.addListener(
+      () => roleText.value = RoleUserTextController.text,
+    );
   }
 
   @override
@@ -99,6 +116,7 @@ class EmployeeProfileController extends GetxController {
         positionController.text = profile.position ?? '';
         addressController.text = profile.address ?? '';
         phoneController.text = profile.phone ?? '';
+        joinDateController.text = profile.join_date ?? '';
         idCardController.text = profile.id_card ?? '';
         departmentController.text = profile.department ?? '';
         fingerprintidController.text = profile.fingerprint_id?.toString() ?? '';
@@ -113,8 +131,8 @@ class EmployeeProfileController extends GetxController {
   }
 
   Future<void> fetchSuggestionsProfile(String query) async {
-    suggestionList.value =
-    await _employeeProfilesql.fetchUsernameSuggestionsEmployeeProfile(query);
+    suggestionList.value = await _employeeProfilesql
+        .fetchUsernameSuggestionsEmployeeProfile(query);
   }
 
   Future<void> fetchbyusersemployeeProfile(String name) async {
@@ -149,15 +167,18 @@ class EmployeeProfileController extends GetxController {
         'name': nameController.text.trim(),
         'email': emailController.text.trim(),
         'address': addressController.text.trim(),
-        'fingerprint_id': fingerprintidController.text.trim().isEmpty
-            ? null
-            : fingerprintidController.text.trim(),
+        'fingerprint_id':
+            fingerprintidController.text.trim().isEmpty
+                ? null
+                : fingerprintidController.text.trim(),
         'position': positionController.text.trim(),
         'phone': phoneController.text.trim(),
         'id_card': idCardController.text.trim(),
         'department': departmentController.text.trim(),
         'role': RoleUserTextController.text.trim(),
-        'photo_url': profileImageUrl.value.isEmpty ? null : profileImageUrl.value,
+        'join_date': joinDateController.text.trim(),
+        'photo_url':
+            profileImageUrl.value.isEmpty ? null : profileImageUrl.value,
       };
 
       updates.removeWhere((key, value) => value == null || (value.isEmpty));
@@ -177,49 +198,52 @@ class EmployeeProfileController extends GetxController {
 
   Future<void> pickerImageProfile() async {
     final pickedFile = await ImagePicker().pickImage(
-        source: ImageSource.gallery);
+      source: ImageSource.gallery,
+    );
     if (pickedFile != null) {
       imageFile = XFile(pickedFile.path);
       Get.dialog(
-          AlertDialog(
-              title: const Text('Upload Image'),
-              content: FutureBuilder(
-                  future: imageFile!.readAsBytes(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (snapshot.hasData || snapshot.data == null) {
-                      return Image.asset('assets/images/profileuser.png');
-                    }
-                    return Image.memory(snapshot.data!);
-                  }
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () async {
-                    try{
-                      final imageUrl = await _employeeProfilesql.uploadImage(imageFile!);
-                      profileImageUrl.value = imageUrl;
-                      imageFile = null;
-                      Get.back();
-                    }catch(e){
-                      Get.snackbar('Error', 'Failed to upload image: $e');
-                    }
-                  },
-                  child: const Text('Upload'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    imageFile = null;
-                    Get.back();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ]
-          )
+        AlertDialog(
+          title: const Text('Upload Image'),
+          content: FutureBuilder(
+            future: imageFile!.readAsBytes(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasData || snapshot.data == null) {
+                return Image.asset('assets/images/profileuser.png');
+              }
+              return Image.memory(snapshot.data!);
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                try {
+                  final imageUrl = await _employeeProfilesql.uploadImage(
+                    imageFile!,
+                  );
+                  profileImageUrl.value = imageUrl;
+                  imageFile = null;
+                  Get.back();
+                } catch (e) {
+                  Get.snackbar('Error', 'Failed to upload image: $e');
+                }
+              },
+              child: const Text('Upload'),
+            ),
+            TextButton(
+              onPressed: () {
+                imageFile = null;
+                Get.back();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
       );
-    }else {
+    } else {
       Get.snackbar('Error', 'No image selected');
     }
   }
@@ -235,6 +259,7 @@ class EmployeeProfileController extends GetxController {
     idCardController.clear();
     departmentController.clear();
     fingerprintidController.clear();
+    joinDateController.clear();
     RoleUserTextController.clear();
 
     nameText.value = '';
@@ -245,6 +270,7 @@ class EmployeeProfileController extends GetxController {
     departmentText.value = '';
     addressText.value = '';
     roleText.value = '';
+    joinDateText.value = '';
     profileImageUrl.value = '';
     Username.value = '';
   }
@@ -258,6 +284,7 @@ class EmployeeProfileController extends GetxController {
     phoneController.text = data.phone ?? '';
     idCardController.text = data.id_card ?? '';
     departmentController.text = data.department ?? '';
+    joinDateController.text = data.join_date ?? '';
     fingerprintidController.text = data.fingerprint_id?.toString() ?? '';
     RoleUserTextController.text = data.Role ?? '';
     profileImageUrl.value = data.photo_url ?? '';

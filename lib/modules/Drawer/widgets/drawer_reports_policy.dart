@@ -1,20 +1,21 @@
-  import 'package:enefty_icons/enefty_icons.dart';
-  import 'package:flutter/material.dart';
-  import 'package:flutter_boxicons/flutter_boxicons.dart';
-  import 'package:get/get.dart';
-  import '../controllers/drawer_controller.dart';
-  import 'Method_drawer_policy_button.dart';
+import 'package:enefty_icons/enefty_icons.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:get/get.dart';
+import '../controllers/drawer_controller.dart';
+import 'Method_drawer_policy_button.dart';
 
-  class ReportPolicy extends GetView<AppDrawerController> {
-    const ReportPolicy({super.key});
+class ReportPolicy extends GetView<AppDrawerController> {
+  const ReportPolicy({super.key});
 
-    @override
-    Widget build(BuildContext context) {
-      return _buildDrawerTile(controller, context);
-    }
+  @override
+  Widget build(BuildContext context) {
+    return _buildDrawerTile(controller, context);
+  }
 
-    Widget _buildDrawerTile(BuildContext, context) {
-      return LayoutBuilder(builder: (context, constraints) {
+  Widget _buildDrawerTile(BuildContext, context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
         final width = constraints.maxWidth;
 
         final isMobile = width < 600;
@@ -56,25 +57,28 @@
             ),
             child: ExpansionTile(
               initiallyExpanded: isExpanded1,
-              onExpansionChanged: (bool expanded) =>
-                  controller.toggleTile1('Report'),
+              onExpansionChanged:
+                  (bool expanded) => controller.toggleTile1('Report'),
               leading: Icon(
                 EneftyIcons.document_2_bold,
                 size: iconSize,
-                color: controller.selectedIndex.value == 9
-                    ? Colors.blue.shade900
-                    : Colors.white,
+                color:
+                    controller.selectedIndex.value == 9
+                        ? Colors.blue.shade900
+                        : Colors.white,
               ),
               title: Text(
                 'Report',
                 style: TextStyle(
                   fontSize: fontSizeTitle,
-                  color: controller.selectedIndex.value == 9
-                      ? Colors.blue.shade900
-                      : Colors.white,
-                  fontWeight: controller.selectedIndex.value == 9
-                      ? FontWeight.bold
-                      : FontWeight.normal,
+                  color:
+                      controller.selectedIndex.value == 9
+                          ? Colors.blue.shade900
+                          : Colors.white,
+                  fontWeight:
+                      controller.selectedIndex.value == 9
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                 ),
               ),
               iconColor: Colors.white,
@@ -113,51 +117,51 @@
                   index: 13,
                   onTap: () => MethodButton8(),
                 ),
-                _buildSubTile(
-                  fontSize: fontSizeBody,
-                  iconSize: iconSize,
-                  title: 'OT Report',
-                  icon: EneftyIcons.alarm_bold,
-                  index: 14,
-                  onTap: () => MethodButton10(),
-                ),
+                // _buildSubTile(
+                //   fontSize: fontSizeBody,
+                //   iconSize: iconSize,
+                //   title: 'OT Report',
+                //   icon: EneftyIcons.alarm_bold,
+                //   index: 14,
+                //   onTap: () => MethodButton10(),
+                // ),
               ],
             ),
           );
         });
-      });
-
-    }
-
-
-    Widget _buildSubTile({
-      required String title,
-      required IconData icon,
-      required int index,
-      required VoidCallback onTap,
-      double fontSize = 14,
-      double iconSize = 22,
-    }) {
-       final controller = Get.find<AppDrawerController>();
-      final isSelected = controller.selectedIndex.value == index;
-
-      return ListTile(
-        leading: Icon(
-            size : iconSize,
-            icon, color: isSelected ? Colors.blue.shade900 : Colors.white),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontSize: fontSize,
-            color: isSelected ? Colors.blue.shade900 : Colors.white,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-        onTap: () {
-          controller.setSelected(index);
-          onTap();
-        },
-      );
-    }
-
+      },
+    );
   }
+
+  Widget _buildSubTile({
+    required String title,
+    required IconData icon,
+    required int index,
+    required VoidCallback onTap,
+    double fontSize = 14,
+    double iconSize = 22,
+  }) {
+    final controller = Get.find<AppDrawerController>();
+    final isSelected = controller.selectedIndex.value == index;
+
+    return ListTile(
+      leading: Icon(
+        size: iconSize,
+        icon,
+        color: isSelected ? Colors.blue.shade900 : Colors.white,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: isSelected ? Colors.blue.shade900 : Colors.white,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+      ),
+      onTap: () {
+        controller.setSelected(index);
+        onTap();
+      },
+    );
+  }
+}

@@ -40,19 +40,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    super.initState();
-    // Future.delayed(const Duration(seconds: 2), () {
-    //   final session = Supabase.instance.client.auth.currentSession;
-    //   if (session != null) {
-    //     Get.offAllNamed(DashboardScreen.routeName);
-    //   } else {
-    //     Get.offAllNamed(LoginScreen.routeName);
-    //   }
-    // });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final session = Supabase.instance.client.auth.currentSession;
     return GetMaterialApp(
