@@ -1,15 +1,12 @@
-  import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:hrms/SplashScreen/widget/splash_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'Binding/Binding_main.dart';
-import 'modules/Dashboard/views/dashboard_screen.dart';
-import 'modules/Loginscreen/views/login_screen.dart';
-import 'modules/Routes/appPage.dart';
-import 'modules/Routes/appRoutes.dart';
+import 'Routes/appPage.dart';
+import 'Routes/appRoutes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +24,6 @@ Future<void> main() async {
   if (kIsWeb) {
     FlutterNativeSplash.remove();
   }
-
   runApp(MyApp());
 }
 
