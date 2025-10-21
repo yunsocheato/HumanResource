@@ -9,7 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../API/access_feature_sql.dart';
 import '../Model/access_feature_model.dart';
 
-class AccessFeatureController extends GetxController{
+class AccessFeatureController extends GetxController {
   final AccessFeatureSQL _sql = AccessFeatureSQL();
 
   var isLoading = false.obs;
@@ -25,49 +25,29 @@ class AccessFeatureController extends GetxController{
   var permissionSelectionMap = <UserRole, Map<String, RxBool>>{}.obs;
   final Rx<UserRole?> selectedRole = Rx<UserRole?>(null);
 
-
-
-  final Map<UserRole ,List<String>> UserRoleMap = {
+  final Map<UserRole, List<String>> UserRoleMap = {
     UserRole.user: ['user'],
-    UserRole.supervisor: ['supervisor'],
+    UserRole.adminDept: ['adminDept'],
     UserRole.admin: ['admin'],
-    UserRole.superAdmin: ['superAdmin'],
-
   };
   final Map<UserRole, List<String>> permissionMap = {
-    UserRole.superAdmin: ['Full Access'],
-    UserRole.admin: ['Create', 'Read', 'Update', 'Delete','Approve','Reject'],
-    UserRole.user: ['Update', 'Read' , 'Request'],
-    UserRole.supervisor: ['Read', 'Update', 'Approve','Reject'],
+    UserRole.admin: ['Full Access'],
+    UserRole.user: ['Update', 'Read', 'Request'],
+    UserRole.adminDept: ['Read', 'Update', 'Approve', 'Reject'],
   };
   final Map<UserRole, List<String>> featureaccessMap = {
-    UserRole.admin: [
+    UserRole.adminDept: [
       'Dashboard',
       'Manage Users',
       'Leave Requests',
       'Reports',
       'Settings',
     ],
-    UserRole.user: [
-      'Dashboard',
-      'Submit Leave',
-      'View Attendance',
-    ],
-    UserRole.supervisor: [
-      'Dashboard',
-      'Approve Leave',
-      'Team Reports',
-    ],
-    UserRole.superAdmin: [
-      'Dashboard',
-      'Employee Records',
-      'Recruitment',
-      'Payroll',
-
-    ],
+    UserRole.user: ['Dashboard', 'Submit Leave', 'View Attendance'],
+    UserRole.admin: ['Dashboard', 'Employee Records', 'Recruitment', 'Payroll'],
   };
 
-  final IconData icon  = Icons.search ;
+  final IconData icon = Icons.search;
   final Color color = Colors.yellow;
 
   var OwnData = [].obs;
@@ -86,7 +66,6 @@ class AccessFeatureController extends GetxController{
   var policy = "".obs;
   var create_at = "".obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -103,9 +82,7 @@ class AccessFeatureController extends GetxController{
     permissionSelectionMap[role] = {
       for (var perm in permissions) perm: false.obs,
     };
-    featureSelectionMap[role] = {
-      for (var feat in features) feat: false.obs,
-    };
+    featureSelectionMap[role] = {for (var feat in features) feat: false.obs};
   }
 
   Future<void> InsertData() async {
@@ -115,18 +92,17 @@ class AccessFeatureController extends GetxController{
       return;
     }
 
-    final selectedPermissions = permissionSelectionMap[role]!
-        .entries
-        .where((e) => e.value.value)
-        .map((e) => e.key)
-        .toList();
+    final selectedPermissions =
+        permissionSelectionMap[role]!.entries
+            .where((e) => e.value.value)
+            .map((e) => e.key)
+            .toList();
 
-    final selectedFeatures = featureSelectionMap[role]!
-        .entries
-        .where((e) => e.value.value)
-        .map((e) => e.key)
-        .toList();
-
+    final selectedFeatures =
+        featureSelectionMap[role]!.entries
+            .where((e) => e.value.value)
+            .map((e) => e.key)
+            .toList();
 
     final policyString = selectedPermissions.join(', ');
     final featureString = selectedFeatures.join(', ');
@@ -137,28 +113,37 @@ class AccessFeatureController extends GetxController{
     final department = selectedUser.value['department'];
     final userRole = selectedUser.value['role'];
 
-    if (userId == null || email == null || name == null || department == null || userRole == null) {
+    if (userId == null ||
+        email == null ||
+        name == null ||
+        department == null ||
+        userRole == null) {
       Get.snackbar("Error", "User data incomplete.");
       return;
     }
 
     if (selectedFeatures.isEmpty || selectedPermissions.isEmpty) {
-      Get.snackbar("Error", "Please select at least one feature and permission.");
+      Get.snackbar(
+        "Error",
+        "Please select at least one feature and permission.",
+      );
       return;
     }
 
     try {
       for (var feature in selectedFeatures) {
-        final response = await Supabase.instance.client.from('access_feature').upsert({
-          'user_id': userId,
-          'name': name,
-          'email': email,
-          'role': userRole,
-          'department': department,
-          'feature': featureString,
-          'policy': policyString,
-          'created_at': DateTime.now().toIso8601String(),
-        });
+        final response = await Supabase.instance.client
+            .from('access_feature')
+            .upsert({
+              'user_id': userId,
+              'name': name,
+              'email': email,
+              'role': userRole,
+              'department': department,
+              'feature': featureString,
+              'policy': policyString,
+              'created_at': DateTime.now().toIso8601String(),
+            });
         print('Insert response: $response');
       }
 
@@ -174,29 +159,28 @@ class AccessFeatureController extends GetxController{
     }
   }
 
-
-  Future<void>fetchSuggestionsAccessFeatures(String Query) async {
-    suggestionList.value = await _sql.fetchUsernameSuggestionsAccessFeature(Query);
+  Future<void> fetchSuggestionsAccessFeatures(String Query) async {
+    suggestionList.value = await _sql.fetchUsernameSuggestionsAccessFeature(
+      Query,
+    );
   }
 
-  Future<void>fetchbyusersAccessFeatures(String name ) async {
-    isLoading.value = true ;
-    try{
+  Future<void> fetchbyusersAccessFeatures(String name) async {
+    isLoading.value = true;
+    try {
       var data = await _sql.fetchUserByAccessFeature(name);
-      if(data != null){
+      if (data != null) {
         mapDataFields(data);
-      }else {
+      } else {
         Get.snackbar('Error', 'User Not Found');
         ClearDataFields();
-
       }
-    }catch (e){
+    } catch (e) {
       Get.snackbar("Error", "Failed to load user: $e");
-    }finally{
+    } finally {
       isLoading.value = false;
     }
   }
-
 
   void mapDataFields(AccessFeatureModel data) {
     Username.value = data.name;
@@ -211,20 +195,16 @@ class AccessFeatureController extends GetxController{
     };
   }
 
-  void ClearDataFields(){
+  void ClearDataFields() {
     Username.value = '';
     name.value = '';
     Email.value = '';
     Department.value = '';
-    Role.value = '' ;
+    Role.value = '';
     feature.value = '';
     policy.value = '';
     create_at.value = '';
   }
 }
-enum UserRole {
-  superAdmin,
-  admin,
-  supervisor,
-  user,
-}
+
+enum UserRole { user, admin, adminDept }

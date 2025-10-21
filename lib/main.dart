@@ -37,22 +37,21 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    final session = Supabase.instance.client.auth.currentSession;
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'DeamHR Web',
-      initialRoute: session == null ? AppRoutes.dashboard : AppRoutes.login,
+      initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
       initialBinding: BindingMain(),
       theme: ThemeData(primarySwatch: Colors.orange),
-      darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.light,
-      builder: (context, data) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-          child: data!,
-        );
-      },
+      // darkTheme: ThemeData.dark(),
+      // themeMode: ThemeMode.light,
+      // builder: (context, data) {
+      //   return MediaQuery(
+      //     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      //     child: data!,
+      //   );
+      // },
     );
   }
 }

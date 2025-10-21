@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import '../../../../Permission/Permission.dart';
 import '../Model/user_setup_model.dart';
 
 class UserSetupController extends GetxController {
@@ -20,7 +20,6 @@ class UserSetupController extends GetxController {
   final Color color = Colors.red.shade900;
 
   var isLoading = false.obs;
-
   @override
   void onInit() {
     super.onInit();

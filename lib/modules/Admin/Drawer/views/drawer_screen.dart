@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:hrms/Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../../../Core/user_profile_controller.dart';
+import '../../../../Permission/Permission.dart';
 import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../../AdminDept/view/overview_screen.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
@@ -339,26 +340,9 @@ class Drawerscreen extends GetView<AppDrawerController> {
             PolicySetup(),
             ReportPolicy(),
             Employeepolicy(),
-            // Departmentpolicy(),
             TableLeaveRequest(),
-            // _buildDrawerTile(
-            //   'Schedule',
-            //   EneftyIcons.calendar_edit_bold,
-            //   () => MethodButton12(),
-            //   index: 21,
-            //   fontSize: fontSizeBody,
-            //   iconSize: iconSize,
-            // ),
-            // _buildDrawerTile(
-            //   'History',
-            //   EneftyIcons.document_2_bold,
-            //   () => MethodButton13(),
-            //   index: 22,
-            //   fontSize: fontSizeBody,
-            //   iconSize: iconSize,
-            // ),
             _buildDrawerTile(
-              'SettingScreen',
+              'Setting',
               EneftyIcons.setting_3_bold,
               () => DialogScreen(context, SettingScreen()),
               index: 23,
@@ -441,17 +425,25 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   ),
                 ),
                 _buildDrawerTile(
+                  'Overview',
+                  Icons.dashboard,
+                  () => MethodButton15(),
+                  index: 0,
+                  fontSize: fontSizeBody,
+                  iconSize: iconSize,
+                ),
+                const SizedBox(height: 10),
+                _buildDrawerTile(
                   'Attendance',
                   Icons.calendar_month_sharp,
                   () => MethodButton2(),
-                  index: 0,
+                  index: 24,
                   fontSize: fontSizeBody,
                   iconSize: iconSize,
                 ),
                 PolicySetup(),
                 ReportPolicy(),
                 Employeepolicy(),
-                Departmentpolicy(),
                 TableLeaveRequest(),
               ],
             ),

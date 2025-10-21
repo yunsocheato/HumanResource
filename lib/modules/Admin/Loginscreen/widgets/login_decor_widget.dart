@@ -35,6 +35,7 @@ class LoginCard extends GetView<LoginCardController> {
 
   Widget _buildforLargeDevices() {
     final controller = Get.put(LoginCardController());
+    final logincontroller = Get.find<LoginController>();
     final controller1 = Get.find<LoginController>();
     final loadingUi = Get.find<LoadingUiController>();
     final context = Get.context!;
@@ -125,7 +126,7 @@ class LoginCard extends GetView<LoginCardController> {
                   ),
                   const SizedBox(height: 5),
                   TextField(
-                    controller: controller.emailController,
+                    controller: logincontroller.emailController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.3),
@@ -153,9 +154,9 @@ class LoginCard extends GetView<LoginCardController> {
                   const SizedBox(height: 5),
                   Obx(
                     () => TextFormField(
-                      controller: controller.passwordController,
+                      controller: logincontroller.passwordController,
                       obscureText: controller.hide.value,
-                      onFieldSubmitted: (_) => controller.login(),
+                      onFieldSubmitted: (_) => logincontroller.login(),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.3),
@@ -215,7 +216,7 @@ class LoginCard extends GetView<LoginCardController> {
                             : SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
-                                onPressed: controller.login,
+                                onPressed: logincontroller.login,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue.shade900,
                                   padding: const EdgeInsets.symmetric(
@@ -251,6 +252,7 @@ class LoginCard extends GetView<LoginCardController> {
 
   Widget _buildforMobile() {
     final context = Get.context!;
+    final logincontroller = Get.find<LoginController>();
     final controller1 = Get.find<LoginController>();
     final controller = Get.put(LoginCardController());
     final loadingUi = Get.find<LoadingUiController>();
@@ -357,7 +359,7 @@ class LoginCard extends GetView<LoginCardController> {
                       ),
                       const SizedBox(height: 5),
                       TextField(
-                        controller: controller.emailController,
+                        controller: logincontroller.emailController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.3),
@@ -385,9 +387,9 @@ class LoginCard extends GetView<LoginCardController> {
                       const SizedBox(height: 5),
                       Obx(
                         () => TextFormField(
-                          controller: controller.passwordController,
+                          controller: logincontroller.passwordController,
                           obscureText: controller.hide.value,
-                          onFieldSubmitted: (_) => controller.login(),
+                          onFieldSubmitted: (_) => logincontroller.login(),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.3),
@@ -458,7 +460,7 @@ class LoginCard extends GetView<LoginCardController> {
                                   : SizedBox(
                                     width: 200,
                                     child: ElevatedButton.icon(
-                                      onPressed: controller.login,
+                                      onPressed: logincontroller.login,
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.blue.shade900,
                                         padding: const EdgeInsets.symmetric(

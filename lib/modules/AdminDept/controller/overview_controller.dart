@@ -1,19 +1,61 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../Superadmin/Drawer/widgets/Method_drawer_policy_button.dart';
+import '../../Admin/Drawer/widgets/Method_drawer_policy_button.dart';
 
-class OverViewController extends GetxController {
+class OverViewController extends GetxController
+    with SingleGetTickerProviderMixin {
   var isClockedIn = true.obs;
   var isLeaveRequestPending = false.obs;
   var isPayslipAvailable = true.obs;
+  Timer? _timer;
+  final PageController pageController = PageController();
+  final images = [
+    'https://bongsrey.sgp1.digitaloceanspaces.com/library/10204/images/thumbnail/5ec74e5b86b19.png',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/640px-Cisco_logo_blue_2016.svg.png',
+    'https://logos-world.net/wp-content/uploads/2020/09/Oracle-Logo.png',
+  ];
+
+  final TextLeave = RxList<List<dynamic>>([
+    ['Annual Leave', Icons.calendar_today, Colors.white],
+    ['Sick Leave', Icons.sick, Colors.white],
+    ['Maternity Leave', Icons.pregnant_woman, Colors.white],
+    ['Unpaid Leave', Icons.money, Colors.white],
+  ]);
+
+  final overviewdashboard = RxList<List<dynamic>>([
+    ['Request Leave', Icons.calendar_today, Colors.white],
+    ['Department', Icons.apartment, Colors.white],
+    ['Leave Balance', Icons.safety_check, Colors.white],
+    ['Schedule', Icons.calendar_month, Colors.white],
+  ]);
 
   var attendanceData = [].obs;
   var isLoading = true.obs;
 
+  Duration duration = const Duration(milliseconds: 500);
+  Curve curve = Curves.easeInOut;
   @override
   void onInit() {
     super.onInit();
     fetchDashboardData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      pageController.jumpToPage(0);
+    });
+
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (pageController.hasClients) {
+        final nextPage =
+            ((pageController.page?.round() ?? 0) + 1) % images.length;
+
+        pageController.animateToPage(
+          nextPage,
+          duration: duration,
+          curve: curve,
+        );
+      }
+    });
   }
 
   void toggleClockStatus(bool value) {
@@ -46,5 +88,11 @@ class OverViewController extends GetxController {
   void refreshdata() async {
     await MethodButton1();
     update();
+  }
+
+  void onClose() {
+    _timer?.cancel();
+    pageController.dispose();
+    super.onClose();
   }
 }

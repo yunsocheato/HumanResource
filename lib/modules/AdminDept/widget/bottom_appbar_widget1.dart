@@ -1,14 +1,13 @@
 import 'package:enefty_icons/enefty_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:get/get.dart';
-import '../controller/bottomappbar_controller.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
+import '../controller/bottom_appbar_controller.dart';
 
-class BottomAppBarWidget extends GetView<BottomAppBarController> {
+class BottomAppBarWidget1 extends GetView<BottomAppBarController1> {
   final Widget body;
 
-  const BottomAppBarWidget({super.key, required this.body});
+  const BottomAppBarWidget1({super.key, required this.body});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,7 @@ class BottomAppBarWidget extends GetView<BottomAppBarController> {
                         ),
                         Center(
                           child: Text(
-                            "Dashboard",
+                            "Overview",
                             style: TextStyle(
                               fontSize: 12,
                               color: controller.iconColor(0),
@@ -86,13 +85,13 @@ class BottomAppBarWidget extends GetView<BottomAppBarController> {
                     icon: Column(
                       children: [
                         Icon(
-                          EneftyIcons.document_2_bold,
+                          EneftyIcons.folder_2_bold,
                           size: 30,
                           color: controller.iconColor(2),
                         ),
                         Center(
                           child: Text(
-                            "Employee",
+                            "Report",
                             style: TextStyle(
                               fontSize: 12,
                               color: controller.iconColor(2),

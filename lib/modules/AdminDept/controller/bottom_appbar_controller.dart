@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Admin/Employee/views/employee_screen.dart';
+import 'package:hrms/modules/AdminDept/view/overview_screen.dart';
 
-import '../../../modules/Admin/Attendance/views/attendance_screen.dart';
-import '../../../modules/Admin/Dashboard/views/dashboard_screen.dart';
-import '../../../modules/Admin/SettingScreen/view/setting_screen_mobile.dart';
-
-class BottomAppBarController extends GetxController {
+class BottomAppBarController1 extends GetxController {
   var isSelectedindex = 0.obs;
   final Color Selectedcolors = Colors.blue.shade900;
   final Color Unselectedcolors = Colors.black54;
@@ -19,16 +15,16 @@ class BottomAppBarController extends GetxController {
 
     switch (index) {
       case 0:
-        Get.toNamed(DashboardScreen.routeName);
+        Get.toNamed(OverViewScreen.routeName);
         break;
       case 1:
-        Get.toNamed(AttendanceScreen.routeName);
+        Get.toNamed(OverViewScreen.routeName);
         break;
       case 2:
-        Get.toNamed(EmployeeScreen.routeName);
+        Get.toNamed(OverViewScreen.routeName);
         break;
       case 3:
-        Get.toNamed(SettingScreenMobile.routeName);
+        Get.toNamed(OverViewScreen.routeName);
         break;
     }
   }

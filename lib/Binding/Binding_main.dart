@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/AdminDept/controller/bottom_appbar_controller.dart';
+import 'package:hrms/modules/AdminDept/controller/leave_controller.dart';
 import '../Core/user_profile_controller.dart';
 import '../Utils/Bottomappbar/controller/bottomappbar_controller.dart';
 import '../Utils/DialogScreen/Controller/dialog_screen_controller.dart';
@@ -9,41 +11,43 @@ import '../Utils/Loadingui/ErrorScreen/Controller/SuccessMessage.dart';
 import '../Utils/Loadingui/loading_controller.dart';
 import '../Utils/Searchbar/controller/search_bar_controller.dart';
 import '../Utils/SplashScreen/controller/splash_controller.dart';
+import '../modules/Admin/Attendance/controllers/attendance_chart_controller.dart'
+    show ChartController;
+import '../modules/Admin/Attendance/controllers/attendance_chart_pie_controller.dart';
+import '../modules/Admin/Attendance/controllers/attendance_widget_controller.dart';
+import '../modules/Admin/Attendance/controllers/attendane_screen_controller.dart';
+import '../modules/Admin/CardInfo/controllers/card_controller.dart';
+import '../modules/Admin/Dashboard/controllers/dashboard_recently_screen_controller.dart';
+import '../modules/Admin/Dashboard/controllers/dashboard_screen_controller.dart';
+import '../modules/Admin/Department/controllers/department_controller.dart';
+import '../modules/Admin/Drawer/controllers/Leave_Policy_controller.dart';
+import '../modules/Admin/Drawer/controllers/OT_policy_controller.dart';
+import '../modules/Admin/Drawer/controllers/access_feature_controller.dart';
+import '../modules/Admin/Drawer/controllers/drawer_controller.dart';
+import '../modules/Admin/Drawer/controllers/employee_policy_controller.dart';
+import '../modules/Admin/Drawer/controllers/fingerprint_setup_controller.dart';
+import '../modules/Admin/Drawer/controllers/payroll_policy_controller.dart';
+import '../modules/Admin/Employee/Controller/Employeetable_controller.dart';
+import '../modules/Admin/Employee/Controller/employee_profile_controller.dart';
+import '../modules/Admin/Employee/Controller/employee_screen_controller.dart';
+import '../modules/Admin/Employee/Controller/employeefiltercontroller.dart'
+    show EmployeeFilterController;
+import '../modules/Admin/History/controller/history_controller.dart';
+import '../modules/Admin/LeaveRequest/controllers/apply_leave_screen_controller.dart';
+import '../modules/Admin/LeaveRequest/controllers/leave_controller.dart';
+import '../modules/Admin/Loginscreen/controllers/login_card_controller.dart';
+import '../modules/Admin/Loginscreen/controllers/login_controller.dart';
+import '../modules/Admin/Loginscreen/controllers/loginscreen_animation_controller.dart';
+import '../modules/Admin/Loginscreen/services/logout_services.dart';
+import '../modules/Admin/Report/controller/employee_report_controller1.dart';
+import '../modules/Admin/Report/controller/employee_report_controller2.dart';
+import '../modules/Admin/Report/controller/employee_report_controller3.dart';
+import '../modules/Admin/Report/controller/employee_report_controller4.dart';
+import '../modules/Admin/Report/controller/employee_report_leavesummary_controller.dart';
+import '../modules/Admin/Schedule/controller/schedule_screen_controller.dart';
+import '../modules/Admin/SettingScreen/controller/setting_controller.dart';
+import '../modules/Admin/UserSetup/Controller/user_setup_controller.dart';
 import '../modules/AdminDept/controller/overview_controller.dart';
-import '../modules/Superadmin/Attendance/controllers/attendance_chart_controller.dart';
-import '../modules/Superadmin/Attendance/controllers/attendance_chart_pie_controller.dart';
-import '../modules/Superadmin/Attendance/controllers/attendance_widget_controller.dart';
-import '../modules/Superadmin/Attendance/controllers/attendane_screen_controller.dart';
-import '../modules/Superadmin/CardInfo/controllers/card_controller.dart';
-import '../modules/Superadmin/Dashboard/controllers/dashboard_recently_screen_controller.dart';
-import '../modules/Superadmin/Dashboard/controllers/dashboard_screen_controller.dart';
-import '../modules/Superadmin/Department/controllers/department_controller.dart';
-import '../modules/Superadmin/Drawer/controllers/Leave_Policy_controller.dart';
-import '../modules/Superadmin/Drawer/controllers/OT_policy_controller.dart';
-import '../modules/Superadmin/Drawer/controllers/access_feature_controller.dart';
-import '../modules/Superadmin/Drawer/controllers/drawer_controller.dart';
-import '../modules/Superadmin/Drawer/controllers/employee_policy_controller.dart';
-import '../modules/Superadmin/Drawer/controllers/fingerprint_setup_controller.dart';
-import '../modules/Superadmin/Drawer/controllers/payroll_policy_controller.dart';
-import '../modules/Superadmin/Employee/Controller/Employeetable_controller.dart';
-import '../modules/Superadmin/Employee/Controller/employee_profile_controller.dart';
-import '../modules/Superadmin/Employee/Controller/employee_screen_controller.dart';
-import '../modules/Superadmin/Employee/Controller/employeefiltercontroller.dart';
-import '../modules/Superadmin/History/controller/history_controller.dart';
-import '../modules/Superadmin/LeaveRequest/controllers/apply_leave_screen_controller.dart';
-import '../modules/Superadmin/LeaveRequest/controllers/leave_controller.dart';
-import '../modules/Superadmin/Loginscreen/controllers/login_card_controller.dart';
-import '../modules/Superadmin/Loginscreen/controllers/login_controller.dart';
-import '../modules/Superadmin/Loginscreen/controllers/loginscreen_animation_controller.dart';
-import '../modules/Superadmin/Loginscreen/services/logout_services.dart';
-import '../modules/Superadmin/Report/controller/employee_report_controller1.dart';
-import '../modules/Superadmin/Report/controller/employee_report_controller2.dart';
-import '../modules/Superadmin/Report/controller/employee_report_controller3.dart';
-import '../modules/Superadmin/Report/controller/employee_report_controller4.dart';
-import '../modules/Superadmin/Report/controller/employee_report_leavesummary_controller.dart';
-import '../modules/Superadmin/Schedule/controller/schedule_screen_controller.dart';
-import '../modules/Superadmin/SettingScreen/controller/setting_controller.dart';
-import '../modules/Superadmin/UserSetup/Controller/user_setup_controller.dart';
 
 class BindingMain extends Bindings {
   @override
@@ -188,5 +192,11 @@ class BindingMain extends Bindings {
 
     Get.put(OverViewController());
     Get.lazyPut<OverViewController>(() => OverViewController());
+
+    Get.put(LeaveRecordController());
+    Get.lazyPut<LeaveRecordController>(() => LeaveRecordController());
+
+    Get.put(BottomAppBarController1());
+    Get.lazyPut<BottomAppBarController1>(() => BottomAppBarController1());
   }
 }

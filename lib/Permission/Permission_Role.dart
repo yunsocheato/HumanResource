@@ -1,0 +1,41 @@
+import '../Routes/appRoutes.dart';
+import '../modules/Admin/Drawer/controllers/access_feature_controller.dart';
+
+class RolePermissions {
+  static final Map<UserRole, List<String>> access = {
+    UserRole.admin: [
+      AppRoutes.overview,
+      AppRoutes.dashboard,
+      AppRoutes.attendance,
+      AppRoutes.LeaveRequest,
+      AppRoutes.employee,
+      AppRoutes.department,
+      AppRoutes.schedule,
+      AppRoutes.employeecheckin,
+      AppRoutes.employeelate,
+      AppRoutes.employeeabsent,
+      AppRoutes.employeeot,
+      AppRoutes.employeeleavesummary,
+      AppRoutes.employeeprofile,
+      AppRoutes.settingmobile,
+    ],
+    UserRole.adminDept: [
+      AppRoutes.overview,
+      // AppRoutes.dashboard,
+      // AppRoutes.attendance,
+      // AppRoutes.LeaveRequest,
+      // AppRoutes.employee,
+    ],
+    UserRole.user: [
+      AppRoutes.overview,
+      // AppRoutes.dashboard,
+      // AppRoutes.attendance,
+      // AppRoutes.LeaveRequest,
+      // AppRoutes.employee,
+    ],
+  };
+
+  static bool canAccess(String role, String route) {
+    return access[role]?.contains(route) ?? false;
+  }
+}

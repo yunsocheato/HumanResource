@@ -17,6 +17,6 @@ class UserProfileController extends GetxController {
     if (email == null) return;
 
     final profile = await _profileSql.ProfileImage(email);
-    userprofiles.value = profile; // ✅ correct type
+    userprofiles.value = profile;
   }
 }

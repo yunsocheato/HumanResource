@@ -2,6 +2,7 @@ import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
+import '../../../../Core/user_profile_controller.dart';
 import '../controller/setting_controller.dart';
 import '../widget/Mobile/setting_screen_widget_appereance.dart';
 import '../widget/Mobile/setting_screen_widget_general.dart';
@@ -14,6 +15,11 @@ class SettingScreenMobile extends GetView<SettingController> {
 
   @override
   Widget build(BuildContext context) {
+    final userProfileController = Get.find<UserProfileController>();
+    final role = userProfileController.userprofiles.value?.role ?? '';
+    if (role != 'Admin') {
+      return Container();
+    }
     return buildSettingMobile();
   }
 

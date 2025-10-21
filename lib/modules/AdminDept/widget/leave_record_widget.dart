@@ -1,0 +1,386 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hrms/modules/AdminDept/Model/leave_record_model.dart';
+import 'package:intl/intl.dart';
+import '../controller/leave_controller.dart';
+
+class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
+  const LeaveRequestTablewidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final LeaveRecordController controller = Get.find<LeaveRecordController>();
+
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final requests = controller.leaves;
+      if (requests.isEmpty) {
+        return const Center(child: Text('No pending leave requests found'));
+      }
+
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 700) {
+            return _buildLeaveRequestsListMobile(context, requests);
+          } else {
+            return _buildLeaveRequestsTableOther(context);
+          }
+        },
+      );
+    });
+  }
+
+  Widget _buildLeaveRequestsTableOther(BuildContext context) {
+    final controller = Get.find<LeaveRecordController>();
+    final width = MediaQuery.of(context).size.width;
+
+    double fontSize(double base) {
+      if (width >= 1600) return base * 1.3;
+      if (width >= 1200) return base * 1.1;
+      if (width >= 1000) return base * 5.6;
+      return base * 0.9;
+    }
+
+    double colWidth(double base) {
+      if (width >= 1600) return base * 1.5;
+      if (width >= 1200) return base * 1.3;
+      if (width >= 1000) return base * 1.6;
+      return base;
+    }
+
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.7,
+      width: double.infinity,
+      child: Card(
+        elevation: 10,
+        color: Colors.white,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 20),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Scrollbar(
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: constraints.maxWidth,
+                          ),
+                          child: Obx(() {
+                            final requests = controller.leaves;
+                            if (requests.isEmpty) {
+                              return const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(20),
+                                  child: Text(
+                                    "No leave requests found.",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return DataTable(
+                              headingRowHeight: 45,
+                              dataRowHeight: 65,
+                              columnSpacing: 20,
+                              dividerThickness: 1,
+                              headingTextStyle: TextStyle(
+                                fontSize: fontSize(14),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              dataTextStyle: TextStyle(fontSize: fontSize(13)),
+                              columns: [
+                                _coloredColumn(
+                                  'Employee',
+                                  Colors.blue,
+                                  colWidth(59),
+                                  fontSize,
+                                ),
+                                _coloredColumn(
+                                  'Department',
+                                  Colors.red,
+                                  colWidth(59),
+                                  fontSize,
+                                ),
+                                _coloredColumn(
+                                  'Position',
+                                  Colors.green,
+                                  colWidth(59),
+                                  fontSize,
+                                ),
+                                _coloredColumn(
+                                  'Status',
+                                  Colors.orange,
+                                  colWidth(59),
+                                  fontSize,
+                                ),
+                                _coloredColumn(
+                                  'Start Date',
+                                  Colors.blueAccent,
+                                  colWidth(59),
+                                  fontSize,
+                                ),
+                                _coloredColumn(
+                                  'End Date',
+                                  Colors.green,
+                                  colWidth(59),
+                                  fontSize,
+                                ),
+                                _coloredColumn(
+                                  'Actions',
+                                  Colors.redAccent,
+                                  colWidth(59),
+                                  fontSize,
+                                ),
+                              ],
+                              rows:
+                                  requests.map((request) {
+                                    return DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                request.name,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: fontSize(10),
+                                                ),
+                                              ),
+                                              Text(
+                                                request.userEmail,
+                                                style: TextStyle(
+                                                  fontSize: fontSize(10),
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                            request.department,
+                                            style: TextStyle(fontSize: 09),
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                            request.position,
+                                            style: TextStyle(fontSize: 09),
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                            request.status,
+                                            style: TextStyle(
+                                              color: _getStatusColor(
+                                                request.status,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                            request.fromDate != null
+                                                ? DateFormat(
+                                                  'MMM d, yyyy',
+                                                ).format(
+                                                  DateTime.parse(
+                                                    request.fromDate as String,
+                                                  ),
+                                                )
+                                                : '-',
+                                            style: TextStyle(fontSize: 09),
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                            request.toDate != null
+                                                ? DateFormat(
+                                                  'MMM d, yyyy',
+                                                ).format(
+                                                  DateTime.parse(
+                                                    request.toDate as String,
+                                                  ),
+                                                )
+                                                : '-',
+                                            style: TextStyle(fontSize: 09),
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(
+                                                  Icons.edit,
+                                                  color: Colors.blue,
+                                                  size: 15,
+                                                ),
+                                                onPressed: () {},
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                  size: 15,
+                                                ),
+                                                onPressed: () {},
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }).toList(),
+                            );
+                          }),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  DataColumn _coloredColumn(
+    String title,
+    Color color,
+    double width,
+    double Function(double) fontSize,
+  ) {
+    return DataColumn(
+      label: Container(
+        height: 35,
+        width: width,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: fontSize(9),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLeaveRequestsListMobile(
+    BuildContext context,
+    List<LeaveRequestModel> requests,
+  ) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: requests.length,
+      itemBuilder: (context, index) {
+        final request = requests[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      request.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      request.status,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: _getStatusColor(request.status),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  request.userEmail,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                const SizedBox(height: 8),
+                _infoRow('Department', request.department),
+                _infoRow('Position', request.position),
+                _infoRow(
+                  'Start Date',
+                  request.fromDate != null
+                      ? DateFormat('MMM d, yyyy').format(request.fromDate!)
+                      : '-',
+                ),
+                _infoRow(
+                  'End Date',
+                  request.toDate != null
+                      ? DateFormat('MMM d, yyyy').format(request.toDate!)
+                      : '-',
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _infoRow(String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Expanded(child: Text(value ?? '-', overflow: TextOverflow.ellipsis)),
+        ],
+      ),
+    );
+  }
+
+  Color _getStatusColor(String? status) {
+    switch (status?.toLowerCase()) {
+      case 'approved':
+        return Colors.green;
+      case 'rejected':
+        return Colors.red;
+      case 'pending':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+}
