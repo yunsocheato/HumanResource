@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/AdminDept/controller/attendance_chart_controller.dart';
 import 'package:hrms/modules/AdminDept/controller/bottom_appbar_controller.dart';
-import 'package:hrms/modules/AdminDept/controller/leave_controller.dart';
 import '../Core/user_profile_controller.dart';
 import '../Utils/Bottomappbar/controller/bottomappbar_controller.dart';
 import '../Utils/DialogScreen/Controller/dialog_screen_controller.dart';
@@ -47,6 +47,8 @@ import '../modules/Admin/Report/controller/employee_report_leavesummary_controll
 import '../modules/Admin/Schedule/controller/schedule_screen_controller.dart';
 import '../modules/Admin/SettingScreen/controller/setting_controller.dart';
 import '../modules/Admin/UserSetup/Controller/user_setup_controller.dart';
+import '../modules/AdminDept/controller/leave_chart_controller.dart';
+import '../modules/AdminDept/controller/leave_record_controller.dart';
 import '../modules/AdminDept/controller/overview_controller.dart';
 
 class BindingMain extends Bindings {
@@ -163,7 +165,7 @@ class BindingMain extends Bindings {
     Get.put(LeaveController());
     Get.lazyPut<LeaveController>(() => LeaveController());
 
-    Get.put(BottomAppBarController());
+    Get.put(BottomAppBarController, permanent: true);
     Get.lazyPut<BottomAppBarController>(() => BottomAppBarController());
 
     Get.put(ApplyLeaveScreenController());
@@ -193,10 +195,16 @@ class BindingMain extends Bindings {
     Get.put(OverViewController());
     Get.lazyPut<OverViewController>(() => OverViewController());
 
-    Get.put(LeaveRecordController());
+    Get.put(LeaveRecordController(), permanent: true);
     Get.lazyPut<LeaveRecordController>(() => LeaveRecordController());
 
-    Get.put(BottomAppBarController1());
+    Get.put(BottomAppBarController1(), permanent: true);
     Get.lazyPut<BottomAppBarController1>(() => BottomAppBarController1());
+
+    Get.put(AttendanceChartController(), permanent: true);
+    Get.lazyPut<AttendanceChartController>(() => AttendanceChartController());
+
+    Get.put(LeaveChartController(), permanent: true);
+    Get.lazyPut<LeaveChartController>(() => LeaveChartController());
   }
 }

@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/view/overview_screen.dart';
 import '../../../../Permission/Permission.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
+import '../../../AdminDept/controller/leave_record_controller.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
 import '../services/login_service.dart';
-import '../views/login_screen.dart';
 
 class LoginController extends GetxController with SingleGetTickerProviderMixin {
   final TextEditingController emailController = TextEditingController();

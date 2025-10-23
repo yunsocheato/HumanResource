@@ -1,17 +1,18 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class leaveprovider {
-  Future<List<Map<String, dynamic>>> getleavebyuser() async {
+class AttendanceProvider {
+  final _supabase = Supabase.instance.client;
+
+  Future<List<Map<String, dynamic>>> getAttendancedata() async {
     final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) {
-      return [];
-    }
+    if (user == null) return [];
 
     final response = await Supabase.instance.client
-        .from('leave_requests')
+        .from('singupuser_fit_attendance')
         .select()
         .eq('user_id', user.id)
-        .order('created_at', ascending: true);
+        .order('timestamp', ascending: false);
+
     return (response as List).cast<Map<String, dynamic>>();
   }
 }

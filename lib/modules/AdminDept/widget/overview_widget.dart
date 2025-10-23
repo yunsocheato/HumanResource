@@ -1,11 +1,10 @@
-import 'package:enefty_icons/enefty_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:hrms/modules/AdminDept/widget/overview_card.dart';
 import '../controller/overview_controller.dart';
+import 'attendance_chart_widget.dart';
+import 'attendance_widget.dart';
+import 'leave_chart_widget.dart';
 import 'leave_record_widget.dart';
 import 'overview_card_pageview.dart';
 import 'overview_card_sidebar.dart';
@@ -86,6 +85,21 @@ class OverViewWidget extends GetView<OverViewController> {
                       ),
                     ),
                     LeaveRequestTablewidget(),
+                    const SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'ATTENDANCE RECORDS',
+                        style: TextStyle(
+                          fontSize: fontSize,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+                    AttendanceTablewidget(),
                   ],
                 ),
               ],
@@ -140,7 +154,7 @@ class OverViewWidget extends GetView<OverViewController> {
                         ),
                       ),
                       const Gridoverviewoverview(),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(
@@ -155,7 +169,24 @@ class OverViewWidget extends GetView<OverViewController> {
                           ),
                         ),
                       ),
-                      LeaveRequestTablewidget(),
+                      const LeaveRequestTablewidget(),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'ATTENDANCE RECORDS',
+                            style: TextStyle(
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      AttendanceTablewidget(),
                     ],
                   ),
                 ),
@@ -223,7 +254,28 @@ class OverViewWidget extends GetView<OverViewController> {
                 ),
               ),
               const SizedBox(height: 15),
-              _buildProfileSidebar1(),
+              _buildTeamSidebar1(),
+              const SizedBox(height: 20),
+              Text(
+                'ATTENDANCE COUNTS',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              AttendanceChartWidget(),
+              const SizedBox(height: 20),
+              Text(
+                'LEAVE ANALYZES',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              LeaveChartWidget(),
             ],
           );
         }
@@ -259,7 +311,29 @@ class OverViewWidget extends GetView<OverViewController> {
                 ),
               ),
               const SizedBox(height: 15),
-              _buildProfileSidebar1(),
+              _buildTeamSidebar1(),
+              const SizedBox(height: 25),
+              Text(
+                'ATTENDANCE COUNTS',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              AttendanceChartWidget(),
+              const SizedBox(height: 25),
+              Text(
+                'LEAVE ANALYZES',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              LeaveChartWidget(),
             ],
           ),
         );
@@ -267,7 +341,7 @@ class OverViewWidget extends GetView<OverViewController> {
     );
   }
 
-  Widget _buildProfileSidebar1() {
+  Widget _buildTeamSidebar1() {
     double MobilefontSize = 13.0;
     double LaptopfontSize = 15.0;
     double TabletfontSize = 15.0;
@@ -298,6 +372,13 @@ class OverViewWidget extends GetView<OverViewController> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+              ),
+            ],
           ),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,

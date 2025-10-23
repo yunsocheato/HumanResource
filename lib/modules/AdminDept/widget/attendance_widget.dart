@@ -6,8 +6,8 @@ import '../../../Utils/Loadingui/ErrorScreen/error_message.dart';
 import '../../../Utils/Loadingui/Loading_skeleton.dart';
 import '../controller/leave_record_controller.dart';
 
-class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
-  const LeaveRequestTablewidget({super.key});
+class AttendanceTablewidget extends GetView<LeaveRecordController> {
+  const AttendanceTablewidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +73,9 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                             }
 
                             final requests = controller.leaves;
-
                             if (requests.isEmpty) {
                               return const errormessage(
-                                tittle: 'No LeaveRecord Found',
+                                tittle: 'No Attendance Found',
                               );
                             }
                             return DataTable(
@@ -294,11 +293,8 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
       if (controller.isLoading.value) {
         return Skeletonlines();
       }
-
-      final requests = controller.leaves;
-
       if (requests.isEmpty) {
-        return errormessage(tittle: 'No LeaveRecord Found');
+        return const errormessage(tittle: 'No Attendance Found');
       }
       return ListView.builder(
         shrinkWrap: true,
