@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../../Dashboard/API/dashboard_stream_data_mutiple1_sql.dart';
 
 Future<List<Map<String, dynamic>>> getAttendanceData({
@@ -10,7 +12,7 @@ Future<List<Map<String, dynamic>>> getAttendanceData({
   final start = page * limit;
   final end = start + limit - 1;
 
-  final response = await supabase
+  final response = await Supabase.instance.client
       .from('attendance')
       .select()
       .range(start, end)

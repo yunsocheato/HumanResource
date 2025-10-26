@@ -21,7 +21,7 @@ class leaverequesttable extends GetView<LeaveController> {
 
       final requests = controller.filteredRequests;
 
-      if (requests == null || requests.isEmpty) {
+      if (requests.isEmpty) {
         return const Center(child: Text('No pending leave requests found'));
       }
 

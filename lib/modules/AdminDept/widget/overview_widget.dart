@@ -1,6 +1,14 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/AdminDept/Utils/date_picker_leave.dart';
+import 'package:hrms/modules/AdminDept/controller/attendance_controller.dart';
 import 'package:hrms/modules/AdminDept/widget/overview_card.dart';
+import '../Utils/date_picker_all_chart.dart';
+import '../Utils/date_picker_attendance.dart';
+import '../Utils/date_picker_chart_today.dart';
+import '../Utils/dropdown_menu_chart_attendance.dart';
+import '../Utils/dropdown_menu_leave_chart.dart';
 import '../controller/overview_controller.dart';
 import 'attendance_chart_widget.dart';
 import 'attendance_widget.dart';
@@ -12,7 +20,6 @@ import 'overview_card_sidebar.dart';
 class OverViewWidget extends GetView<OverViewController> {
   const OverViewWidget({super.key});
 
-  @override
   @override
   Widget build(BuildContext context) {
     final isMobileGlobal = Get.width < 900;
@@ -44,6 +51,7 @@ class OverViewWidget extends GetView<OverViewController> {
                 : mobileFontSize;
 
         if (isMobile) {
+          Get.put(Attendancecontroller());
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
             child: Column(
@@ -73,31 +81,12 @@ class OverViewWidget extends GetView<OverViewController> {
                     const SizedBox(height: 25),
                     _buildProfileSidebar(),
                     const SizedBox(height: 25),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'LEAVE RECORD',
-                        style: TextStyle(
-                          fontSize: fontSize,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
+                    _sectionTitle('LEAVE RECORD', fontSize),
+                    DatePickerLeave(),
                     LeaveRequestTablewidget(),
                     const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'ATTENDANCE RECORDS',
-                        style: TextStyle(
-                          fontSize: fontSize,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-
+                    _sectionTitle('ATTENDANCE RECORDS', fontSize),
+                    DatePickerAttendance(),
                     const SizedBox(height: 10),
                     AttendanceTablewidget(),
                   ],
@@ -106,8 +95,8 @@ class OverViewWidget extends GetView<OverViewController> {
             ),
           );
         }
-
         double maxTableWidth;
+        Get.put(Attendancecontroller());
 
         if (width < 1024) {
           maxTableWidth = width * 0.62;
@@ -117,97 +106,70 @@ class OverViewWidget extends GetView<OverViewController> {
           maxTableWidth = width * 0.78;
         }
 
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(width: 5),
-            SizedBox(
-              width: maxTableWidth,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                color: Colors.grey.shade200,
-                child: Padding(
-                  padding: padding,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 4),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: PageOverviewScreen(),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'DASHBOARD',
-                            style: TextStyle(
-                              fontSize: fontSize,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black54,
-                            ),
-                          ),
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(8.0),
+          scrollDirection: Axis.vertical,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(width: 5),
+              SizedBox(
+                width: maxTableWidth,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.grey.shade200,
+                  child: Padding(
+                    padding: padding,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 4),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: PageOverviewScreen(),
                         ),
-                      ),
-                      const Gridoverviewoverview(),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'LEAVE RECORDS',
-                            style: TextStyle(
-                              fontSize: fontSize,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const LeaveRequestTablewidget(),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'ATTENDANCE RECORDS',
-                            style: TextStyle(
-                              fontSize: fontSize,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      AttendanceTablewidget(),
-                    ],
+                        const SizedBox(height: 20),
+                        _sectionTitle('DASHBOARD', fontSize),
+                        const Gridoverviewoverview(),
+                        const SizedBox(height: 20),
+                        _sectionTitle('LEAVE RECORDS', fontSize),
+                        const SizedBox(height: 8),
+                        DatePickerLeave(),
+                        const LeaveRequestTablewidget(),
+                        const SizedBox(height: 20),
+                        _sectionTitle('ATTENDANCE RECORDS', fontSize),
+                        const SizedBox(height: 8),
+                        DatePickerAttendance(),
+                        const SizedBox(height: 10),
+                        AttendanceTablewidget(),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _buildProfileSidebar(),
-            ),
-          ],
+              const SizedBox(width: 10),
+              Flexible(
+                fit: FlexFit.loose,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _buildProfileSidebar(),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
   Widget _buildProfileSidebar() {
-    double MobilefontSize = 15.0;
-    double LaptopfontSize = 15.0;
-    double TabletfontSize = 15.0;
-    double DesktopfontSize = 23.0;
+    const double mobileFont = 15;
+    const double tabletFont = 15;
+    const double desktopFont = 23;
+    const double laptopFont = 15;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final double maxWidth = constraints.maxWidth;
@@ -219,122 +181,108 @@ class OverViewWidget extends GetView<OverViewController> {
 
         final double sidebarWidth = isMobile ? maxWidth : 300.0;
 
-        double fontSize =
+        final double fontSize =
             isMobile
-                ? MobilefontSize
+                ? mobileFont
                 : isTablet
-                ? TabletfontSize
+                ? tabletFont
                 : isDesktop
-                ? DesktopfontSize
+                ? desktopFont
                 : isLaptop
-                ? LaptopfontSize
-                : MobilefontSize;
+                ? laptopFont
+                : mobileFont;
+
+        List<Widget> sections = [
+          _sectionTitle('LEAVE BALANCE', fontSize),
+          const SizedBox(height: 10),
+          const Gridoverviewsidebar(),
+          const SizedBox(height: 20),
+          _sectionTitle('TEAM MEMBER', fontSize),
+          const SizedBox(height: 15),
+          _buildTeamSidebar1(),
+          const SizedBox(height: 20),
+          _sectionTitle('MANAGE BY', fontSize),
+          const SizedBox(height: 15),
+          _buildTeamSidebar2(),
+          const SizedBox(height: 20),
+          _sectionTitle('ATTENDANCE COUNTS', fontSize),
+          const SizedBox(height: 8),
+        ];
 
         if (isMobile || isTablet) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'LEAVE BALANCE',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
+          sections.add(
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  DropDownMenuChartPie(),
+                  const SizedBox(width: 10),
+                  DatePickerChartToday(),
+                  const SizedBox(width: 10),
+                  DatePickerAllDataChart(),
+                ],
               ),
-              const SizedBox(height: 10),
-              Gridoverviewsidebar(),
-              const SizedBox(height: 20),
-              Text(
-                'TEAM MEMBER',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 15),
-              _buildTeamSidebar1(),
-              const SizedBox(height: 20),
-              Text(
-                'ATTENDANCE COUNTS',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              AttendanceChartWidget(),
-              const SizedBox(height: 20),
-              Text(
-                'LEAVE ANALYZES',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              LeaveChartWidget(),
-            ],
+            ),
+          );
+          sections.add(const SizedBox(height: 8));
+        } else {
+          sections.add(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DropDownMenuChartPie(),
+                const SizedBox(height: 8),
+                DatePickerChartToday(),
+                const SizedBox(height: 8),
+                DatePickerAllDataChart(),
+              ],
+            ),
           );
         }
 
+        sections.add(AttendanceChartWidget());
+        sections.add(const SizedBox(height: 20));
+        sections.add(_sectionTitle('LEAVE ANALYZES', fontSize));
+        sections.add(const SizedBox(height: 8));
+        if (isMobile || isTablet) {
+          sections.add(
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(children: [DropDownMenuLeaveChart()]),
+            ),
+          );
+        } else {
+          sections.add(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [DropDownMenuLeaveChart()],
+            ),
+          );
+        }
+        sections.add(const SizedBox(height: 8));
+        sections.add(LeaveChartWidget());
+
+        if (isMobile || isTablet) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: sections,
+            ),
+          );
+        }
         return Container(
           width: sidebarWidth,
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade600,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              Text(
-                'LEAVE BALANCE',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Gridoverviewsidebar(),
-              const SizedBox(height: 25),
-              Text(
-                'TEAM MEMBER',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 15),
-              _buildTeamSidebar1(),
-              const SizedBox(height: 25),
-              Text(
-                'ATTENDANCE COUNTS',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              AttendanceChartWidget(),
-              const SizedBox(height: 25),
-              Text(
-                'LEAVE ANALYZES',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              LeaveChartWidget(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: sections,
+            ),
           ),
         );
       },
@@ -346,6 +294,7 @@ class OverViewWidget extends GetView<OverViewController> {
     double LaptopfontSize = 15.0;
     double TabletfontSize = 15.0;
     double DesktopfontSize = 23.0;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final isMobile = constraints.maxWidth < 900;
@@ -366,6 +315,7 @@ class OverViewWidget extends GetView<OverViewController> {
                 : isLaptop
                 ? LaptopfontSize
                 : MobilefontSize;
+
         return Container(
           width: sidebarWidth,
           padding: const EdgeInsets.all(24.0),
@@ -381,14 +331,146 @@ class OverViewWidget extends GetView<OverViewController> {
             ],
           ),
           child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
+            scrollDirection: Axis.horizontal,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [],
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              spacing: 15,
+              children: [
+                _memberCard("Alice", "Developer"),
+                _memberCard("Bob", "Designer"),
+                _memberCard("Clara", "Admin"),
+                _memberCard("Sarah", "IT"),
+                _memberCard("Mike", "Head"),
+                _memberCard("Charlie", "HR"),
+              ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTeamSidebar2() {
+    double MobilefontSize = 13.0;
+    double LaptopfontSize = 15.0;
+    double TabletfontSize = 15.0;
+    double DesktopfontSize = 23.0;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 900;
+        final isTablet =
+            constraints.maxWidth >= 900 && constraints.maxWidth < 1200;
+        final isDesktop =
+            constraints.maxWidth >= 1200 && constraints.maxWidth < 1440;
+        final isLaptop = constraints.maxWidth >= 1440;
+        final sidebarWidth = isMobile ? constraints.maxWidth : 300.0;
+
+        double fontSize =
+            isMobile
+                ? MobilefontSize
+                : isTablet
+                ? TabletfontSize
+                : isDesktop
+                ? DesktopfontSize
+                : isLaptop
+                ? LaptopfontSize
+                : MobilefontSize;
+
+        return Container(
+          width: sidebarWidth,
+          padding: const EdgeInsets.all(24.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Wrap(
+                spacing: 15,
+                runSpacing: 10,
+                alignment: WrapAlignment.center,
+                children: [
+                  _MangeByCard("Alice", "IT Director", fontSize: fontSize),
+                  _MangeByCard("Kara", "IT Manager", fontSize: fontSize),
+                  _MangeByCard("Vashi", "Senior IT", fontSize: fontSize),
+                ],
+              ),
+              const SizedBox(height: 20),
+              _MangeByCard("Bob", "IT Support", fontSize: fontSize),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _MangeByCard(String name, String role, {required double fontSize}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CircleAvatar(
+          radius: fontSize + 5,
+          backgroundColor: Colors.blue,
+          child: Icon(
+            EneftyIcons.user_bold,
+            color: Colors.white,
+            size: fontSize + 4,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          name,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
+          textAlign: TextAlign.center,
+        ),
+        Text(
+          role,
+          style: TextStyle(color: Colors.black54, fontSize: fontSize * 0.85),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _memberCard(String name, String role) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 18,
+          backgroundColor: Colors.blue,
+          child: Icon(EneftyIcons.user_bold, color: Colors.white),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+        ),
+        Text(role, style: const TextStyle(color: Colors.black54, fontSize: 11)),
+      ],
+    );
+  }
+
+  Widget _sectionTitle(String text, double fontSize) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+      ),
     );
   }
 }

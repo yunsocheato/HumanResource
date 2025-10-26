@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton_ui/flutter_skeleton_ui.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/AdminDept/Model/leave_record_model.dart';
+import 'package:hrms/modules/AdminDept/Model/attendance_record_model.dart';
+import 'package:hrms/modules/AdminDept/controller/attendance_controller.dart';
 import '../../../Utils/Loadingui/ErrorScreen/error_message.dart';
 import '../../../Utils/Loadingui/Loading_skeleton.dart';
-import '../controller/leave_record_controller.dart';
 
-class AttendanceTablewidget extends GetView<LeaveRecordController> {
+class AttendanceTablewidget extends GetView<Attendancecontroller> {
   const AttendanceTablewidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final requests = controller.leaves;
+    final requests = controller.attendance;
 
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 700) {
-          return _buildLeaveRequestsListMobile(context, requests);
+          return _buildAttendanceTableListMobile(context, requests);
         } else {
-          return _buildLeaveRequestsTableOther(context);
+          return _buildAttendanceTableOther(context);
         }
       },
     );
   }
 
-  Widget _buildLeaveRequestsTableOther(BuildContext context) {
-    final controller = Get.find<LeaveRecordController>();
+  Widget _buildAttendanceTableOther(BuildContext context) {
+    final controller = Get.find<Attendancecontroller>();
     final width = MediaQuery.of(context).size.width;
 
     double fontSize(double base) {
@@ -72,7 +71,7 @@ class AttendanceTablewidget extends GetView<LeaveRecordController> {
                               return Skeletonlines();
                             }
 
-                            final requests = controller.leaves;
+                            final requests = controller.attendance;
                             if (requests.isEmpty) {
                               return const errormessage(
                                 tittle: 'No Attendance Found',
@@ -96,38 +95,20 @@ class AttendanceTablewidget extends GetView<LeaveRecordController> {
                                   fontSize,
                                 ),
                                 _coloredColumn(
-                                  'Position',
+                                  'Department',
                                   Colors.green,
                                   colWidth(59),
                                   fontSize,
                                 ),
                                 _coloredColumn(
-                                  'Reason',
+                                  'Type',
                                   Colors.red,
                                   colWidth(59),
                                   fontSize,
                                 ),
                                 _coloredColumn(
-                                  'Status',
+                                  'DateTimes',
                                   Colors.orange,
-                                  colWidth(59),
-                                  fontSize,
-                                ),
-                                _coloredColumn(
-                                  'Submit Role',
-                                  Colors.blueAccent,
-                                  colWidth(59),
-                                  fontSize,
-                                ),
-                                _coloredColumn(
-                                  'Start Date',
-                                  Colors.blueGrey,
-                                  colWidth(59),
-                                  fontSize,
-                                ),
-                                _coloredColumn(
-                                  'End Date',
-                                  Colors.green,
                                   colWidth(59),
                                   fontSize,
                                 ),
@@ -143,27 +124,12 @@ class AttendanceTablewidget extends GetView<LeaveRecordController> {
                                     return DataRow(
                                       cells: [
                                         DataCell(
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                request.name,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: fontSize(10),
-                                                ),
-                                              ),
-                                              Text(
-                                                request.position,
-                                                style: TextStyle(
-                                                  fontSize: fontSize(10),
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ],
+                                          Text(
+                                            request.name,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: fontSize(10),
+                                            ),
                                           ),
                                         ),
                                         DataCell(
@@ -172,72 +138,27 @@ class AttendanceTablewidget extends GetView<LeaveRecordController> {
                                             style: TextStyle(fontSize: 09),
                                           ),
                                         ),
+                                        DataCell(
+                                          Text(
+                                            request.check_type,
+                                            style: TextStyle(fontSize: 09),
+                                          ),
+                                        ),
 
                                         DataCell(
                                           Text(
-                                            request.leavereason,
+                                            controller.formatDate(request.date),
                                             style: TextStyle(fontSize: 09),
                                           ),
                                         ),
                                         DataCell(
-                                          Text(
-                                            request.status,
-                                            style: TextStyle(
-                                              fontSize: 09,
-                                              color: _getStatusColor(
-                                                request.status,
-                                              ),
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size: 15,
                                             ),
-                                          ),
-                                        ),
-                                        DataCell(
-                                          Text(
-                                            request.submitrole,
-                                            style: TextStyle(fontSize: 09),
-                                          ),
-                                        ),
-                                        DataCell(
-                                          Text(
-                                            controller.formatDate(
-                                              request.fromDate,
-                                            ),
-                                            style: TextStyle(
-                                              fontSize: 09,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                        DataCell(
-                                          Text(
-                                            controller.formatDate(
-                                              request.toDate,
-                                            ),
-                                            style: TextStyle(
-                                              fontSize: 09,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                        DataCell(
-                                          Row(
-                                            children: [
-                                              IconButton(
-                                                icon: const Icon(
-                                                  Icons.info,
-                                                  color: Colors.blue,
-                                                  size: 15,
-                                                ),
-                                                onPressed: () {},
-                                              ),
-                                              IconButton(
-                                                icon: const Icon(
-                                                  Icons.delete,
-                                                  color: Colors.red,
-                                                  size: 15,
-                                                ),
-                                                onPressed: () {},
-                                              ),
-                                            ],
+                                            onPressed: () {},
                                           ),
                                         ),
                                       ],
@@ -285,9 +206,9 @@ class AttendanceTablewidget extends GetView<LeaveRecordController> {
     );
   }
 
-  Widget _buildLeaveRequestsListMobile(
+  Widget _buildAttendanceTableListMobile(
     BuildContext context,
-    List<LeaveRequestModel> requests,
+    List<AttendanceRecordModel> requests,
   ) {
     return Obx(() {
       if (controller.isLoading.value) {
@@ -326,17 +247,14 @@ class AttendanceTablewidget extends GetView<LeaveRecordController> {
                         ),
                       ),
                       Text(
-                        request.status,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: _getStatusColor(request.status),
-                        ),
+                        controller.formatDate(request.date),
+                        style: TextStyle(fontSize: 12),
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    request.position,
+                    request.check_type,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.green,
@@ -347,18 +265,6 @@ class AttendanceTablewidget extends GetView<LeaveRecordController> {
                     request.department,
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
-                  Text(
-                    request.leavereason,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 8),
-                  _infoRow('Submit', request.submitrole),
-                  _infoRow(
-                    'Start Date',
-                    controller.formatDate(request.fromDate),
-                  ),
-                  _infoRow('End Date', controller.formatDate(request.toDate)),
-                  const SizedBox(height: 12),
                 ],
               ),
             ),
@@ -366,30 +272,5 @@ class AttendanceTablewidget extends GetView<LeaveRecordController> {
         },
       );
     });
-  }
-
-  Widget _infoRow(String label, String? value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        children: [
-          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
-          Expanded(child: Text(value ?? '-', overflow: TextOverflow.ellipsis)),
-        ],
-      ),
-    );
-  }
-
-  Color _getStatusColor(String? status) {
-    switch (status?.toLowerCase()) {
-      case 'approved':
-        return Colors.green;
-      case 'rejected':
-        return Colors.red;
-      case 'pending':
-        return Colors.yellow;
-      default:
-        return Colors.grey;
-    }
   }
 }

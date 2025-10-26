@@ -103,20 +103,8 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                                   fontSize,
                                 ),
                                 _coloredColumn(
-                                  'Reason',
-                                  Colors.red,
-                                  colWidth(59),
-                                  fontSize,
-                                ),
-                                _coloredColumn(
                                   'Status',
                                   Colors.orange,
-                                  colWidth(59),
-                                  fontSize,
-                                ),
-                                _coloredColumn(
-                                  'Submit Role',
-                                  Colors.blueAccent,
                                   colWidth(59),
                                   fontSize,
                                 ),
@@ -173,13 +161,6 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                                             style: TextStyle(fontSize: 09),
                                           ),
                                         ),
-
-                                        DataCell(
-                                          Text(
-                                            request.leavereason,
-                                            style: TextStyle(fontSize: 09),
-                                          ),
-                                        ),
                                         DataCell(
                                           Text(
                                             request.status,
@@ -189,12 +170,6 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                                                 request.status,
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                        DataCell(
-                                          Text(
-                                            request.submitrole,
-                                            style: TextStyle(fontSize: 09),
                                           ),
                                         ),
                                         DataCell(
@@ -228,7 +203,11 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                                                   color: Colors.blue,
                                                   size: 15,
                                                 ),
-                                                onPressed: () {},
+                                                onPressed:
+                                                    () => controller
+                                                        .showLeaveDialog(
+                                                          request,
+                                                        ),
                                               ),
                                               IconButton(
                                                 icon: const Icon(
@@ -288,7 +267,7 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
 
   Widget _buildLeaveRequestsListMobile(
     BuildContext context,
-    List<LeaveRequestModel> requests,
+    List<LeaveRecordModel> requests,
   ) {
     return Obx(() {
       if (controller.isLoading.value) {
@@ -356,7 +335,6 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   const SizedBox(height: 8),
-                  _infoRow('Submit', request.submitrole),
                   _infoRow(
                     'Start Date',
                     controller.formatDate(request.fromDate),

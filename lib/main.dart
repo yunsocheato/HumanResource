@@ -44,14 +44,6 @@ class _MyAppState extends State<MyApp> {
       getPages: AppPages.pages,
       initialBinding: BindingMain(),
       theme: ThemeData(primarySwatch: Colors.orange),
-      // darkTheme: ThemeData.dark(),
-      // themeMode: ThemeMode.light,
-      // builder: (context, data) {
-      //   return MediaQuery(
-      //     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      //     child: data!,
-      //   );
-      // },
     );
   }
 }

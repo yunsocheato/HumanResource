@@ -31,20 +31,45 @@ class AttendanceChartWidget extends GetView<AttendanceChartController> {
                 ),
               );
             }
+
             final List<String> categories = ['Check-in', 'Late', 'Other'];
+
             final values =
                 categories.map((category) {
-                  final record = controller.attendanceData.firstWhere(
+                  final record = controller.attendanceChartData.firstWhere(
                     (e) => e.category == category,
                     orElse:
                         () =>
                             AttendanceChartModel(category: category, count: 0),
                   );
-                  return record.count.toDouble();
+                  return record.count.toDouble() == 0
+                      ? 0.000
+                      : record.count.toDouble();
                 }).toList();
+
+            final total = values.fold<double>(0, (sum, v) => sum + v);
+
+            if (total == 0) {
+              return SizedBox(
+                width: chartSize,
+                height: chartSize,
+                child: Center(
+                  child: Text(
+                    "No attendance data today",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: width < 600 ? 16 : 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                ),
+              );
+            }
 
             List<Color> colors =
                 controller.colorList.take(values.length).toList();
+
             return Card(
               elevation: 15,
               color: Colors.white,

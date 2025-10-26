@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/Model/leave_record_model.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../Provider/leave_provider.dart';
 
 class LeaveRecordController extends GetxController {
   final leaveprovider service = leaveprovider();
 
-  var leaves = <LeaveRequestModel>[].obs;
+  var leaves = <LeaveRecordModel>[].obs;
   var isLoading = false.obs;
   var leaveRecord = <Map<String, dynamic>>[].obs;
+  var currentUser = Rxn<User>();
+  final dateFormat = DateFormat('dd/MM/yyyy');
 
   var selectedDate = Rxn<DateTime>();
   var selectedEndDate = Rxn<DateTime>();
@@ -18,17 +21,49 @@ class LeaveRecordController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getLeaves();
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      final session = data.session;
+
+      if (event == AuthChangeEvent.signedIn && session?.user != null) {
+        currentUser.value = session!.user;
+        getLeaves();
+      } else if (event == AuthChangeEvent.signedOut) {
+        currentUser.value = null;
+        leaves.clear();
+      }
+    });
+
+    currentUser.value = Supabase.instance.client.auth.currentUser;
+    if (currentUser.value != null) {
+      getLeaves();
+    }
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    leaves.clear();
   }
 
   Future<void> getLeaves() async {
     try {
       isLoading.value = true;
-      final data = await service.getleavebyuser();
-
-      leaves.value = data.map((e) => LeaveRequestModel.fromMap(e)).toList();
+      final data = await service.getPendingLeaveRequests();
+      print(data);
+      leaves.value = data.map((e) => LeaveRecordModel.fromMap(e)).toList();
     } catch (e) {
       leaves.clear();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> fetchLeavesByDate(DateTime start, DateTime end) async {
+    try {
+      isLoading.value = true;
+      final userId = Supabase.instance.client.auth.currentUser!.id;
+      leaves.value = await service.getLeaveDatabydate(userId, start, end);
     } finally {
       isLoading.value = false;
     }
@@ -51,7 +86,7 @@ class LeaveRecordController extends GetxController {
     }
   }
 
-  void showLeaveDialog(Map<String, dynamic> request) {
+  void showLeaveDialog(LeaveRecordModel request) {
     Get.dialog(
       AlertDialog(
         contentPadding: EdgeInsets.zero,
@@ -90,38 +125,28 @@ class LeaveRecordController extends GetxController {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DetailRow('Name', request['name'] ?? 'No name'),
-                      DetailRow('Email', request['user_email'] ?? 'No email'),
-                      DetailRow(
-                        'Department',
-                        request['department'] ?? 'No Department',
-                      ),
-                      DetailRow('Position', request['position'] ?? 'None'),
+                      DetailRow('Name', request.name),
+                      DetailRow('Department', request.department),
+                      DetailRow('Position', request.position),
+                      DetailRow('Your Status', request.status),
+                      DetailRow('You have been Submit to ', request.submitrole),
+                      // DetailRow('Your Leave Type', request.leavetype),
+                      DetailRow('Your Reason', request.leavereason),
                       DetailRow(
                         'Start Date',
-                        request['from_date'] != null
+                        request.fromDate != null
                             ? DateFormat(
                               'MMM d, yyyy',
-                            ).format(DateTime.parse(request['from_date']))
+                            ).format(request.fromDate!)
                             : 'No date',
                       ),
                       DetailRow(
                         'End Date',
-                        request['to_date'] != null
-                            ? DateFormat(
-                              'MMM d, yyyy',
-                            ).format(DateTime.parse(request['to_date']))
+                        request.toDate != null
+                            ? DateFormat('MMM d, yyyy').format(request.toDate!)
                             : 'No date',
                       ),
-                      DetailRow('Reason', request['reason'] ?? 'None'),
-                      DetailRow(
-                        'Created At',
-                        request['created_at'] != null
-                            ? DateFormat(
-                              'MMM d, yyyy HH:mm',
-                            ).format(DateTime.parse(request['created_at']))
-                            : 'No date',
-                      ),
+                      DetailRow('Create At', request.CreatAt),
                     ],
                   ),
                 ),
@@ -152,12 +177,15 @@ class LeaveRecordController extends GetxController {
     );
   }
 
-  void setStartDate(DateTime? date) {
-    selectedDate.value = date!;
+  void setStartDate(DateTime date) {
+    selectedDate.value = date;
   }
 
-  void setEndDate(DateTime? date) {
-    selectedEndDate.value = date!;
+  void setEndDate(DateTime date) {
+    selectedEndDate.value = date;
+    if (selectedEndDate.value != null) {
+      fetchLeavesByDate(selectedDate.value!, selectedEndDate.value!);
+    }
   }
 
   List<Map<String, dynamic>> get filteredRequests {

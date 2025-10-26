@@ -7,8 +7,9 @@ import '../Provider/attendance_chart_provider.dart';
 class AttendanceChartController extends GetxController {
   final AttendanceChartProvider _provider = AttendanceChartProvider();
 
-  final attendanceData = <AttendanceChartModel>[].obs;
+  final attendanceChartData = <AttendanceChartModel>[].obs;
   final chartBarGroups = <BarChartGroupData>[].obs;
+  var selectedRange = '1day'.obs;
 
   var isLoading = false.obs;
   var isPieChart = false.obs;
@@ -24,41 +25,112 @@ class AttendanceChartController extends GetxController {
     {'Late': 0},
     {'Other': 0},
   ];
+  final List<String> ranges = [
+    '1day',
+    '3days',
+    '1week',
+    '2weeks',
+    '1month',
+    '2months',
+    '3months',
+    '6months',
+    '1year',
+    '2years',
+  ];
 
   @override
   void onInit() {
     super.onInit();
-    fetchAttendanceData();
-    ever(attendanceData, (_) => transformDataForChart());
+    fetchTodayChart();
+    ever(attendanceChartData, (_) => transformDataForChart());
   }
 
-  Future<void> fetchAttendanceData() async {
+  Future<void> fetchAttendanceAllData() async {
     try {
       isLoading.value = true;
       final rawData = await _provider.getAttendanceDataChart();
-      attendanceData.value = rawData;
+      attendanceChartData.value = rawData;
     } catch (e) {
-      attendanceData.clear();
+      attendanceChartData.clear();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void fetchChartbyDate() async {
+    try {
+      isLoading.value = true;
+      final data = await _provider.getAttendanceChartByDate(
+        range: selectedRange.value,
+      );
+      const categories = ['Check-in', 'Late', 'Other'];
+      attendanceChartData.value =
+          categories.map((cat) {
+            final found = data.firstWhere(
+              (d) => d.category == cat,
+              orElse: () => AttendanceChartModel(category: cat, count: 0),
+            );
+            return found;
+          }).toList();
+    } catch (e) {
+      attendanceChartData.value = [
+        AttendanceChartModel(category: 'Check-in', count: 0),
+        AttendanceChartModel(category: 'Late', count: 0),
+        AttendanceChartModel(category: 'Other', count: 0),
+      ];
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void fetchTodayChart() async {
+    try {
+      isLoading.value = true;
+      final data = await _provider.getAttendanceChartToday();
+
+      const defaultCategories = ['Check-in', 'Late', 'Other'];
+
+      final mergedData =
+          defaultCategories.map((category) {
+            final found = data.firstWhere(
+              (d) => d.category == category,
+              orElse: () => AttendanceChartModel(category: category, count: 0),
+            );
+            return found;
+          }).toList();
+
+      attendanceChartData.value = mergedData;
+    } catch (e) {
+      attendanceChartData.value = [
+        AttendanceChartModel(category: 'Check-in', count: 0),
+        AttendanceChartModel(category: 'Late', count: 0),
+        AttendanceChartModel(category: 'Other', count: 0),
+      ];
     } finally {
       isLoading.value = false;
     }
   }
 
   void transformDataForChart() {
-    if (attendanceData.isEmpty) {
+    if (attendanceChartData.isEmpty) {
       chartBarGroups.clear();
       return;
     }
 
     final List<BarChartGroupData> groups = [];
 
-    for (int i = 0; i < attendanceData.length; i++) {
-      final record = attendanceData[i];
+    for (int i = 0; i < attendanceChartData.length; i++) {
+      final record = attendanceChartData[i];
       final color = colorList[i % colorList.length];
       groups.add(_makeGroupData(i, record.count.toDouble(), color));
     }
 
     chartBarGroups.value = groups;
+  }
+
+  void setRange(String range) {
+    selectedRange.value = range;
+    fetchChartbyDate();
   }
 
   BarChartGroupData _makeGroupData(int x, double y, Color color) {
@@ -87,8 +159,8 @@ class AttendanceChartController extends GetxController {
 
     final index = value.toInt();
     final label =
-        (index >= 0 && index < attendanceData.length)
-            ? attendanceData[index].category
+        (index >= 0 && index < attendanceChartData.length)
+            ? attendanceChartData[index].category
             : '';
 
     return SideTitleWidget(
@@ -106,7 +178,8 @@ class AttendanceChartController extends GetxController {
 
   Map<String, double> get pieChartDataMap {
     return {
-      for (var item in attendanceData) item.category: item.count.toDouble(),
+      for (var item in attendanceChartData)
+        item.category: item.count.toDouble(),
     };
   }
 
