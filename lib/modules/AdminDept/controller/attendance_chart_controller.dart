@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Model/attendance_chart_model.dart';
 import '../Provider/attendance_chart_provider.dart';
 
@@ -8,7 +9,8 @@ class AttendanceChartController extends GetxController {
   final AttendanceChartProvider _provider = AttendanceChartProvider();
 
   final attendanceChartData = <AttendanceChartModel>[].obs;
-  final chartBarGroups = <BarChartGroupData>[].obs;
+  final currentUser = Rxn<User>();
+  final RxList<dynamic> chartBarGroups = <dynamic>[].obs;
   var selectedRange = '1day'.obs;
 
   var isLoading = false.obs;
@@ -41,7 +43,24 @@ class AttendanceChartController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchTodayChart();
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      final session = data.session;
+
+      if (event == AuthChangeEvent.signedIn && session?.user != null) {
+        currentUser.value = session!.user;
+        fetchTodayChart();
+      } else if (event == AuthChangeEvent.signedOut) {
+        currentUser.value = null;
+        attendanceChartData.clear();
+      }
+    });
+
+    currentUser.value = Supabase.instance.client.auth.currentUser;
+    if (currentUser.value != null) {
+      fetchTodayChart();
+    }
+
     ever(attendanceChartData, (_) => transformDataForChart());
   }
 
@@ -57,7 +76,7 @@ class AttendanceChartController extends GetxController {
     }
   }
 
-  void fetchChartbyDate() async {
+  Future<void> fetchChartbyDate() async {
     try {
       isLoading.value = true;
       final data = await _provider.getAttendanceChartByDate(
@@ -83,15 +102,20 @@ class AttendanceChartController extends GetxController {
     }
   }
 
-  void fetchTodayChart() async {
+  Future<void> fetchTodayChart() async {
     try {
       isLoading.value = true;
       final data = await _provider.getAttendanceChartToday();
 
       const defaultCategories = ['Check-in', 'Late', 'Other'];
 
+      final allCategories = {
+        ...defaultCategories,
+        ...data.map((e) => e.category),
+      };
+
       final mergedData =
-          defaultCategories.map((category) {
+          allCategories.map((category) {
             final found = data.firstWhere(
               (d) => d.category == category,
               orElse: () => AttendanceChartModel(category: category, count: 0),
@@ -101,6 +125,7 @@ class AttendanceChartController extends GetxController {
 
       attendanceChartData.value = mergedData;
     } catch (e) {
+      print('Error fetching today chart: $e');
       attendanceChartData.value = [
         AttendanceChartModel(category: 'Check-in', count: 0),
         AttendanceChartModel(category: 'Late', count: 0),
@@ -118,22 +143,15 @@ class AttendanceChartController extends GetxController {
     }
 
     final List<BarChartGroupData> groups = [];
-
     for (int i = 0; i < attendanceChartData.length; i++) {
       final record = attendanceChartData[i];
       final color = colorList[i % colorList.length];
-      groups.add(_makeGroupData(i, record.count.toDouble(), color));
+      groups.add(_makeBarChartGroupData(i, record.count.toDouble(), color));
     }
-
     chartBarGroups.value = groups;
   }
 
-  void setRange(String range) {
-    selectedRange.value = range;
-    fetchChartbyDate();
-  }
-
-  BarChartGroupData _makeGroupData(int x, double y, Color color) {
+  BarChartGroupData _makeBarChartGroupData(int x, double y, Color color) {
     return BarChartGroupData(
       x: x,
       barRods: [
@@ -148,6 +166,11 @@ class AttendanceChartController extends GetxController {
         ),
       ],
     );
+  }
+
+  void setRange(String range) {
+    selectedRange.value = range;
+    fetchChartbyDate();
   }
 
   Widget getBottomTitles(double value, TitleMeta meta) {

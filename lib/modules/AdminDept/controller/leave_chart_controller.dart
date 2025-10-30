@@ -45,6 +45,12 @@ class LeaveChartController extends GetxController {
     loadMonthlyChartData();
   }
 
+  @override
+  void onClose() {
+    super.onClose();
+    spots.clear();
+  }
+
   final List<String> MonthName = [
     'January',
     'February',

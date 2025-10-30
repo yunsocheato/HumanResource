@@ -1,9 +1,11 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_skeleton_ui/flutter_skeleton_ui.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/Utils/date_picker_leave.dart';
 import 'package:hrms/modules/AdminDept/controller/attendance_controller.dart';
 import 'package:hrms/modules/AdminDept/widget/overview_card.dart';
+import '../../../Utils/Loadingui/Loading_skeleton.dart';
 import '../Utils/date_picker_all_chart.dart';
 import '../Utils/date_picker_attendance.dart';
 import '../Utils/date_picker_chart_today.dart';
@@ -399,52 +401,50 @@ class OverViewWidget extends GetView<OverViewController> {
   }
 
   Widget _ManageByList({required double fontSize}) {
-    final controller = Get.find<ManageUserController>();
+    final controller1 = Get.find<ManageUserController>();
 
     return Obx(() {
-      if (controller.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
+      if (controller1.isLoading.value) {
+        return Center(child: Skeletonlines());
       }
 
-      if (controller.users.isEmpty) {
+      if (controller1.userdata.isEmpty) {
         return const Center(child: Text('No users found'));
       }
 
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: controller.users.length,
+        itemCount: controller1.userdata.length,
         itemBuilder: (context, index) {
-          final user = controller.users[index];
+          final user = controller1.userdata[index];
 
           return ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.blue.shade700,
               child: Text(
-                user['name'] != null && user['name'].isNotEmpty
-                    ? user['name'][0].toUpperCase()
-                    : '?', //return firstname letter when user dont have image or photo
+                user.Name.isNotEmpty ? user.Name[0].toUpperCase() : '?',
                 style: const TextStyle(color: Colors.white),
               ),
             ),
             title: Text(
-              user['name'] ?? 'Unknown',
+              user.Name,
               style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Manager Name: ${user['mangebyname'] ?? 'No manager'}',
+                  'Manager Name: ${user.ManageByname.isNotEmpty ? user.ManageByname : 'No manager'}',
                   style: TextStyle(
                     fontSize: fontSize - 2,
                     color: Colors.grey[700],
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
-                  'Head Department: ${user['headname'] ?? 'No head department'}',
+                  'Head Department: ${user.HeadName.isNotEmpty ? user.HeadName : 'No head department'}',
                   style: TextStyle(
                     fontSize: fontSize - 2,
                     color: Colors.grey[700],

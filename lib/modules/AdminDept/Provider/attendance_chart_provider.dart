@@ -1,5 +1,4 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../Model/attendance_chart_model.dart';
 
 class AttendanceChartProvider {
@@ -92,20 +91,21 @@ class AttendanceChartProvider {
 
   Future<List<AttendanceChartModel>> getAttendanceChartToday() async {
     try {
-      final now = DateTime.now();
-      final startOfDay = DateTime(now.year, now.month, now.day);
-      final endOfDay = startOfDay.add(Duration(days: 1));
+      final now = DateTime.now().toUtc();
+      final startOfDay = DateTime.utc(now.year, now.month, now.day);
+      final endOfDay = startOfDay.add(const Duration(days: 1));
+
       final response = await _supabase
           .from('singupuser_fit_attendance')
-          .select('check_type')
-          .gte('created_at', startOfDay.toIso8601String())
-          .lt('created_at', endOfDay.toIso8601String());
+          .select('check_type, timestamp')
+          .gte('timestamp', startOfDay.toIso8601String())
+          .lt('timestamp', endOfDay.toIso8601String());
 
       final data = response as List;
 
       final Map<String, int> grouped = {};
       for (var row in data) {
-        final type = row['check_type'] ?? 'Unknown';
+        final type = (row['check_type'] ?? 'Unknown').toString();
         grouped[type] = (grouped[type] ?? 0) + 1;
       }
 
