@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:hrms/modules/AdminDept/Model/leave_card_balance_model.dart';
+import 'package:hrms/modules/AdminDept/Provider/leave_card_balance_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../Admin/Drawer/widgets/Method_drawer_policy_button.dart';
 
 class OverViewController extends GetxController
@@ -9,8 +11,17 @@ class OverViewController extends GetxController
   var isClockedIn = true.obs;
   var isLeaveRequestPending = false.obs;
   var isPayslipAvailable = true.obs;
+  var leavecardbalance = <LeaveCardModel>[].obs;
+  var leavecardrecord = <Map<String, dynamic>>[].obs;
+  var currentUser = Rxn<User>();
+
   Timer? _timer;
+
   final PageController pageController = PageController();
+  final LeaveCardBalanceProvider _provider = Get.put(
+    LeaveCardBalanceProvider(),
+  );
+
   final images = [
     'https://bongsrey.sgp1.digitaloceanspaces.com/library/10204/images/thumbnail/5ec74e5b86b19.png',
     'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/640px-Cisco_logo_blue_2016.svg.png',
@@ -23,6 +34,9 @@ class OverViewController extends GetxController
     ['Maternity Leave', Icons.pregnant_woman, Colors.white],
     ['Unpaid Leave', Icons.money, Colors.white],
   ]);
+  final hoveredIndex = (-1).obs;
+  final hoveredIndex1 = (-1).obs;
+  final selectedIndex = (-1).obs;
 
   final overviewdashboard = RxList<List<dynamic>>([
     ['Request Leave', Icons.calendar_today, Colors.white],
@@ -36,6 +50,7 @@ class OverViewController extends GetxController
 
   Duration duration = const Duration(milliseconds: 500);
   Curve curve = Curves.easeInOut;
+
   @override
   void onInit() {
     super.onInit();
@@ -56,6 +71,35 @@ class OverViewController extends GetxController
         );
       }
     });
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      final session = data.session;
+
+      if (event == AuthChangeEvent.signedIn && session?.user != null) {
+        currentUser.value = session!.user;
+        getLeaveRecordbalance();
+      } else if (event == AuthChangeEvent.signedOut) {
+        currentUser.value = null;
+        leavecardbalance.clear();
+      }
+    });
+
+    currentUser.value = Supabase.instance.client.auth.currentUser;
+    if (currentUser.value != null) {
+      getLeaveRecordbalance();
+    }
+  }
+
+  Future<void> getLeaveRecordbalance() async {
+    try {
+      isLoading.value = true;
+      final data = await _provider.getAllLeaveRecordBalance();
+      leavecardbalance.value = data;
+    } catch (e) {
+      leavecardbalance.clear();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void toggleClockStatus(bool value) {

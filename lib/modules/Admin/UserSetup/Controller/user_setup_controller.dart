@@ -124,15 +124,15 @@ class UserSetupController extends GetxController {
   }
 
   void mapDataFields(UserSetupModel data) {
-    NameController.text = data.name ?? " ";
-    EmailController.text = data.email ?? " ";
-    DepartmentController.text = data.department ?? " ";
-    poisitionController.text = data.position ?? " ";
-    id_cardController.text = data.idCard ?? " ";
+    NameController.text = data.name;
+    EmailController.text = data.email;
+    DepartmentController.text = data.department;
+    poisitionController.text = data.position;
+    id_cardController.text = data.idCard;
     fingerprint_idController.text = data.fingerprint?.toString() ?? '';
-    PhoneController.text = data.phone ?? " ";
-    AddressController.text = data.address ?? " ";
-    RoleController.text = data.role ?? " ";
-    createAtController.text = data.createdAt ?? " ";
+    PhoneController.text = data.phone;
+    AddressController.text = data.address;
+    RoleController.text = data.role;
+    createAtController.text = data.createdAt;
   }
 }

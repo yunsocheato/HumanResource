@@ -27,6 +27,7 @@ import '../modules/Admin/Drawer/controllers/access_feature_controller.dart';
 import '../modules/Admin/Drawer/controllers/drawer_controller.dart';
 import '../modules/Admin/Drawer/controllers/employee_policy_controller.dart';
 import '../modules/Admin/Drawer/controllers/fingerprint_setup_controller.dart';
+import '../modules/Admin/Drawer/controllers/manage_users_controller.dart';
 import '../modules/Admin/Drawer/controllers/payroll_policy_controller.dart';
 import '../modules/Admin/Employee/Controller/Employeetable_controller.dart';
 import '../modules/Admin/Employee/Controller/employee_profile_controller.dart';
@@ -50,6 +51,7 @@ import '../modules/Admin/SettingScreen/controller/setting_controller.dart';
 import '../modules/Admin/UserSetup/Controller/user_setup_controller.dart';
 import '../modules/AdminDept/controller/leave_chart_controller.dart';
 import '../modules/AdminDept/controller/leave_record_controller.dart';
+import '../modules/AdminDept/controller/manageuser_controller.dart';
 import '../modules/AdminDept/controller/overview_controller.dart';
 
 class BindingMain extends Bindings {
@@ -210,5 +212,11 @@ class BindingMain extends Bindings {
 
     Get.put(Attendancecontroller(), permanent: true);
     Get.lazyPut<Attendancecontroller>(() => Attendancecontroller());
+
+    Get.put(ManageUsersController(), permanent: true);
+    Get.lazyPut<ManageUsersController>(() => ManageUsersController());
+
+    Get.put(ManageUserController(), permanent: true);
+    Get.lazyPut<ManageUserController>(() => ManageUserController());
   }
 }

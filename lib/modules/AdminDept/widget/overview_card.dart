@@ -15,26 +15,38 @@ class Gridoverviewoverview extends GetView<OverViewController> {
 
         int crossAxisCount;
         double childAspectRatio;
+        double iconSize;
+        double fontSize;
 
         if (maxWidth < 600) {
+          iconSize = 14;
+          fontSize = 14;
           crossAxisCount = 2;
-          childAspectRatio = 2.2;
+          childAspectRatio = 2.5;
         } else if (maxWidth >= 600 && maxWidth < 900) {
+          iconSize = 16;
+          fontSize = 16;
           crossAxisCount = 4;
-          childAspectRatio = 1.7;
+          childAspectRatio = 2.2;
         } else if (maxWidth >= 900 && maxWidth < 1024) {
+          iconSize = 18;
+          fontSize = 18;
           crossAxisCount = 4;
-          childAspectRatio = 1.3;
+          childAspectRatio = 2.0;
         } else if (maxWidth >= 1024 && maxWidth < 1440) {
+          iconSize = 20;
+          fontSize = 20;
           crossAxisCount = 4;
           childAspectRatio = 2.8;
         } else {
+          iconSize = 22;
+          fontSize = 22;
           crossAxisCount = 5;
           childAspectRatio = 2.2;
         }
 
         return GridView.builder(
-          itemCount: controller.TextLeave.length,
+          itemCount: controller.overviewdashboard.length,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -44,44 +56,100 @@ class Gridoverviewoverview extends GetView<OverViewController> {
             childAspectRatio: childAspectRatio,
           ),
           itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                print('Clicked item $index');
-              },
+            return MouseRegion(
+              onEnter: (_) => controller.hoveredIndex1.value = index,
+              onExit: (_) => controller.hoveredIndex1.value = -1,
+              cursor: SystemMouseCursors.click,
               child: Obx(() {
                 final leave = controller.overviewdashboard[index];
                 final title = leave[0] as String;
                 final icon = leave[1] as IconData;
-                final color = leave[2] as Color;
+                final bg = leave[2];
+                final isHovered = controller.hoveredIndex1.value == index;
+                final isSelected = controller.selectedIndex.value == index;
 
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurple.shade600,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 7,
-                        offset: Offset(3, 3),
+                final bgColor =
+                    isSelected
+                        ? Colors.deepPurple.shade900
+                        : Colors.grey.shade500;
+
+                BoxDecoration decoration;
+                if (bg is String) {
+                  decoration = BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    image: DecorationImage(
+                      image: NetworkImage(bg),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.4),
+                        BlendMode.darken,
                       ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(icon, color: Colors.white, size: 28),
-                      const SizedBox(height: 8),
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                    ),
+                  );
+                } else {
+                  decoration = BoxDecoration(
+                    color: Colors.deepPurple.shade900,
+                    borderRadius: BorderRadius.circular(16),
+                  );
+                }
+                return GestureDetector(
+                  onTap: () {
+                    controller.selectedIndex.value = isSelected ? -1 : index;
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeInOutCubic,
+                    transform:
+                        isHovered
+                            ? (Matrix4.identity()
+                              ..translate(0, -10, 0)
+                              ..rotateX(-0.05)
+                              ..rotateY(0.05))
+                            : Matrix4.identity(),
+                    decoration: decoration.copyWith(
+                      color: bgColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: isHovered ? Colors.black26 : Colors.black12,
+                          blurRadius: isHovered ? 25 : 5,
+                          offset: const Offset(3, 3),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: Icon(
+                            icon,
+                            color:
+                                isSelected
+                                    ? Colors.white
+                                    : Colors.deepPurple.shade900,
+                            size: iconSize,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Flexible(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              color:
+                                  isSelected
+                                      ? Colors.white
+                                      : Colors.deepPurple.shade900,
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontSize,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }),

@@ -42,7 +42,7 @@ class UserSetupScreen extends GetView<UserSetupScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text(
-                      'Employee Policy',
+                      'Setup Users',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,

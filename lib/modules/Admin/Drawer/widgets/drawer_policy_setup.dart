@@ -8,6 +8,7 @@ import '../controllers/drawer_controller.dart';
 import '../views/Leave_Policy_screen.dart';
 
 import '../views/employee_policy_screen.dart';
+import '../views/manage_user_screen.dart';
 
 class PolicySetup extends GetView<AppDrawerController> {
   const PolicySetup({super.key});
@@ -112,22 +113,22 @@ class PolicySetup extends GetView<AppDrawerController> {
                   index: 4,
                   onTap: () => DialogScreen(context, LeavePolicy()),
                 ),
-                // _buildSubTile(
-                //   title: 'OT Policy',
-                //   fontSize: fontSizeBody,
-                //   icon: EneftyIcons.clock_2_bold,
-                //   index: 6,
-                //   iconSize: iconSize,
-                //   onTap: () => DialogScreen(context, OTPolicyScreen()),
-                // ),
-                // _buildSubTile(
-                //   title: 'Access Feature Policy',
-                //   iconSize: iconSize,
-                //   fontSize: fontSizeBody,
-                //   icon: EneftyIcons.picture_frame_bold,
-                //   index: 7,
-                //   onTap: () => DialogScreen(context, AccessFeatureScreen()),
-                // ),
+                _buildSubTile(
+                  title: 'Manage Users',
+                  fontSize: fontSizeBody,
+                  icon: EneftyIcons.setting_2_outline,
+                  index: 6,
+                  iconSize: iconSize,
+                  onTap: () => DialogScreen(context, ManageUserScreen()),
+                ),
+                _buildSubTile(
+                  title: 'Manage Team Users',
+                  iconSize: iconSize,
+                  fontSize: fontSizeBody,
+                  icon: Icons.group,
+                  index: 7,
+                  onTap: () {},
+                ),
               ],
             ),
           );

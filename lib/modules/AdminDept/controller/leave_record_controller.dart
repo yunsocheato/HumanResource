@@ -50,7 +50,6 @@ class LeaveRecordController extends GetxController {
     try {
       isLoading.value = true;
       final data = await service.getPendingLeaveRequests();
-      print(data);
       leaves.value = data.map((e) => LeaveRecordModel.fromMap(e)).toList();
     } catch (e) {
       leaves.clear();

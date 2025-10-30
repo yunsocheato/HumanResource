@@ -9,13 +9,14 @@ import '../Utils/date_picker_attendance.dart';
 import '../Utils/date_picker_chart_today.dart';
 import '../Utils/dropdown_menu_chart_attendance.dart';
 import '../Utils/dropdown_menu_leave_chart.dart';
+import '../controller/manageuser_controller.dart';
 import '../controller/overview_controller.dart';
 import 'attendance_chart_widget.dart';
 import 'attendance_widget.dart';
+import 'leave_card_balance_sidebar.dart';
 import 'leave_chart_widget.dart';
 import 'leave_record_widget.dart';
 import 'overview_card_pageview.dart';
-import 'overview_card_sidebar.dart';
 
 class OverViewWidget extends GetView<OverViewController> {
   const OverViewWidget({super.key});
@@ -132,11 +133,13 @@ class OverViewWidget extends GetView<OverViewController> {
                         ),
                         const SizedBox(height: 20),
                         _sectionTitle('DASHBOARD', fontSize),
+                        const SizedBox(height: 15),
                         const Gridoverviewoverview(),
                         const SizedBox(height: 20),
                         _sectionTitle('LEAVE RECORDS', fontSize),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 15),
                         DatePickerLeave(),
+                        const SizedBox(height: 15),
                         const LeaveRequestTablewidget(),
                         const SizedBox(height: 20),
                         _sectionTitle('ATTENDANCE RECORDS', fontSize),
@@ -195,15 +198,15 @@ class OverViewWidget extends GetView<OverViewController> {
         List<Widget> sections = [
           _sectionTitle('LEAVE BALANCE', fontSize),
           const SizedBox(height: 10),
-          const Gridoverviewsidebar(),
+          const GridoverviewLeavebalance(),
+          const SizedBox(height: 20),
+          _sectionTitle('MANAGE USER', fontSize),
+          const SizedBox(height: 15),
+          _buildTeamSidebar2(),
           const SizedBox(height: 20),
           _sectionTitle('TEAM MEMBER', fontSize),
           const SizedBox(height: 15),
           _buildTeamSidebar1(),
-          const SizedBox(height: 20),
-          _sectionTitle('MANAGE BY', fontSize),
-          const SizedBox(height: 15),
-          _buildTeamSidebar2(),
           const SizedBox(height: 20),
           _sectionTitle('ATTENDANCE COUNTS', fontSize),
           const SizedBox(height: 8),
@@ -351,10 +354,10 @@ class OverViewWidget extends GetView<OverViewController> {
   }
 
   Widget _buildTeamSidebar2() {
-    double MobilefontSize = 13.0;
-    double LaptopfontSize = 15.0;
-    double TabletfontSize = 15.0;
-    double DesktopfontSize = 23.0;
+    double mobileFontSize = 13.0;
+    double tabletFontSize = 15.0;
+    double desktopFontSize = 23.0;
+    double laptopFontSize = 15.0;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -364,18 +367,16 @@ class OverViewWidget extends GetView<OverViewController> {
         final isDesktop =
             constraints.maxWidth >= 1200 && constraints.maxWidth < 1440;
         final isLaptop = constraints.maxWidth >= 1440;
-        final sidebarWidth = isMobile ? constraints.maxWidth : 300.0;
 
-        double fontSize =
+        final sidebarWidth = isMobile ? constraints.maxWidth : 300.0;
+        final fontSize =
             isMobile
-                ? MobilefontSize
+                ? mobileFontSize
                 : isTablet
-                ? TabletfontSize
+                ? tabletFontSize
                 : isDesktop
-                ? DesktopfontSize
-                : isLaptop
-                ? LaptopfontSize
-                : MobilefontSize;
+                ? desktopFontSize
+                : laptopFontSize;
 
         return Container(
           width: sidebarWidth,
@@ -391,55 +392,71 @@ class OverViewWidget extends GetView<OverViewController> {
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Wrap(
-                spacing: 15,
-                runSpacing: 10,
-                alignment: WrapAlignment.center,
-                children: [
-                  _MangeByCard("Alice", "IT Director", fontSize: fontSize),
-                  _MangeByCard("Kara", "IT Manager", fontSize: fontSize),
-                  _MangeByCard("Vashi", "Senior IT", fontSize: fontSize),
-                ],
-              ),
-              const SizedBox(height: 20),
-              _MangeByCard("Bob", "IT Support", fontSize: fontSize),
-            ],
-          ),
+          child: _ManageByList(fontSize: fontSize),
         );
       },
     );
   }
 
-  Widget _MangeByCard(String name, String role, {required double fontSize}) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CircleAvatar(
-          radius: fontSize + 5,
-          backgroundColor: Colors.blue,
-          child: Icon(
-            EneftyIcons.user_bold,
-            color: Colors.white,
-            size: fontSize + 4,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          name,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
-          textAlign: TextAlign.center,
-        ),
-        Text(
-          role,
-          style: TextStyle(color: Colors.black54, fontSize: fontSize * 0.85),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
+  Widget _ManageByList({required double fontSize}) {
+    final controller = Get.find<ManageUserController>();
+
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      if (controller.users.isEmpty) {
+        return const Center(child: Text('No users found'));
+      }
+
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: controller.users.length,
+        itemBuilder: (context, index) {
+          final user = controller.users[index];
+
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Colors.blue.shade700,
+              child: Text(
+                user['name'] != null && user['name'].isNotEmpty
+                    ? user['name'][0].toUpperCase()
+                    : '?', //return firstname letter when user dont have image or photo
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            title: Text(
+              user['name'] ?? 'Unknown',
+              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Manager Name: ${user['mangebyname'] ?? 'No manager'}',
+                  style: TextStyle(
+                    fontSize: fontSize - 2,
+                    color: Colors.grey[700],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  'Head Department: ${user['headname'] ?? 'No head department'}',
+                  style: TextStyle(
+                    fontSize: fontSize - 2,
+                    color: Colors.grey[700],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    });
   }
 
   Widget _memberCard(String name, String role) {

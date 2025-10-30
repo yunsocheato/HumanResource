@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:hrms/modules/Admin/Drawer/controllers/manage_users_controller.dart';
 
-import '../controllers/employee_policy_controller.dart';
-
-class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
+class ManageUserScreen extends GetView<ManageUsersController> {
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
-  EmployeePolicyScreen({Key? key}) : super(key: key);
+  ManageUserScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,6 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
   }
 
   Widget _buildPopDialogMobile() {
-    final controller = Get.find<EmployeePolicyController>();
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -40,7 +39,7 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text(
-                      'USER UPDATE',
+                      'Manage Users',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
@@ -53,7 +52,6 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                 ),
               ),
             ),
-            const Divider(height: 1),
             Padding(
               padding: const EdgeInsets.all(12.0),
               child:
@@ -84,7 +82,26 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                                     'Close',
                                     style: TextStyle(color: Colors.red),
                                   ),
-                                  onPressed: () => Get.back(),
+                                  onPressed: () {
+                                    controller.suggestionList1.clear();
+                                    controller.suggestionList2.clear();
+                                    controller.suggestionList3.clear();
+
+                                    controller.Username1.value = '';
+                                    controller.Username2.value = '';
+                                    controller.Username3.value = '';
+
+                                    controller.NameController.clear();
+                                    controller.UserIDController.clear();
+                                    controller.Managebyname.clear();
+                                    controller.headname.clear();
+                                    controller.headposition.clear();
+
+                                    if (Get.isDialogOpen == true ||
+                                        Get.isBottomSheetOpen == true) {
+                                      Get.back();
+                                    }
+                                  },
                                 ),
                                 const SizedBox(width: 8),
                                 ElevatedButton(
@@ -95,12 +112,12 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text('UPDATE'),
+                                  child: const Text('CREATE'),
                                   onPressed: () async {
-                                    await controller.UpdateChange();
+                                    await controller.createManageUser();
                                     Get.snackbar(
-                                      'New Update',
-                                      'Update UserInfo on: ${controller.NameController.text} Successfully',
+                                      'New Create User',
+                                      'Set up New Account on : ${controller.NameController.text} Successfully',
                                       snackPosition: SnackPosition.TOP,
                                       backgroundColor: Colors.white.withOpacity(
                                         0.3,
@@ -123,7 +140,6 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
   }
 
   Widget _buildPopDialogOther() {
-    final controller = Get.find<EmployeePolicyController>();
     return Obx(() {
       return SingleChildScrollView(
         child: Column(
@@ -132,7 +148,7 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
             Container(
               height: 60,
               decoration: BoxDecoration(
-                color: Colors.green.shade900,
+                color: Colors.deepOrange.shade900,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8),
@@ -144,7 +160,7 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text(
-                      'USER UPDATE',
+                      'Manage Users',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
@@ -157,7 +173,6 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                 ),
               ),
             ),
-            const Divider(height: 1),
             Padding(
               padding: const EdgeInsets.all(12.0),
               child:
@@ -199,12 +214,12 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text('UPDATE'),
+                                  child: const Text('CREATE'),
                                   onPressed: () async {
-                                    await controller.UpdateChange();
+                                    await controller.createManageUser();
                                     Get.snackbar(
-                                      'UPDATE',
-                                      'Update UserInfo on: ${controller.NameController.text} Successfully',
+                                      'New Policy User',
+                                      'Set up New Policy User on : ${controller.NameController.text} Successfully',
                                       snackPosition: SnackPosition.TOP,
                                       backgroundColor: Colors.white.withOpacity(
                                         0.3,
@@ -226,63 +241,33 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
     });
   }
 
-  Widget _buildUserInfoFields(EmployeePolicyController controller) {
+  Widget _buildUserInfoFields(ManageUsersController controller) {
     return Column(
       children: [
         _buildField(
-          label: 'USER-ID',
-          icon: Icons.verified_user,
+          label: 'User ID',
+          icon: Icons.perm_identity_outlined,
           controller: controller.UserIDController,
         ),
         _buildField(
-          label: 'USERNAME',
+          label: 'Staff Name',
           icon: Icons.person,
           controller: controller.NameController,
         ),
         _buildField(
-          label: 'EMAIL',
-          icon: Icons.email,
-          controller: controller.EmailController,
+          label: 'Staff Manager',
+          icon: Icons.group,
+          controller: controller.Managebyname,
         ),
         _buildField(
-          label: 'Position',
-          icon: Icons.chair,
-          controller: controller.poisitionController,
+          label: 'Head Department Name',
+          icon: Icons.person_2,
+          controller: controller.headname,
         ),
         _buildField(
-          label: 'DEPARTMENT',
-          icon: Icons.apartment,
-          controller: controller.DepartmentController,
-        ),
-        _buildField(
-          label: 'ID CARD',
-          icon: Icons.photo_camera_front_rounded,
-          controller: controller.id_cardController,
-        ),
-        _buildField(
-          label: 'FINGER PRINT',
-          icon: Icons.fingerprint,
-          controller: controller.fingerprint_idController,
-        ),
-        _buildField(
-          label: 'PHONE',
-          icon: Icons.phone,
-          controller: controller.PhoneController,
-        ),
-        _buildField(
-          label: 'ADDRESS',
-          icon: Icons.add_location_alt_outlined,
-          controller: controller.AddressController,
-        ),
-        _buildField(
-          label: 'ROLE',
+          label: 'Head Department Position',
           icon: Icons.star,
-          controller: controller.RoleController,
-        ),
-        _buildField(
-          label: 'JOIN DATE',
-          icon: Icons.calendar_month,
-          controller: controller.createAtController,
+          controller: controller.headposition,
         ),
         // Column(
         //   children: [
@@ -378,9 +363,15 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
     );
   }
 
-  Widget _buildUsernameAutoSuggestField(EmployeePolicyController controller) {
-    final TextEditingController textController = TextEditingController(
-      text: controller.Username.value,
+  Widget _buildUsernameAutoSuggestField(ManageUsersController controller) {
+    final textController1 = TextEditingController(
+      text: controller.Username1.value,
+    );
+    final textController2 = TextEditingController(
+      text: controller.Username2.value,
+    );
+    final textController3 = TextEditingController(
+      text: controller.Username3.value,
     );
 
     return Obx(() {
@@ -388,24 +379,24 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            controller: textController,
+            controller: textController1,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
-              labelText: 'FIND USERNAME',
+              labelText: 'Staff Name',
               suffixIcon: IconButton(
-                icon: Icon(controller.icon, color: controller.color),
+                icon: Icon(Icons.person_2, color: controller.color),
                 onPressed: () {
-                  controller.fetchbyusersemployee(textController.text);
+                  controller.fetchbyusersemployee(textController1.text);
                 },
               ),
               border: const OutlineInputBorder(),
             ),
             onChanged: (value) {
-              controller.Username.value = value;
+              controller.Username1.value = value;
             },
           ),
-          if (controller.suggestionList.isNotEmpty &&
-              controller.Username.value.isNotEmpty)
+          if (controller.suggestionList1.isNotEmpty &&
+              controller.Username1.value.isNotEmpty)
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -415,16 +406,113 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
               constraints: const BoxConstraints(maxHeight: 150),
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: controller.suggestionList.length,
+                itemCount: controller.suggestionList1.length,
                 itemBuilder: (context, index) {
-                  final suggestion = controller.suggestionList[index];
+                  final suggestion = controller.suggestionList1[index];
                   return ListTile(
                     title: Text(suggestion),
                     onTap: () {
-                      textController.text = suggestion;
-                      controller.Username.value = suggestion;
-                      controller.fetchbyusersemployee(suggestion);
-                      controller.suggestionList.clear();
+                      textController1.text = suggestion;
+                      controller.Username1.value = suggestion;
+                      controller.fetchbyusersemployee(
+                        suggestion,
+                        fieldIndex: 1,
+                      );
+                      controller.suggestionList1.clear();
+                    },
+                  );
+                },
+              ),
+            ),
+          SizedBox(height: 16),
+          TextFormField(
+            controller: textController2,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelText: 'Staff Manager',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.person_2, color: controller.color),
+                onPressed: () {
+                  controller.fetchbyusersemployee(textController2.text);
+                },
+              ),
+              border: const OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              controller.Username2.value = value;
+            },
+          ),
+          if (controller.suggestionList2.isNotEmpty &&
+              controller.Username2.value.isNotEmpty)
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              constraints: const BoxConstraints(maxHeight: 150),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.suggestionList2.length,
+                itemBuilder: (context, index) {
+                  final suggestion = controller.suggestionList2[index];
+                  return ListTile(
+                    title: Text(suggestion),
+                    onTap: () {
+                      textController2.text = suggestion;
+                      controller.Username2.value = suggestion;
+                      controller.fetchbyusersemployee(
+                        textController2.text,
+                        fieldIndex: 2,
+                      );
+                      controller.suggestionList2.clear();
+                    },
+                  );
+                },
+              ),
+            ),
+          SizedBox(height: 16),
+          TextFormField(
+            controller: textController3,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelText: 'Head Department Name',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.person_2, color: controller.color),
+                onPressed: () {
+                  controller.fetchbyusersemployee(textController3.text);
+                },
+              ),
+              border: const OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              controller.Username3.value = value;
+            },
+          ),
+          if (controller.suggestionList2.isNotEmpty &&
+              controller.Username3.value.isNotEmpty)
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              constraints: const BoxConstraints(maxHeight: 150),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.suggestionList3.length,
+                itemBuilder: (context, index) {
+                  final suggestion = controller.suggestionList3[index];
+                  return ListTile(
+                    title: Text(suggestion),
+                    onTap: () {
+                      textController3.text = suggestion;
+                      controller.Username3.value = suggestion;
+                      controller.fetchbyusersemployee(
+                        textController3.text,
+                        fieldIndex: 3,
+                      );
+                      controller.suggestionList3.clear();
                     },
                   );
                 },
