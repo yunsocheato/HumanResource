@@ -138,11 +138,11 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            controller: controller.usernameSearchController,
+            controller: controller.nameController,
             decoration: InputDecoration(
               labelText: 'FIND USERNAME',
               suffixIcon: IconButton(
-                icon: Icon(controller.icon, color: controller.color),
+                icon: Icon(Icons.search, color: Colors.blue.shade900),
                 onPressed: () {
                   if (controller.Username.value.isNotEmpty) {
                     controller.fetchbyusersemployeeProfile(

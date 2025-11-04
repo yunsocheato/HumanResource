@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SplashScreen/widget/splash_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'Binding/Binding_main.dart';
 import 'Routes/appPage.dart';
@@ -15,16 +16,28 @@ Future<void> main() async {
 
   final supabaseUrl = dotenv.env['SUPABASE_URL'];
   final supabaseKey = dotenv.env['SUPABASE_ANON_KEY'];
-  final bucket = dotenv.env['SUPABASE_BUCKET'];
-  if (supabaseUrl == null || supabaseKey == null || bucket == null) {
-    throw Get.snackbar('Error', 'Data environment variables are missing!');
+  final bucket1 = dotenv.env['SUPABASE_BUCKET1'];
+  final bucket2 = dotenv.env['SUPABASE_BUCKET2'];
+  final bucket3 = dotenv.env['SUPABASE_BUCKET3'];
+  if (supabaseUrl == null ||
+      supabaseKey == null ||
+      bucket1 == null ||
+      bucket2 == null ||
+      bucket3 == null) {
+    Get.snackbar('Error', 'Data environment variables are missing!');
+    return;
+  }
+  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
+
+  if (!kIsWeb && (GetPlatform.isAndroid || GetPlatform.isIOS)) {
+    FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
   }
 
-  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
-  if (kIsWeb) {
+  runApp(const MyApp());
+
+  if (!kIsWeb && (GetPlatform.isAndroid || GetPlatform.isIOS)) {
     FlutterNativeSplash.remove();
   }
-  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {

@@ -1,4 +1,5 @@
 class EmployeeProfileModel {
+  final String? user_id;
   final String? email;
   final String? name;
   final String? id_card;
@@ -6,12 +7,12 @@ class EmployeeProfileModel {
   final String? phone;
   final String? position;
   final String? department;
-  // final int? fingerprint_id;
   final String? join_date;
   final String? Role;
   final String? photo_url;
 
   EmployeeProfileModel({
+    required this.user_id,
     required this.email,
     required this.name,
     required this.id_card,
@@ -19,30 +20,30 @@ class EmployeeProfileModel {
     required this.phone,
     required this.position,
     required this.department,
-    // required this.fingerprint_id,
     required this.Role,
     required this.join_date,
     required this.photo_url,
   });
 
-  factory EmployeeProfileModel.fromJson(Map<String, dynamic> json) {
+  factory EmployeeProfileModel.fromMap(Map<String, dynamic> map) {
     return EmployeeProfileModel(
-      email: json['email'] as String?,
-      name: json['name'] as String?,
-      position: json['position'] as String?,
-      department: json['department'] as String?,
-      id_card: json['id_card'] as String?,
-      address: json['address'] as String?,
-      phone: json['phone'] as String?,
-      // fingerprint_id: json['fingerprints_id'] as int?,
-      Role: json['role'] as String?,
-      photo_url: json['photo_url'] as String?,
-      join_date: json['created_at'] as String?,
+      user_id: map['user_id'] as String?,
+      email: map['email'] as String?,
+      name: map['name'] as String?,
+      position: map['position'] as String?,
+      department: map['department'] as String?,
+      id_card: map['id_card'] as String?,
+      address: map['address'] as String?,
+      phone: map['phone'] as String?,
+      Role: map['role'] as String?,
+      photo_url: map['photo_url'] as String?,
+      join_date: map['created_at'] as String?,
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
+      'user_id': user_id,
       'email': email,
       'name': name,
       'position': position,

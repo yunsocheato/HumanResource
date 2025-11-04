@@ -2,6 +2,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
@@ -9,8 +10,7 @@ import '../Controller/employee_profile_controller.dart';
 import '../widgets/employee_profile_circleavatar.dart';
 
 class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
-  const EmployeeProfileScreen({super.key});
-
+  EmployeeProfileScreen({super.key});
   static const String routeName = '/employeeprofile';
 
   @override
@@ -165,19 +165,6 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
                             ),
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () => controller.refreshData(),
-                          icon: Icon(
-                            Icons.refresh,
-                            color: Colors.green,
-                            size: isMobile ? 16 : 24,
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -298,17 +285,42 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
             child: Stack(
               alignment: Alignment.bottomRight,
               children: [
-                Obx(() => buildProfileAvatar(controller.profileImageUrl.value)),
+                Obx(() {
+                  final bool isAdminEditing = controller.adminEditing.value;
+
+                  final String imageUrl =
+                      isAdminEditing
+                          ? controller.otherUserProfileImageUrl.value
+                          : controller.profileImageUrl.value;
+
+                  return CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey.shade200,
+                    backgroundImage:
+                        imageUrl.isNotEmpty
+                            ? NetworkImage(imageUrl)
+                            : const AssetImage('assets/images/profileuser.png')
+                                as ImageProvider,
+                  );
+                }),
+
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.grey.shade200, width: 2),
+                    border: Border.all(color: Colors.grey.shade300, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(1, 2),
+                      ),
+                    ],
                   ),
                   child: IconButton(
-                    onPressed: () => controller.pickerImageProfile(),
                     icon: const Icon(Boxicons.bx_camera, color: Colors.blue),
-                    iconSize: 20,
+                    iconSize: 22,
+                    onPressed: controller.pickerImageProfile,
                   ),
                 ),
               ],
@@ -543,6 +555,12 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
   List<Map<String, dynamic>> _getBasicInformationFields() {
     return [
       {
+        'label': 'USERID',
+        'icon': Icons.card_membership,
+        'observable': controller.useridText,
+        'controller': controller.userIdController,
+      },
+      {
         'label': 'Full Name',
         'icon': Icons.person,
         'observable': controller.nameText,
@@ -607,17 +625,11 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
         'controller': controller.joinDateController,
       },
       // {
-      //   'label': 'Fingerprint ID',
-      //   'icon': Icons.fingerprint,
-      //   'observable': controller.fingerprintidController,
-      //   'controller': controller.fingerprintidController
+      //   'label': 'Parking No.',
+      //   'icon': Icons.car_rental,
+      //   'observable': ''.obs,
+      //   'controller': controller.departmentController,
       // },
-      {
-        'label': 'Parking No.',
-        'icon': Icons.car_rental,
-        'observable': ''.obs, // Using an empty mock RxString for static data
-        'controller': controller.departmentController,
-      },
     ];
   }
 
@@ -673,7 +685,9 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
                     isMobile ? const Size(120, 40) : const Size(150, 48),
               ),
               onPressed:
-                  controller.isEnabled.value ? controller.updateUserInfo : null,
+                  controller.isEnabled.value
+                      ? controller.handleSaveButtonPress
+                      : null,
               child: const Text(
                 'Save Changes',
                 style: TextStyle(

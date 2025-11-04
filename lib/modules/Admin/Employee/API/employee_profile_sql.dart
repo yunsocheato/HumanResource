@@ -1,17 +1,22 @@
+import 'dart:convert';
 import 'package:cross_file/cross_file.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/employee_profile_model.dart';
 
 class EmployeeProfilesql {
-  String? get userEmail => Supabase.instance.client.auth.currentUser?.email;
-    final profile = Supabase.instance.client;
+  final SupabaseClient _supabase = Supabase.instance.client;
 
-  Future<List<String>> fetchUsernameSuggestionsEmployeeProfile(String query) async {
+  String? get userEmail => _supabase.auth.currentUser?.email;
+
+  Future<List<String>> fetchUsernameSuggestionsEmployeeProfile(
+    String query,
+  ) async {
     final result = await Supabase.instance.client
         .from('signupuser')
         .select('name')
         .ilike('name', query.isEmpty ? '%' : '%$query%');
-
     return List<String>.from(result.map((e) => e['name']));
   }
 
@@ -23,7 +28,7 @@ class EmployeeProfilesql {
         .limit(1);
 
     if (results.isNotEmpty) {
-      return EmployeeProfileModel.fromJson(results.first);
+      return EmployeeProfileModel.fromMap(results.first);
     }
     return null;
   }
@@ -35,43 +40,91 @@ class EmployeeProfilesql {
       return null;
     }
 
-    final response = await profile.from('signupuser').select().eq('email', email).maybeSingle();
-    return response != null ? EmployeeProfileModel.fromJson(response) : null;
+    final response =
+        await _supabase
+            .from('signupuser')
+            .select()
+            .eq('email', email)
+            .maybeSingle();
+
+    return response != null ? EmployeeProfileModel.fromMap(response) : null;
   }
+
+  /// Load profile image by email
   Future<String?> loadProfileImage(String email) async {
-    final response = await Supabase.instance.client
-        .from('signupuser')
-        .select('photo_url')
-        .eq('email', email)
-        .maybeSingle();
+    final response =
+        await _supabase
+            .from('signupuser')
+            .select('photo_url')
+            .eq('email', email)
+            .maybeSingle();
 
     return response?['photo_url'] as String?;
   }
 
-  Future<void> updateUserInfo(String userId, Map<String, dynamic> updates) async {
-    updates.removeWhere((key, value) => value == null || (value is String && value.isEmpty));
-
+  /// Update user info (admin or normal user)
+  Future<void> updateUserInfo({
+    required String targetUserId,
+    required Map<String, dynamic> updates,
+  }) async {
     try {
-      await profile.from('signupuser').update(updates).eq('user_id', userId);
-    } catch (e, st) {
-      print("ERROR in updateUserInfo: $e\n$st");
-      rethrow;
+      final sanitizedUpdates = updates.map((key, value) {
+        if (value is DateTime) return MapEntry(key, value.toIso8601String());
+        return MapEntry(key, value);
+      });
+
+      // Check for duplicate email
+      if (sanitizedUpdates.containsKey('email')) {
+        final existingEmail =
+            await _supabase
+                .from('signupuser')
+                .select('user_id')
+                .eq('email', sanitizedUpdates['email'])
+                .maybeSingle();
+
+        if (existingEmail != null && existingEmail['user_id'] != targetUserId) {
+          Get.snackbar('Error', 'Email already in use by another account.');
+          return;
+        }
+      }
+
+      // Update only
+      final response =
+          await _supabase
+              .from('signupuser')
+              .update(sanitizedUpdates)
+              .eq('user_id', targetUserId)
+              .select();
+
+      if (response.isEmpty) {
+        throw Exception('Update failed: User not found or no rows updated.');
+      }
+    } on PostgrestException catch (e) {
+      Get.snackbar('Database Error', e.message);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update profile: $e');
     }
   }
 
+  /// Upload image to Supabase Storage
   Future<String> uploadImage(XFile file) async {
-    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    final path = 'uploads/$fileName.jpg';
+    try {
+      final fileName =
+          'photo/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
+      final fileBytes = await file.readAsBytes();
 
-    final Bytes = await file.readAsBytes();
+      await _supabase.storage
+          .from('photo')
+          .uploadBinary(
+            fileName,
+            fileBytes,
+            fileOptions: const FileOptions(upsert: true),
+          );
 
-
-    await profile.storage.from('photo').updateBinary(
-      path,
-      Bytes,
-      fileOptions: FileOptions(upsert: true),
-    );
-
-    return profile.storage.from('photo').getPublicUrl(path);
+      final imageUrl = _supabase.storage.from('photo').getPublicUrl(fileName);
+      return imageUrl;
+    } catch (e) {
+      throw Exception('Upload failed: $e');
+    }
   }
 }

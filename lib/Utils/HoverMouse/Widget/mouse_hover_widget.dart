@@ -23,17 +23,12 @@ class MouseHover extends GetView<HoverMouseController> {
         onEnter: (_) => controller.setHovering(keyId, true),
         onExit: (_) => controller.setHovering(keyId, false),
         cursor: SystemMouseCursors.click,
-        child: Transform.translate(
-          offset: hovering ? const Offset(0, -10) : Offset.zero,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 100),
-            curve: Curves.bounceOut,
-            transform: hovering
-                ? (Matrix4.identity()
-              ..translate(0, -10, 0)
-              ..rotateX(-0.05)
-              ..rotateY(0.05))
-                : Matrix4.identity(),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOut,
+          transform: hovering ? Matrix4.identity() : Matrix4.identity(),
+          child: Transform.translate(
+            offset: hovering ? const Offset(0, -10) : Offset.zero,
             child: child,
           ),
         ),
