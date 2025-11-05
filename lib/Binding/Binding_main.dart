@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/controller/attendance_chart_controller.dart';
 import 'package:hrms/modules/AdminDept/controller/attendance_controller.dart';
 import 'package:hrms/modules/AdminDept/controller/bottom_appbar_controller.dart';
+import 'package:hrms/modules/AdminDept/controller/request_leave_controller.dart';
 import '../Core/user_profile_controller.dart';
 import '../Utils/Bottomappbar/controller/bottomappbar_controller.dart';
 import '../Utils/DialogScreen/Controller/dialog_screen_controller.dart';
@@ -218,5 +219,8 @@ class BindingMain extends Bindings {
 
     Get.put(ManageUserController(), permanent: true);
     Get.lazyPut<ManageUserController>(() => ManageUserController());
+
+    Get.put(RequestLeaveScreenController(), permanent: true);
+    Get.lazyPut<RequestLeaveScreenController>(() => RequestLeaveScreenController());
   }
 }

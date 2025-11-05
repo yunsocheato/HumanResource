@@ -17,6 +17,7 @@ import '../modules/Admin/Report/view/employee_ot_screen.dart';
 import '../modules/Admin/Schedule/views/schedule_screen.dart';
 import '../modules/Admin/SettingScreen/view/setting_screen_mobile.dart';
 import '../modules/AdminDept/view/overview_screen.dart';
+import '../modules/AdminDept/view/request_leave_screen.dart';
 import 'appRoutes.dart';
 
 class AppPages {
@@ -48,5 +49,6 @@ class AppPages {
     GetPage(name: AppRoutes.applyLeave, page: () => ApplyLeaveScreen()),
     GetPage(name: AppRoutes.history, page: () => HistoryScreen()),
     GetPage(name: AppRoutes.settingmobile, page: () => SettingScreenMobile()),
+    GetPage(name: AppRoutes.requestleave, page: () => RequestLeaveScreen()),
   ];
 }

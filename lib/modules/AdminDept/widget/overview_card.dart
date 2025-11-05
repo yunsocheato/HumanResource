@@ -57,96 +57,73 @@ class Gridoverviewoverview extends GetView<OverViewController> {
           ),
           itemBuilder: (context, index) {
             return MouseRegion(
-              onEnter: (_) => controller.hoveredIndex1.value = index,
-              onExit: (_) => controller.hoveredIndex1.value = -1,
+              onEnter: (_) => controller.hoveredIndex.value = index,
+              onExit: (_) => controller.hoveredIndex.value = -1,
               cursor: SystemMouseCursors.click,
               child: Obx(() {
-                final leave = controller.overviewdashboard[index];
-                final title = leave[0] as String;
-                final icon = leave[1] as IconData;
-                final bg = leave[2];
-                final isHovered = controller.hoveredIndex1.value == index;
+                final item = controller.overviewdashboard[index];
+                final isHovered = controller.hoveredIndex.value == index;
                 final isSelected = controller.selectedIndex.value == index;
 
-                final bgColor =
-                    isSelected
-                        ? Colors.deepPurple.shade900
-                        : Colors.grey.shade500;
+                final bgColor = isSelected
+                    ? Colors.deepPurple.shade900
+                    : Colors.grey.shade500;
 
-                BoxDecoration decoration;
-                if (bg is String) {
-                  decoration = BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    image: DecorationImage(
-                      image: NetworkImage(bg),
-                      fit: BoxFit.cover,
-                      colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.4),
-                        BlendMode.darken,
-                      ),
+                BoxDecoration decoration = BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isHovered ? Colors.black26 : Colors.black12,
+                      blurRadius: isHovered ? 25 : 5,
+                      offset: const Offset(3, 3),
                     ),
-                  );
-                } else {
-                  decoration = BoxDecoration(
-                    color: Colors.deepPurple.shade900,
-                    borderRadius: BorderRadius.circular(16),
-                  );
-                }
+                  ],
+                );
+
                 return GestureDetector(
                   onTap: () {
-                    controller.selectedIndex.value = isSelected ? -1 : index;
+                    controller.selectedIndex.value =
+                    isSelected ? -1 : index;
+
+                    if (item.onTap != null) {
+                      item.onTap!();
+                    }
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 250),
                     curve: Curves.easeInOutCubic,
-                    transform:
-                        isHovered
-                            ? (Matrix4.identity()
-                              ..translate(0, -10, 0)
-                              ..rotateX(-0.05)
-                              ..rotateY(0.05))
-                            : Matrix4.identity(),
-                    decoration: decoration.copyWith(
-                      color: bgColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: isHovered ? Colors.black26 : Colors.black12,
-                          blurRadius: isHovered ? 25 : 5,
-                          offset: const Offset(3, 3),
-                        ),
-                      ],
-                    ),
+                    transform: isHovered
+                        ? (Matrix4.identity()
+                      ..translate(0, -10, 0)
+                      ..rotateX(-0.05)
+                      ..rotateY(0.05))
+                        : Matrix4.identity(),
+                    decoration: decoration,
                     padding: const EdgeInsets.all(12),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Flexible(
-                          child: Icon(
-                            icon,
-                            color:
-                                isSelected
-                                    ? Colors.white
-                                    : Colors.deepPurple.shade900,
-                            size: iconSize,
-                          ),
+                        Icon(
+                          item.icon,
+                          color: isSelected
+                              ? Colors.white
+                              : Colors.deepPurple.shade900,
+                          size: iconSize,
                         ),
                         const SizedBox(height: 6),
-                        Flexible(
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                              color:
-                                  isSelected
-                                      ? Colors.white
-                                      : Colors.deepPurple.shade900,
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontSize,
-                            ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                        Text(
+                          item.title,
+                          style: TextStyle(
+                            color: isSelected
+                                ? Colors.white
+                                : Colors.deepPurple.shade900,
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontSize,
                           ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -156,6 +133,7 @@ class Gridoverviewoverview extends GetView<OverViewController> {
             );
           },
         );
+
       },
     );
   }

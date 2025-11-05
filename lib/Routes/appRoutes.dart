@@ -18,4 +18,5 @@ class AppRoutes {
   static const applyLeave = '/applyleave';
   static const history = '/history';
   static const settingmobile = '/settingmobile';
+  static const requestleave = '/requestleave';
 }

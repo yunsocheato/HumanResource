@@ -5,6 +5,8 @@ import '../views/apply_leave_screen.dart';
 
 class ApplyLeaveWidget extends GetView<ApplyLeaveScreenController> {
   const ApplyLeaveWidget({super.key});
+  static const routeName = '/apply-leave';
+
 
   @override
   Widget build(BuildContext context) {

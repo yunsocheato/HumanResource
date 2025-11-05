@@ -5,6 +5,7 @@ import 'package:hrms/modules/AdminDept/Model/leave_card_balance_model.dart';
 import 'package:hrms/modules/AdminDept/Provider/leave_card_balance_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../Admin/Drawer/widgets/Method_drawer_policy_button.dart';
+import '../view/request_leave_screen.dart';
 
 class OverViewController extends GetxController
     with SingleGetTickerProviderMixin {
@@ -38,11 +39,28 @@ class OverViewController extends GetxController
   final hoveredIndex1 = (-1).obs;
   final selectedIndex = (-1).obs;
 
-  final overviewdashboard = RxList<List<dynamic>>([
-    ['Request Leave', Icons.calendar_today, Colors.white],
-    ['Department', Icons.apartment, Colors.white],
-    ['Leave Balance', Icons.safety_check, Colors.white],
-    ['Schedule', Icons.calendar_month, Colors.white],
+  final overviewdashboard = RxList<DashboardItem>([
+    DashboardItem(
+      title: 'Request Leave',
+      icon: Icons.calendar_today,
+      color: Colors.white,
+      onTap: () => Get.to(() => RequestLeaveScreen()),
+    ),
+    DashboardItem(
+      title: 'Department',
+      icon: Icons.apartment,
+      color: Colors.white,
+    ),
+    DashboardItem(
+      title: 'Leave Balance',
+      icon: Icons.safety_check,
+      color: Colors.white,
+    ),
+    DashboardItem(
+      title: 'Schedule',
+      icon: Icons.calendar_month,
+      color: Colors.white,
+    ),
   ]);
 
   var attendanceData = [].obs;
@@ -139,4 +157,17 @@ class OverViewController extends GetxController
     pageController.dispose();
     super.onClose();
   }
+}
+class DashboardItem {
+  final String title;
+  final IconData icon;
+  final Color color;
+  final VoidCallback? onTap;
+
+  DashboardItem({
+    required this.title,
+    required this.icon,
+    required this.color,
+    this.onTap,
+  });
 }

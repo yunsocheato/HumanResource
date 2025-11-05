@@ -72,7 +72,8 @@ class RequestLeaveFormWidget extends GetView<ApplyLeaveScreenController> {
                 ],
               ),
             );
-          } else {
+          }
+          else {
             return Center(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
