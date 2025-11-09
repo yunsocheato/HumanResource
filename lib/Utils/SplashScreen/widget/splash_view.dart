@@ -39,17 +39,29 @@ class SplashView extends GetView<SplashController> {
     }
 
     String subtitleText;
+    String TitleSplashText;
+    if (kIsWeb) {
+      subtitleText = 'Manage Your Attendance By Web App';
+    } else if (size.width >= 1440) {
+      subtitleText = 'Manage Your Attendance By Desktop App';
+    } else if (size.width >= 1024) {
+      subtitleText = 'Manage Your Attendance By Desktop App';
+    } else if (size.width >= 768) {
+      subtitleText = 'Manage Your Attendance By Mini App';
+    } else {
+      subtitleText = 'Manage Your Attendance By Mobile App';
+    }
 
     if (kIsWeb) {
-      subtitleText = 'Manage Attendance By Web App';
+      TitleSplashText = 'DEAM HR WEB';
     } else if (size.width >= 1440) {
-      subtitleText = 'Manage Attendance By Desktop App';
+      TitleSplashText = 'DEAM HR DESKTOP';
     } else if (size.width >= 1024) {
-      subtitleText = 'Manage Attendance By Desktop App';
+      TitleSplashText = 'DEAM HR DESKTOP';
     } else if (size.width >= 768) {
-      subtitleText = 'Manage Attendance By Mini App';
+      TitleSplashText = 'MINI DEAM HR';
     } else {
-      subtitleText = 'Manage Attendance By Mobile App';
+      TitleSplashText = 'DEAM HR MOBILE APP';
     }
 
     return Scaffold(
@@ -77,7 +89,7 @@ class SplashView extends GetView<SplashController> {
 
             SizedBox(height: size.height * 0.03),
             Text(
-              'DEAM HR MOBILE',
+              TitleSplashText,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: titleFontSize,
