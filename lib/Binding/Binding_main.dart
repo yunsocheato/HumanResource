@@ -13,8 +13,7 @@ import '../Utils/Loadingui/ErrorScreen/Controller/SuccessMessage.dart';
 import '../Utils/Loadingui/loading_controller.dart';
 import '../Utils/Searchbar/controller/search_bar_controller.dart';
 import '../Utils/SplashScreen/controller/splash_controller.dart';
-import '../modules/Admin/Attendance/controllers/attendance_chart_controller.dart'
-    show ChartController;
+import '../modules/Admin/Attendance/controllers/attendance_chart_controller.dart';
 import '../modules/Admin/Attendance/controllers/attendance_chart_pie_controller.dart';
 import '../modules/Admin/Attendance/controllers/attendance_widget_controller.dart';
 import '../modules/Admin/Attendance/controllers/attendane_screen_controller.dart';
@@ -24,7 +23,6 @@ import '../modules/Admin/Dashboard/controllers/dashboard_screen_controller.dart'
 import '../modules/Admin/Department/controllers/department_controller.dart';
 import '../modules/Admin/Drawer/controllers/Leave_Policy_controller.dart';
 import '../modules/Admin/Drawer/controllers/OT_policy_controller.dart';
-import '../modules/Admin/Drawer/controllers/access_feature_controller.dart';
 import '../modules/Admin/Drawer/controllers/drawer_controller.dart';
 import '../modules/Admin/Drawer/controllers/employee_policy_controller.dart';
 import '../modules/Admin/Drawer/controllers/fingerprint_setup_controller.dart';
@@ -33,15 +31,13 @@ import '../modules/Admin/Drawer/controllers/payroll_policy_controller.dart';
 import '../modules/Admin/Employee/Controller/Employeetable_controller.dart';
 import '../modules/Admin/Employee/Controller/employee_profile_controller.dart';
 import '../modules/Admin/Employee/Controller/employee_screen_controller.dart';
-import '../modules/Admin/Employee/Controller/employeefiltercontroller.dart'
-    show EmployeeFilterController;
+import '../modules/Admin/Employee/Controller/employeefiltercontroller.dart';
 import '../modules/Admin/History/controller/history_controller.dart';
 import '../modules/Admin/LeaveRequest/controllers/apply_leave_screen_controller.dart';
 import '../modules/Admin/LeaveRequest/controllers/leave_controller.dart';
 import '../modules/Admin/Loginscreen/controllers/login_card_controller.dart';
 import '../modules/Admin/Loginscreen/controllers/login_controller.dart';
 import '../modules/Admin/Loginscreen/controllers/loginscreen_animation_controller.dart';
-import '../modules/Admin/Loginscreen/services/logout_services.dart';
 import '../modules/Admin/Report/controller/employee_report_controller1.dart';
 import '../modules/Admin/Report/controller/employee_report_controller2.dart';
 import '../modules/Admin/Report/controller/employee_report_controller3.dart';
@@ -54,6 +50,7 @@ import '../modules/AdminDept/controller/leave_chart_controller.dart';
 import '../modules/AdminDept/controller/leave_record_controller.dart';
 import '../modules/AdminDept/controller/manageuser_controller.dart';
 import '../modules/AdminDept/controller/overview_controller.dart';
+import '../services/logout_services.dart';
 
 class BindingMain extends Bindings {
   @override
@@ -133,8 +130,8 @@ class BindingMain extends Bindings {
     Get.put(OTPolicyController(), permanent: true);
     Get.lazyPut<OTPolicyController>(() => OTPolicyController());
 
-    Get.put(AccessFeatureController(), permanent: true);
-    Get.lazyPut<AccessFeatureController>(() => AccessFeatureController());
+    // Get.put(AccessFeatureController(), permanent: true);
+    // Get.lazyPut<AccessFeatureController>(() => AccessFeatureController());
 
     Get.put(UserProfileController(), permanent: true);
     Get.lazyPut<UserProfileController>(() => UserProfileController());
@@ -221,6 +218,8 @@ class BindingMain extends Bindings {
     Get.lazyPut<ManageUserController>(() => ManageUserController());
 
     Get.put(RequestLeaveScreenController(), permanent: true);
-    Get.lazyPut<RequestLeaveScreenController>(() => RequestLeaveScreenController());
+    Get.lazyPut<RequestLeaveScreenController>(
+      () => RequestLeaveScreenController(),
+    );
   }
 }

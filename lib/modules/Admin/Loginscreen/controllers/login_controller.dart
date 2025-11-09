@@ -4,9 +4,8 @@ import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/view/overview_screen.dart';
 import '../../../../Permission/Permission.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
-import '../../../AdminDept/controller/leave_record_controller.dart';
+import '../../../../services/login_service.dart';
 import '../../Dashboard/views/dashboard_screen.dart';
-import '../services/login_service.dart';
 
 class LoginController extends GetxController with SingleGetTickerProviderMixin {
   final TextEditingController emailController = TextEditingController();
@@ -39,14 +38,16 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
 
       switch (role) {
         case UserRole.admin:
-          Get.offAll(() => DashboardScreen());
+          Get.offAllNamed('/dashboard');
           break;
         case UserRole.adminDept:
-          Get.offAll(() => OverViewScreen());
+          Get.offAllNamed('/overview');
           break;
         case UserRole.user:
-          Get.offAll(() => OverViewScreen());
+          Get.offAllNamed('/overview');
           break;
+        case UserRole.superadmin:
+          Get.offAllNamed('/dashboard');
       }
     } catch (e) {
       Get.find<LoadingUiController>().terminateLoading();

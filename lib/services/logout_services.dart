@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
-import '../views/login_screen.dart';
 
 class AuthController extends GetxController {
   final SupabaseClient _client = Supabase.instance.client;
@@ -32,8 +31,7 @@ class AuthController extends GetxController {
         if (Get.isDialogOpen ?? false) {
           Get.back();
         }
-
-        Get.offAll(() => const LoginScreen());
+        Get.offAllNamed('/login');
       },
       onCancel: () {
         Get.back();

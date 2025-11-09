@@ -65,9 +65,10 @@ class Gridoverviewoverview extends GetView<OverViewController> {
                 final isHovered = controller.hoveredIndex.value == index;
                 final isSelected = controller.selectedIndex.value == index;
 
-                final bgColor = isSelected
-                    ? Colors.deepPurple.shade900
-                    : Colors.grey.shade500;
+                final bgColor =
+                    isSelected
+                        ? Colors.deepPurple.shade900
+                        : Colors.grey.shade500;
 
                 BoxDecoration decoration = BoxDecoration(
                   color: bgColor,
@@ -83,8 +84,7 @@ class Gridoverviewoverview extends GetView<OverViewController> {
 
                 return GestureDetector(
                   onTap: () {
-                    controller.selectedIndex.value =
-                    isSelected ? -1 : index;
+                    controller.selectedIndex.value = isSelected ? -1 : index;
 
                     if (item.onTap != null) {
                       item.onTap!();
@@ -93,12 +93,8 @@ class Gridoverviewoverview extends GetView<OverViewController> {
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 250),
                     curve: Curves.easeInOutCubic,
-                    transform: isHovered
-                        ? (Matrix4.identity()
-                      ..translate(0, -10, 0)
-                      ..rotateX(-0.05)
-                      ..rotateY(0.05))
-                        : Matrix4.identity(),
+                    transform:
+                        isHovered ? Matrix4.identity() : Matrix4.identity(),
                     decoration: decoration,
                     padding: const EdgeInsets.all(12),
                     child: Column(
@@ -106,18 +102,20 @@ class Gridoverviewoverview extends GetView<OverViewController> {
                       children: [
                         Icon(
                           item.icon,
-                          color: isSelected
-                              ? Colors.white
-                              : Colors.deepPurple.shade900,
+                          color:
+                              isSelected
+                                  ? Colors.white
+                                  : Colors.deepPurple.shade900,
                           size: iconSize,
                         ),
                         const SizedBox(height: 6),
                         Text(
                           item.title,
                           style: TextStyle(
-                            color: isSelected
-                                ? Colors.white
-                                : Colors.deepPurple.shade900,
+                            color:
+                                isSelected
+                                    ? Colors.white
+                                    : Colors.deepPurple.shade900,
                             fontWeight: FontWeight.bold,
                             fontSize: fontSize,
                           ),
@@ -133,7 +131,6 @@ class Gridoverviewoverview extends GetView<OverViewController> {
             );
           },
         );
-
       },
     );
   }

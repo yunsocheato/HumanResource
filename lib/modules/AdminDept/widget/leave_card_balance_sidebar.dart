@@ -86,12 +86,7 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
                   duration: const Duration(milliseconds: 250),
                   curve: Curves.bounceInOut,
                   transform:
-                      isHovered
-                          ? (Matrix4.identity()
-                            ..translate(0, -10, 0)
-                            ..rotateX(-0.05)
-                            ..rotateY(0.05))
-                          : Matrix4.identity(),
+                      isHovered ? Matrix4.identity() : Matrix4.identity(),
                   decoration: decoration.copyWith(
                     boxShadow: [
                       BoxShadow(

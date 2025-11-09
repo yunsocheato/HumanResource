@@ -1,7 +1,7 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../Admin/Loginscreen/services/logout_services.dart';
+import '../../../services/logout_services.dart';
 import 'drawer_header_widget.dart';
 
 class DrawerAdmin extends StatefulWidget {

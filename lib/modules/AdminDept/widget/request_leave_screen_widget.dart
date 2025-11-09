@@ -55,26 +55,24 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Center(
-                child: Stack(
-                  children: <Widget>[
-                    Text(
-                      'Request Leave',
-                      style: TextStyle(
-                        fontSize: 24,
-                        foreground:
-                            Paint()
-                              ..style = PaintingStyle.stroke
-                              ..strokeWidth = 2
-                              ..color = Colors.red[700]!,
-                      ),
+              Stack(
+                children: <Widget>[
+                  Text(
+                    'Request Leave',
+                    style: TextStyle(
+                      fontSize: 24,
+                      foreground:
+                          Paint()
+                            ..style = PaintingStyle.stroke
+                            ..strokeWidth = 2
+                            ..color = Colors.red[700]!,
                     ),
-                    const Text(
-                      'Request Leave',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
-                    ),
-                  ],
-                ),
+                  ),
+                  const Text(
+                    'Request Leave',
+                    style: TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                ],
               ),
               const SizedBox(height: 30),
               _buildFormFields(),
@@ -105,7 +103,27 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
         children: [
           Center(
             child: Obx(
-              () => buildProfileAvatar(controller.profileImageUrl.value),
+              () => Column(
+                children: [
+                  buildProfileAvatar(controller.profileImageUrl.value),
+                  const SizedBox(height: 10),
+                  Text(
+                    controller.nameController.text,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    controller.positionController.text,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -114,22 +132,23 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
             valueListenable: controller.emailController,
             labelColor: Colors.blue.shade900,
           ),
-
           const SizedBox(height: 16),
-
+          _buildProfileField(
+            label: 'ID-Card',
+            valueListenable: controller.idCardController,
+            labelColor: Colors.blue.shade900,
+          ),
+          const SizedBox(height: 16),
           _buildProfileField(
             label: 'Department',
             valueListenable: controller.departmentController,
             labelColor: Colors.blue.shade900,
           ),
-
           const SizedBox(height: 16),
-
           _buildProfileField(
             label: 'Role',
             valueListenable: controller.roleController,
             labelColor: Colors.blue.shade900,
-
           ),
           const Divider(height: 32),
           _leaveSummaryBox('Total Annual Leave', Colors.red, '0'),
@@ -141,6 +160,7 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
       ),
     );
   }
+
   Widget _buildProfileField({
     required String label,
     required ValueNotifier<TextEditingValue> valueListenable,
@@ -151,10 +171,7 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
       children: [
         Text(
           label,
-          style: TextStyle(
-            color: labelColor,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: labelColor, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 4),
         ValueListenableBuilder(
@@ -162,13 +179,18 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
           builder: (context, TextEditingValue value, child) {
             return Text(
               value.text,
-              style: const TextStyle(fontSize: 15, color: Colors.black54,fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.black54,
+                fontWeight: FontWeight.bold,
+              ),
             );
           },
         ),
       ],
     );
   }
+
   Widget _leaveSummaryBox(String title, Color color, String count) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,7 +255,7 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
             hint: const Text('Select...'),
             decoration: _getInputDecoration(),
             items:
-                ['Sick Leave', 'Unpaid Leave', 'Annual Leave','MaternityLeave']
+                ['Sick Leave', 'Unpaid Leave', 'Annual Leave', 'MaternityLeave']
                     .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                     .toList(),
             onChanged: (val) {
@@ -472,49 +494,56 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
     final buttons = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Obx(() => ElevatedButton(
-          onPressed: controller.isLoading.value
-              ? null
-              : () async {
-            await controller.submitLeave();
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF673AB7),
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+        Obx(
+          () => ElevatedButton(
+            onPressed:
+                controller.isLoading.value
+                    ? null
+                    : () async {
+                      await controller.submitLeave();
+                    },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF673AB7),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              elevation: 5,
             ),
-            elevation: 5,
+            child:
+                controller.isLoading.value
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text(
+                      'Submit',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
           ),
-          child: controller.isLoading.value
-              ? const CircularProgressIndicator(color: Colors.white)
-              : const Text(
-            'Submit',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-        )),
+        ),
         const SizedBox(width: 10),
-        Obx(() => ElevatedButton(
-          onPressed: controller.isLoading.value
-              ? null
-              : () async {
-            await controller.selectReviewer();
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueGrey,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        Obx(
+          () => ElevatedButton(
+            onPressed:
+                controller.isLoading.value
+                    ? null
+                    : () async {
+                      await controller.selectedSubmits();
+                    },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey.shade800,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            ),
+            child: Text(
+              controller.selectedSubmit.value != null
+                  ? 'Submit to: ${controller.selectedSubmit.value!['name']}'
+                  : 'Select Submit',
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
-          child: Text(
-            controller.selectedReviewer.value != null
-                ? 'Reviewer: ${controller.selectedReviewer.value!['name']}'
-                : 'Select Reviewer',
-            style: const TextStyle(color: Colors.white),
-          ),
-        )),
+        ),
         const SizedBox(width: 10),
         OutlinedButton(
           style: OutlinedButton.styleFrom(backgroundColor: Colors.red.shade900),

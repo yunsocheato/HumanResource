@@ -78,14 +78,8 @@ class AttendanceTablewidget extends GetView<Attendancecontroller> {
                               );
                             }
                             return DataTable(
-                              headingRowHeight: 40,
-                              dataRowHeight: 50,
+                              dataRowHeight: 35,
                               columnSpacing: 20,
-                              headingTextStyle: TextStyle(
-                                fontSize: fontSize(14),
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
                               dataTextStyle: TextStyle(fontSize: fontSize(13)),
                               columns: [
                                 _coloredColumn(
@@ -120,8 +114,18 @@ class AttendanceTablewidget extends GetView<Attendancecontroller> {
                                 ),
                               ],
                               rows:
-                                  requests.map((request) {
+                                  requests.asMap().entries.map((entry) {
+                                    final index = entry.key;
+                                    final request = entry.value;
                                     return DataRow(
+                                      color: MaterialStateProperty.resolveWith<
+                                        Color?
+                                      >(
+                                        (Set<MaterialState> states) =>
+                                            index.isEven
+                                                ? Colors.blue.shade100
+                                                : Colors.white,
+                                      ),
                                       cells: [
                                         DataCell(
                                           Text(

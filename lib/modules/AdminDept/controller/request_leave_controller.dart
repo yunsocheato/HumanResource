@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../Admin/LeaveRequest/API/leave_stream_rpc_sql.dart';
+import '../../Admin/LeaveRequest/Model/apply_leave_model.dart';
 import '../Model/request_leave_model.dart';
 import '../Provider/request_leave_provider.dart';
 
@@ -12,14 +13,15 @@ class RequestLeaveScreenController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   var RequestLeaveModels = <RequestLeaveModel>[].obs;
-  var userProfile = Rxn<RequestLeaveModel>();
+  var userProfile = Rxn<ApplyLeaveModel>();
 
   RxBool isLoading = false.obs;
   RxBool isEnabled = false.obs;
 
   RxString profileImageUrl = ''.obs;
   XFile? imageFile;
-  Rxn<Map<String, dynamic>> selectedReviewer = Rxn<Map<String, dynamic>>();
+  Rxn<Map<String, dynamic>> selectedSubmit = Rxn<Map<String, dynamic>>();
+  var currentUser = Rxn<User>();
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -31,6 +33,23 @@ class RequestLeaveScreenController extends GetxController {
   final fingerprintidController = TextEditingController();
   final roleController = TextEditingController();
   final joinDateController = TextEditingController();
+
+  final nameText = ''.obs;
+  final emailText = ''.obs;
+  final positionText = ''.obs;
+  final addressText = ''.obs;
+  final phoneText = ''.obs;
+  final idCardText = ''.obs;
+  final departmentText = ''.obs;
+  final fingerprintidText = ''.obs;
+  final roleText = ''.obs;
+  final joinDateText = ''.obs;
+  final reasonText = ''.obs;
+  final startDateText = ''.obs;
+  final endDateText = ''.obs;
+  final requestNumberText = ''.obs;
+  final requestDateText = ''.obs;
+  final locationText = ''.obs;
 
   final requestNumberController = TextEditingController();
   final requestDateController = TextEditingController();
@@ -44,8 +63,24 @@ class RequestLeaveScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadUserProfile();
-    fetchLeaveRequests();
+
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      final session = data.session;
+
+      if (event == AuthChangeEvent.signedIn && session?.user != null) {
+        currentUser.value = session!.user;
+        loadUserProfile();
+      } else if (event == AuthChangeEvent.signedOut) {
+        currentUser.value = null;
+        clearUserProfile();
+      }
+    });
+
+    currentUser.value = Supabase.instance.client.auth.currentUser;
+    if (currentUser.value != null) {
+      loadUserProfile();
+    }
   }
 
   Future<void> loadUserProfile() async {
@@ -59,6 +94,8 @@ class RequestLeaveScreenController extends GetxController {
       }
 
       final profile = await _employeeLeave.getEmployeeProfile();
+      userProfile.value = profile;
+
       if (profile != null) {
         nameController.text = profile.name ?? '';
         emailController.text = profile.email ?? '';
@@ -67,7 +104,6 @@ class RequestLeaveScreenController extends GetxController {
         phoneController.text = profile.phone ?? '';
         idCardController.text = profile.id_card ?? '';
         departmentController.text = profile.department ?? '';
-        fingerprintidController.text = profile.fingerprint_id?.toString() ?? '';
         roleController.text = profile.Role ?? '';
         profileImageUrl.value = profile.photo_url ?? '';
       }
@@ -78,90 +114,50 @@ class RequestLeaveScreenController extends GetxController {
     }
   }
 
-  Future<void> fetchLeaveRequests() async {
-    try {
-      isLoading.value = true;
-      final response = await Supabase.instance.client
-          .from('leave_requests')
-          .select()
-          .order('created_at', ascending: false);
-
-      RequestLeaveModels.value =
-          (response as List).map((e) => RequestLeaveModel.fromMap(e)).toList();
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch leave requests: $e');
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future<void> approveLeave(String requestId, String reviewerId, String role) async {
-    try {
-      await Supabase.instance.client.rpc('approve_leave_request', params: {
-        'p_request_id': requestId,
-        'p_reviewer': reviewerId,
-        'p_role': role,
-      });
-      fetchLeaveRequests();
-    } catch (e) {
-      Get.snackbar('Error', 'Cannot approve leave: $e');
-    }
-  }
-
-  Future<void> rejectLeave(String requestId, String reviewerId, String role) async {
-    try {
-      await Supabase.instance.client.rpc('reject_leave_request', params: {
-        'p_request_id': requestId,
-        'p_reviewer': reviewerId,
-        'p_role': role,
-      });
-      fetchLeaveRequests();
-    } catch (e) {
-      Get.snackbar('Error', 'Cannot reject leave: $e');
-    }
-  }
-
   Future<void> submitLeave() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
+    if (!(formKey.currentState?.validate() ?? false)) return;
+    if (selectedSubmit.value == null) {
+      Get.snackbar('Error', 'Please select a reviewer first');
+      return;
+    }
+
+    isLoading.value = true;
+
     try {
-      if (userProfile.value == null) {
-        Get.snackbar('Error', 'User profile not loaded');
-        return;
-      }
-
-      if (!(formKey.currentState?.validate() ?? false)) return;
-
-      if (selectedReviewer.value == null) {
-        Get.snackbar('Error', 'Please select a reviewer first');
-        return;
-      }
-
-      isLoading.value = true;
-
-      final insertResponse = await Supabase.instance.client
+      await Supabase.instance.client
           .from('leave_requests')
           .insert({
-        'user_id': Supabase.instance.client.auth.currentUser!.id,
-        'name': nameController.text,
-        'department': departmentController.text,
-        'reason': reasonController.text,
-        'location': locationController.text,
-        'request_type': selectedRequestType.value,
-        'start_date': DateTime.parse(startDateController.text).toIso8601String(),
-        'end_date': DateTime.parse(endDateController.text).toIso8601String(),
-        'status': 'pending',
-        'current_stage': 'admindept',
-        'reviewed_by': selectedReviewer.value!['id'],
-        'action_by_role': selectedReviewer.value!['role'],
-        'leave_count': int.tryParse(leaveCountController.text) ?? 0,
-      });
+            'photo_url': userProfile.value!.photo_url,
+            'user_id': user.id,
+            'name': nameController.text,
+            'department': departmentController.text,
+            'reason': reasonController.text,
+            'id_card': idCardController.text,
+            'position': positionController.text,
+            'location': locationController.text,
+            'request_number': requestNumberController.text,
+            'request_date': DateTime.now().toIso8601String(),
+            'request_type': selectedRequestType.value,
+            'start_date':
+                DateTime.parse(startDateController.text).toIso8601String(),
+            'end_date':
+                DateTime.parse(endDateController.text).toIso8601String(),
+            'status': 'pending',
+            'current_stage': selectedSubmit.value!['name'],
+            'reviewed_by': selectedSubmit.value!['user_id'],
+            'action_by_role': selectedSubmit.value!['role'],
+            'leave_count': int.tryParse(leaveCountController.text) ?? 0,
+          })
+          .select()
+          .single();
 
-      if (insertResponse.error != null) {
-        Get.snackbar('Error', 'Failed to submit leave: ${insertResponse.error!.message}');
-        return;
-      }
-
-      Get.snackbar('Success', 'Leave request submitted to ${selectedReviewer.value!['name']}');
-      fetchLeaveRequests();
+      Get.snackbar(
+        'Success',
+        'Leave request submitted to ${selectedSubmit.value!['name']}',
+      );
       clearDataFields();
     } catch (e) {
       Get.snackbar('Error', 'Failed to submit leave: $e');
@@ -170,51 +166,109 @@ class RequestLeaveScreenController extends GetxController {
     }
   }
 
-  Future<void> selectReviewer() async {
-    final response = await Supabase.instance.client
-        .from('signupuser')
-        .select('id, name, role');
+  Future<void> selectedSubmits() async {
+    try {
+      final response = await Supabase.instance.client
+          .from('signupuser')
+          .select('user_id, name , role , photo_url')
+          .or('role.eq.admin,role.eq.admindept');
+      if (response.isEmpty) {
+        Get.snackbar('Info', 'No reviewers available');
+        return;
+      }
 
-    if (response.error != null) {
-      Get.snackbar('Error', 'Failed to fetch users: ${response.error!.message}');
-      return;
-    }
+      final reviewer = await Get.dialog<Map<String, dynamic>>(
+        Dialog(
+          insetPadding: EdgeInsets.symmetric(
+            horizontal: Get.width > 800 ? Get.width * 0.25 : 20,
+            vertical: 20,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 600,
+              maxHeight: Get.height * 0.4,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF673AB7),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(8),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Submit To Management",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Get.back(),
+                        icon: const Icon(Icons.close, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: response.length,
+                    itemBuilder: (context, index) {
+                      final user = response[index];
 
-    final List users = ((response.data ?? []) as List)
-        .where((u) => ['admindept', 'admin',].contains(u['role']))
-        .toList();
-
-    if (users.isEmpty) {
-      Get.snackbar('Info', 'No users available to assign');
-      return;
-    }
-
-    final Map<String, dynamic>? reviewer = await Get.dialog<Map<String, dynamic>>(
-      AlertDialog(
-        title: const Text('Select Reviewer'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              final user = users[index];
-              return ListTile(
-                title: Text(user['name'] ?? 'Unknown'),
-                subtitle: Text(user['role'] ?? ''),
-                onTap: () {
-                  Get.back(result: user);
-                },
-              );
-            },
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage:
+                              user['photo_url'] != null
+                                  ? NetworkImage(user['photo_url'])
+                                  : null,
+                          child:
+                              user['photo_url'] == null
+                                  ? const Icon(Icons.person)
+                                  : null,
+                        ),
+                        title: Text(user['name']),
+                        subtitle: Text(user['role']),
+                        onTap: () {
+                          selectedSubmit.value = {
+                            'user_id': user['user_id'],
+                            'name': user['name'],
+                            'role': user['role'],
+                          };
+                          Get.back();
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
 
-    if (reviewer != null) selectedReviewer.value = reviewer;
+      if (reviewer != null) {
+        selectedSubmit.value = reviewer;
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to load reviewers: $e');
+    }
   }
-  void clearDataFields() {
+
+  void clearUserProfile() {
     nameController.clear();
     emailController.clear();
     positionController.clear();
@@ -225,7 +279,13 @@ class RequestLeaveScreenController extends GetxController {
     fingerprintidController.clear();
     roleController.clear();
     joinDateController.clear();
+    profileImageUrl.value = '';
+    userProfile.value = null;
+  }
 
+  void clearDataFields() {
+    phoneController.clear();
+    addressController.clear();
     requestNumberController.clear();
     requestDateController.clear();
     locationController.clear();
@@ -237,10 +297,4 @@ class RequestLeaveScreenController extends GetxController {
   }
 
   void toggleEnable() => isEnabled.value = !isEnabled.value;
-}
-
-extension on PostgrestList {
-  get error => null;
-
-  get data => null;
 }

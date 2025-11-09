@@ -1,8 +1,10 @@
-enum UserRole { admin, adminDept, user }
+enum UserRole { admin, adminDept, user, superadmin }
 
 extension UserRoleExtension on UserRole {
   String get value {
     switch (this) {
+      case UserRole.superadmin:
+        return 'superadmin';
       case UserRole.admin:
         return 'admin';
       case UserRole.adminDept:
@@ -14,6 +16,8 @@ extension UserRoleExtension on UserRole {
 
   static UserRole? fromString(String role) {
     switch (role) {
+      case 'superadmin':
+        return UserRole.superadmin;
       case 'admin':
         return UserRole.admin;
       case 'admindept':

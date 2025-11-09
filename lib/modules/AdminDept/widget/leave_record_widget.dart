@@ -80,8 +80,7 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                               );
                             }
                             return DataTable(
-                              headingRowHeight: 40,
-                              dataRowHeight: 50,
+                              dataRowHeight: 35,
                               columnSpacing: 20,
                               headingTextStyle: TextStyle(
                                 fontSize: fontSize(14),
@@ -128,8 +127,18 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                                 ),
                               ],
                               rows:
-                                  requests.map((request) {
+                                  requests.asMap().entries.map((entry) {
+                                    final index = entry.key;
+                                    final request = entry.value;
                                     return DataRow(
+                                      color: MaterialStateProperty.resolveWith<
+                                        Color?
+                                      >(
+                                        (Set<MaterialState> states) =>
+                                            index.isEven
+                                                ? Colors.blue.shade100
+                                                : Colors.white,
+                                      ),
                                       cells: [
                                         DataCell(
                                           Column(
@@ -175,7 +184,7 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                                         DataCell(
                                           Text(
                                             controller.formatDate(
-                                              request.fromDate,
+                                              request.startDate,
                                             ),
                                             style: TextStyle(
                                               fontSize: 09,
@@ -186,7 +195,7 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                                         DataCell(
                                           Text(
                                             controller.formatDate(
-                                              request.toDate,
+                                              request.endDate,
                                             ),
                                             style: TextStyle(
                                               fontSize: 09,
@@ -331,15 +340,15 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   Text(
-                    request.leavereason,
+                    request.reason,
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   const SizedBox(height: 8),
                   _infoRow(
                     'Start Date',
-                    controller.formatDate(request.fromDate),
+                    controller.formatDate(request.startDate),
                   ),
-                  _infoRow('End Date', controller.formatDate(request.toDate)),
+                  _infoRow('End Date', controller.formatDate(request.endDate)),
                   const SizedBox(height: 12),
                 ],
               ),

@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../Permission/Permission.dart';
@@ -15,9 +17,7 @@ class LoginService {
       email: email,
       password: password,
     );
-    print('Response: $response');
     final user = response.user;
-    print('User: $user');
 
     if (user == null) {
       throw AuthException('Invalid email or password');
@@ -29,18 +29,16 @@ class LoginService {
             .select('role')
             .eq('user_id', user.id)
             .maybeSingle();
-    print('Role query result: $roleResult');
 
     if (roleResult == null || roleResult['role'] == null) {
-      throw Exception('User role not found');
+      Get.snackbar('Authentification Error', 'USER NOT FOUND');
     }
 
-    final roleString = roleResult['role']?.toString().toLowerCase();
+    final roleString = roleResult?['role']?.toString().toLowerCase();
     final UserRole? role = UserRoleExtension.fromString(roleString ?? '');
-    print('Converted UserRole: $role');
 
     if (role == null) {
-      throw Exception('Invalid role assigned to user: ${roleResult['role']}');
+      Get.snackbar('Error', 'Invalid user role');
     }
 
     return {'user': user, 'role': role};

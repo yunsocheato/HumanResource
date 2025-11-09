@@ -9,24 +9,19 @@ class leaveprovider {
       final supabase = Supabase.instance.client;
       final user = supabase.auth.currentUser;
 
-      if (user == null) {
-        return [];
-      }
+      if (user == null) return [];
 
       final response = await supabase
-          .rpc('get_pending_leave_requests')
+          .from('leave_requests')
+          .select()
+          .eq('user_id', user.id)
+          .order('created_at', ascending: true)
           .limit(5);
 
-      final List<dynamic> rawData =
-          response is List ? response : (response.data ?? []);
-
       final List<Map<String, dynamic>> data =
-          rawData.map((e) => Map<String, dynamic>.from(e)).toList();
+          (response as List).map((e) => Map<String, dynamic>.from(e)).toList();
 
-      final userData =
-          data.where((item) => item['user_id'] == user.id).toList();
-
-      return userData;
+      return data;
     } catch (error) {
       Get.snackbar('Error', 'Failed to fetch leave requests: $error');
       return [];
@@ -40,24 +35,44 @@ class leaveprovider {
   ) async {
     try {
       final supabase = Supabase.instance.client;
-      final response = await supabase.rpc('get_pending_leave_requests');
 
-      final List<dynamic> rawData =
-          response is List ? response : (response.data ?? []);
+      final response = await supabase
+          .from('leave_requests')
+          .select()
+          .eq('user_id', userId)
+          .gte('start_date', start.toIso8601String())
+          .lte('end_date', end.toIso8601String())
+          .order('created_at', ascending: true);
 
       final List<Map<String, dynamic>> data =
-          rawData.map((e) => Map<String, dynamic>.from(e)).toList();
+          (response as List).map((e) => Map<String, dynamic>.from(e)).toList();
 
-      final userData = data.where((item) => item['user_id'] == userId).toList();
+      return data.map((e) => LeaveRecordModel.fromMap(e)).toList();
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to fetch data: $e');
+      return [];
+    }
+  }
 
-      final filtered =
-          userData.where((item) {
-            final fromDate = DateTime.parse(item['from_date'].toString());
-            final toDate = DateTime.parse(item['to_date'].toString());
-            return !(toDate.isBefore(start) || fromDate.isAfter(end));
-          }).toList();
+  Future<List<LeaveRecordModel>> getAllLeaveRequestsByDate(
+    DateTime start,
+    DateTime end,
+  ) async {
+    try {
+      final supabase = Supabase.instance.client;
 
-      return filtered.map((e) => LeaveRecordModel.fromMap(e)).toList();
+      final response = await supabase
+          .from('leave_requests')
+          .select()
+          .gte('start_date', start.toIso8601String())
+          .lte('end-date', end.toIso8601String())
+          .order('start_date', ascending: false)
+          .limit(5);
+
+      final List<Map<String, dynamic>> data =
+          (response as List).map((e) => Map<String, dynamic>.from(e)).toList();
+
+      return data.map((e) => LeaveRecordModel.fromMap(e)).toList();
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch data: $e');
       return [];

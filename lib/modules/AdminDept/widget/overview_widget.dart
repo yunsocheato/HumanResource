@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/Utils/date_picker_leave.dart';
 import 'package:hrms/modules/AdminDept/controller/attendance_controller.dart';
 import 'package:hrms/modules/AdminDept/widget/overview_card.dart';
+import 'package:hrms/modules/AdminDept/widget/team_leave_request_widget.dart';
 import '../../../Utils/Loadingui/Loading_skeleton.dart';
 import '../Utils/date_picker_all_chart.dart';
 import '../Utils/date_picker_attendance.dart';
@@ -84,11 +85,13 @@ class OverViewWidget extends GetView<OverViewController> {
                     const SizedBox(height: 25),
                     _buildProfileSidebar(),
                     const SizedBox(height: 25),
-                    _sectionTitle('LEAVE RECORD', fontSize),
+                    _sectionTitle('YOUR LEAVE RECORD', fontSize),
                     DatePickerLeave(),
                     LeaveRequestTablewidget(),
                     const SizedBox(height: 20),
-                    _sectionTitle('ATTENDANCE RECORDS', fontSize),
+                    TeamRequestLeaveResponsiveWidget(),
+                    const SizedBox(height: 20),
+                    _sectionTitle('YOUR ATTENDANCE RECORDS', fontSize),
                     DatePickerAttendance(),
                     const SizedBox(height: 10),
                     AttendanceTablewidget(),
@@ -137,14 +140,16 @@ class OverViewWidget extends GetView<OverViewController> {
                         _sectionTitle('DASHBOARD', fontSize),
                         const SizedBox(height: 15),
                         const Gridoverviewoverview(),
-                        const SizedBox(height: 20),
-                        _sectionTitle('LEAVE RECORDS', fontSize),
+                        const SizedBox(height: 35),
+                        _sectionTitle('YOUR LEAVE RECORDS', fontSize),
                         const SizedBox(height: 15),
                         DatePickerLeave(),
                         const SizedBox(height: 15),
                         const LeaveRequestTablewidget(),
-                        const SizedBox(height: 20),
-                        _sectionTitle('ATTENDANCE RECORDS', fontSize),
+                        const SizedBox(height: 35),
+                        TeamRequestLeaveResponsiveWidget(),
+                        const SizedBox(height: 35),
+                        _sectionTitle('YOUR ATTENDANCE RECORDS', fontSize),
                         const SizedBox(height: 8),
                         DatePickerAttendance(),
                         const SizedBox(height: 10),

@@ -55,6 +55,10 @@ class _MyAppState extends State<MyApp> {
       title: 'DeamHR Web',
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
+      enableLog: true,
+      routingCallback: (routing) {
+        print('Current route: ${routing?.current}');
+      },
       initialBinding: BindingMain(),
       theme: ThemeData(primarySwatch: Colors.orange),
     );

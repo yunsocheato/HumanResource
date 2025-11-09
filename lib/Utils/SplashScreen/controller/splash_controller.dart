@@ -41,23 +41,25 @@ class SplashController extends GetxController {
         if (role != null) {
           switch (role) {
             case UserRole.admin:
-              Get.offAllNamed(DashboardScreen.routeName);
+              Get.offAllNamed('/dashboard');
               break;
             case UserRole.adminDept:
-              Get.offAllNamed(OverViewScreen.routeName);
+              Get.offAllNamed('/overview');
               break;
             case UserRole.user:
-              Get.offAllNamed(OverViewScreen.routeName);
+              Get.offAllNamed('/overview');
               break;
+            case UserRole.superadmin:
+              Get.offAllNamed('/dashboard');
           }
         } else {
-          Get.offAllNamed(LoginScreen.routeName);
+          Get.offAllNamed('/login');
         }
       } catch (_) {
-        Get.offAllNamed(LoginScreen.routeName);
+        Get.offAllNamed('/login');
       }
     } else {
-      Get.offAllNamed(LoginScreen.routeName);
+      Get.offAllNamed('/login');
     }
   }
 }
