@@ -1,35 +1,26 @@
 class UserProfileModel {
-  final String email;
-  final String name ;
-  final String role ;
-  final String Position ;
-  late String  image ;
+  final String name;
+  final String role;
+  final String Position;
+  late String image;
 
   UserProfileModel({
     required this.name,
-    required this.email,
     required this.image,
     required this.role,
     required this.Position,
-});
+  });
 
-  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+  factory UserProfileModel.fromMap(Map<String, dynamic> map) {
     return UserProfileModel(
-      email: json['email']?.toString() ?? 'No Email',
-      image: json['photo_url'] ?? 'No Image',
-      name: json['name'] ?? 'No Name',
-      role: json['role'] ?? 'No Role',
-      Position: json['position'] ?? 'No Position',
+      image: map['photo_url'] ?? 'No Image',
+      name: map['name'] ?? 'No Name',
+      role: map['role'] ?? 'No Role',
+      Position: map['position'] ?? 'No Position',
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'email': email,
-      'image': image,
-      'name': name,
-      'role': role,
-      'Position': Position,
-    };
+  Map<String, dynamic> toMap() {
+    return {'image': image, 'name': name, 'role': role, 'Position': Position};
   }
 }

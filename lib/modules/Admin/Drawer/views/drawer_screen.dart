@@ -99,8 +99,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                         size: iconSize,
                         color: Colors.white,
                       ),
-                      onPressed:
-                          () => Get.offAllNamed(DashboardScreen.routeName),
+                      onPressed: () => Get.offAllNamed('/dashboard'),
                     ),
             title:
                 !isMobile

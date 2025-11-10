@@ -44,7 +44,7 @@ class OverViewController extends GetxController
       title: 'Request Leave',
       icon: Icons.calendar_today,
       color: Colors.white,
-      onTap: () => Get.to(() => RequestLeaveScreen()),
+      onTap: () => Get.offAllNamed('/requestleave'),
     ),
     DashboardItem(
       title: 'Department',
@@ -158,6 +158,7 @@ class OverViewController extends GetxController
     super.onClose();
   }
 }
+
 class DashboardItem {
   final String title;
   final IconData icon;

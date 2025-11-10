@@ -110,6 +110,10 @@ flutter:
     - assets/images/profileuser.png
     - assets/images/setting_icons.png
     - assets/images/nodata.png
+    - assets/images/total-employee.png
+    - assets/images/leaverequest.png
+    - assets/images/department.png
+    - assets/images/available.png
     - .env
     - assets/Fonts/
 

@@ -38,7 +38,7 @@ Future<List<MutipleModel1>> leaveRequestFuture() async {
     final response = await _supabase
         .from('leave_requests')
         .select()
-        .order('created_at', ascending: false);
+        .order('created_at', ascending: true);
 
     final List rows = response as List;
 

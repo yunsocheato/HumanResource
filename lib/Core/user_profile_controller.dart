@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:hrms/Core/user_profile_model.dart';
 import 'package:hrms/Core/user_profile_sql.dart';
+import 'user_profile_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserProfileController extends GetxController {
-  final _profileSql = FetchProfileSql();
   Rx<UserProfileModel?> userprofiles = Rxn<UserProfileModel>();
 
   @override
@@ -13,10 +13,20 @@ class UserProfileController extends GetxController {
   }
 
   Future<void> _fetchUserProfile() async {
-    final email = _profileSql.userEmail;
+    final email = Supabase.instance.client.auth.currentUser?.email;
+
     if (email == null) return;
 
-    final profile = await _profileSql.ProfileImage(email);
-    userprofiles.value = profile;
+    try {
+      final profile = await FetchProfileSql(email);
+      userprofiles.value = profile;
+    } catch (e) {
+      userprofiles.value = UserProfileModel(
+        name: 'No Name',
+        image: 'No Image',
+        role: 'No Role',
+        Position: 'No Position',
+      );
+    }
   }
 }

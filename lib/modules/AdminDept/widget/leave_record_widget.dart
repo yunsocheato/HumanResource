@@ -80,7 +80,7 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                               );
                             }
                             return DataTable(
-                              dataRowHeight: 35,
+                              dataRowHeight: 38,
                               columnSpacing: 20,
                               headingTextStyle: TextStyle(
                                 fontSize: fontSize(14),

@@ -12,6 +12,6 @@ final CombineStreamAttendance =
       return AttendanceStats(
         presentCount: present,
         totalCount: total,
-        percentage: 0.0, // will be calculated in constructor
+        percentage: 0.0,
       );
     }).asBroadcastStream();

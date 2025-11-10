@@ -129,14 +129,17 @@ class Recentscreen3 extends GetView<RecentlyControllerScreen> {
                     itemCount: controller.items2.length,
                     itemBuilder: (context, index) {
                       final item = controller.items2[index];
-                      return _buildcardinfo(
-                        item.title,
-                        item.description,
-                        item.icon,
-                        item.color1,
-                        item.color2,
-                        item.iconBgColor,
-                        titleFontSize,
+                      return Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: _buildcardinfo(
+                          item.title,
+                          item.description,
+                          item.icon,
+                          item.color1,
+                          item.color2,
+                          item.iconBgColor,
+                          titleFontSize,
+                        ),
                       );
                     },
                   );

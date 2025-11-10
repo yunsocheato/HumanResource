@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
+import 'package:hrms/Utils/Loadingui/Loading_skeleton.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../controllers/card_controller.dart';
@@ -86,7 +89,7 @@ class Cardinfo extends GetView<CardController> {
           if (controller.isLoading.value ||
               controller.isLoading1.value ||
               controller.isLoading3.value) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: Skeletonlines());
           }
 
           final cardData = getCardDataListview(controller);
@@ -108,13 +111,14 @@ class Cardinfo extends GetView<CardController> {
                 icon: item['icon'](controller),
                 bgColor: Colors.white,
                 iconBgColor: item['iconBgColor'],
-                subtitleColor: Colors.grey.shade600,
+                subtitleColor: Colors.white,
                 iconColor: item['iconColor'](controller),
                 cardHeight: cardHeight,
                 fontSizeTitle: fontSizeTitle,
                 fontSizeNumber: fontSizeNumber,
                 fontSizeSubtitle: fontSizeSubtitle,
                 iconSize: iconSize,
+                imagePath: item['imagePath'],
               );
             }),
           );
@@ -138,72 +142,115 @@ class Cardinfo extends GetView<CardController> {
     required double fontSizeNumber,
     required double fontSizeSubtitle,
     required double iconSize,
+    String? imagePath,
   }) {
     final HoverMouseController controller = Get.find<HoverMouseController>();
+
+    final bool hasImage = imagePath != null && imagePath.isNotEmpty;
+
     return MouseHover(
       keyId: 18,
       controller: controller,
       child: Card(
         color: iconColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 6,
-        shadowColor: Colors.grey.withOpacity(0.2),
-        child: SizedBox(
-          height: cardHeight,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: fontSizeTitle,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+        elevation: 15,
+        shadowColor: Colors.black.withOpacity(0.4),
+        child: Stack(
+          children: [
+            if (hasImage)
+              Align(
+                alignment: Alignment.centerRight,
+                child: ImageFiltered(
+                  imageFilter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                  child: Image.asset(
+                    imagePath,
+                    width: 150,
+                    height: double.infinity,
+                    color: Colors.white.withOpacity(0.3),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )
+            else
+              Container(
+                decoration: BoxDecoration(
+                  color: iconColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.35),
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: fontSizeTitle,
+                            color: Colors.black.withOpacity(0.55),
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      height: iconSize * 1.3,
-                      width: iconSize * 1.3,
-                      decoration: BoxDecoration(
-                        color: iconBgColor.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(icon, size: iconSize, color: bgColor),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Text(
-                  number,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: fontSizeNumber,
-                    fontWeight: FontWeight.bold,
+
+                      if (!hasImage)
+                        Container(
+                          height: iconSize * 1.4,
+                          width: iconSize * 1.4,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.15),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            icon,
+                            size: iconSize,
+                            color: Colors.white,
+                          ),
+                        ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: subtitleColor,
-                    fontSize: fontSizeSubtitle,
-                    fontWeight: FontWeight.w500,
+
+                  const Spacer(),
+
+                  Text(
+                    number,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: fontSizeNumber,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 4),
+
+                  Text(
+                    subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.85),
+                      fontSize: fontSizeSubtitle,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

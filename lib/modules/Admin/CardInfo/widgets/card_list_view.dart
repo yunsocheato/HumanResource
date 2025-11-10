@@ -9,17 +9,22 @@ List<Map<String, dynamic>> getCardDataListview(CardController controller) {
       'number': (CardController c) => c.total.value,
       'icon': (CardController c) => c.icon.value,
       'iconColor': (CardController c) => c.iconColor.value,
-      'iconBgColor': Colors.grey.shade100,
+      'iconBgColor': Colors.purple.shade100,
+      'imagePath': 'assets/images/total-employee.png',
     },
     {
       'title': 'Attendance Today',
-      'subtitle':
-          (CardController c) =>
-              '${c.presentcount.value} employees attended today',
-      'number': (CardController c) => '${c.percentage.value}%',
+      'subtitle': (CardController c) {
+        final count = c.presentcount.value;
+        return count == 0
+            ? '0 employee attended today'
+            : '$count employees attended today';
+      },
+      'number': (CardController c) => '${c.percentage.value.toInt()}%',
       'icon': (CardController c) => Icons.person_pin_circle,
       'iconColor': (CardController c) => Colors.green,
       'iconBgColor': Colors.green.shade100,
+      'imagePath': 'assets/images/leaverequest.png',
     },
     {
       'title': 'Department',
@@ -29,6 +34,7 @@ List<Map<String, dynamic>> getCardDataListview(CardController controller) {
       'icon': (CardController c) => Icons.apartment,
       'iconColor': (CardController c) => Colors.red,
       'iconBgColor': Colors.red.shade100,
+      'imagePath': 'assets/images/department.png',
     },
     {
       'title': 'Available open position',
@@ -37,6 +43,7 @@ List<Map<String, dynamic>> getCardDataListview(CardController controller) {
       'icon': (CardController c) => Icons.shopping_bag,
       'iconColor': (CardController c) => Colors.orange,
       'iconBgColor': Colors.orange.shade100,
+      'imagePath': 'assets/images/available.png',
     },
   ];
 }

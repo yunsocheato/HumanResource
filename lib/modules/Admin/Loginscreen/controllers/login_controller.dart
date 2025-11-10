@@ -38,7 +38,7 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
 
       switch (role) {
         case UserRole.admin:
-          Get.offAllNamed('/dashboard');
+          Get.offAllNamed('/overview');
           break;
         case UserRole.adminDept:
           Get.offAllNamed('/overview');
@@ -47,7 +47,7 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
           Get.offAllNamed('/overview');
           break;
         case UserRole.superadmin:
-          Get.offAllNamed('/dashboard');
+          Get.offAllNamed('/overview');
       }
     } catch (e) {
       Get.find<LoadingUiController>().terminateLoading();

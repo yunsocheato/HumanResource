@@ -1,25 +1,24 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:hrms/Core/user_profile_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class FetchProfileSql {
+Future<UserProfileModel> FetchProfileSql(String? email) async {
   String? userEmail = Supabase.instance.client.auth.currentUser?.email;
-  final data = Supabase.instance.client;
 
-  Future<UserProfileModel> ProfileImage(String email) async {
-    final row = await data
-        .from('signupuser')
-        .select()
-        .eq('email', email)
-        .maybeSingle();
+  final SupabaseClient client = Supabase.instance.client;
+  if (email == null) {
+    return UserProfileModel(name: '', image: '', role: '', Position: '');
+  }
 
-    if (row == null) {
-      return UserProfileModel(
-        name: '',
-        email: email,
-        image: '', role: '', Position: '',
-      );
-    }
+  final row =
+      await client
+          .from('signupuser')
+          .select('name, role, photo_url, position')
+          .eq('email', email)
+          .maybeSingle();
 
-    return UserProfileModel.fromJson(row);
+  if (row == null) {
+    return UserProfileModel(name: '', image: '', role: '', Position: '');
+  } else {
+    return UserProfileModel.fromMap(row);
   }
 }
