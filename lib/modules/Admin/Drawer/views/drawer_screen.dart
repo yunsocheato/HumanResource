@@ -10,7 +10,6 @@ import 'package:hrms/Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../../../Core/user_profile_controller.dart';
 import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../../../services/logout_services.dart';
-import '../../Dashboard/views/dashboard_screen.dart';
 import '../../SettingScreen/view/setting_screen_Desktop.dart';
 import '../controllers/drawer_controller.dart';
 import '../widgets/Method_drawer_policy_button.dart';
@@ -49,17 +48,17 @@ class Drawerscreen extends GetView<AppDrawerController> {
           iconSize = 22;
           avatarRadius = 35;
         } else if (isTablet) {
-          sidebarWidth = 260;
+          sidebarWidth = 200;
           fontSizeTitle = 16;
           fontSizeBody = 13;
           iconSize = 24;
           avatarRadius = 22;
         } else if (isDesktop) {
-          sidebarWidth = 320;
-          fontSizeTitle = 18;
-          fontSizeBody = 14;
-          iconSize = 26;
-          avatarRadius = 25;
+          sidebarWidth = 205;
+          fontSizeTitle = 10;
+          fontSizeBody = 10;
+          iconSize = 15;
+          avatarRadius = 21;
         } else if (isLargeDesktop) {
           sidebarWidth = 360;
           fontSizeTitle = 20;
@@ -77,7 +76,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
         final controller1 = Get.find<AppDrawerController>();
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: isMobile ? 60 : 70,
+            toolbarHeight: isMobile ? 60 : 50,
             leading:
                 isMobile
                     ? Builder(
@@ -119,8 +118,8 @@ class Drawerscreen extends GetView<AppDrawerController> {
                           },
                           child: Image.asset(
                             'assets/images/deamlogo.png',
-                            height: avatarRadius * 2,
-                            width: avatarRadius * 2,
+                            height: avatarRadius * 1.7,
+                            width: avatarRadius * 1.7,
                           ),
                         ),
                         const SizedBox(width: 5),

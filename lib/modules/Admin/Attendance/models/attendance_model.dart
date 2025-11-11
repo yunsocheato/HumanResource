@@ -11,7 +11,7 @@ class AttendanceModel {
 
   factory AttendanceModel.fromJson(Map<String, dynamic> json) {
     return AttendanceModel(
-      username: json['name'] ?? '',
+      username: json['username'] ?? '',
       clockIn: DateTime.parse(json['timestamp']),
       checkType: json['check_type'] ?? '',
     );

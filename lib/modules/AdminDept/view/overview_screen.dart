@@ -13,46 +13,53 @@ class OverViewScreen extends GetView<OverViewController> {
 
   @override
   Widget build(BuildContext context) {
-    final profile = Get.find<UserProfileController>().userprofiles.value;
-    final role = profile?.role ?? '';
+    final profileController = Get.find<UserProfileController>();
 
-    final isMobile = Get.width < 900;
-    final contents =
-        (role == 'admin' || role == 'superadmin')
-            ? Drawerscreen(
-              content: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height - 10,
-                      ),
-                      child: _buildResponsiveContent(),
-                    ),
-                  ],
-                ),
-              ),
-            )
-            : DrawerAdmin(
-              content: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height - 10,
-                      ),
-                      child: _buildResponsiveContent(),
-                    ),
-                  ],
-                ),
-              ),
-            );
+    return Obx(() {
+      final profile = profileController.userprofiles.value;
 
-    return isMobile ? BottomAppBarWidget1(body: contents) : contents;
+      if (profile == null) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final role = profile.role.toLowerCase();
+      final isMobile = Get.width < 900;
+
+      final contents =
+          (role == 'admin' || role == 'superadmin')
+              ? Drawerscreen(
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height - 10,
+                        ),
+                        child: _buildResponsiveContent(),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+              : DrawerAdmin(
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height - 10,
+                        ),
+                        child: _buildResponsiveContent(),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+
+      return isMobile ? BottomAppBarWidget1(body: contents) : contents;
+    });
   }
 
   Widget _buildResponsiveContent() {

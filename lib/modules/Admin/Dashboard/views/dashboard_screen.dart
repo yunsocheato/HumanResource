@@ -240,7 +240,7 @@ class DashboardScreen extends GetView<DashboardController> {
             ],
           ),
           const SizedBox(height: 10),
-          const Recentemployee(),
+          SizedBox(width: double.infinity, child: Recentemployee()),
         ],
       );
     }
@@ -263,7 +263,7 @@ class DashboardScreen extends GetView<DashboardController> {
             ),
           ),
           const SizedBox(height: 10),
-          const Recentemployee(),
+          SizedBox(width: double.infinity, child: Recentemployee()),
         ],
       );
     }
@@ -298,7 +298,7 @@ class DashboardScreen extends GetView<DashboardController> {
             ),
           ),
           const SizedBox(height: 10),
-          const Recentemployee(),
+          SizedBox(width: double.infinity, child: Recentemployee()),
         ],
       );
     }

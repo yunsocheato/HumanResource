@@ -1,32 +1,38 @@
-import 'package:get/get.dart';
-import 'package:hrms/Core/user_profile_sql.dart';
-import 'user_profile_model.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:hrms/Core/user_profile_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserProfileController extends GetxController {
-  Rx<UserProfileModel?> userprofiles = Rxn<UserProfileModel>();
+  var userprofiles = Rxn<UserProfileModel>();
 
   @override
   void onInit() {
     super.onInit();
-    _fetchUserProfile();
+
+    fetchUserProfile();
+
+    Supabase.instance.client.auth.onAuthStateChange.listen((event) {
+      fetchUserProfile();
+    });
   }
 
-  Future<void> _fetchUserProfile() async {
-    final email = Supabase.instance.client.auth.currentUser?.email;
+  Future<void> fetchUserProfile() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) {
+      userprofiles.value = null;
+      return;
+    }
 
-    if (email == null) return;
+    final data =
+        await Supabase.instance.client
+            .from('signupuser')
+            .select()
+            .eq('user_id', user.id)
+            .maybeSingle();
 
-    try {
-      final profile = await FetchProfileSql(email);
-      userprofiles.value = profile;
-    } catch (e) {
-      userprofiles.value = UserProfileModel(
-        name: 'No Name',
-        image: 'No Image',
-        role: 'No Role',
-        Position: 'No Position',
-      );
+    if (data != null) {
+      userprofiles.value = UserProfileModel.fromMap(data);
     }
   }
 }

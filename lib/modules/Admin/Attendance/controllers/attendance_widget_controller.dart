@@ -54,7 +54,7 @@ class AttendanceController extends GetxController {
         limit: limit,
         offset: offset,
         page: 0,
-      ); // <-- IMPORTANT
+      );
       attendanceData.value = data;
       dataSource.value = DataTableSourceAttendance(data);
     } catch (e) {

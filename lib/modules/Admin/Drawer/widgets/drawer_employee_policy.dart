@@ -28,17 +28,17 @@ class Employeepolicy extends GetView<AppDrawerController> {
         double iconSize;
 
         if (isMobile) {
-          fontSizeTitle = 15;
-          fontSizeBody = 12;
-          iconSize = 22;
+          fontSizeTitle = 10;
+          fontSizeBody = 10;
+          iconSize = 15;
         } else if (isTablet) {
-          fontSizeTitle = 16;
-          fontSizeBody = 13;
-          iconSize = 24;
+          fontSizeTitle = 12;
+          fontSizeBody = 12;
+          iconSize = 20;
         } else if (isDesktop) {
-          fontSizeTitle = 18;
-          fontSizeBody = 14;
-          iconSize = 26;
+          fontSizeTitle = 12;
+          fontSizeBody = 12;
+          iconSize = 20;
         } else if (isLargeDesktop) {
           fontSizeTitle = 20;
           fontSizeBody = 16;

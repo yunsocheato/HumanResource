@@ -13,10 +13,10 @@ Future<List<Map<String, dynamic>>> getAttendanceData({
   final end = start + limit - 1;
 
   final response = await Supabase.instance.client
-      .from('attendance')
+      .from('singupuser_fit_attendance')
       .select()
       .range(start, end)
-      .order('timestamp', ascending: false);
+      .order('timestamp', ascending: true);
 
   return List<Map<String, dynamic>>.from(response);
 }

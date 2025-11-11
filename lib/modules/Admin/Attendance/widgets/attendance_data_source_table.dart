@@ -10,13 +10,14 @@ class DataTableSourceAttendance extends DataTableSource {
     if (index >= data.length) return null;
 
     final row = data[index];
-    return DataRow(cells: [
-      DataCell(Text(row['log_id'].toString())),
-      DataCell(Text(row['fingerprint_id'].toString())),
-      DataCell(Text(row['name'] ?? '')),
-      DataCell(Text(row['timestamp'].toString())),
-      DataCell(Text(row['check_type'] ?? '')),
-    ]);
+    return DataRow(
+      cells: [
+        DataCell(Text(row['fingerprint_id'].toString())),
+        DataCell(Text(row['username'] ?? 'No Name')),
+        DataCell(Text(row['check_type'].toString())),
+        DataCell(Text(row['timestamp'] ?? 'No clock')),
+      ],
+    );
   }
 
   @override

@@ -141,24 +141,24 @@ class AttendanceRecords extends GetView<AttendanceController> {
                           }
                         },
                         columns: [
-                          DataColumn(
-                            label: Container(
-                              height: 30,
-                              width: 90,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Text(
-                                'Log ID',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // DataColumn(
+                          //   label: Container(
+                          //     height: 30,
+                          //     width: 90,
+                          //     alignment: Alignment.center,
+                          //     decoration: BoxDecoration(
+                          //       color: Colors.blue,
+                          //       borderRadius: BorderRadius.circular(6),
+                          //     ),
+                          //     child: const Text(
+                          //       'Log ID',
+                          //       style: TextStyle(
+                          //         color: Colors.white,
+                          //         fontWeight: FontWeight.bold,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           DataColumn(
                             label: Container(
                               height: 30,
@@ -205,7 +205,7 @@ class AttendanceRecords extends GetView<AttendanceController> {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: const Text(
-                                'Clock IN',
+                                'Check Type',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -223,7 +223,7 @@ class AttendanceRecords extends GetView<AttendanceController> {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: const Text(
-                                'Check Type',
+                                'Clock In',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
