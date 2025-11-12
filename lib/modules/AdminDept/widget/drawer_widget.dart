@@ -83,7 +83,7 @@ class _DrawerAdminState extends State<DrawerAdmin> {
               onEnter: (_) => setState(() => isHovered = true),
               onExit: (_) => setState(() => isHovered = false),
               child: AnimatedContainer(
-                duration: Duration(microseconds: 100),
+                duration: const Duration(milliseconds: 100),
                 curve: Curves.easeInOut,
                 width: isHovered ? 180 : 100,
                 height: double.infinity,
@@ -91,152 +91,121 @@ class _DrawerAdminState extends State<DrawerAdmin> {
                   color: Colors.blueGrey.shade900,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      blurRadius: 15,
-                      offset: Offset(isHovered ? 3 : 0, isHovered ? 3 : 0),
+                      color: Colors.black.withOpacity(isHovered ? 0.3 : 0.1),
+                      blurRadius: isHovered ? 15 : 5,
+                      offset: const Offset(2, 2),
                     ),
                   ],
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(30),
                     bottomRight: Radius.circular(30),
                   ),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      height: 110,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey.shade900,
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
-                        ),
-                      ),
-                      child: DrawerHeader(
-                        decoration: const BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final drawerWidth = constraints.maxWidth;
-                            final controller =
-                                Get.find<UserProfileController>();
-                            final profile = controller.userprofiles.value;
-                            final image = profile?.image ?? '';
+                    DrawerHeader(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final drawerWidth = constraints.maxWidth;
+                          final controller = Get.find<UserProfileController>();
+                          final profile = controller.userprofiles.value;
+                          final image = profile?.image ?? '';
 
-                            const minWidthForText = 50;
-
-                            return Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  radius: 25,
-                                  backgroundImage:
-                                      image.isEmpty
-                                          ? const AssetImage(
-                                                'assets/images/profileuser.png',
-                                              )
-                                              as ImageProvider
-                                          : NetworkImage(image),
-                                ),
-
-                                if (isHovered &&
-                                    drawerWidth >= minWidthForText) ...[
-                                  const SizedBox(width: 15),
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          profile?.name ?? 'No Name',
-                                          style: TextStyle(
-                                            color: Colors.grey[300],
-                                            fontSize: 10,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
+                          return Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 25,
+                                backgroundImage:
+                                    image.isEmpty
+                                        ? const AssetImage(
+                                          'assets/images/profileuser.png',
+                                        )
+                                        : NetworkImage(image) as ImageProvider,
+                              ),
+                              if (isHovered && drawerWidth > 120) ...[
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        profile?.name ?? 'No Name',
+                                        style: TextStyle(
+                                          color: Colors.grey[300],
+                                          fontSize: 10,
                                         ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          profile?.Position ?? 'No Position',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        profile?.Position ?? 'No Position',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
                                         ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          (profile?.role ?? 'No Role')
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        profile?.role ?? 'No role',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
                                         ),
-                                      ],
-                                    ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ],
-                            );
-                          },
-                        ),
+                            ],
+                          );
+                        },
                       ),
                     ),
-                    const SizedBox(height: 80),
+
+                    const SizedBox(height: 70),
+
                     _buildSidebarItem(
                       icon: Icons.dashboard_outlined,
                       title: "OVERVIEW",
+                      routeName: "/overview",
                       showText: isHovered,
-                      onTap: () {
-                        Get.toNamed("/overview");
-                      },
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: isHovered ? 35 : 25),
                     _buildSidebarItem(
                       icon: EneftyIcons.user_bold,
                       title: "PROFILES",
+                      routeName: "/profiles",
                       showText: isHovered,
-                      onTap: () {
-                        Get.toNamed("/profiles");
-                      },
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: isHovered ? 35 : 25),
                     _buildSidebarItem(
                       icon: EneftyIcons.folder_2_bold,
                       title: "REPORT",
+                      routeName: "/report",
                       showText: isHovered,
-                      onTap: () {
-                        Get.toNamed("/report");
-                      },
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: isHovered ? 35 : 25),
                     _buildSidebarItem(
                       icon: EneftyIcons.calendar_3_bold,
                       title: "ATTENDANCE",
+                      routeName: "/attendance",
                       showText: isHovered,
-                      onTap: () {
-                        Get.toNamed("/attendance");
-                      },
                     ),
+
                     const Spacer(),
                     Divider(color: Colors.white24, indent: 10, endIndent: 10),
+
                     _buildSidebarItem(
                       icon: Icons.logout,
                       title: "LOGOUT",
+                      routeName: "/logout",
                       showText: isHovered,
                       onTap: controller.logout,
                     ),
@@ -245,6 +214,7 @@ class _DrawerAdminState extends State<DrawerAdmin> {
                 ),
               ),
             ),
+
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(8),
@@ -262,38 +232,69 @@ class _DrawerAdminState extends State<DrawerAdmin> {
   Widget _buildSidebarItem({
     required IconData icon,
     required String title,
+    required String routeName,
     bool showText = false,
-    bool showIcon = false,
-    Color color = Colors.white,
     VoidCallback? onTap,
   }) {
-    double fontSize = showText ? 14 : 16;
-    double iconSize = showIcon ? 20 : 25;
+    bool isHovered = false;
 
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Row(
-          children: [
-            Icon(icon, color: color, size: iconSize),
-            if (showText) ...[
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
+    return StatefulBuilder(
+      builder: (context, setState) {
+        final bool isSelected = Get.currentRoute == routeName;
+
+        return MouseRegion(
+          onEnter: (_) => setState(() => isHovered = true),
+          onExit: (_) => setState(() => isHovered = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.easeInOutQuart,
+            decoration: BoxDecoration(
+              color:
+                  !showText
+                      ? Colors.blueGrey.shade900
+                      : (isSelected
+                          ? Colors.blue.shade900
+                          : (isHovered
+                              ? Colors.blue.shade800
+                              : Colors.blueGrey.shade900)),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                if (routeName != "/logout") Get.offAllNamed(routeName);
+                onTap?.call();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 20,
+                ),
+                child: Row(
+                  children: [
+                    Icon(icon, color: Colors.white, size: isHovered ? 25 : 20),
+                    if (showText) ...[
+                      const SizedBox(width: 12),
+                      Flexible(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
-            ],
-          ],
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 
