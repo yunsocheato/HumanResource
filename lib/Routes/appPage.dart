@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Admin/LogoutScreen/logout_screen.dart';
 import '../../Utils/SplashScreen/widget/splash_view.dart';
 import '../modules/Admin/Attendance/views/attendance_screen.dart';
 import '../modules/Admin/Dashboard/views/dashboard_screen.dart';
@@ -24,6 +25,7 @@ class AppPages {
   static final pages = [
     GetPage(name: AppRoutes.splash, page: () => SplashView()),
     GetPage(name: AppRoutes.login, page: () => LoginScreen()),
+    GetPage(name: AppRoutes.logout, page: () => LogoutScreen()),
     GetPage(name: AppRoutes.overview, page: () => OverViewScreen()),
     GetPage(name: AppRoutes.dashboard, page: () => DashboardScreen()),
     GetPage(name: AppRoutes.attendance, page: () => AttendanceScreen()),

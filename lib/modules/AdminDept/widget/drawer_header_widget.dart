@@ -1,5 +1,12 @@
+import 'dart:ui';
+
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../Admin/Drawer/controllers/drawer_controller.dart';
 
 class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
   const DrawerHead({super.key});
@@ -10,6 +17,7 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
     final bool isMobile = width < 600;
     final bool isTablet = width >= 600 && width < 900;
     final bool showAppBar = isMobile || isTablet;
+    final controller1 = Get.find<AppDrawerController>();
 
     if (showAppBar) {
       return AppBar(
@@ -68,20 +76,44 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: const [
-            Text(
-              "Welcome, Scarlett!",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+          children: [
+            AnimatedBuilder(
+              animation: controller1.blurAnimation,
+              builder: (context, child) {
+                return ImageFiltered(
+                  imageFilter: ImageFilter.blur(
+                    sigmaX: controller1.blurAnimation.value,
+                    sigmaY: controller1.blurAnimation.value,
+                  ),
+                  child: child,
+                );
+              },
+              child: Image.asset(
+                'assets/images/deamlogo.png',
+                height: 45 * 1.7,
+                width: 45 * 1.7,
               ),
             ),
-            SizedBox(width: 30),
-            CircleAvatar(
-              radius: 28,
-              backgroundColor: Colors.deepPurple,
-              child: Icon(Icons.person, color: Colors.white),
+            const SizedBox(width: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'DEAM COMPUTER\nINTERNATIONAL',
+                    textStyle: TextStyle(
+                      fontSize: 23,
+                      color: Colors.blue.shade900,
+                      fontFamily: '7TH.ttf',
+                      fontWeight: FontWeight.bold,
+                    ),
+                    speed: Duration(milliseconds: 100),
+                  ),
+                ],
+                totalRepeatCount: 100,
+                pause: Duration(milliseconds: 1000),
+                displayFullTextOnTap: true,
+              ),
             ),
           ],
         ),

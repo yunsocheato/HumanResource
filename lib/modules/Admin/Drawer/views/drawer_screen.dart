@@ -232,7 +232,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      controller.logoutWithConfirmation();
+                      controller.logout();
                     },
                   ),
                 ),
@@ -510,7 +510,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.logout, color: Colors.white),
-                          onPressed: () => controller.logoutWithConfirmation(),
+                          onPressed: () => controller.logout(),
                         ),
                       ],
                     ),

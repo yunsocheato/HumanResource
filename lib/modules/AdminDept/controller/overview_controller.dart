@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/Model/leave_card_balance_model.dart';
 import 'package:hrms/modules/AdminDept/Provider/leave_card_balance_provider.dart';
+import 'package:hrms/modules/AdminDept/controller/leave_record_controller.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../Admin/Drawer/widgets/Method_drawer_policy_button.dart';
 import '../view/request_leave_screen.dart';
@@ -16,6 +17,7 @@ class OverViewController extends GetxController
   var leavecardrecord = <Map<String, dynamic>>[].obs;
   var currentUser = Rxn<User>();
 
+  final controller = Get.put(LeaveRecordController());
   Timer? _timer;
 
   final PageController pageController = PageController();
@@ -72,7 +74,7 @@ class OverViewController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    fetchDashboardData();
+    controller.loadCurrentUser();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       pageController.jumpToPage(0);
     });
@@ -96,6 +98,7 @@ class OverViewController extends GetxController
       if (event == AuthChangeEvent.signedIn && session?.user != null) {
         currentUser.value = session!.user;
         getLeaveRecordbalance();
+        controller.loadCurrentUser();
       } else if (event == AuthChangeEvent.signedOut) {
         currentUser.value = null;
         leavecardbalance.clear();
@@ -105,6 +108,7 @@ class OverViewController extends GetxController
     currentUser.value = Supabase.instance.client.auth.currentUser;
     if (currentUser.value != null) {
       getLeaveRecordbalance();
+      controller.loadCurrentUser();
     }
   }
 
@@ -118,33 +122,6 @@ class OverViewController extends GetxController
     } finally {
       isLoading.value = false;
     }
-  }
-
-  void toggleClockStatus(bool value) {
-    isClockedIn.value = value;
-    Get.snackbar(
-      "Status",
-      value ? "Clocked In successfully!" : "Clocked Out successfully!",
-    );
-  }
-
-  void toggleLeaveRequest(bool value) {
-    isLeaveRequestPending.value = value;
-    Get.snackbar(
-      "Status",
-      value ? "Leave request initiated." : "Leave request cancelled.",
-    );
-  }
-
-  void fetchDashboardData() async {
-    isLoading.value = true;
-    await Future.delayed(const Duration(seconds: 2));
-
-    attendanceData.value = [
-      {'dept': 'HR', 'count': 0.5},
-      {'dept': 'IT', 'count': 1.0},
-    ];
-    isLoading.value = false;
   }
 
   void refreshdata() async {

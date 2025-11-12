@@ -58,6 +58,7 @@ class LeaveRecordController extends GetxController {
 
     currentUser.value = Supabase.instance.client.auth.currentUser;
     if (currentUser.value != null) {
+      loadCurrentUser();
       getLeaves();
     }
   }
@@ -69,50 +70,6 @@ class LeaveRecordController extends GetxController {
     leavesDepartments.clear();
     loadCurrentUser();
   }
-
-  // Future<void> fetchTeamLeave() async {
-  //   final user = Supabase.instance.client.auth.currentUser;
-  //   if (user != null) {
-  //     final data =
-  //         await Supabase.instance.client
-  //             .from('signupuser')
-  //             .select('name')
-  //             .eq('user_id', user.id)
-  //             .single();
-  //
-  //     currentUserNames.value = data['name'].toString();
-  //
-  //     if (currentUserNames.value == user.id) {
-  //       fetchLeavesDepartment();
-  //     }
-  //   }
-  // }
-  //
-  // Future<void> fetchLeavesDepartment() async {
-  //   try {
-  //     isLoading.value = true;
-  //     final currentUserId = Supabase.instance.client.auth.currentUser!.id;
-  //
-  //     final response = await Supabase.instance.client
-  //         .from('leave_requests')
-  //         .select(
-  //           'name, department, position, status, current_stage, reason, start_date, end_date',
-  //         )
-  //         .eq('current_stage', currentUserId);
-  //
-  //     if (response.isEmpty) {
-  //       Get.snackbar('Cannot Fetch Data', 'No leave available');
-  //       leavesDepartments.clear();
-  //     } else {
-  //       leavesDepartments.value =
-  //           (response as List).map((e) => LeaveRecordModel.fromMap(e)).toList();
-  //     }
-  //   } catch (e) {
-  //     Get.snackbar('Error', 'Failed to fetch leaves');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
 
   Future<void> loadCurrentUser() async {
     final user = Supabase.instance.client.auth.currentUser;
@@ -157,29 +114,6 @@ class LeaveRecordController extends GetxController {
       isLoading.value = false;
     }
   }
-  // Future<void> fetchLeavesForAdmin() async {
-  //   final user = Supabase.instance.client.auth.currentUser;
-  //   if (user == null) return;
-  //
-  //   isLoading.value = true;
-  //
-  //   try {
-  //     final leaves = await Supabase.instance.client
-  //         .from('leave_requests')
-  //         .select('*')
-  //         .eq('reviewed_by', user.id)
-  //         .eq('status', 'pending,in_progress_rejected')
-  //         .contains('next_user_id', [user.id])
-  //         .order('created_at', ascending: true);
-  //
-  //     leavesDepartments.value =
-  //         (leaves ?? []).map((e) => LeaveRecordModel.fromMap(e)).toList();
-  //   } catch (e) {
-  //     print('Failed to fetch leaves: $e');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
 
   Future<void> fetchLeavesForAdminByDate({
     required DateTime startDate,

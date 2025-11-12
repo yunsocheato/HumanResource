@@ -1,6 +1,7 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../Core/user_profile_controller.dart';
 import '../../../services/logout_services.dart';
 import 'drawer_header_widget.dart';
 
@@ -69,7 +70,7 @@ class _DrawerAdminState extends State<DrawerAdmin> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onTap: controller.logoutWithConfirmation,
+                      onTap: controller.logout,
                     ),
                   ],
                 ),
@@ -84,7 +85,7 @@ class _DrawerAdminState extends State<DrawerAdmin> {
               child: AnimatedContainer(
                 duration: Duration(microseconds: 100),
                 curve: Curves.easeInOut,
-                width: isHovered ? 180 : 65,
+                width: isHovered ? 180 : 100,
                 height: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.blueGrey.shade900,
@@ -101,43 +102,98 @@ class _DrawerAdminState extends State<DrawerAdmin> {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      height: 70,
+                      height: 110,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.blueGrey.shade900,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(30),
                           bottomRight: Radius.circular(30),
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/deamlogo.png",
-                            width: 40,
-                            height: 40,
-                            fit: BoxFit.contain,
-                          ),
-                          if (isHovered) const SizedBox(width: 12),
-                          if (isHovered)
-                            Expanded(
-                              child: Text(
-                                "DEAM COMPUTER\nINTERNATIONAL",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "7TH.ttf",
+                      child: DrawerHeader(
+                        decoration: const BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            final drawerWidth = constraints.maxWidth;
+                            final controller =
+                                Get.find<UserProfileController>();
+                            final profile = controller.userprofiles.value;
+                            final image = profile?.image ?? '';
+
+                            const minWidthForText = 50;
+
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage:
+                                      image.isEmpty
+                                          ? const AssetImage(
+                                                'assets/images/profileuser.png',
+                                              )
+                                              as ImageProvider
+                                          : NetworkImage(image),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                        ],
+
+                                if (isHovered &&
+                                    drawerWidth >= minWidthForText) ...[
+                                  const SizedBox(width: 15),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          profile?.name ?? 'No Name',
+                                          style: TextStyle(
+                                            color: Colors.grey[300],
+                                            fontSize: 10,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          profile?.Position ?? 'No Position',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          (profile?.role ?? 'No Role')
+                                              .toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
                     const SizedBox(height: 80),
@@ -182,7 +238,7 @@ class _DrawerAdminState extends State<DrawerAdmin> {
                       icon: Icons.logout,
                       title: "LOGOUT",
                       showText: isHovered,
-                      onTap: controller.logoutWithConfirmation,
+                      onTap: controller.logout,
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -217,7 +273,7 @@ class _DrawerAdminState extends State<DrawerAdmin> {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(24.0),
         child: Row(
           children: [
             Icon(icon, color: color, size: iconSize),
