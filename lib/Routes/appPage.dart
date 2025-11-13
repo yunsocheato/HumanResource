@@ -18,6 +18,7 @@ import '../modules/Admin/Report/view/employee_ot_screen.dart';
 import '../modules/Admin/Schedule/views/schedule_screen.dart';
 import '../modules/Admin/SettingScreen/view/setting_screen_mobile.dart';
 import '../modules/AdminDept/view/overview_screen.dart';
+import '../modules/AdminDept/view/profileuser_screen.dart';
 import '../modules/AdminDept/view/request_leave_screen.dart';
 import 'appRoutes.dart';
 
@@ -26,6 +27,7 @@ class AppPages {
     GetPage(name: AppRoutes.splash, page: () => SplashView()),
     GetPage(name: AppRoutes.login, page: () => LoginScreen()),
     GetPage(name: AppRoutes.logout, page: () => LogoutScreen()),
+    GetPage(name: AppRoutes.userprofile, page: () => UserProfileScreen()),
     GetPage(name: AppRoutes.overview, page: () => OverViewScreen()),
     GetPage(name: AppRoutes.dashboard, page: () => DashboardScreen()),
     GetPage(name: AppRoutes.attendance, page: () => AttendanceScreen()),

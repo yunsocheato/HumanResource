@@ -31,12 +31,13 @@ class OverViewController extends GetxController
     'https://logos-world.net/wp-content/uploads/2020/09/Oracle-Logo.png',
   ];
 
-  final TextLeave = RxList<List<dynamic>>([
-    ['Annual Leave', Icons.calendar_today, Colors.white],
-    ['Sick Leave', Icons.sick, Colors.white],
-    ['Maternity Leave', Icons.pregnant_woman, Colors.white],
-    ['Unpaid Leave', Icons.money, Colors.white],
+  final TextLeaves = RxList<List<dynamic>>([
+    ['Annual Leave', 'assets/icon/calendar.png'],
+    ['Sick Leave', 'assets/icon/hospital.png'],
+    ['Maternity Leave', 'assets/icon/happy.png'],
+    ['Unpaid Leave', 'assets/icon/wallet.png'],
   ]);
+
   final hoveredIndex = (-1).obs;
   final hoveredIndex1 = (-1).obs;
   final selectedIndex = (-1).obs;
@@ -44,23 +45,23 @@ class OverViewController extends GetxController
   final overviewdashboard = RxList<DashboardItem>([
     DashboardItem(
       title: 'Request Leave',
-      icon: Icons.calendar_today,
+      imagePath: 'assets/icon/calendars.png',
       color: Colors.white,
       onTap: () => Get.offAllNamed('/requestleave'),
     ),
     DashboardItem(
       title: 'Department',
-      icon: Icons.apartment,
+      imagePath: 'assets/icon/school.png',
       color: Colors.white,
     ),
     DashboardItem(
       title: 'Leave Balance',
-      icon: Icons.safety_check,
+      imagePath: 'assets/icon/equilibrium.png',
       color: Colors.white,
     ),
     DashboardItem(
       title: 'Schedule',
-      icon: Icons.calendar_month,
+      imagePath: 'assets/icon/calendar.png',
       color: Colors.white,
     ),
   ]);
@@ -138,14 +139,22 @@ class OverViewController extends GetxController
 
 class DashboardItem {
   final String title;
-  final IconData icon;
+  final String imagePath;
   final Color color;
   final VoidCallback? onTap;
 
   DashboardItem({
     required this.title,
-    required this.icon,
+    required this.imagePath,
     required this.color,
     this.onTap,
   });
+}
+
+class TextLeave {
+  final String title;
+  final String imagePath;
+  final VoidCallback? onTap;
+
+  TextLeave({required this.title, required this.imagePath, this.onTap});
 }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -19,27 +21,27 @@ class Gridoverviewoverview extends GetView<OverViewController> {
         double fontSize;
 
         if (maxWidth < 600) {
-          iconSize = 14;
+          iconSize = 25;
           fontSize = 14;
           crossAxisCount = 2;
           childAspectRatio = 2.5;
         } else if (maxWidth >= 600 && maxWidth < 900) {
-          iconSize = 16;
+          iconSize = 30;
           fontSize = 16;
           crossAxisCount = 4;
           childAspectRatio = 2.2;
         } else if (maxWidth >= 900 && maxWidth < 1024) {
-          iconSize = 18;
+          iconSize = 50;
           fontSize = 18;
           crossAxisCount = 4;
           childAspectRatio = 2.0;
         } else if (maxWidth >= 1024 && maxWidth < 1440) {
-          iconSize = 20;
+          iconSize = 100;
           fontSize = 20;
           crossAxisCount = 4;
           childAspectRatio = 2.8;
         } else {
-          iconSize = 22;
+          iconSize = 125;
           fontSize = 22;
           crossAxisCount = 5;
           childAspectRatio = 2.2;
@@ -57,72 +59,77 @@ class Gridoverviewoverview extends GetView<OverViewController> {
           ),
           itemBuilder: (context, index) {
             return MouseRegion(
-              onEnter: (_) => controller.hoveredIndex.value = index,
-              onExit: (_) => controller.hoveredIndex.value = -1,
+              onEnter: (_) => controller.hoveredIndex1.value = index,
+              onExit: (_) => controller.hoveredIndex1.value = -1,
               cursor: SystemMouseCursors.click,
               child: Obx(() {
                 final item = controller.overviewdashboard[index];
-                final isHovered = controller.hoveredIndex.value == index;
+                final isHovered = controller.hoveredIndex1.value == index;
                 final isSelected = controller.selectedIndex.value == index;
-
-                final bgColor =
-                    isSelected
-                        ? Colors.deepPurple.shade900
-                        : Colors.grey.shade500;
-
-                BoxDecoration decoration = BoxDecoration(
-                  color: bgColor,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: isHovered ? Colors.black26 : Colors.black12,
-                      blurRadius: isHovered ? 25 : 5,
-                      offset: const Offset(3, 3),
-                    ),
-                  ],
-                );
-
+                Color bgColor;
+                if (isSelected) {
+                  bgColor = Colors.deepPurple.shade900;
+                } else if (isHovered) {
+                  bgColor = Colors.deepPurple.shade800;
+                } else {
+                  bgColor = Colors.grey.shade300;
+                }
+                Color textColor;
+                if (isSelected) {
+                  textColor = Colors.white;
+                } else if (isHovered) {
+                  textColor = Colors.white;
+                } else {
+                  textColor = Colors.deepPurple.shade900;
+                }
                 return GestureDetector(
                   onTap: () {
                     controller.selectedIndex.value = isSelected ? -1 : index;
-
-                    if (item.onTap != null) {
-                      item.onTap!();
-                    }
+                    if (item.onTap != null) item.onTap!();
                   },
                   child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeInOutCubic,
-                    transform:
-                        isHovered ? Matrix4.identity() : Matrix4.identity(),
-                    decoration: decoration,
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          item.icon,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.easeInOut,
+                    decoration: BoxDecoration(
+                      color: bgColor,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
                           color:
-                              isSelected
-                                  ? Colors.white
-                                  : Colors.deepPurple.shade900,
-                          size: iconSize,
+                              isHovered
+                                  ? Colors.deepPurple.shade900
+                                  : Colors.black38,
+                          blurRadius: isHovered ? 15 : 5,
+                          offset: const Offset(3, 3),
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          item.title,
-                          style: TextStyle(
-                            color:
-                                isSelected
-                                    ? Colors.white
-                                    : Colors.deepPurple.shade900,
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontSize,
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            item.title,
+                            style: TextStyle(
+                              color: textColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontSize,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
+
+                        if (item.imagePath.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Image.asset(
+                              item.imagePath,
+                              width: iconSize,
+                              height: iconSize,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                       ],
                     ),
                   ),

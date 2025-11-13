@@ -181,7 +181,10 @@ class _DrawerAdminState extends State<DrawerAdmin> {
                     _buildSidebarItem(
                       icon: EneftyIcons.user_bold,
                       title: "PROFILES",
-                      routeName: "/profiles",
+                      routeName: "/userprofile",
+                      onTap: () {
+                        Get.toNamed("/userprofile");
+                      },
                       showText: isHovered,
                     ),
                     SizedBox(height: isHovered ? 35 : 25),
@@ -189,6 +192,9 @@ class _DrawerAdminState extends State<DrawerAdmin> {
                       icon: EneftyIcons.folder_2_bold,
                       title: "REPORT",
                       routeName: "/report",
+                      onTap: () {
+                        Get.toNamed("/report");
+                      },
                       showText: isHovered,
                     ),
                     SizedBox(height: isHovered ? 35 : 25),
@@ -207,7 +213,7 @@ class _DrawerAdminState extends State<DrawerAdmin> {
                       title: "LOGOUT",
                       routeName: "/logout",
                       showText: isHovered,
-                      onTap: controller.logout,
+                      onTap: () => controller.logout(),
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -262,8 +268,13 @@ class _DrawerAdminState extends State<DrawerAdmin> {
             child: InkWell(
               borderRadius: BorderRadius.circular(5),
               onTap: () {
-                if (routeName != "/logout") Get.offAllNamed(routeName);
-                onTap?.call();
+                if (Get.currentRoute != routeName && routeName != "/logout") {
+                  Get.offAllNamed(routeName);
+                }
+
+                if (routeName == "/logout") {
+                  onTap?.call();
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(

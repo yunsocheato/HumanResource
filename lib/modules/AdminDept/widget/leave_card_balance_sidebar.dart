@@ -17,29 +17,29 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
         double fontSize;
 
         if (maxWidth < 600) {
-          iconSize = 16;
+          iconSize = 28;
           fontSize = 13;
           crossAxisCount = 2;
           childAspectRatio = 1.3;
         } else if (maxWidth < 900) {
-          iconSize = 23;
+          iconSize = 35;
           fontSize = 14;
           crossAxisCount = 3;
           childAspectRatio = 1.0;
         } else if (maxWidth < 1440) {
-          iconSize = 25;
+          iconSize = 40;
           fontSize = 15;
           crossAxisCount = 4;
           childAspectRatio = 1.0;
         } else {
-          iconSize = 22;
+          iconSize = 48;
           fontSize = 16;
           crossAxisCount = 5;
           childAspectRatio = 1.5;
         }
 
         return GridView.builder(
-          itemCount: controller.TextLeave.length,
+          itemCount: controller.TextLeaves.length,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -54,21 +54,22 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
               onExit: (_) => controller.hoveredIndex.value = -1,
               cursor: SystemMouseCursors.click,
               child: Obx(() {
-                final leave = controller.TextLeave[index];
+                final leave = controller.TextLeaves[index];
                 final title = leave[0] as String;
-                final icon = leave[1] as IconData;
-                final bg = leave[2];
+                final imagePath = leave[1] as String;
+                final bg = leave.length > 2 ? leave[2] : null;
                 final isHovered = controller.hoveredIndex.value == index;
 
                 BoxDecoration decoration;
-                if (bg is String) {
+                if (bg is String &&
+                    (bg.startsWith('http') || bg.startsWith('https'))) {
                   decoration = BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
                       image: NetworkImage(bg),
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.4),
+                        Colors.black.withOpacity(0.5),
                         BlendMode.darken,
                       ),
                     ),
@@ -83,15 +84,13 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
                   );
                 }
                 return AnimatedContainer(
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.bounceInOut,
-                  transform:
-                      isHovered ? Matrix4.identity() : Matrix4.identity(),
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOutCubic,
                   decoration: decoration.copyWith(
                     boxShadow: [
                       BoxShadow(
                         color: isHovered ? Colors.black26 : Colors.black12,
-                        blurRadius: isHovered ? 25 : 5,
+                        blurRadius: isHovered ? 25 : 8,
                         offset: const Offset(3, 3),
                       ),
                     ],
@@ -100,17 +99,33 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
                   child: Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Flexible(
-                          child: Icon(
-                            icon,
-                            color: Colors.white,
-                            size: iconSize,
+                        AnimatedScale(
+                          scale: isHovered ? 1.1 : 1.0,
+                          duration: const Duration(milliseconds: 200),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.9),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 5,
+                                  offset: const Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            child: Image.asset(
+                              imagePath,
+                              width: iconSize,
+                              height: iconSize,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 8),
+
                         Flexible(
                           child: Text(
                             title,
@@ -124,6 +139,7 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         const SizedBox(height: 6),
                         Flexible(
                           child: Text(

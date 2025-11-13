@@ -115,8 +115,18 @@ flutter:
     - assets/images/leaverequest.png
     - assets/images/department.png
     - assets/images/available.png
+    - assets/icon/logout.png
+    - assets/icon/logouts.png
+    - assets/icon/calendar.png
+    - assets/icon/calendars.png
+    - assets/icon/equilibrium.png
+    - assets/icon/happy.png
+    - assets/icon/hospital.png
+    - assets/icon/school.png
+    - assets/icon/wallet.png
     - .env
     - assets/Fonts/
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -15,8 +15,8 @@ class AuthController extends GetxController {
 
   void startAutoLogoutTimer() {
     _timer?.cancel();
-    _timer = Timer(const Duration(minutes: 10), () async {
-      await logout();
+    _timer = Timer(const Duration(minutes: 30), () async {
+      await logouttimer();
     });
   }
 
@@ -29,6 +29,16 @@ class AuthController extends GetxController {
     await client.auth.signOut();
     await GetStorage().erase();
     Get.offAllNamed('/logout');
+  }
+
+  Future<void> logouttimer() async {
+    try {
+      await _client.auth.signOut();
+      await GetStorage().erase();
+      Get.offAllNamed('/login');
+    } catch (e) {
+      Get.snackbar('Error', e.toString());
+    }
   }
 
   @override
