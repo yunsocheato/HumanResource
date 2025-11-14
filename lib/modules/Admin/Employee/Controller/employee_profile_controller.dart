@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Core/user_profile_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../API/employee_profile_sql.dart';
@@ -35,6 +36,8 @@ class EmployeeProfileController extends GetxController {
   final TextEditingController joinDateController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
   final TextEditingController RoleUserTextController = TextEditingController();
+  var currentUser = Rxn<User>();
+  var loadprofile = <UserProfileModel>[].obs;
 
   var useridText = ''.obs;
   var nameText = ''.obs;
@@ -85,6 +88,23 @@ class EmployeeProfileController extends GetxController {
     RoleUserTextController.addListener(
       () => roleText.value = RoleUserTextController.text,
     );
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      final session = data.session;
+
+      if (event == AuthChangeEvent.signedIn && session?.user != null) {
+        currentUser.value = session!.user;
+        loadUserProfile();
+      } else if (event == AuthChangeEvent.signedOut) {
+        currentUser.value = null;
+        loadprofile.clear();
+      }
+    });
+
+    currentUser.value = Supabase.instance.client.auth.currentUser;
+    if (currentUser.value != null) {
+      loadUserProfile();
+    }
   }
 
   @override
@@ -165,7 +185,6 @@ class EmployeeProfileController extends GetxController {
               ? otherUserProfileImageUrl.value
               : profileImageUrl.value;
 
-      // Upload new image if selected
       if (imageFile != null) {
         final uploadedUrl = await _employeeProfilesql.uploadImage(imageFile!);
         imageUrl = uploadedUrl;

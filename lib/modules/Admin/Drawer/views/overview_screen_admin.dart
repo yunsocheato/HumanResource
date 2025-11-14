@@ -2,11 +2,17 @@ import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
+import '../../../../Utils/DialogScreen/DialogScreen.dart';
+import '../../UserSetup/View/user_setup_screen.dart';
 import '../controllers/drawer_controller.dart';
-import 'Method_drawer_policy_button.dart';
+import '../views/Leave_Policy_screen.dart';
 
-class ReportPolicy extends GetView<AppDrawerController> {
-  const ReportPolicy({super.key});
+import '../views/employee_policy_screen.dart';
+import '../views/manage_user_screen.dart';
+import '../widgets/Method_drawer_policy_button.dart';
+
+class OverviewAdmin extends GetView<AppDrawerController> {
+  const OverviewAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +53,8 @@ class ReportPolicy extends GetView<AppDrawerController> {
           fontSizeBody = 18;
           iconSize = 32;
         }
-
         return Obx(() {
-          final isExpanded1 = controller.isExpanded1('Report Admin');
+          final isExpanded1 = controller.isExpanded1('Overview');
           return Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
@@ -58,73 +63,63 @@ class ReportPolicy extends GetView<AppDrawerController> {
             child: ExpansionTile(
               initiallyExpanded: isExpanded1,
               onExpansionChanged:
-                  (bool expanded) => controller.toggleTile1('Report Admin'),
+                  (bool expanded) => controller.toggleTile1('Overview'),
               leading: Icon(
-                EneftyIcons.document_2_bold,
+                Icons.dashboard,
                 size: iconSize,
                 color:
-                    controller.selectedIndex.value == 9
+                    controller.selectedIndex.value == 0
                         ? Colors.blue.shade900
                         : Colors.white,
               ),
-              title: Text(
-                'Report Admin',
-                style: TextStyle(
-                  fontSize: fontSizeTitle,
-                  color:
-                      controller.selectedIndex.value == 9
-                          ? Colors.blue.shade900
-                          : Colors.white,
-                  fontWeight:
-                      controller.selectedIndex.value == 9
-                          ? FontWeight.bold
-                          : FontWeight.normal,
+              title: InkWell(
+                onTap: () {
+                  controller.selectedIndex.value = 0;
+                  MethodButton1();
+                },
+                child: Text(
+                  'Overview',
+                  style: TextStyle(
+                    fontSize: fontSizeTitle,
+                    color:
+                        controller.selectedIndex.value == 0
+                            ? Colors.blue.shade900
+                            : Colors.white,
+                    fontWeight:
+                        controller.selectedIndex.value == 0
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                  ),
                 ),
               ),
               iconColor: Colors.white,
               collapsedIconColor: Colors.white,
-              childrenPadding: const EdgeInsets.only(left: 32),
+              childrenPadding: EdgeInsets.only(left: 32),
               children: [
                 _buildSubTile(
+                  title: 'Own Profile',
                   fontSize: fontSizeBody,
+                  icon: EneftyIcons.user_bold,
                   iconSize: iconSize,
-                  title: 'Checkin Report',
-                  icon: EneftyIcons.user_tick_bold,
-                  index: 10,
-                  onTap: () => MethodButton6(),
+                  index: 100,
+                  onTap: () => Get.offAllNamed('/userprofile'),
                 ),
                 _buildSubTile(
+                  title: 'Mange Own Report',
                   fontSize: fontSizeBody,
+                  icon: Icons.folder_copy,
                   iconSize: iconSize,
-                  title: 'Late Report',
-                  icon: EneftyIcons.user_minus_bold,
-                  index: 11,
-                  onTap: () => MethodButton7(),
+                  index: 101,
+                  onTap: () {},
                 ),
                 _buildSubTile(
+                  title: 'Your Attendance',
                   fontSize: fontSizeBody,
+                  icon: Boxicons.bx_calendar_alt,
                   iconSize: iconSize,
-                  title: 'Absent Report',
-                  icon: EneftyIcons.clock_bold,
-                  index: 12,
-                  onTap: () => MethodButton9(),
+                  index: 102,
+                  onTap: () {},
                 ),
-                _buildSubTile(
-                  fontSize: fontSizeBody,
-                  iconSize: iconSize,
-                  title: 'Leave Report',
-                  icon: Boxicons.bx_walk,
-                  index: 13,
-                  onTap: () => MethodButton8(),
-                ),
-                // _buildSubTile(
-                //   fontSize: fontSizeBody,
-                //   iconSize: iconSize,
-                //   title: 'OT Report',
-                //   icon: EneftyIcons.alarm_bold,
-                //   index: 14,
-                //   onTap: () => MethodButton10(),
-                // ),
               ],
             ),
           );

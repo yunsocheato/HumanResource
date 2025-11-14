@@ -25,11 +25,13 @@ class OverViewController extends GetxController
     LeaveCardBalanceProvider(),
   );
 
-  final images = [
-    'https://bongsrey.sgp1.digitaloceanspaces.com/library/10204/images/thumbnail/5ec74e5b86b19.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/640px-Cisco_logo_blue_2016.svg.png',
-    'https://logos-world.net/wp-content/uploads/2020/09/Oracle-Logo.png',
-  ];
+  final images = RxList<String>([
+    'https://media.licdn.com/dms/image/v2/D5622AQHGk5c59rD0tg/feedshare-shrink_800/B56ZmFDEMpJ0Ag-/0/1758873798150?e=2147483647&v=beta&t=ZprnqZ9QMlbRiMHeE1ZB1xam4n9h21ZSuZMLkzkmubI',
+
+    'https://thumbs.dreamstime.com/b/logo-icon-vector-logos-icons-set-social-media-flat-banner-vectors-svg-eps-jpg-jpeg-paper-texture-glossy-emblem-wallpaper-210442411.jpg',
+
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Oracle_Logo.svg/2560px-Oracle_Logo.svg.png',
+  ]);
 
   final TextLeaves = RxList<List<dynamic>>([
     ['Annual Leave', 'assets/icon/calendar.png'],

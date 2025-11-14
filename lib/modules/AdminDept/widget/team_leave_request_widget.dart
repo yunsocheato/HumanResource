@@ -103,12 +103,19 @@ class TeamRequestLeaveResponsiveWidget extends GetView<LeaveRecordController> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 width: double.infinity,
-                child: Card(
-                  elevation: 15,
-                  color: Colors.white,
+                child: Container(
                   margin: const EdgeInsets.all(16),
-                  shape: RoundedRectangleBorder(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: const Offset(0, 0),
+                      ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

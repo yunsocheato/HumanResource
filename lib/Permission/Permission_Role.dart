@@ -39,7 +39,7 @@ class RolePermissions {
     UserRole.adminDept: [
       AppRoutes.overview,
       AppRoutes.requestleave,
-      // AppRoutes.dashboard,
+      AppRoutes.userprofile,
       // AppRoutes.attendance,
       // AppRoutes.LeaveRequest,
       // AppRoutes.employee,
@@ -47,6 +47,7 @@ class RolePermissions {
     UserRole.user: [
       AppRoutes.overview,
       AppRoutes.requestleave,
+      AppRoutes.userprofile,
 
       // AppRoutes.dashboard,
       // AppRoutes.attendance,

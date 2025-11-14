@@ -136,7 +136,7 @@ class OverViewWidget extends GetView<OverViewController> {
                           alignment: Alignment.topLeft,
                           child: PageOverviewScreen(),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 35),
                         _sectionTitle('DASHBOARD', fontSize),
                         const SizedBox(height: 15),
                         const Gridoverviewoverview(),

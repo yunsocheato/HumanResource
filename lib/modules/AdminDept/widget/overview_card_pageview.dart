@@ -33,7 +33,7 @@ class PageOverviewScreen extends GetView<OverViewController> {
           height: height,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.blue.shade300, width: 1),
+            // border: Border.all(color: Colors.blue.shade300, width: 1),
             borderRadius: BorderRadius.circular(20),
           ),
           clipBehavior: Clip.hardEdge,

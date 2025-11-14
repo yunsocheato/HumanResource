@@ -98,9 +98,9 @@ class Gridoverviewoverview extends GetView<OverViewController> {
                           color:
                               isHovered
                                   ? Colors.deepPurple.shade900
-                                  : Colors.black38,
+                                  : Colors.deepPurple.shade300,
                           blurRadius: isHovered ? 15 : 5,
-                          offset: const Offset(3, 3),
+                          offset: const Offset(0, 0),
                         ),
                       ],
                     ),

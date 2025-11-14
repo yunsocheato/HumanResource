@@ -49,7 +49,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
           iconSize = 32;
         }
         return Obx(() {
-          final isExpanded1 = controller.isExpanded1('Employee Detail');
+          final isExpanded1 = controller.isExpanded1('Manage Staff Info');
           return Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
@@ -58,7 +58,8 @@ class Employeepolicy extends GetView<AppDrawerController> {
             child: ExpansionTile(
               initiallyExpanded: isExpanded1,
               onExpansionChanged:
-                  (bool expanded) => controller.toggleTile1('Employee Detail'),
+                  (bool expanded) =>
+                      controller.toggleTile1('Manage Staff Info'),
               leading: Icon(
                 size: iconSize,
                 EneftyIcons.user_bold,
@@ -73,7 +74,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
                   MethodButton3();
                 },
                 child: Text(
-                  'Employee Detail',
+                  'Manage Staff Info',
                   style: TextStyle(
                     fontSize: fontSizeTitle,
                     color:
@@ -94,7 +95,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
                 _buildSubTile(
                   iconSize: iconSize,
                   fontSize: fontSizeBody,
-                  title: 'Employee Profiles',
+                  title: 'Manage Staff Profile',
                   icon: EneftyIcons.user_tick_bold,
                   index: 16,
                   onTap: () => DialogScreen(context, EmployeeProfileWidget()),

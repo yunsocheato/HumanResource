@@ -17,6 +17,7 @@ import '../widgets/drawer_employee_policy.dart';
 import '../widgets/drawer_leave_request.dart';
 import '../widgets/drawer_policy_setup.dart';
 import '../widgets/drawer_reports_policy.dart';
+import 'overview_screen_admin.dart';
 
 class Drawerscreen extends GetView<AppDrawerController> {
   final Widget content;
@@ -308,24 +309,17 @@ class Drawerscreen extends GetView<AppDrawerController> {
           children: [
             SizedBox(child: _buildSearchBox(fontSizeBody)),
             const SizedBox(height: 5),
+            OverviewAdmin(),
             _buildDrawerTile(
-              'Overview',
-              Icons.dashboard_outlined,
-              () => MethodButton15(),
-              index: 0,
-              fontSize: fontSizeBody,
-              iconSize: iconSize,
-            ),
-            _buildDrawerTile(
-              'Dashboard',
+              'Admin Dashboard',
               EneftyIcons.home_2_bold,
-              () => MethodButton1(),
+              () => MethodButton18(),
               index: 24,
               fontSize: fontSizeBody,
               iconSize: iconSize,
             ),
             _buildDrawerTile(
-              'Attendance',
+              'Mange Attendance User',
               EneftyIcons.calendar_2_bold,
               () => MethodButton2(),
               index: 1,
@@ -337,7 +331,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
             Employeepolicy(),
             TableLeaveRequest(),
             _buildDrawerTile(
-              'Setting',
+              'Manage Setting',
               EneftyIcons.setting_3_bold,
               () => DialogScreen(context, SettingScreen()),
               index: 23,

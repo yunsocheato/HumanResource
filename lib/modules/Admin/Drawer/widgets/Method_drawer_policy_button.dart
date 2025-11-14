@@ -35,6 +35,32 @@ Future<void> MethodButton1() async {
   );
   await Future.delayed(const Duration(seconds: 2));
   if (attendanceController.attendanceData.isEmpty) {
+    error.error.value = 'No Overview Data Found';
+    error.buildErrorMessages();
+    await Future.delayed(const Duration(seconds: 1));
+  }
+  loading.isLoading.value = false;
+  if (Get.isDialogOpen ?? false) {
+    Get.back();
+  }
+  Future.microtask(() => Get.offAllNamed('/overview'));
+}
+
+Future<void> MethodButton18() async {
+  final error = Get.put<ErrormessageController>(ErrormessageController());
+  final attendanceController = Get.find<AttendanceController>();
+
+  if (!Get.isRegistered<LoadingUiController>()) {
+    Get.put(LoadingUiController());
+  }
+  final loading = Get.find<LoadingUiController>();
+  loading.isLoading.value = true;
+  Get.dialog(
+    const Dialog(backgroundColor: Colors.transparent, child: LoadingScreen()),
+    barrierDismissible: false,
+  );
+  await Future.delayed(const Duration(seconds: 2));
+  if (attendanceController.attendanceData.isEmpty) {
     error.error.value = 'No Dashboard Data Found';
     error.buildErrorMessages();
     await Future.delayed(const Duration(seconds: 1));
@@ -43,7 +69,7 @@ Future<void> MethodButton1() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(DashboardScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/dashboard'));
 }
 
 Future<void> MethodButton2() async {
@@ -68,7 +94,7 @@ Future<void> MethodButton2() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(AttendanceScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/attendance'));
 }
 
 Future<void> MethodButton3() async {
@@ -94,7 +120,7 @@ Future<void> MethodButton3() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(EmployeeScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/employee'));
 }
 
 Future<void> MethodButton4() async {
@@ -120,7 +146,7 @@ Future<void> MethodButton4() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(DepartmentScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/department'));
 }
 
 Future<void> MethodButton5() async {
@@ -146,7 +172,7 @@ Future<void> MethodButton5() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(LeaveRequest.routeName));
+  Future.microtask(() => Get.offAllNamed('/leave-request'));
 }
 
 Future<void> MethodButton6() async {
@@ -172,7 +198,7 @@ Future<void> MethodButton6() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(EmployeeCheckinScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/employeecheckin'));
 }
 
 Future<void> MethodButton7() async {
@@ -198,7 +224,7 @@ Future<void> MethodButton7() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(EmployeeLateScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/employeelate'));
 }
 
 Future<void> MethodButton8() async {
@@ -224,7 +250,7 @@ Future<void> MethodButton8() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(EmployeeLeaveSummaryScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/employeeleavesummary'));
 }
 
 Future<void> MethodButton9() async {
@@ -250,7 +276,7 @@ Future<void> MethodButton9() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(EmployeeAbsentScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/employeeabsent'));
 }
 
 Future<void> MethodButton10() async {
@@ -276,7 +302,7 @@ Future<void> MethodButton10() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(EmployeeOTScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/employeeot'));
 }
 
 Future<void> MethodButton11() async {
@@ -302,7 +328,7 @@ Future<void> MethodButton11() async {
   if (Get.isDialogOpen ?? false) {
     Get.back();
   }
-  Future.microtask(() => Get.offAllNamed(EmployeeProfileScreen.routeName));
+  Future.microtask(() => Get.offAllNamed('/employeeprofile'));
 }
 
 Future<void> MethodButton12() async {
