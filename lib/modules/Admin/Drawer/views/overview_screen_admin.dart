@@ -120,6 +120,14 @@ class OverviewAdmin extends GetView<AppDrawerController> {
                   index: 102,
                   onTap: () {},
                 ),
+                _buildSubTile(
+                  title: 'Change Password',
+                  fontSize: fontSizeBody,
+                  icon: Boxicons.bx_key,
+                  iconSize: iconSize,
+                  index: 103,
+                  onTap: () {},
+                ),
               ],
             ),
           );

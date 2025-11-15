@@ -20,12 +20,12 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
           iconSize = 28;
           fontSize = 13;
           crossAxisCount = 2;
-          childAspectRatio = 1.3;
+          childAspectRatio = 1.05;
         } else if (maxWidth < 900) {
           iconSize = 35;
           fontSize = 14;
           crossAxisCount = 3;
-          childAspectRatio = 1.0;
+          childAspectRatio = 1.3;
         } else if (maxWidth < 1440) {
           iconSize = 40;
           fontSize = 15;

@@ -55,7 +55,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
           iconSize = 24;
           avatarRadius = 22;
         } else if (isDesktop) {
-          sidebarWidth = 205;
+          sidebarWidth = 230;
           fontSizeTitle = 10;
           fontSizeBody = 10;
           iconSize = 15;
@@ -77,7 +77,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
         final controller1 = Get.find<AppDrawerController>();
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: isMobile ? 60 : 50,
+            toolbarHeight: isMobile ? 60 : 65,
             leading:
                 isMobile
                     ? Builder(

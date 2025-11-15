@@ -1,11 +1,8 @@
 import 'dart:ui';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../../Admin/Drawer/controllers/drawer_controller.dart';
 
 class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
@@ -13,18 +10,39 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final bool isMobile = width < 600;
-    final bool isTablet = width >= 600 && width < 900;
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    final bool isMobile = screenWidth < 600;
+    final bool isTablet = screenWidth >= 600 && screenWidth < 900;
+    final bool isDesktop = screenWidth >= 900 && screenWidth < 1200;
+    final bool isLargeDesktop = screenWidth >= 1200;
+
     final bool showAppBar = isMobile || isTablet;
-    final controller1 = Get.find<AppDrawerController>();
+    final drawerController = Get.find<AppDrawerController>();
+
+    double logoSize =
+        isMobile
+            ? 30
+            : isTablet
+            ? 30
+            : isDesktop
+            ? 30
+            : 30;
+    double fontSize =
+        isMobile
+            ? 12
+            : isTablet
+            ? 14
+            : isDesktop
+            ? 16
+            : 18;
 
     if (showAppBar) {
       return AppBar(
         elevation: 8,
-        shadowColor: Colors.grey.withOpacity(0.5),
-        toolbarHeight: 60,
         backgroundColor: Colors.white,
+        toolbarHeight: 60,
+        shadowColor: Colors.grey.withOpacity(0.5),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
@@ -71,54 +89,51 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       );
-    } else {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            AnimatedBuilder(
-              animation: controller1.blurAnimation,
-              builder: (context, child) {
-                return ImageFiltered(
-                  imageFilter: ImageFilter.blur(
-                    sigmaX: controller1.blurAnimation.value,
-                    sigmaY: controller1.blurAnimation.value,
-                  ),
-                  child: child,
-                );
-              },
-              child: Image.asset(
-                'assets/images/deamlogo.png',
-                height: 45 * 1.7,
-                width: 45 * 1.7,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    'DEAM COMPUTER\nINTERNATIONAL',
-                    textStyle: TextStyle(
-                      fontSize: 23,
-                      color: Colors.blue.shade900,
-                      fontFamily: '7TH.ttf',
-                      fontWeight: FontWeight.bold,
-                    ),
-                    speed: Duration(milliseconds: 100),
-                  ),
-                ],
-                totalRepeatCount: 100,
-                pause: Duration(milliseconds: 1000),
-                displayFullTextOnTap: true,
-              ),
-            ),
-          ],
-        ),
-      );
     }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          AnimatedTextKit(
+            animatedTexts: [
+              TypewriterAnimatedText(
+                'DEAM COMPUTER\nINTERNATIONAL',
+                textStyle: TextStyle(
+                  fontSize: fontSize,
+                  color: Colors.blue.shade900,
+                  fontFamily: '7TH.ttf',
+                  fontWeight: FontWeight.bold,
+                ),
+                speed: const Duration(milliseconds: 100),
+              ),
+            ],
+            totalRepeatCount: 100,
+            pause: const Duration(milliseconds: 1000),
+            displayFullTextOnTap: true,
+          ),
+          const SizedBox(width: 12),
+          AnimatedBuilder(
+            animation: drawerController.blurAnimation,
+            builder: (context, child) {
+              return ImageFiltered(
+                imageFilter: ImageFilter.blur(
+                  sigmaX: drawerController.blurAnimation.value,
+                  sigmaY: drawerController.blurAnimation.value,
+                ),
+                child: child,
+              );
+            },
+            child: Image.asset(
+              'assets/images/deamlogo.png',
+              height: logoSize * 1.7,
+              width: logoSize * 1.7,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
