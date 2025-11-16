@@ -4,6 +4,7 @@ import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Admin/Drawer/controllers/drawer_controller.dart';
+import '../../Admin/Notification/view/notification_screen.dart';
 
 class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
   const DrawerHead({super.key});
@@ -92,48 +93,80 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AnimatedTextKit(
-            animatedTexts: [
-              TypewriterAnimatedText(
-                'DEAM COMPUTER\nINTERNATIONAL',
-                textStyle: TextStyle(
-                  fontSize: fontSize,
-                  color: Colors.blue.shade900,
-                  fontFamily: '7TH.ttf',
-                  fontWeight: FontWeight.bold,
+          Flexible(
+            child: Row(
+              children: [
+                AnimatedBuilder(
+                  animation: drawerController.blurAnimation,
+                  builder: (context, child) {
+                    return ImageFiltered(
+                      imageFilter: ImageFilter.blur(
+                        sigmaX: drawerController.blurAnimation.value,
+                        sigmaY: drawerController.blurAnimation.value,
+                      ),
+                      child: child,
+                    );
+                  },
+                  child: Image.asset(
+                    'assets/images/deamlogo.png',
+                    height: logoSize * 1.5,
+                    width: logoSize * 1.5,
+                  ),
                 ),
-                speed: const Duration(milliseconds: 100),
+
+                const SizedBox(width: 12),
+
+                Flexible(
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      TypewriterAnimatedText(
+                        'DEAM COMPUTER\nINTERNATIONAL',
+                        textStyle: TextStyle(
+                          fontSize: fontSize,
+                          color: Colors.blue.shade900,
+                          fontFamily: '7TH.ttf',
+                          fontWeight: FontWeight.bold,
+                        ),
+                        speed: const Duration(milliseconds: 100),
+                      ),
+                    ],
+                    totalRepeatCount: 100,
+                    pause: const Duration(milliseconds: 1000),
+                    displayFullTextOnTap: true,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              NotificationScreen(roles: ['user']),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue.shade900.withOpacity(0.7),
+                  shape: CircleBorder(
+                    side: BorderSide(color: Colors.blue.shade900, width: 1),
+                  ),
+                  elevation: 25,
+                  shadowColor: Colors.grey,
+                ),
+                onPressed: () {},
+                child: const Icon(
+                  Icons.calendar_month,
+                  size: 25,
+                  color: Colors.white,
+                ),
               ),
             ],
-            totalRepeatCount: 100,
-            pause: const Duration(milliseconds: 1000),
-            displayFullTextOnTap: true,
-          ),
-          const SizedBox(width: 12),
-          AnimatedBuilder(
-            animation: drawerController.blurAnimation,
-            builder: (context, child) {
-              return ImageFiltered(
-                imageFilter: ImageFilter.blur(
-                  sigmaX: drawerController.blurAnimation.value,
-                  sigmaY: drawerController.blurAnimation.value,
-                ),
-                child: child,
-              );
-            },
-            child: Image.asset(
-              'assets/images/deamlogo.png',
-              height: logoSize * 1.7,
-              width: logoSize * 1.7,
-            ),
           ),
         ],
       ),
     );
+    ;
   }
 
   @override

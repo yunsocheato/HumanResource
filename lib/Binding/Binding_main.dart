@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Admin/Notification/controllers/notification_controller.dart';
 import 'package:hrms/modules/AdminDept/controller/attendance_chart_controller.dart';
 import 'package:hrms/modules/AdminDept/controller/attendance_controller.dart';
 import 'package:hrms/modules/AdminDept/controller/bottom_appbar_controller.dart';
@@ -221,5 +222,7 @@ class BindingMain extends Bindings {
     Get.lazyPut<RequestLeaveScreenController>(
       () => RequestLeaveScreenController(),
     );
+    Get.put(NotificationController(), permanent: true);
+    Get.lazyPut<NotificationController>(() => NotificationController());
   }
 }

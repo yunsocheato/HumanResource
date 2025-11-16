@@ -8,14 +8,13 @@ class Skeletonlines extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // Adjust number of columns dynamically
     int columnCount;
     if (screenWidth < 600) {
-      columnCount = 3; // mobile
+      columnCount = 2;
     } else if (screenWidth < 1000) {
-      columnCount = 5; // tablet
+      columnCount = 3;
     } else {
-      columnCount = 8; // desktop/web
+      columnCount = 4;
     }
 
     return SkeletonItem(
@@ -40,10 +39,7 @@ class Skeletonlines extends StatelessWidget {
                     child: SkeletonLine(
                       style: SkeletonLineStyle(
                         height: 16,
-                        width: itemWidth.clamp(
-                          40,
-                          400,
-                        ), // keep width in reasonable range
+                        width: itemWidth.clamp(40, 400),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),

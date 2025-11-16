@@ -10,6 +10,7 @@ import 'package:hrms/Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../../../Core/user_profile_controller.dart';
 import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../../../services/logout_services.dart';
+import '../../Notification/view/notification_screen.dart';
 import '../../SettingScreen/view/setting_screen_Desktop.dart';
 import '../controllers/drawer_controller.dart';
 import '../widgets/Method_drawer_policy_button.dart';
@@ -40,6 +41,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
         double fontSizeTitle;
         double fontSizeBody;
         double iconSize;
+        double iconSize1 = 32;
         double avatarRadius;
 
         if (isMobile) {
@@ -210,18 +212,8 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   );
                 }),
               const SizedBox(width: 20),
-              MouseHover(
-                keyId: 20,
-                controller: controller2,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.notifications,
-                    size: iconSize,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
+              NotificationScreen(roles: ['admin', 'superadmin']),
+              const SizedBox(width: 10),
               if (!isMobile)
                 MouseHover(
                   keyId: 21,
@@ -229,7 +221,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   child: IconButton(
                     icon: Icon(
                       Icons.logout,
-                      size: iconSize,
+                      size: iconSize1,
                       color: Colors.white,
                     ),
                     onPressed: () {
