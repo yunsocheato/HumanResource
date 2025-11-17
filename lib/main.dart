@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hrms/Configuration/configuration_settings.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'Binding/Binding_main.dart';
 import 'Routes/appPage.dart';
@@ -12,7 +13,6 @@ import 'Routes/appRoutes.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-
   await dotenv.load(fileName: ".env");
 
   final supabaseUrl = dotenv.env['SUPABASE_URL'];
@@ -29,6 +29,7 @@ Future<void> main() async {
     return;
   }
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
+  await Configuration.initialize();
 
   if (!kIsWeb && (GetPlatform.isAndroid || GetPlatform.isIOS)) {
     FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
@@ -54,6 +55,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'DeamHR Web',
+
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
       enableLog: true,

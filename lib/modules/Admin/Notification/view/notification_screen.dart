@@ -14,16 +14,20 @@ class NotificationScreen extends GetView<NotificationController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
-      }
+      final user = controller.currentUser.value;
+      if (user == null) return const SizedBox();
 
-      // PopupMenuButton wrapped in Stack for badge
+      // Unread count for the current user only
+      final unreadCount =
+          controller.notifications
+              .where((n) => n.userID == user.id && !(n.isRead ?? false))
+              .length;
+
       return Stack(
         clipBehavior: Clip.none,
         children: [
-          _buildPopupMenuButton(),
-          if (controller.notificationcounts.value > 0)
+          _buildPopupMenuButton(user),
+          if (unreadCount > 0)
             Positioned(
               right: -4,
               top: -4,
@@ -34,7 +38,7 @@ class NotificationScreen extends GetView<NotificationController> {
                   shape: BoxShape.circle,
                 ),
                 child: Text(
-                  '${controller.notificationcounts.value}',
+                  '$unreadCount',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 11,
@@ -48,7 +52,9 @@ class NotificationScreen extends GetView<NotificationController> {
     });
   }
 
-  Widget _buildPopupMenuButton() {
+  Widget _buildPopupMenuButton(user) {
+    final controller2 = Get.find<HoverMouseController>();
+
     Widget iconUser = Container(
       decoration: BoxDecoration(
         color: Colors.blue.shade900.withOpacity(0.7),
@@ -66,7 +72,6 @@ class NotificationScreen extends GetView<NotificationController> {
     );
 
     if (roles.contains("admin") || roles.contains('superadmin')) {
-      final controller2 = Get.find<HoverMouseController>();
       iconAdmin = MouseHover(
         keyId: 20,
         controller: controller2,
@@ -77,20 +82,17 @@ class NotificationScreen extends GetView<NotificationController> {
     Widget icon = roles.contains("user") ? iconUser : iconAdmin;
 
     return PopupMenuButton<int>(
+      onOpened: () {
+        controller.markAllAsRead();
+      },
       offset: const Offset(0, 40),
       color: Colors.transparent,
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       itemBuilder: (_) {
-        final uid = controller.currentUser.value?.id;
         final items =
             controller.notifications
-                .where((n) {
-                  if (uid != null && roles.contains('user')) {
-                    return n.userID == uid;
-                  }
-                  return true;
-                })
+                .where((n) => n.userID == user.id)
                 .take(5)
                 .toList();
 
@@ -118,7 +120,10 @@ class NotificationScreen extends GetView<NotificationController> {
                         padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.only(bottom: 5),
                         decoration: BoxDecoration(
-                          color: Colors.blue.shade200,
+                          color:
+                              e.isRead ?? true
+                                  ? Colors.grey.shade200
+                                  : Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
@@ -139,7 +144,7 @@ class NotificationScreen extends GetView<NotificationController> {
                   TextButton(
                     onPressed: () {
                       Get.back();
-                      _showAllNotifications(controller);
+                      _showAllNotifications(user);
                     },
                     child: const Text(
                       "Show All Notifications",
@@ -156,13 +161,11 @@ class NotificationScreen extends GetView<NotificationController> {
     );
   }
 
-  void _showAllNotifications(NotificationController controller) {
-    final user = controller.currentUser.value;
-    if (user == null) {
-      controller.initializeNotifications(user!.id);
-    } else {
-      Get.snackbar('Error', 'User not loggin');
-    }
+  void _showAllNotifications(user) async {
+    if (user == null) return;
+
+    await controller.fetchAllNotifications();
+
     Get.dialog(
       Dialog(
         child: Container(
@@ -191,9 +194,11 @@ class NotificationScreen extends GetView<NotificationController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {},
-                    label: Text(
-                      'Delete all Notification',
+                    onPressed: () {
+                      controller.deleteAllNotifications();
+                    },
+                    label: const Text(
+                      'Delete all Notifications',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -202,18 +207,10 @@ class NotificationScreen extends GetView<NotificationController> {
               const SizedBox(height: 12),
               Expanded(
                 child: Obx(() {
-                  if (controller.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
+                  // Show only notifications for the current user
                   final items =
-                      controller.allnotifications
-                          .where(
-                            (n) =>
-                                roles.contains('user , admin, superadmin')
-                                    ? n.userID == userId
-                                    : true,
-                          )
+                      controller.allNotifications
+                          .where((n) => n.userID == user.id)
                           .toList();
 
                   if (items.isEmpty) {
@@ -228,7 +225,10 @@ class NotificationScreen extends GetView<NotificationController> {
                         margin: const EdgeInsets.only(bottom: 8),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
+                          color:
+                              item.isRead ?? true
+                                  ? Colors.grey.shade200
+                                  : Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: Colors.blue.shade300),
                         ),
@@ -248,7 +248,7 @@ class NotificationScreen extends GetView<NotificationController> {
                                 ),
                                 PopupMenuButton<int>(
                                   icon: const Icon(
-                                    Icons.list,
+                                    Icons.more_vert,
                                     color: Colors.black,
                                   ),
                                   itemBuilder:
@@ -257,7 +257,9 @@ class NotificationScreen extends GetView<NotificationController> {
                                           value: 1,
                                           child: TextButton(
                                             onPressed: () {
-                                              // Delete notification logic
+                                              controller.deleteNotification(
+                                                item.id ?? '',
+                                              );
                                             },
                                             child: const Text(
                                               "Delete this notification",
@@ -267,7 +269,11 @@ class NotificationScreen extends GetView<NotificationController> {
                                         PopupMenuItem(
                                           value: 2,
                                           child: TextButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              controller.markAsRead(
+                                                item.id ?? '',
+                                              );
+                                            },
                                             child: const Text("Mark as read"),
                                           ),
                                         ),
@@ -275,7 +281,9 @@ class NotificationScreen extends GetView<NotificationController> {
                                           value: 3,
                                           child: TextButton(
                                             onPressed: () {
-                                              // Mark as unread logic
+                                              controller.markAsUnread(
+                                                item.id ?? '',
+                                              );
                                             },
                                             child: const Text("Mark as unread"),
                                           ),
