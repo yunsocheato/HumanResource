@@ -76,7 +76,6 @@ class ApplyLeaveScreenController extends GetxController {
   void onInit() {
     super.onInit();
     loadUserProfile();
-
     debounce(
       Username,
       (value) => fetchSuggestionsLeave(value),
@@ -128,9 +127,9 @@ class ApplyLeaveScreenController extends GetxController {
       if (user == null || user.email == null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showAwesomeSnackBarGetx(
-            'Error',
-            'User Not Loggined',
-            ContentType.failure,
+            'Required',
+            'Please Login User Account',
+            ContentType.help,
           );
         });
         return;

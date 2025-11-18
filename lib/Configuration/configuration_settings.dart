@@ -14,13 +14,13 @@ class Configuration {
 
   static Future<void> initialize() async {
     if (kIsWeb) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showAwesomeSnackBarGetx(
-          "REQUIRED!",
-          "Web Permission Required Notification Alert !",
-          ContentType.help,
-        );
-      });
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      //   showAwesomeSnackBarGetx(
+      //     "REQUIRED!",
+      //     "Web Permission Required Notification Alert !",
+      //     ContentType.help,
+      //   );
+      // });
       return;
     }
 

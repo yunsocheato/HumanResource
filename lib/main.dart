@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hrms/Configuration/configuration_settings.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'Binding/Binding_main.dart';
-import 'Configuration/permission_config/lib/permission_manager_stub.dart';
+import 'Configuration/permission_config/permission_manager_stub.dart';
 import 'Routes/appPage.dart';
 import 'Routes/appRoutes.dart';
 import 'Utils/SnackBar/snack_bar.dart';

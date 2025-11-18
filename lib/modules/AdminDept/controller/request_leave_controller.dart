@@ -2,8 +2,6 @@ import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../Admin/LeaveRequest/API/leave_stream_rpc_sql.dart';
 import '../../Admin/LeaveRequest/Model/apply_leave_model.dart';
 import '../Model/request_leave_model.dart';
 import '../Provider/request_leave_provider.dart';
@@ -63,14 +61,13 @@ class RequestLeaveScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    loadUserProfile();
     Supabase.instance.client.auth.onAuthStateChange.listen((data) {
       final event = data.event;
       final session = data.session;
 
       if (event == AuthChangeEvent.signedIn && session?.user != null) {
         currentUser.value = session!.user;
-        loadUserProfile();
       } else if (event == AuthChangeEvent.signedOut) {
         currentUser.value = null;
         clearUserProfile();

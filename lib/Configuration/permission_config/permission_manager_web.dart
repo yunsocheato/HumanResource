@@ -68,12 +68,10 @@ Future<void> requestWebLocationPermission() async {
 
 Future<void> requestWebStoragePermission() async {
   try {
-    // Create a hidden file input
     final upload = html.FileUploadInputElement();
-    upload.accept = '*/*'; // Accept all file types or specify extensions
-    upload.click(); // Open file picker
+    upload.accept = '*/*';
+    upload.click();
 
-    // Listen when user selects a file
     upload.onChange.listen((event) {
       final files = upload.files;
       if (files != null && files.isNotEmpty) {
