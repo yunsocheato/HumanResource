@@ -1,9 +1,11 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
 import '../../../../Utils/Searchbar/view/search_bar_screen.dart';
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../controller/employee_report_leavesummary_controller.dart';
 import '../utils/ExportExcel3.dart';
@@ -263,12 +265,21 @@ class EmployeeLeaveSummaryScreen extends GetView<leavesummarycontroller> {
                             from: controller.from,
                             to: controller.to,
                           );
-                          Get.snackbar(
-                            'Success',
-                            'Excel exported successfully',
-                          );
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Success",
+                              "Excel Export Successfully",
+                              ContentType.failure,
+                            );
+                          });
                         } catch (e) {
-                          Get.snackbar('Error', 'Export failed: $e');
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Error",
+                              "Error Exported Failed $e",
+                              ContentType.failure,
+                            );
+                          });
                         } finally {
                           controller.isExporting1.value = false;
                         }

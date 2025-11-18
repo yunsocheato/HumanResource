@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/Core/user_profile_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../API/employee_profile_sql.dart';
 import '../models/employee_profile_model.dart';
 
@@ -131,7 +132,13 @@ class EmployeeProfileController extends GetxController {
       _userprofiles.value = profile;
       if (profile != null) mapDataFields(profile);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load profile: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Error',
+          'Failed to Upload the Profiles $e',
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -154,10 +161,22 @@ class EmployeeProfileController extends GetxController {
         selectedUserId = data.user_id;
         adminEditing.value = true;
       } else {
-        Get.snackbar('Error', 'User Not Found');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Error',
+            'User Not Found',
+            ContentType.failure,
+          );
+        });
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load user: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Failed !',
+          'Failed To Load User $e',
+          ContentType.warning,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -171,7 +190,13 @@ class EmployeeProfileController extends GetxController {
       final supabase = Supabase.instance.client;
       final currentUser = supabase.auth.currentUser;
       if (currentUser == null) {
-        Get.snackbar('Error', 'No logged-in user.');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Error',
+            'User Cannot Login',
+            ContentType.failure,
+          );
+        });
         return;
       }
 
@@ -223,10 +248,22 @@ class EmployeeProfileController extends GetxController {
         updates: updates,
       );
 
-      Get.snackbar('Success', 'Profile updated successfully!');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Success',
+          'Profile User Update Sucess',
+          ContentType.success,
+        );
+      });
       isEnabled.value = false;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update profile: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Error',
+          'Failed! The Profile cannot Update $e',
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -237,7 +274,13 @@ class EmployeeProfileController extends GetxController {
       source: ImageSource.gallery,
     );
     if (pickedFile == null) {
-      Get.snackbar('Error', 'No image selected');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Oops!!',
+          'You are Not Select the Image',
+          ContentType.failure,
+        );
+      });
       return;
     }
 
@@ -261,7 +304,13 @@ class EmployeeProfileController extends GetxController {
 
     isEnabled.value = true;
 
-    Get.snackbar('Info', 'New image selected. Press Save Changes to upload.');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAwesomeSnackBarGetx(
+        'Yeahh...',
+        'You are Selected Image , Please Press Save and Change!',
+        ContentType.success,
+      );
+    });
   }
 
   void toggleEnable() => isEnabled.value = !isEnabled.value;

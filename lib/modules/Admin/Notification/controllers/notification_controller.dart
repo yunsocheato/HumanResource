@@ -6,7 +6,7 @@ import '../model/notification_model.dart';
 
 class NotificationController extends GetxController {
   RxList<NotificationModel> notifications = <NotificationModel>[].obs;
-  RxList<NotificationModel> allNotifications = <NotificationModel>[].obs; // all
+  RxList<NotificationModel> allNotifications = <NotificationModel>[].obs;
   RxInt unreadCount = 0.obs;
   Rxn<User> currentUser = Rxn<User>();
   final ValueNotifier<bool> hasNewNotification = ValueNotifier(false);

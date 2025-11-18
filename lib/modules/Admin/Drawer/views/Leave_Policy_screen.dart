@@ -1,6 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../controllers/Leave_Policy_controller.dart';
 
 class LeavePolicy extends GetView<LeavePolicyController> {
@@ -402,15 +404,15 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                   child: const Text('Create'),
                                   onPressed: () async {
                                     await controller.InsertData();
-                                    Get.snackbar(
-                                      'New Create',
-                                      'Access Leave Policy on: ${controller.Username.value} Successfully',
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.3,
-                                      ),
-                                      colorText: Colors.black,
-                                    );
+                                    WidgetsBinding.instance.addPostFrameCallback((
+                                      _,
+                                    ) {
+                                      showAwesomeSnackBarGetx(
+                                        "Setup Policy",
+                                        "You are Create Leave Policy on Username : ${controller.Username.value} Successfully",
+                                        ContentType.success,
+                                      );
+                                    });
                                     Get.close(0);
                                   },
                                 ),

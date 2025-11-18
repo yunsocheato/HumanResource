@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:hrms/modules/Admin/Drawer/API/manage_user_sql.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -86,10 +88,22 @@ class ManageUsersController extends GetxController {
       if (data != null) {
         mapDataFields(data, fieldIndex);
       } else {
-        Get.snackbar('Error', 'User Not Found');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Error',
+            'User Not Found',
+            ContentType.failure,
+          );
+        });
       }
     } catch (e) {
-      Get.snackbar("Error", "Failed to load user: $e");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'FAILED !!',
+          'Failed! Data User Not Load $e',
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -105,7 +119,14 @@ class ManageUsersController extends GetxController {
       final headpositions = headposition.text.trim();
 
       if (name.isEmpty) {
-        Get.snackbar('Error', 'Name cannot be empty');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Error !!',
+            'Name Cannot Empty',
+            ContentType.failure,
+          );
+        });
+
         return;
       }
 
@@ -118,9 +139,17 @@ class ManageUsersController extends GetxController {
         'created_at': DateTime.now().toIso8601String(),
       });
 
-      Get.snackbar('Success', 'User created successfully');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'SUCCESSFULLY',
+          'The user is Create Success',
+          ContentType.success,
+        );
+      });
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx("Error", e.toString(), ContentType.failure);
+      });
     } finally {
       isLoading.value = false;
     }

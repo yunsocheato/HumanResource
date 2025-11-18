@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../API/employee_policy_sql.dart';
@@ -49,11 +51,23 @@ class EmployeePolicyController extends GetxController {
       if (data != null) {
         mapDataFields(data);
       } else {
-        Get.snackbar('Error', 'User Not Found');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Try Again !! ',
+            'Try to load user: $name',
+            ContentType.warning,
+          );
+        });
         clearDataFields();
       }
     } catch (e) {
-      Get.snackbar("Error", "Failed to load user: $e");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'FAILED !! ',
+          'User Cannot Load : $e',
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -77,19 +91,39 @@ class EmployeePolicyController extends GetxController {
           })
           .eq('name', NameController.text);
       if (NameController.text.isEmpty || NameController.text == '*') {
-        Get.snackbar('Error', 'Invalid or missing user ID or Name');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Try Again',
+            'Invalid or missing user ID or Name',
+            ContentType.warning,
+          );
+        });
         return;
       }
-
-      Get.snackbar(
-        'Success',
-        'Access Feature Policy for ${NameController.text} has been saved successfully.',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.white.withOpacity(0.3),
-        colorText: Colors.black,
-      );
+      if (response.error != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Try Again !! ',
+            'Try Again to update Access feature policy: ${response.error}',
+            ContentType.failure,
+          );
+        });
+      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Success',
+          'Access Feature Policy for ${NameController.text} has been saved successfully.',
+          ContentType.failure,
+        );
+      });
     } catch (e) {
-      Get.snackbar("Error", "Failed to insert data: $e");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'FAILED !! ',
+          'Failed to save access feature policy: $e',
+          ContentType.failure,
+        );
+      });
     }
   }
 

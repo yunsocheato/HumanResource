@@ -1,11 +1,11 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/AdminDept/view/overview_screen.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import '../../../../Permission/Permission.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
 import '../../../../services/login_service.dart';
-import '../../Dashboard/views/dashboard_screen.dart';
 
 class LoginController extends GetxController with SingleGetTickerProviderMixin {
   final TextEditingController emailController = TextEditingController();
@@ -52,7 +52,9 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
     } catch (e) {
       Get.find<LoadingUiController>().terminateLoading();
       Loading.value = e.toString();
-      Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx('Error', e.toString(), ContentType.failure);
+      });
     }
   }
 

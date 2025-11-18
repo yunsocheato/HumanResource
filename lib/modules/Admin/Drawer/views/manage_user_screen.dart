@@ -1,6 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:hrms/modules/Admin/Drawer/controllers/manage_users_controller.dart';
 
 class ManageUserScreen extends GetView<ManageUsersController> {
@@ -115,15 +117,15 @@ class ManageUserScreen extends GetView<ManageUsersController> {
                                   child: const Text('CREATE'),
                                   onPressed: () async {
                                     await controller.createManageUser();
-                                    Get.snackbar(
-                                      'New Create User',
-                                      'Set up New Account on : ${controller.NameController.text} Successfully',
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.3,
-                                      ),
-                                      colorText: Colors.black,
-                                    );
+                                    WidgetsBinding.instance.addPostFrameCallback((
+                                      _,
+                                    ) {
+                                      showAwesomeSnackBarGetx(
+                                        "Manage User",
+                                        "Set up Manage Username : ${controller.NameController.text} Successfully",
+                                        ContentType.success,
+                                      );
+                                    });
                                     Get.close(0);
                                   },
                                 ),
@@ -217,15 +219,15 @@ class ManageUserScreen extends GetView<ManageUsersController> {
                                   child: const Text('CREATE'),
                                   onPressed: () async {
                                     await controller.createManageUser();
-                                    Get.snackbar(
-                                      'New Policy User',
-                                      'Set up New Policy User on : ${controller.NameController.text} Successfully',
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.3,
-                                      ),
-                                      colorText: Colors.black,
-                                    );
+                                    WidgetsBinding.instance.addPostFrameCallback((
+                                      _,
+                                    ) {
+                                      showAwesomeSnackBarGetx(
+                                        "Manage User",
+                                        "Set up Manage Username : ${controller.NameController.text} Successfully",
+                                        ContentType.success,
+                                      );
+                                    });
                                     Get.close(0);
                                   },
                                 ),

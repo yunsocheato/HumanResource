@@ -71,6 +71,7 @@ dependencies:
   get_storage: ^2.1.1
   flutter_local_notifications: ^19.5.0
   win_toast: ^0.4.0
+  awesome_snackbar_content: ^0.1.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -127,7 +128,7 @@ flutter:
     - assets/icon/hospital.png
     - assets/icon/school.png
     - assets/icon/wallet.png
-    - ios/Runner/Resources/defualt_notification_send.wav
+#    - assets/sound/default_notification_send.wav
     - .env
     - assets/Fonts/
 

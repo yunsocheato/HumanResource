@@ -1,4 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../SnackBar/snack_bar.dart';
 
 class SearchBarController extends GetxController {
   final RxString searchQuery = ''.obs;
@@ -25,9 +29,10 @@ class SearchBarController extends GetxController {
       hasMorePages.value = true;
 
       final dummyData = List.generate(100, (index) => 'Item $index');
-      final filtered = dummyData
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      final filtered =
+          dummyData
+              .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+              .toList();
 
       totalItems.value = filtered.length;
 
@@ -38,7 +43,13 @@ class SearchBarController extends GetxController {
     } catch (e) {
       hasError.value = true;
       errorMessage.value = 'An error occurred while searching.';
-      Get.snackbar('Error', errorMessage.value);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          "Error ",
+          "Erorr $errorMessage",
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
       isSearching.value = false;
@@ -52,6 +63,6 @@ class SearchBarController extends GetxController {
       if (query.toString().isNotEmpty) {
         search(query.toString());
       }
-    }, condition : const Duration(milliseconds: 500));
+    }, condition: const Duration(milliseconds: 500));
   }
 }

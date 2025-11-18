@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:intl/intl.dart';
 import '../../../../Utils/Searchbar/view/search_bar_screen.dart';
 import '../controllers/attendance_widget_controller.dart';
@@ -103,10 +105,13 @@ class AttendanceFilterView extends GetView<AttendanceController> {
                           ),
                         );
                       } else if (newValue == 'Image') {
-                        Get.snackbar(
-                          'Coming Soon',
-                          'This feature is coming soon',
-                        );
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          showAwesomeSnackBarGetx(
+                            "Developed Mode",
+                            "We are Sorry this Widget Still in Development",
+                            ContentType.success,
+                          );
+                        });
                       }
                     }
                   },
@@ -182,7 +187,13 @@ class AttendanceFilterView extends GetView<AttendanceController> {
                   () => exportToExcel(attendaData: controller.attendanceData),
                 );
               } else if (newValue == 'Image') {
-                Get.snackbar('Coming Soon', 'Image export is coming soon');
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  showAwesomeSnackBarGetx(
+                    'Development',
+                    'We are Sorry this Widget Still in Development Mode',
+                    ContentType.success,
+                  );
+                });
               }
             }
           },

@@ -1,5 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../API/attendance_stream_api_sql.dart';
 import '../utils/ExportExcel.dart';
 import '../utils/ExportPDF.dart';
@@ -58,7 +61,13 @@ class AttendanceController extends GetxController {
       attendanceData.value = data;
       dataSource.value = DataTableSourceAttendance(data);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch attendance data');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          "ERORR DATA !",
+          "Cannot Load Attendance Data",
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }

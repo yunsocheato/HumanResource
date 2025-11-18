@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../API/OT_SQL.dart';
 import '../Model/OT_Model.dart';
 
-class OTPolicyController extends GetxController{
+class OTPolicyController extends GetxController {
   final OTPolicySql _sql = OTPolicySql();
   var suggestionList = <String>[].obs;
 
@@ -16,7 +16,7 @@ class OTPolicyController extends GetxController{
   final isLoading = false.obs;
   final isSwitched1 = false.obs;
   final isSwitched2 = false.obs;
-  final isSwitched3= false.obs;
+  final isSwitched3 = false.obs;
 
   final Username = ''.obs;
   final userID = ''.obs;
@@ -31,13 +31,13 @@ class OTPolicyController extends GetxController{
 
   @override
   void onInit() {
-   super.onInit();
-   debounce(Username, (value) {
-     fetchSuggestionsOTPolicy(value);
-   }, time: Duration(milliseconds: 300));
+    super.onInit();
+    debounce(Username, (value) {
+      fetchSuggestionsOTPolicy(value);
+    }, time: Duration(milliseconds: 300));
   }
 
- Future<void> fetchUserByOTPolicy(String name) async {
+  Future<void> fetchUserByOTPolicy(String name) async {
     try {
       isLoading.value = true;
       final user = await OTPolicySql().fetchUserByOTPolicy(name);
@@ -46,49 +46,76 @@ class OTPolicyController extends GetxController{
         ifTechnical.value = user.ifTechnical ?? false;
         ifNonTechnical.value = user.ifNonTechnical ?? false;
         usercannotchange.value = user.usercannotchange ?? false;
-        usercanchange.value = user.usercannotchange ?? false ;
+        usercanchange.value = user.usercannotchange ?? false;
         userID.value = user.userID ?? '';
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch user: $e',
-          snackPosition: SnackPosition.BOTTOM);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Error !!',
+          'Failed to Fetch $e',
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
- }
+  }
 
- Future<void> fetchSuggestionsOTPolicy(String query) async {
+  Future<void> fetchSuggestionsOTPolicy(String query) async {
     suggestionList.value = await _sql.fetchUsernameSuggestionsOTPolicy(query);
   }
 
   Future<void> InsertData() async {
     try {
       isLoading.value = true;
-      final response = await Supabase.instance.client.from('ot_policy').insert({
-        'user_id': userID.value,
-        'name': Username.value,
-        'technical': ifTechnical.value,
-        'nontechnical': ifNonTechnical.value,
-        'usercannotchange': usercannotchange.value,
-        'usercanchange': usercanchange.value,
-        'created_at': DateTime.now().toIso8601String(),
-      }).select();
+      final response =
+          await Supabase.instance.client.from('ot_policy').insert({
+            'user_id': userID.value,
+            'name': Username.value,
+            'technical': ifTechnical.value,
+            'nontechnical': ifNonTechnical.value,
+            'usercannotchange': usercannotchange.value,
+            'usercanchange': usercanchange.value,
+            'created_at': DateTime.now().toIso8601String(),
+          }).select();
       if (response.isNotEmpty) {
-        Get.snackbar('Success', 'Data inserted successfully',
-            snackPosition: SnackPosition.BOTTOM);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            "Database!",
+            "Data Insert Successful",
+            ContentType.success,
+          );
+        });
       } else {
-        Get.snackbar('Error', 'Failed to insert data',
-            snackPosition: SnackPosition.BOTTOM);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            "Data Error",
+            "Failed To Insert Data",
+            ContentType.failure,
+          );
+        });
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to insert data: $e',
-          snackPosition: SnackPosition.BOTTOM);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          "Database Error!",
+          "Failed to Insert Data $e",
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
-      Get.snackbar('Success', 'Data inserted successfully',
-          snackPosition: SnackPosition.BOTTOM);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          "Database ",
+          "Insert Data Successfully",
+          ContentType.success,
+        );
+      });
     }
   }
+
   void ClearDataFields() {
     userID.value = '';
     Username.value = '';
@@ -106,5 +133,4 @@ class OTPolicyController extends GetxController{
     usercannotchange.value = data.usercannotchange ?? false;
     usercanchange.value = !usercannotchange.value;
   }
-
 }

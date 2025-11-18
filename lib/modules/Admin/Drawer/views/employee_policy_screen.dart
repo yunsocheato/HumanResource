@@ -1,6 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../controllers/employee_policy_controller.dart';
 
 class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
@@ -98,15 +100,15 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                                   child: const Text('UPDATE'),
                                   onPressed: () async {
                                     await controller.UpdateChange();
-                                    Get.snackbar(
-                                      'New Update',
-                                      'Update UserInfo on: ${controller.NameController.text} Successfully',
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.3,
-                                      ),
-                                      colorText: Colors.black,
-                                    );
+                                    WidgetsBinding.instance.addPostFrameCallback((
+                                      _,
+                                    ) {
+                                      showAwesomeSnackBarGetx(
+                                        "Success Update",
+                                        "Update UserInfo on: ${controller.NameController.text} Successfully",
+                                        ContentType.success,
+                                      );
+                                    });
                                     Get.close(0);
                                   },
                                 ),
@@ -202,15 +204,16 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                                   child: const Text('UPDATE'),
                                   onPressed: () async {
                                     await controller.UpdateChange();
-                                    Get.snackbar(
-                                      'UPDATE',
-                                      'Update UserInfo on: ${controller.NameController.text} Successfully',
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.3,
-                                      ),
-                                      colorText: Colors.black,
-                                    );
+                                    WidgetsBinding.instance.addPostFrameCallback((
+                                      _,
+                                    ) {
+                                      showAwesomeSnackBarGetx(
+                                        "UPDATE!",
+                                        "Update UserInfo on: ${controller.Username.value} Successfully",
+                                        ContentType.success,
+                                      );
+                                    });
+
                                     Get.close(0);
                                   },
                                 ),

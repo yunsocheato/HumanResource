@@ -11,7 +11,8 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isMobile = constraints.maxWidth < 600;
-        final isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 1024;
+        final isTablet =
+            constraints.maxWidth >= 600 && constraints.maxWidth < 1024;
         final isDesktop = constraints.maxWidth >= 1024;
         if (isMobile) {
           return buildOBxResponsiveColumn(context);
@@ -22,9 +23,10 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
         } else {
           return buildOBxResponsiveRow(context);
         }
-      }
+      },
     );
   }
+
   Widget buildOBxResponsiveRow(BuildContext context) {
     final controller = Get.find<RecentlyControllerScreen>();
     return SizedBox(
@@ -63,8 +65,7 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                       Text(
                         'Employees Distribution',
                         style: TextStyle(
-                          color:
-                          Colors.white,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
@@ -88,14 +89,12 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: SingleChildScrollView(
-                        scrollDirection:
-                        Axis.horizontal,
+                        scrollDirection: Axis.horizontal,
                         child: ConstrainedBox(
                           constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width - 40,
                           ),
                           child: DataTable(
-
                             columns: const [
                               DataColumn(label: Text('Name')),
                               DataColumn(label: Text('Position')),
@@ -103,17 +102,19 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                               DataColumn(label: Text('Join Date')),
                             ],
                             rows:
-                            controller.users.map((user) {
-                              final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(user.created_at);
-                              return DataRow(
-                                cells: [
-                                  DataCell(Text(user.name)),
-                                  DataCell(Text(user.position)),
-                                  DataCell(Text(user.id_card)),
-                                  DataCell(Text(formattedDate)),
-                                ],
-                              );
-                            }).toList(),
+                                controller.users.map((user) {
+                                  final formattedDate = DateFormat(
+                                    'yyyy-MM-dd HH:mm',
+                                  ).format(user.created_at);
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(user.name)),
+                                      DataCell(Text(user.position)),
+                                      DataCell(Text(user.id_card)),
+                                      DataCell(Text(formattedDate)),
+                                    ],
+                                  );
+                                }).toList(),
                           ),
                         ),
                       ),
@@ -127,6 +128,7 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
       ),
     );
   }
+
   Widget buildOBxResponsiveColumn(BuildContext context) {
     final controller = Get.find<RecentlyControllerScreen>();
     return Padding(
@@ -136,13 +138,14 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
         width: double.infinity,
         child: Card(
           color: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           elevation: 6,
           shadowColor: Colors.grey.withOpacity(0.5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header container with gradient background
               Container(
                 height: 60,
                 width: double.infinity,
@@ -193,59 +196,62 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
                       childAspectRatio: 1,
                     ),
                     itemCount: controller.users.length,
-                      itemBuilder: (context, index) {
-                        final user = controller.users[index];
-                        return Card(
-                          elevation: 2,
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircleAvatar(
-                                  radius: 24,
-                                  backgroundColor: user.iconBgColor ?? Colors.grey.shade100,
-                                  child: Icon(
-                                    user.icon ?? Icons.person,
-                                    color: user.iconColor ?? Colors.blue,
-                                    size: 28,
+                    itemBuilder: (context, index) {
+                      final user = controller.users[index];
+                      return Card(
+                        elevation: 2,
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircleAvatar(
+                                radius: 24,
+                                backgroundColor:
+                                    user.iconBgColor ?? Colors.grey.shade100,
+                                child: Icon(
+                                  user.icon ?? Icons.person,
+                                  color: user.iconColor ?? Colors.blue,
+                                  size: 28,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Flexible(
+                                child: Text(
+                                  user.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                Flexible(
-                                  child: Text(
-                                    user.name,
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  user.position,
-                                  style: const TextStyle(fontSize: 12),
+                                  textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                Text(
-                                  user.id_card,
-                                  style: const TextStyle(fontSize: 12),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  user.created_at.toString(),
-                                  style: const TextStyle(fontSize: 12),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                user.position,
+                                style: const TextStyle(fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                user.id_card,
+                                style: const TextStyle(fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                user.created_at.toString(),
+                                style: const TextStyle(fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
-                        );
-                      },
+                        ),
+                      );
+                    },
                   );
                 }),
               ),
@@ -255,5 +261,4 @@ class Recentlyscreen1 extends GetView<RecentlyControllerScreen> {
       ),
     );
   }
-
 }

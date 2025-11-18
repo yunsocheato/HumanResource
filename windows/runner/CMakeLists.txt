@@ -6,6 +6,7 @@ project(runner LANGUAGES CXX)
 # work.
 #
 # Any new source files that you add to the application should be added here.
+
 add_executable(${BINARY_NAME} WIN32
   "flutter_window.cpp"
   "main.cpp"
@@ -15,6 +16,14 @@ add_executable(${BINARY_NAME} WIN32
   "Runner.rc"
   "runner.exe.manifest"
 )
+
+set(RESOURCES
+        "resources/default_notification_send.wav"
+)
+
+foreach(resource ${RESOURCES})
+    target_sources(${BINARY_NAME} PRIVATE ${resource})
+endforeach()
 
 # Apply the standard set of build settings. This can be removed for applications
 # that need different build settings.

@@ -16,8 +16,6 @@ class NotificationScreen extends GetView<NotificationController> {
     return Obx(() {
       final user = controller.currentUser.value;
       if (user == null) return const SizedBox();
-
-      // Unread count for the current user only
       final unreadCount =
           controller.notifications
               .where((n) => n.userID == user.id && !(n.isRead ?? false))

@@ -1,6 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../API/leave_screen_sql.dart';
@@ -124,7 +126,13 @@ class ApplyLeaveScreenController extends GetxController {
 
       final user = Supabase.instance.client.auth.currentUser;
       if (user == null || user.email == null) {
-        Get.snackbar('Error', 'User not logged in!');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Error',
+            'User Not Loggined',
+            ContentType.failure,
+          );
+        });
         return;
       }
 
@@ -146,7 +154,13 @@ class ApplyLeaveScreenController extends GetxController {
         // joinDateController.text = profile.join_date ?? '';
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load profile: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Failed',
+          'Failed to Load Profile $e',
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -167,10 +181,22 @@ class ApplyLeaveScreenController extends GetxController {
       if (data != null) {
         mapDataFields(data);
       } else {
-        Get.snackbar('Error', 'User Not Found');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Error',
+            'User Not Found',
+            ContentType.failure,
+          );
+        });
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load user: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Failed',
+          'Failed to Load Profile $e',
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }

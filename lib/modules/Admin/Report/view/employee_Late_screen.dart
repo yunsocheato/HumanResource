@@ -1,9 +1,11 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
 import '../../../../Utils/Searchbar/view/search_bar_screen.dart';
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../controller/employee_report_controller2.dart';
 import '../utils/ExportExcel2.dart';
@@ -252,12 +254,21 @@ class EmployeeLateScreen extends GetView<EmployeeReportController2> {
                         controller.isExporting1.value = true;
                         try {
                           await ExportExcel2();
-                          Get.snackbar(
-                            'Success',
-                            'Excel exported successfully',
-                          );
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Success",
+                              "File Export Successfully",
+                              ContentType.success,
+                            );
+                          });
                         } catch (e) {
-                          Get.snackbar('Error', 'Export failed: $e');
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Error",
+                              "Export Failed $e",
+                              ContentType.failure,
+                            );
+                          });
                         } finally {
                           controller.isExporting1.value = false;
                         }

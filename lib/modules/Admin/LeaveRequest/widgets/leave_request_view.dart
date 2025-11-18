@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:intl/intl.dart';
 import '../../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../controllers/leave_controller.dart';
 import '../views/Leave_view_filter.dart';
 
@@ -206,15 +208,27 @@ class leaverequesttable extends GetView<LeaveController> {
                                                     request['request_id'],
                                                     'approved',
                                                   );
-                                                  Get.snackbar(
-                                                    'Success',
-                                                    'Request approved',
-                                                  );
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback((
+                                                        _,
+                                                      ) {
+                                                        showAwesomeSnackBarGetx(
+                                                          'Success',
+                                                          'Request Approved',
+                                                          ContentType.success,
+                                                        );
+                                                      });
                                                 } catch (e) {
-                                                  Get.snackbar(
-                                                    'Error',
-                                                    'Error: $e',
-                                                  );
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback((
+                                                        _,
+                                                      ) {
+                                                        showAwesomeSnackBarGetx(
+                                                          "Error",
+                                                          "Error $e",
+                                                          ContentType.failure,
+                                                        );
+                                                      });
                                                 }
                                               },
                                             ),
@@ -230,15 +244,27 @@ class leaverequesttable extends GetView<LeaveController> {
                                                     request['request_id'],
                                                     'rejected',
                                                   );
-                                                  Get.snackbar(
-                                                    'Success',
-                                                    'Request rejected',
-                                                  );
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback((
+                                                        _,
+                                                      ) {
+                                                        showAwesomeSnackBarGetx(
+                                                          "Request",
+                                                          "Request Rejected",
+                                                          ContentType.failure,
+                                                        );
+                                                      });
                                                 } catch (e) {
-                                                  Get.snackbar(
-                                                    'Error',
-                                                    'Error: $e',
-                                                  );
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback((
+                                                        _,
+                                                      ) {
+                                                        showAwesomeSnackBarGetx(
+                                                          "Error",
+                                                          "Error $e",
+                                                          ContentType.failure,
+                                                        );
+                                                      });
                                                 }
                                               },
                                             ),
@@ -353,9 +379,21 @@ class leaverequesttable extends GetView<LeaveController> {
                             request['request_id'],
                             'approved',
                           );
-                          Get.snackbar('Success', 'Request approved');
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Success",
+                              "Request Approved",
+                              ContentType.success,
+                            );
+                          });
                         } catch (e) {
-                          Get.snackbar('Error', 'Error: $e');
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Error",
+                              "Error $e",
+                              ContentType.failure,
+                            );
+                          });
                         }
                       },
                     ),
@@ -373,9 +411,21 @@ class leaverequesttable extends GetView<LeaveController> {
                             request['request_id'],
                             'rejected',
                           );
-                          Get.snackbar('Success', 'Request rejected');
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Request",
+                              "Request Rejected",
+                              ContentType.failure,
+                            );
+                          });
                         } catch (e) {
-                          Get.snackbar('Error', 'Error: $e');
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Error",
+                              "Error $e",
+                              ContentType.failure,
+                            );
+                          });
                         }
                       },
                     ),

@@ -1,8 +1,10 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
+import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../controllers/OT_policy_controller.dart';
 
 class OTPolicyScreen extends GetView<OTPolicyController> {
@@ -208,15 +210,15 @@ class OTPolicyScreen extends GetView<OTPolicyController> {
                                   child: const Text('Create'),
                                   onPressed: () async {
                                     await controller.InsertData();
-                                    Get.snackbar(
-                                      'New Create',
-                                      'Access OT Policy on: ${controller.Username.value} Successfully',
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.3,
-                                      ),
-                                      colorText: Colors.black,
-                                    );
+                                    WidgetsBinding.instance.addPostFrameCallback((
+                                      _,
+                                    ) {
+                                      showAwesomeSnackBarGetx(
+                                        "Setup Policy",
+                                        "You are Create Policy on Username : ${controller.Username.value} Successfully",
+                                        ContentType.success,
+                                      );
+                                    });
                                     Get.close(0);
                                   },
                                 ),

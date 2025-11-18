@@ -1,6 +1,10 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+
+import '../Utils/SnackBar/snack_bar.dart';
 
 class Configuration {
   static final FlutterLocalNotificationsPlugin _plugin =
@@ -10,10 +14,13 @@ class Configuration {
 
   static Future<void> initialize() async {
     if (kIsWeb) {
-      Get.snackbar(
-        'Permission Required',
-        "Web notifications require browser permissions",
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          "REQUIRED!",
+          "Web Permission Required Notification Alert !",
+          ContentType.help,
+        );
+      });
       return;
     }
 
@@ -31,7 +38,7 @@ class Configuration {
       appName: 'DEAM HR',
       appUserModelId: 'com.deam.hr',
       guid: '123e4567-e89b-12d3-a456-426614174000',
-      iconPath: '@mipmap/ic_launcher',
+      iconPath: 'windows/runner/resources/app_icon.ico',
     );
 
     const initializationSettings = InitializationSettings(

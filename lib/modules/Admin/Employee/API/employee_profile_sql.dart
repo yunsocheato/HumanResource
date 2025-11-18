@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/employee_profile_model.dart';
 
@@ -83,7 +86,13 @@ class EmployeeProfilesql {
                 .maybeSingle();
 
         if (existingEmail != null && existingEmail['user_id'] != targetUserId) {
-          Get.snackbar('Error', 'Email already in use by another account.');
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            showAwesomeSnackBarGetx(
+              'Error',
+              'The email already used',
+              ContentType.failure,
+            );
+          });
           return;
         }
       }
@@ -100,13 +109,24 @@ class EmployeeProfilesql {
         throw Exception('Update failed: User not found or no rows updated.');
       }
     } on PostgrestException catch (e) {
-      Get.snackbar('Database Error', e.message);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Error',
+          'Database Error ${e.message}',
+          ContentType.failure,
+        );
+      });
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update profile: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Failed',
+          'Cannot Update The Profiles!',
+          ContentType.warning,
+        );
+      });
     }
   }
 
-  /// Upload image to Supabase Storage
   Future<String> uploadImage(XFile file) async {
     try {
       final fileName =

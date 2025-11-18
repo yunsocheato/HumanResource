@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,8 +8,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hrms/Configuration/configuration_settings.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'Binding/Binding_main.dart';
+import 'Configuration/permission_config/lib/permission_manager_stub.dart';
 import 'Routes/appPage.dart';
 import 'Routes/appRoutes.dart';
+import 'Utils/SnackBar/snack_bar.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,15 +28,29 @@ Future<void> main() async {
       bucket1 == null ||
       bucket2 == null ||
       bucket3 == null) {
-    Get.snackbar('Error', 'Data environment variables are missing!');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAwesomeSnackBarGetx(
+        "Error",
+        "Data Enviroment are Missing, Please Try again later",
+        ContentType.failure,
+      );
+    });
     return;
   }
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
+
   await Configuration.initialize();
+
+  await askAllPermissions();
 
   if (!kIsWeb && (GetPlatform.isAndroid || GetPlatform.isIOS)) {
     FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
   }
+  FlutterError.onError = (FlutterErrorDetails details) {
+    print("🔥 FLUTTER ERROR:");
+    print(details.exceptionAsString());
+    print(details.stack);
+  };
 
   runApp(const MyApp());
 

@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:intl/intl.dart';
 import '../../../../Utils/Network/Method/method_internet_connection.dart';
 import '../API/employee_report_sql4.dart';
@@ -97,7 +99,9 @@ class EmployeeReportController3 extends GetxController {
       hasMoreData = newData.length == pageSize;
       currentPage = page;
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx('Error', e.toString(), ContentType.failure);
+      });
     } finally {
       isLoading.value = false;
     }

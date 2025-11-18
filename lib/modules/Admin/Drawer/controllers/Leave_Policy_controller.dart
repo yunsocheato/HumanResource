@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../API/leave_policy_sql.dart';
 import '../Model/leave_policy_model.dart';
@@ -57,11 +59,23 @@ class LeavePolicyController extends GetxController {
         Username.value = data.name ?? '';
       } else {
         clearData();
-        Get.snackbar('Error', 'User Not Found');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            "Error!!",
+            "User not found",
+            ContentType.failure,
+          );
+        });
       }
     } catch (e) {
       clearData();
-      Get.snackbar("Error", "Failed to load user: $e");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          "Error!!",
+          "Failed to fetch user data: $e",
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -91,16 +105,22 @@ class LeavePolicyController extends GetxController {
           }).select();
 
       if (response.isNotEmpty) {
-        Get.snackbar(
-          'Success',
-          'Leave Policy for ${Username.value} has been saved successfully.',
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.white.withOpacity(0.5),
-          colorText: Colors.black,
-        );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            "Success!!",
+            'Leave Policy for ${Username.value} has been saved successfully.',
+            ContentType.success,
+          );
+        });
       }
     } catch (e) {
-      Get.snackbar("Error", "Failed to insert data: $e");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          "Error!!",
+          'Failed to save leave policy: $e',
+          ContentType.failure,
+        );
+      });
       clearData();
     } finally {
       clearData();

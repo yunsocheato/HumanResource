@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-class AppDrawerController extends GetxController with SingleGetTickerProviderMixin  {
+
+class AppDrawerController extends GetxController
+    with SingleGetTickerProviderMixin {
   var selectedIndex = 0.obs;
   var loadingTile = ''.obs;
   var expandedTile = ''.obs;
@@ -29,9 +31,9 @@ class AppDrawerController extends GetxController with SingleGetTickerProviderMix
 
   void toggleTile1(String title) {
     if (expandedTile.value == title) {
-      expandedTile.value = ''; // Collapse if same tile tapped again
+      expandedTile.value = '';
     } else {
-      expandedTile.value = title; // Expand new tile
+      expandedTile.value = title;
     }
   }
 
@@ -45,10 +47,9 @@ class AppDrawerController extends GetxController with SingleGetTickerProviderMix
 
   void setSelected(int index) {
     selectedIndex.value = index;
-
   }
 
-  Color iconColor(int index){
+  Color iconColor(int index) {
     return selectedIndex.value == index ? Selectedcolors : Unselectedcolors;
   }
 
@@ -66,9 +67,10 @@ class AppDrawerController extends GetxController with SingleGetTickerProviderMix
       vsync: this,
     )..repeat(reverse: true);
 
-    blurAnimation = Tween<double>(begin: 0.0, end: 10.0).animate(
-      CurvedAnimation(parent: controller1, curve: Curves.easeInOut),
-    );
+    blurAnimation = Tween<double>(
+      begin: 0.0,
+      end: 10.0,
+    ).animate(CurvedAnimation(parent: controller1, curve: Curves.easeInOut));
   }
 
   @override

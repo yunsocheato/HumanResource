@@ -1,22 +1,26 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import '../../../../Configuration/configuration_settings.dart';
+import '../controllers/notification_controller.dart';
 import '../model/notification_model.dart';
 import 'package:get/get.dart';
 
 class NotificationService {
+  final controller = Get.put(NotificationController());
+
   static Future<void> showNotification(NotificationModel notification) async {
     if (kIsWeb) {
-      Get.snackbar(
-        "${notification.title} from ${notification.name ?? ""} Dept: ${notification.department ?? ""}",
-        notification.body ?? "",
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.blue,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 5),
-        animationDuration: const Duration(milliseconds: 500),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          "Notification"
+          "You are ${notification.title} , Your Status is : ${notification.status ?? ""}",
+          notification.body,
+          ContentType.success,
+        );
+      });
       return;
     }
 
@@ -32,18 +36,18 @@ class NotificationService {
       showWhen: true,
       enableVibration: true,
       icon: '@mipmap/ic_launcher',
-      sound: RawResourceAndroidNotificationSound('defualt_notification_send'),
+      sound: RawResourceAndroidNotificationSound('default_notification_send'),
     );
 
     final windowsDetails = WindowsNotificationDetails(
-      audio: WindowsNotificationAudio.asset('defualt_notification_send.wav'),
+      audio: WindowsNotificationAudio.asset('default_notification_send.wav'),
     );
 
     final iosDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
-      sound: 'defualt_notification_send.wav',
+      sound: 'default_notification_send.wav',
     );
 
     final details = NotificationDetails(

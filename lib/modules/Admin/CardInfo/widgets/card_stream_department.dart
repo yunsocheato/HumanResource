@@ -27,5 +27,5 @@ Stream<Map<String, dynamic>> streamDepartmentSummary() {
           'largestDepartment': largest.key,
         };
       })
-      .asBroadcastStream(); // ✅ add if used in multiple StreamBuilder or Rx.combine
+      .asBroadcastStream();
 }

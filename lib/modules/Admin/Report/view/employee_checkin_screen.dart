@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import '../../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
@@ -254,12 +256,21 @@ class EmployeeCheckinScreen extends GetView<EmployeeReportController> {
                         controller.isExporting1.value = true;
                         try {
                           await ExportExcel1();
-                          Get.snackbar(
-                            'Success',
-                            'Excel exported successfully',
-                          );
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Export Success",
+                              "File Excel Export Success",
+                              ContentType.success,
+                            );
+                          });
                         } catch (e) {
-                          Get.snackbar('Error', 'Export failed: $e');
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showAwesomeSnackBarGetx(
+                              "Export Failded",
+                              "File Failed to Export",
+                              ContentType.failure,
+                            );
+                          });
                         } finally {
                           controller.isExporting1.value = false;
                         }
