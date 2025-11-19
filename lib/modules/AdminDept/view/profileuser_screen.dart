@@ -110,42 +110,48 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
   }
 
   Widget _buildDesktopTabletContent() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildProfileSidebar(),
-        const SizedBox(width: 24),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildInformationCard(
-                color1: Colors.blue,
-                color: Colors.blue.shade900,
-                title: 'Basic Information',
-                fields: _getBasicInformationFields(),
-              ),
-              const SizedBox(height: 24),
-              _buildInformationCard(
-                color1: Colors.green,
-                color: Colors.green.shade900,
-                title: 'Contact Information',
-                fields: _getContactInformationFields(),
-              ),
-              const SizedBox(height: 24),
-              _buildInformationCard(
-                color1: Colors.orange,
-                color: Colors.orange.shade900,
-                title: 'Work Information',
-                fields: _getWorkInformationFields(),
-              ),
-              const SizedBox(height: 30),
-
-              _buildButtons(controller),
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [const SizedBox(height: 50), _buildProfileSidebar()],
           ),
-        ),
-      ],
+          const SizedBox(width: 24),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 50),
+                _buildInformationCard(
+                  color1: Colors.blue,
+                  color: Colors.blue.shade900,
+                  title: 'Basic Information',
+                  fields: _getBasicInformationFields(),
+                ),
+                const SizedBox(height: 24),
+                _buildInformationCard(
+                  color1: Colors.green,
+                  color: Colors.green.shade900,
+                  title: 'Contact Information',
+                  fields: _getContactInformationFields(),
+                ),
+                const SizedBox(height: 24),
+                _buildInformationCard(
+                  color1: Colors.orange,
+                  color: Colors.orange.shade900,
+                  title: 'Work Information',
+                  fields: _getWorkInformationFields(),
+                ),
+                const SizedBox(height: 30),
+
+                _buildButtons(controller),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

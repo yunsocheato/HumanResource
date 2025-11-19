@@ -17,6 +17,7 @@ import '../modules/Admin/Report/view/employee_leave_summary_screen.dart';
 import '../modules/Admin/Report/view/employee_ot_screen.dart';
 import '../modules/Admin/Schedule/views/schedule_screen.dart';
 import '../modules/Admin/SettingScreen/view/setting_screen_mobile.dart';
+import '../modules/AdminDept/view/attendance_screen.dart';
 import '../modules/AdminDept/view/overview_screen.dart';
 import '../modules/AdminDept/view/profileuser_screen.dart';
 import '../modules/AdminDept/view/request_leave_screen.dart';
@@ -147,6 +148,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.requestleave,
       page: () => RequestLeaveScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.attendanceuser,
+      page: () => AttendanceUserScreen(),
       transition: Transition.fadeIn,
       transitionDuration: Duration(milliseconds: 500),
     ),

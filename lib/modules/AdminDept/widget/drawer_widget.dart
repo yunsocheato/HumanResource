@@ -1,7 +1,9 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Core/user_profile_controller.dart';
+import '../../../Utils/SnackBar/snack_bar.dart';
 import '../../../services/logout_services.dart';
 import 'drawer_header_widget.dart';
 
@@ -98,26 +100,35 @@ class DrawerAdmin extends StatelessWidget {
         _buildSidebarItem(
           icon: EneftyIcons.folder_2_bold,
           title: "Report",
-          routeName: "/report",
+          routeName: "/report_user",
         ),
         SizedBox(height: 25),
 
         _buildSidebarItem(
           icon: EneftyIcons.calendar_3_bold,
           title: "Attendance",
-          routeName: "/attendance",
+          routeName: "/attendance_user",
         ),
         SizedBox(height: 25),
         _buildSidebarItem(
           icon: EneftyIcons.key_bold,
           title: "Change Password",
-          routeName: "/attendance",
+          routeName: "/change_password",
         ),
         SizedBox(height: 25),
         _buildSidebarItem(
           icon: EneftyIcons.setting_2_bold,
           title: "Setting",
-          routeName: "/attendance",
+          routeName: " ",
+          onTap: () {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              showAwesomeSnackBarGetx(
+                "Development",
+                "We are Sorry this Feature is still in Develop",
+                ContentType.help,
+              );
+            });
+          },
         ),
         const Spacer(),
         const Divider(color: Colors.white),
@@ -257,9 +268,23 @@ class DrawerAdmin extends StatelessWidget {
           child: InkWell(
             borderRadius: BorderRadius.circular(8),
             onTap: () {
-              if (routeName != "/logout") Get.offAllNamed(routeName);
-              if (routeName == "/logout") onTap?.call();
+              if (Get.currentRoute == routeName) return;
+
+              if (onTap != null && routeName.trim().isEmpty) {
+                onTap!();
+                return;
+              }
+
+              if (routeName != "/logout" && routeName.trim().isNotEmpty) {
+                Get.offAllNamed(routeName);
+                return;
+              }
+
+              if (routeName == "/logout") {
+                onTap?.call();
+              }
             },
+
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 100),
               curve: Curves.easeInOut,

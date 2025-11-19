@@ -4,6 +4,7 @@ import 'package:enefty_icons/enefty_icons.dart';
 
 import '../../Admin/Employee/widgets/employee_profile_circleavatar.dart';
 import '../controller/request_leave_controller.dart';
+import 'leave_card_balance_sidebar.dart';
 
 class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
   const RequestLeaveWidget({super.key});
@@ -24,53 +25,66 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
                     _buildFormCard(isMobile: true, padding: padding),
                   ],
                 )
-                : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: _buildProfileSidebar(isMobile: false),
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      flex: 2,
-                      child: _buildFormCard(isMobile: false, padding: padding),
-                    ),
-                  ],
+                : Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: _buildFormCard(
+                          isMobile: false,
+                          padding: padding,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        flex: 1,
+                        child: _buildProfileSidebar(isMobile: false),
+                      ),
+                    ],
+                  ),
                 ),
       ),
     );
   }
 
   Widget _buildFormCard({required bool isMobile, required EdgeInsets padding}) {
-    return Card(
-      elevation: 10,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: Colors.white,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.shade900.withOpacity(0.7),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 0),
+          ),
+        ],
+      ),
       child: Padding(
         padding: padding,
         child: Form(
           key: controller.formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
               Stack(
                 children: <Widget>[
                   Text(
-                    'Request Leave',
+                    'REQUEST LEAVE',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 30,
                       foreground:
                           Paint()
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 2
-                            ..color = Colors.red[700]!,
+                            ..color = Colors.blue[900]!,
                     ),
                   ),
                   const Text(
-                    'Request Leave',
-                    style: TextStyle(fontSize: 24, color: Colors.white),
+                    'REQUEST LEAVE',
+                    style: TextStyle(fontSize: 30, color: Colors.white),
                   ),
                 ],
               ),
@@ -92,9 +106,10 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withOpacity(0.7),
             spreadRadius: 2,
             blurRadius: 5,
+            offset: Offset(10, 15),
           ),
         ],
       ),
@@ -151,11 +166,7 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
             labelColor: Colors.blue.shade900,
           ),
           const Divider(height: 32),
-          _leaveSummaryBox('Total Annual Leave', Colors.red, '0'),
-          const Divider(height: 32),
-          _leaveSummaryBox('Total Sick Leave', Colors.orange, '0'),
-          const Divider(height: 32),
-          _leaveSummaryBox('Total Unpaid Leave', Colors.green, '0'),
+          const GridoverviewLeavebalance(),
         ],
       ),
     );

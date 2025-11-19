@@ -21,4 +21,5 @@ class AppRoutes {
   static const history = '/history';
   static const settingmobile = '/settingmobile';
   static const requestleave = '/requestleave';
+  static const attendanceuser = '/attendance_user';
 }

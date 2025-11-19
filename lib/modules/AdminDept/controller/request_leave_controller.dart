@@ -1,7 +1,9 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../Utils/SnackBar/snack_bar.dart';
 import '../../Admin/LeaveRequest/Model/apply_leave_model.dart';
 import '../Model/request_leave_model.dart';
 import '../Provider/request_leave_provider.dart';
@@ -61,13 +63,13 @@ class RequestLeaveScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadUserProfile();
     Supabase.instance.client.auth.onAuthStateChange.listen((data) {
       final event = data.event;
       final session = data.session;
 
       if (event == AuthChangeEvent.signedIn && session?.user != null) {
         currentUser.value = session!.user;
+        loadUserProfile();
       } else if (event == AuthChangeEvent.signedOut) {
         currentUser.value = null;
         clearUserProfile();
@@ -86,7 +88,13 @@ class RequestLeaveScreenController extends GetxController {
 
       final user = Supabase.instance.client.auth.currentUser;
       if (user == null || user.email == null) {
-        Get.snackbar('Error', 'User not logged in!');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Cannot Laod Profile',
+            'Please Try again Later',
+            ContentType.failure,
+          );
+        });
         return;
       }
 
@@ -105,7 +113,13 @@ class RequestLeaveScreenController extends GetxController {
         profileImageUrl.value = profile.photo_url ?? '';
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load profile: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Failed',
+          'Failed to Load Profile $e',
+          ContentType.help,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -117,7 +131,13 @@ class RequestLeaveScreenController extends GetxController {
 
     if (!(formKey.currentState?.validate() ?? false)) return;
     if (selectedSubmit.value == null) {
-      Get.snackbar('Error', 'Please select a reviewer first');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Try again',
+          'Please Select the Reviewer first',
+          ContentType.help,
+        );
+      });
       return;
     }
 
@@ -150,14 +170,22 @@ class RequestLeaveScreenController extends GetxController {
           })
           .select()
           .single();
-
-      Get.snackbar(
-        'Success',
-        'Leave request submitted to ${selectedSubmit.value!['name']}',
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'Successfully',
+          'Your Leave Request has been submitted to ${selectedSubmit.value!['name']}',
+          ContentType.success,
+        );
+      });
       clearDataFields();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to submit leave: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'ERROR',
+          'Failed to Submit $e',
+          ContentType.failure,
+        );
+      });
     } finally {
       isLoading.value = false;
     }
@@ -170,7 +198,13 @@ class RequestLeaveScreenController extends GetxController {
           .select('user_id, name , role , photo_url')
           .or('role.eq.admin,role.eq.admindept');
       if (response.isEmpty) {
-        Get.snackbar('Info', 'No reviewers available');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showAwesomeSnackBarGetx(
+            'Reviewer Failed',
+            'No available reviewers',
+            ContentType.help,
+          );
+        });
         return;
       }
 
@@ -261,7 +295,13 @@ class RequestLeaveScreenController extends GetxController {
         selectedSubmit.value = reviewer;
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load reviewers: $e');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAwesomeSnackBarGetx(
+          'FAILED',
+          'Cannot Load User For Reviewer',
+          ContentType.failure,
+        );
+      });
     }
   }
 
