@@ -40,6 +40,9 @@ jobs:
           REPO2_PAT: ${{ secrets.REPO2_PAT }}
         run: |
           cd build/web
+          
+          rm -rf *.dill* *.log
+  
           git init
           git remote add origin https://x-access-token:${REPO2_PAT}@github.com/yunsocheato/attendance.git
           git switch -C master
