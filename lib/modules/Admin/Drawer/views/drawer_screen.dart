@@ -304,19 +304,17 @@ class Drawerscreen extends GetView<AppDrawerController> {
             OverviewAdmin(),
             _buildDrawerTile(
               'Admin Dashboard',
-              EneftyIcons.home_2_bold,
+              'assets/icon/home.png',
               () => MethodButton18(),
               index: 24,
               fontSize: fontSizeBody,
-              iconSize: iconSize,
             ),
             _buildDrawerTile(
               'Mange Attendance User',
-              EneftyIcons.calendar_2_bold,
+              'assets/icon/calendars.png',
               () => MethodButton2(),
               index: 1,
               fontSize: fontSizeBody,
-              iconSize: iconSize,
             ),
             PolicySetup(),
             ReportPolicy(),
@@ -324,11 +322,10 @@ class Drawerscreen extends GetView<AppDrawerController> {
             TableLeaveRequest(),
             _buildDrawerTile(
               'Manage Setting',
-              EneftyIcons.setting_3_bold,
+              'assets/icon/setting.png',
               () => DialogScreen(context, SettingScreen()),
               index: 23,
               fontSize: fontSizeBody,
-              iconSize: iconSize,
             ),
           ],
         ),
@@ -407,20 +404,18 @@ class Drawerscreen extends GetView<AppDrawerController> {
                 ),
                 _buildDrawerTile(
                   'Overview',
-                  Icons.dashboard,
+                  'assets/icon/overview.png',
                   () => MethodButton15(),
                   index: 0,
                   fontSize: fontSizeBody,
-                  iconSize: iconSize,
                 ),
                 const SizedBox(height: 10),
                 _buildDrawerTile(
                   'Attendance',
-                  Icons.calendar_month_sharp,
+                  'assets/icon/calendar.png',
                   () => MethodButton2(),
                   index: 24,
                   fontSize: fontSizeBody,
-                  iconSize: iconSize,
                 ),
                 PolicySetup(),
                 ReportPolicy(),
@@ -536,25 +531,19 @@ class Drawerscreen extends GetView<AppDrawerController> {
 
   Widget _buildDrawerTile(
     String title,
-    IconData icon,
+    String imagePath,
     VoidCallback? onTap, {
     int? index,
     double fontSize = 14,
-    double iconSize = 18,
+    double imageSize = 22,
   }) {
     return Obx(() {
       final controller = Get.find<AppDrawerController>();
       final isSelected =
           index != null && controller.selectedIndex.value == index;
+
       return ListTile(
-        leading: Icon(
-          icon,
-          size: iconSize,
-          color:
-              isSelected
-                  ? controller.Selectedcolors
-                  : controller.Unselectedcolors,
-        ),
+        leading: Image.asset(imagePath, width: imageSize, height: imageSize),
         title: Text(
           title,
           style: TextStyle(

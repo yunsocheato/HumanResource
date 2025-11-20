@@ -60,13 +60,10 @@ class Employeepolicy extends GetView<AppDrawerController> {
               onExpansionChanged:
                   (bool expanded) =>
                       controller.toggleTile1('Manage Staff Info'),
-              leading: Icon(
-                size: iconSize,
-                EneftyIcons.user_bold,
-                color:
-                    controller.selectedIndex.value == 15
-                        ? Colors.blue.shade900
-                        : Colors.white,
+              leading: Image.asset(
+                'assets/icon/user.png',
+                width: iconSize,
+                height: iconSize,
               ),
               title: InkWell(
                 onTap: () {
@@ -93,10 +90,9 @@ class Employeepolicy extends GetView<AppDrawerController> {
               childrenPadding: EdgeInsets.only(left: 32),
               children: [
                 _buildSubTile(
-                  iconSize: iconSize,
+                  Imagepath: 'assets/icon/usergroup.png',
                   fontSize: fontSizeBody,
                   title: 'Manage Staff Profile',
-                  icon: EneftyIcons.user_tick_bold,
                   index: 16,
                   onTap: () => DialogScreen(context, EmployeeProfileWidget()),
                 ),
@@ -110,7 +106,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
 
   Widget _buildSubTile({
     required String title,
-    required IconData icon,
+    required String Imagepath,
     required int index,
     required VoidCallback onTap,
     double fontSize = 14,
@@ -120,11 +116,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
     final isSelected = controller.selectedIndex.value == index;
 
     return ListTile(
-      leading: Icon(
-        size: iconSize,
-        icon,
-        color: isSelected ? Colors.blue.shade900 : Colors.white,
-      ),
+      leading: Image.asset(Imagepath, width: iconSize, height: iconSize),
       title: Text(
         title,
         style: TextStyle(

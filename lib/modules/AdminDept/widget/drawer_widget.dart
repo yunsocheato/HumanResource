@@ -85,39 +85,39 @@ class DrawerAdmin extends StatelessWidget {
         const SizedBox(height: 40),
 
         _buildSidebarItem(
-          icon: Icons.dashboard_outlined,
+          imagePath: 'assets/icon/overview.png',
           title: "Overview",
           routeName: "/overview",
         ),
         SizedBox(height: 25),
         _buildSidebarItem(
-          icon: EneftyIcons.user_bold,
+          imagePath: 'assets/icon/user.png',
           title: "Profiles",
           routeName: "/userprofile",
         ),
         SizedBox(height: 25),
 
         _buildSidebarItem(
-          icon: EneftyIcons.folder_2_bold,
+          imagePath: 'assets/icon/folder.png',
           title: "Report",
           routeName: "/report_user",
         ),
         SizedBox(height: 25),
 
         _buildSidebarItem(
-          icon: EneftyIcons.calendar_3_bold,
+          imagePath: 'assets/icon/calendars.png',
           title: "Attendance",
           routeName: "/attendance_user",
         ),
         SizedBox(height: 25),
         _buildSidebarItem(
-          icon: EneftyIcons.key_bold,
+          imagePath: 'assets/icon/key.png',
           title: "Change Password",
           routeName: "/change_password",
         ),
         SizedBox(height: 25),
         _buildSidebarItem(
-          icon: EneftyIcons.setting_2_bold,
+          imagePath: 'assets/icon/setting.png',
           title: "Setting",
           routeName: " ",
           onTap: () {
@@ -133,7 +133,7 @@ class DrawerAdmin extends StatelessWidget {
         const Spacer(),
         const Divider(color: Colors.white),
         _buildSidebarItem(
-          icon: Icons.logout,
+          imagePath: 'assets/icon/logouts.png',
           title: "LOGOUT",
           routeName: "/logout",
           onTap: auth.logout,
@@ -151,30 +151,37 @@ class DrawerAdmin extends StatelessWidget {
           children: [
             const DrawerHead(),
             _buildSidebarItem(
-              icon: Icons.dashboard_outlined,
+              imagePath: 'assets/icon/overview.png',
               title: "OVERVIEW",
               routeName: "/overview",
             ),
             _buildSidebarItem(
-              icon: EneftyIcons.user_bold,
+              imagePath: 'assets/icon/user.png',
               title: "PROFILES",
-              routeName: "/profiles",
+              routeName: "/userprofile",
             ),
             _buildSidebarItem(
-              icon: EneftyIcons.folder_2_bold,
+              imagePath: 'assets/icon/folder.png',
               title: "REPORT",
               routeName: "/report",
             ),
             _buildSidebarItem(
-              icon: EneftyIcons.calendar_3_bold,
+              imagePath: 'assets/icon/calendars.png',
+
               title: "ATTENDANCE",
-              routeName: "/attendance",
+              routeName: "/attendance_user",
+            ),
+            _buildSidebarItem(
+              imagePath: 'assets/icon/key.png',
+
+              title: "Change Password",
+              routeName: "/attendance_user",
             ),
 
             const Spacer(),
             const Divider(color: Colors.white),
             _buildSidebarItem(
-              icon: Icons.logout,
+              imagePath: 'assets/icon/logouts.png',
               title: "LOGOUT",
               routeName: "/logout",
               onTap: auth.logout,
@@ -240,7 +247,7 @@ class DrawerAdmin extends StatelessWidget {
   }
 
   Widget _buildSidebarItem({
-    required IconData icon,
+    required String imagePath,
     required String title,
     required String routeName,
     VoidCallback? onTap,
@@ -300,7 +307,7 @@ class DrawerAdmin extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(icon, color: Colors.white, size: 20),
+                  Image.asset(imagePath, width: 22, height: 22),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(

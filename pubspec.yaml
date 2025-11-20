@@ -128,6 +128,20 @@ flutter:
     - assets/icon/hospital.png
     - assets/icon/school.png
     - assets/icon/wallet.png
+    - assets/icon/folder.png
+    - assets/icon/user.png
+    - assets/icon/key.png
+    - assets/icon/overview.png
+    - assets/icon/setting.png
+    - assets/icon/usersetup.png
+    - assets/icon/userupdate.png
+    - assets/icon/policy.png
+    - assets/icon/manageuser.png
+    - assets/icon/manageteam.png
+    - assets/icon/userabsent.png
+    - assets/icon/userlate.png
+    - assets/icon/usercheckin.png
+    - assets/icon/userleave.png
 #    - assets/sound/default_notification_send.wav
     - .env
     - assets/Fonts/

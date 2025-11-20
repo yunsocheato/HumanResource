@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 import '../../../Core/user_profile_controller.dart';
@@ -22,42 +21,28 @@ class AttendanceUserScreen extends GetView<Attendancecontroller> {
   Widget build(BuildContext context) {
     final profile = Get.find<UserProfileController>().userprofiles.value;
     final role = profile?.role ?? '';
-    final isMobile = Get.width < 600;
+
+    final screenContent = SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height - 10,
+            ),
+            child: _buildResponsiveContent(),
+          ),
+        ],
+      ),
+    );
 
     final contents =
         (role == 'admin' || role == 'superadmin')
-            ? Drawerscreen(
-              content: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height - 10,
-                      ),
-                      child: _buildResponsiveContent(),
-                    ),
-                  ],
-                ),
-              ),
-            )
-            : DrawerAdmin(
-              content: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height - 10,
-                      ),
-                      child: _buildResponsiveContent(),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            ? Drawerscreen(content: screenContent)
+            : DrawerAdmin(content: screenContent);
+
+    final isMobile = MediaQuery.of(context).size.width < 600;
     return isMobile ? BottomAppBarWidget1(body: contents) : contents;
   }
 }
@@ -65,18 +50,23 @@ class AttendanceUserScreen extends GetView<Attendancecontroller> {
 Widget _buildResponsiveContent() {
   return LayoutBuilder(
     builder: (context, constraints) {
-      final isMobile = constraints.maxWidth < 600;
-      return isMobile ? _buildMobileContent() : _buildDesktopTabletContent();
+      final width = constraints.maxWidth;
+
+      if (width < 600) return _mobileLayout();
+      if (width < 1024) return _tabletLayout();
+      if (width < 1440) return _laptopLayout();
+      if (width < 1920) return _desktopLayout();
+      return _largeDesktopLayout();
     },
   );
 }
 
-Widget _buildMobileContent() {
+Widget _mobileLayout() {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(12.0),
     child: Column(
       children: [
-        SizedBox(height: 25),
+        const SizedBox(height: 25),
         Text(
           'ATTENDANCE RECORDS',
           style: TextStyle(
@@ -85,8 +75,9 @@ Widget _buildMobileContent() {
             fontSize: 13,
           ),
         ),
+        const SizedBox(height: 12),
         AttendanceChartWidget(),
-        SizedBox(height: 25),
+        const SizedBox(height: 25),
         Text(
           'ATTENDANCE ANALYZE',
           style: TextStyle(
@@ -95,23 +86,54 @@ Widget _buildMobileContent() {
             fontSize: 13,
           ),
         ),
+        const SizedBox(height: 12),
         AttendanceTablewidget(),
+        const SizedBox(height: 30),
+        _buildProfileSidebar(isMobile: true),
+        const SizedBox(height: 40),
       ],
     ),
   );
 }
 
-Widget _buildDesktopTabletContent() {
+Widget _tabletLayout() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 18.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 20),
+        Text(
+          'ATTENDANCE RECORDS',
+          style: TextStyle(
+            color: Colors.blue.shade900,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        const SizedBox(height: 14),
+        DatePickerAttendance(),
+        const SizedBox(height: 14),
+        AttendanceTablewidget(),
+        const SizedBox(height: 28),
+        _buildProfileSidebar(isMobile: true),
+        const SizedBox(height: 24),
+      ],
+    ),
+  );
+}
+
+Widget _laptopLayout() {
   return Padding(
     padding: const EdgeInsets.all(24.0),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 4,
+          flex: 3,
           child: Column(
             children: [
-              SizedBox(height: 50),
+              const SizedBox(height: 40),
               Text(
                 'ATTENDANCE RECORDS',
                 style: TextStyle(
@@ -123,10 +145,11 @@ Widget _buildDesktopTabletContent() {
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
                 ),
+                textAlign: TextAlign.left,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               DatePickerAttendance(),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               AttendanceTablewidget(),
             ],
           ),
@@ -138,7 +161,85 @@ Widget _buildDesktopTabletContent() {
   );
 }
 
+Widget _desktopLayout() {
+  return Padding(
+    padding: const EdgeInsets.all(36.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 4,
+          child: Column(
+            children: [
+              const SizedBox(height: 50),
+              Text(
+                'ATTENDANCE RECORDS',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  decorationColor: Colors.blue.shade900,
+                  decorationThickness: 2,
+                  wordSpacing: 2,
+                  color: Colors.blue.shade900,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              const SizedBox(height: 20),
+              DatePickerAttendance(),
+              const SizedBox(height: 20),
+              AttendanceTablewidget(),
+            ],
+          ),
+        ),
+        const SizedBox(width: 30),
+        Expanded(flex: 3, child: _buildProfileSidebar(isMobile: false)),
+      ],
+    ),
+  );
+}
+
+Widget _largeDesktopLayout() {
+  return Padding(
+    padding: const EdgeInsets.all(48.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 4,
+          child: Column(
+            children: [
+              const SizedBox(height: 60),
+              Text(
+                'ATTENDANCE RECORDS',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  decorationColor: Colors.blue.shade900,
+                  decorationThickness: 2,
+                  wordSpacing: 2,
+                  color: Colors.blue.shade900,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 34,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 24),
+              DatePickerAttendance(),
+              const SizedBox(height: 20),
+              AttendanceTablewidget(),
+            ],
+          ),
+        ),
+        const SizedBox(width: 40),
+        Expanded(flex: 3, child: _buildProfileSidebar(isMobile: false)),
+      ],
+    ),
+  );
+}
+
 Widget _buildProfileSidebar({required bool isMobile}) {
+  final double internalSpacing = isMobile ? 12.0 : 10.0;
+
   return Container(
     width: isMobile ? Get.width : null,
     padding: const EdgeInsets.all(24.0),
@@ -147,34 +248,49 @@ Widget _buildProfileSidebar({required bool isMobile}) {
       borderRadius: BorderRadius.circular(12),
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.red.withOpacity(0.7),
           spreadRadius: 2,
           blurRadius: 5,
+          offset: const Offset(0, 0),
         ),
       ],
     ),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 50),
         Text(
           'ATTENDANCE ANALYZE',
           style: TextStyle(
             color: Colors.blue.shade900,
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: isMobile ? 18 : 20,
           ),
         ),
         SizedBox(height: 15),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Wrap(
+          runSpacing: internalSpacing,
+          spacing: internalSpacing,
           children: [
-            DropDownMenuChartPie(),
-            const SizedBox(width: 10),
-            DatePickerChartToday(),
-            const SizedBox(width: 10),
-            DatePickerAllDataChart(),
+            SizedBox(
+              width: isMobile ? (Get.width - 30) / 2.2 : 90,
+              height: 40,
+              child: DatePickerChartToday(),
+            ),
+            SizedBox(width: internalSpacing),
+            SizedBox(
+              width: isMobile ? (Get.width - 30) / 2.2 : 90,
+              height: 40,
+              child: DatePickerAllDataChart(),
+            ),
+            SizedBox(width: internalSpacing),
+            SizedBox(
+              width: isMobile ? (Get.width - 60) / 1.3 : 140,
+              height: 50,
+              child: DropDownMenuChartPie(),
+            ),
           ],
         ),
+        const SizedBox(height: 18),
         AttendanceChartWidget(),
       ],
     ),

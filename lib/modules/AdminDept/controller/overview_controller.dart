@@ -52,19 +52,22 @@ class OverViewController extends GetxController
       onTap: () => Get.offAllNamed('/requestleave'),
     ),
     DashboardItem(
-      title: 'Department',
-      imagePath: 'assets/icon/school.png',
+      title: 'Profile',
+      imagePath: 'assets/icon/user.png',
       color: Colors.white,
+      onTap: () => Get.offAllNamed('/userprofile'),
     ),
     DashboardItem(
-      title: 'Leave Balance',
-      imagePath: 'assets/icon/equilibrium.png',
-      color: Colors.white,
-    ),
-    DashboardItem(
-      title: 'Schedule',
+      title: 'Attendance',
       imagePath: 'assets/icon/calendar.png',
       color: Colors.white,
+      onTap: () => Get.offAllNamed('/attendance_user'),
+    ),
+    DashboardItem(
+      title: 'Report',
+      imagePath: 'assets/icon/folder.png',
+      color: Colors.white,
+      onTap: () => Get.offAllNamed('/report'),
     ),
   ]);
 

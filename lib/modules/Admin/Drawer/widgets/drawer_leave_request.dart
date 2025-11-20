@@ -60,13 +60,10 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
               initiallyExpanded: isExpanded1,
               onExpansionChanged:
                   (bool expanded) => controller.toggleTile1('Leave'),
-              leading: Icon(
-                Boxicons.bx_walk,
-                size: iconSize,
-                color:
-                    controller.selectedIndex == 19
-                        ? Colors.blue.shade900
-                        : Colors.white,
+              leading: Image.asset(
+                'assets/icon/policy.png',
+                width: iconSize,
+                height: iconSize,
               ),
               title: InkWell(
                 onTap: () {
@@ -93,10 +90,9 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
               childrenPadding: EdgeInsets.only(left: 32),
               children: [
                 _buildSubTile(
-                  iconSize: iconSize,
+                  Imagepath: 'assets/icon/userleave.png',
                   fontSize: fontSizeBody,
                   title: 'Create Leave Request',
-                  icon: Boxicons.bx_walk,
                   index: 20,
                   onTap: () => DialogScreen(context, ApplyLeaveWidget()),
                 ),
@@ -110,7 +106,7 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
 
   Widget _buildSubTile({
     required String title,
-    required IconData icon,
+    required String Imagepath,
     required int index,
     required VoidCallback onTap,
     double fontSize = 14,
@@ -120,11 +116,7 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
     final isSelected = controller.selectedIndex.value == index;
 
     return ListTile(
-      leading: Icon(
-        size: iconSize,
-        icon,
-        color: isSelected ? Colors.blue.shade900 : Colors.white,
-      ),
+      leading: Image.asset(Imagepath, width: iconSize, height: iconSize),
       title: Text(
         title,
         style: TextStyle(

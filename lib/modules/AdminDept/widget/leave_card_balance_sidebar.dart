@@ -20,22 +20,22 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
           iconSize = 28;
           fontSize = 13;
           crossAxisCount = 2;
-          childAspectRatio = 1.05;
+          childAspectRatio = 0.9;
         } else if (maxWidth < 900) {
           iconSize = 35;
           fontSize = 14;
-          crossAxisCount = 3;
-          childAspectRatio = 1.3;
+          crossAxisCount = 2;
+          childAspectRatio = 1.2;
         } else if (maxWidth < 1440) {
           iconSize = 40;
           fontSize = 15;
-          crossAxisCount = 4;
+          crossAxisCount = 2;
           childAspectRatio = 1.0;
         } else {
           iconSize = 48;
           fontSize = 16;
-          crossAxisCount = 5;
-          childAspectRatio = 1.5;
+          crossAxisCount = 2;
+          childAspectRatio = 1.0;
         }
 
         return GridView.builder(

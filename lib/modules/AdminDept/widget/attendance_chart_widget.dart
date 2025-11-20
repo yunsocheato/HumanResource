@@ -70,9 +70,19 @@ class AttendanceChartWidget extends GetView<AttendanceChartController> {
             List<Color> colors =
                 controller.colorList.take(values.length).toList();
 
-            return Card(
-              elevation: 15,
-              color: Colors.white,
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green.withOpacity(0.7),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 0),
+                  ),
+                ],
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: SizedBox(

@@ -64,13 +64,10 @@ class OverviewAdmin extends GetView<AppDrawerController> {
               initiallyExpanded: isExpanded1,
               onExpansionChanged:
                   (bool expanded) => controller.toggleTile1('Overview'),
-              leading: Icon(
-                Icons.dashboard,
-                size: iconSize,
-                color:
-                    controller.selectedIndex.value == 0
-                        ? Colors.blue.shade900
-                        : Colors.white,
+              leading: Image.asset(
+                'assets/icon/overview.png',
+                width: iconSize,
+                height: iconSize,
               ),
               title: InkWell(
                 onTap: () {
@@ -99,32 +96,28 @@ class OverviewAdmin extends GetView<AppDrawerController> {
                 _buildSubTile(
                   title: 'Own Profile',
                   fontSize: fontSizeBody,
-                  icon: EneftyIcons.user_bold,
-                  iconSize: iconSize,
+                  Imagepath: 'assets/icon/user.png',
                   index: 100,
                   onTap: () => Get.offAllNamed('/userprofile'),
                 ),
                 _buildSubTile(
                   title: 'Mange Own Report',
                   fontSize: fontSizeBody,
-                  icon: Icons.folder_copy,
-                  iconSize: iconSize,
+                  Imagepath: 'assets/icon/folder.png',
                   index: 101,
                   onTap: () {},
                 ),
                 _buildSubTile(
                   title: 'Your Attendance',
                   fontSize: fontSizeBody,
-                  icon: Boxicons.bx_calendar_alt,
-                  iconSize: iconSize,
+                  Imagepath: 'assets/icon/calendars.png',
                   index: 102,
-                  onTap: () {},
+                  onTap: () => Get.offAllNamed('/attendance_user'),
                 ),
                 _buildSubTile(
                   title: 'Change Password',
                   fontSize: fontSizeBody,
-                  icon: Boxicons.bx_key,
-                  iconSize: iconSize,
+                  Imagepath: 'assets/icon/key.png',
                   index: 103,
                   onTap: () {},
                 ),
@@ -138,21 +131,17 @@ class OverviewAdmin extends GetView<AppDrawerController> {
 
   Widget _buildSubTile({
     required String title,
-    required IconData icon,
+    required String Imagepath,
     required int index,
     required VoidCallback onTap,
     double fontSize = 14,
-    double iconSize = 22,
+    double imageSize = 22,
   }) {
     final controller = Get.find<AppDrawerController>();
     final isSelected = controller.selectedIndex.value == index;
 
     return ListTile(
-      leading: Icon(
-        size: iconSize,
-        icon,
-        color: isSelected ? Colors.blue.shade900 : Colors.white,
-      ),
+      leading: Image.asset(Imagepath, width: imageSize, height: imageSize),
       title: Text(
         title,
         style: TextStyle(

@@ -54,6 +54,7 @@ class PolicySetup extends GetView<AppDrawerController> {
         }
         return Obx(() {
           final isExpanded1 = controller.isExpanded1('Policy Set up');
+
           return Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
@@ -63,13 +64,10 @@ class PolicySetup extends GetView<AppDrawerController> {
               initiallyExpanded: isExpanded1,
               onExpansionChanged:
                   (bool expanded) => controller.toggleTile1('Policy Set up'),
-              leading: Icon(
-                EneftyIcons.setting_4_bold,
-                size: iconSize,
-                color:
-                    controller.selectedIndex.value == 3
-                        ? Colors.blue.shade900
-                        : Colors.white,
+              leading: Image.asset(
+                'assets/icon/policy.png',
+                width: isMobile ? 22 : 14,
+                height: isMobile ? 22 : 14,
               ),
               title: Text(
                 'Policy Set up',
@@ -91,41 +89,36 @@ class PolicySetup extends GetView<AppDrawerController> {
               children: [
                 _buildSubTile(
                   title: 'User Setup',
+                  imagePath: 'assets/icon/usersetup.png',
                   fontSize: fontSizeBody,
-                  icon: EneftyIcons.user_cirlce_add_bold,
-                  iconSize: iconSize,
                   index: 24,
                   onTap: () => DialogScreen(context, UserSetupScreen()),
                 ),
                 _buildSubTile(
+                  imagePath: 'assets/icon/userupdate.png',
                   title: 'User Update',
                   fontSize: fontSizeBody,
-                  icon: EneftyIcons.user_minus_bold,
-                  iconSize: iconSize,
                   index: 5,
                   onTap: () => DialogScreen(context, EmployeePolicyScreen()),
                 ),
                 _buildSubTile(
+                  imagePath: 'assets/icon/policy.png',
                   title: 'Leave Policy',
                   fontSize: fontSizeBody,
-                  icon: Boxicons.bx_walk,
-                  iconSize: iconSize,
                   index: 4,
                   onTap: () => DialogScreen(context, LeavePolicy()),
                 ),
                 _buildSubTile(
+                  imagePath: 'assets/icon/manageuser.png',
                   title: 'Manage Users',
                   fontSize: fontSizeBody,
-                  icon: EneftyIcons.setting_2_outline,
                   index: 6,
-                  iconSize: iconSize,
                   onTap: () => DialogScreen(context, ManageUserScreen()),
                 ),
                 _buildSubTile(
+                  imagePath: 'assets/icon/manageteam.png',
                   title: 'Manage Team Users',
-                  iconSize: iconSize,
                   fontSize: fontSizeBody,
-                  icon: Icons.group,
                   index: 7,
                   onTap: () {},
                 ),
@@ -139,26 +132,25 @@ class PolicySetup extends GetView<AppDrawerController> {
 
   Widget _buildSubTile({
     required String title,
-    required IconData icon,
+    required String imagePath,
     required int index,
     required VoidCallback onTap,
     double fontSize = 14,
-    double iconSize = 22,
+    double imageSize = 22,
   }) {
     final controller = Get.find<AppDrawerController>();
     final isSelected = controller.selectedIndex.value == index;
 
     return ListTile(
-      leading: Icon(
-        size: iconSize,
-        icon,
-        color: isSelected ? Colors.blue.shade900 : Colors.white,
-      ),
+      leading: Image.asset(imagePath, width: imageSize, height: imageSize),
       title: Text(
         title,
         style: TextStyle(
           fontSize: fontSize,
-          color: isSelected ? Colors.blue.shade900 : Colors.white,
+          color:
+              isSelected
+                  ? controller.Selectedcolors
+                  : controller.Unselectedcolors,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),

@@ -166,7 +166,7 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
             labelColor: Colors.blue.shade900,
           ),
           const Divider(height: 32),
-          const GridoverviewLeavebalance(),
+          SizedBox(height: 300, child: GridoverviewLeavebalance()),
         ],
       ),
     );

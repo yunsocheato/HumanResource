@@ -59,13 +59,10 @@ class ReportPolicy extends GetView<AppDrawerController> {
               initiallyExpanded: isExpanded1,
               onExpansionChanged:
                   (bool expanded) => controller.toggleTile1('Report Admin'),
-              leading: Icon(
-                EneftyIcons.document_2_bold,
-                size: iconSize,
-                color:
-                    controller.selectedIndex.value == 9
-                        ? Colors.blue.shade900
-                        : Colors.white,
+              leading: Image.asset(
+                'assets/icon/folder.png',
+                width: iconSize,
+                height: iconSize,
               ),
               title: Text(
                 'Report Admin',
@@ -86,34 +83,30 @@ class ReportPolicy extends GetView<AppDrawerController> {
               childrenPadding: const EdgeInsets.only(left: 32),
               children: [
                 _buildSubTile(
+                  imagePath: 'assets/icon/usercheckin.png',
                   fontSize: fontSizeBody,
-                  iconSize: iconSize,
                   title: 'Checkin Report',
-                  icon: EneftyIcons.user_tick_bold,
                   index: 10,
                   onTap: () => MethodButton6(),
                 ),
                 _buildSubTile(
+                  imagePath: 'assets/icon/userlate.png',
                   fontSize: fontSizeBody,
-                  iconSize: iconSize,
                   title: 'Late Report',
-                  icon: EneftyIcons.user_minus_bold,
                   index: 11,
                   onTap: () => MethodButton7(),
                 ),
                 _buildSubTile(
+                  imagePath: 'assets/icon/userabsent.png',
                   fontSize: fontSizeBody,
-                  iconSize: iconSize,
                   title: 'Absent Report',
-                  icon: EneftyIcons.clock_bold,
                   index: 12,
                   onTap: () => MethodButton9(),
                 ),
                 _buildSubTile(
+                  imagePath: 'assets/icon/userleave.png',
                   fontSize: fontSizeBody,
-                  iconSize: iconSize,
                   title: 'Leave Report',
-                  icon: Boxicons.bx_walk,
                   index: 13,
                   onTap: () => MethodButton8(),
                 ),
@@ -135,26 +128,25 @@ class ReportPolicy extends GetView<AppDrawerController> {
 
   Widget _buildSubTile({
     required String title,
-    required IconData icon,
+    required String imagePath,
     required int index,
     required VoidCallback onTap,
     double fontSize = 14,
-    double iconSize = 22,
+    double imageSize = 22,
   }) {
     final controller = Get.find<AppDrawerController>();
     final isSelected = controller.selectedIndex.value == index;
 
     return ListTile(
-      leading: Icon(
-        size: iconSize,
-        icon,
-        color: isSelected ? Colors.blue.shade900 : Colors.white,
-      ),
+      leading: Image.asset(imagePath, width: imageSize, height: imageSize),
       title: Text(
         title,
         style: TextStyle(
           fontSize: fontSize,
-          color: isSelected ? Colors.blue.shade900 : Colors.white,
+          color:
+              isSelected
+                  ? controller.Selectedcolors
+                  : controller.Unselectedcolors,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
