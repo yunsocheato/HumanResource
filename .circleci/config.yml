@@ -23,16 +23,23 @@ jobs:
           command: find build/web -type f -size +25M -exec rm -f {} \;
 
       # Deploy to Repo 2
+      # Deploy to Repo 2 step
       - run:
           name: Deploy to Repo 2
           command: |
             cd build/web
+            # Delete large or unnecessary files
+            find . -name "*.dill*" -delete
+            find . -type f -size +25M -delete
+            ls -lhR  # debug file sizes
+      
             git init
-            git remote add origin https://$REPO2_USERNAME:$REPO2_PAT@github.com:yunsocheato/deamhr.git
-            git switch -C master
+            git remote add origin https://$REPO2_USERNAME:$REPO2_PAT@github.com/yunsocheato/deamhr.git
+            git switch -C main  # use the default branch of Repo 2
             git add .
             git commit -m "Deploy Flutter web build"
-            git push -f origin master
+            git push -f origin main
+
 
 workflows:
   version: 2
