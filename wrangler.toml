@@ -1,0 +1,8 @@
+name = "humanresource"
+compatibility_date = "2024-05-01"
+
+[build]
+command = "dart pub global activate flutter_cli && flutter build web --release"
+cwd = "."
+upload.format = "directory"
+upload.dir = "build/web"
