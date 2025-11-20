@@ -1,0 +1,48 @@
+name: Flutter Web Deploy to Repo 2
+
+on:
+  push:
+    branches:
+      - master  # or your default branch in Repo 1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout Repo 1
+      - name: Checkout Repo 1
+        uses: actions/checkout@v3
+
+      # 2. Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      # 3. Install dependencies
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      # 4. Build Flutter web
+      - name: Flutter Build Web
+        run: flutter build web --release
+
+      # 5. Configure Git
+      - name: Configure Git
+        run: |
+          git config --global user.name "yunsocheato"
+          git config --global user.email "cheatoyunso@gmail.com"
+
+      # 6. Push build to Repo 2
+      - name: Push to Repo 2
+        env:
+          REPO2_PAT: ${{ secrets.REPO2_PAT }}
+        run: |
+          cd build/web
+          git init
+          git remote add origin https://x-access-token:${REPO2_PAT}@github.com/yunsocheato/attendance.git
+          git switch -C master
+          git add .
+          git commit -m "Deploy Flutter web build"
+          git push -f origin master
