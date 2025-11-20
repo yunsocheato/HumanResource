@@ -138,8 +138,10 @@ flutter:
     - assets/icon/policy.png
     - assets/icon/manageuser.png
     - assets/icon/manageteam.png
+    - assets/icon/usergroup.png
     - assets/icon/userabsent.png
     - assets/icon/userlate.png
+    - assets/icon/home.png
     - assets/icon/usercheckin.png
     - assets/icon/userleave.png
 #    - assets/sound/default_notification_send.wav

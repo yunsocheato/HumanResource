@@ -34,7 +34,6 @@ jobs:
           git config --global user.name "yunsocheato"
           git config --global user.email "cheatoyunso@gmail.com"
 
-      # 6. Push build to Repo 2
       - name: Push to Repo 2
         env:
           REPO2_PAT: ${{ secrets.REPO2_PAT }}
