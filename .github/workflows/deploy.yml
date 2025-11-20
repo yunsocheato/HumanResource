@@ -43,7 +43,7 @@ jobs:
           rm -rf *.dill* *.log
   
           git init
-          git remote add origin https://x-access-token:${REPO2_PAT}@github.com/yunsocheato/attendance.git
+          git remote add origin https://x-access-token:${REPO2_PAT}@github.com:yunsocheato/deamhr.git
           git switch -C master
           git add .
           git commit -m "Deploy Flutter web build"
