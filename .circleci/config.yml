@@ -43,7 +43,7 @@ jobs:
               git config --global credential.helper store
               echo "https://$REPO2_USERNAME:$REPO2_PAT@github.com" > ~/.git-credentials
               git init
-              git remote add origin https://github.com/yunsocheato/deamhr.git
+              git remote add origin https://$REPO2_USERNAME:$REPO2_PAT@github.com/yunsocheato/deamhr.git
               git switch -C master
               git add .
               git commit -m 'Deploy Flutter web build'
