@@ -1,6 +1,3 @@
-// Responsive Login Screen with Mobile, Tablet, Desktop, Large Screens
-// Includes Login Button with LinearProgressIndicator + Logo
-
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
