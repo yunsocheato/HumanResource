@@ -24,23 +24,27 @@ jobs:
           command: find build/web -type f -size +25M -exec rm -f {} \;
 
       # Deploy to Repo 2
-      - run:
+        - run:
           name: Deploy to Repo 2
           command: |
             cd build/web
 
-            # Remove unnecessary large files (DILL, etc)
             find . -name "*.dill*" -delete
             find . -type f -size +25M -delete
 
-            ls -lhR  # Debug sizes
+            git config --global user.name "circleci-bot"
+            git config --global user.email "circleci-bot@example.com"
+            git config --global credential.helper store
+
+            echo "https://$REPO2_USERNAME:$REPO2_PAT@github.com" > ~/.git-credentials
 
             git init
-            git remote add origin https://$REPO2_USERNAME:$REPO2_PAT@github.com/yunsocheato/deamhr.git
+            git remote add origin https://github.com/yunsocheato/deamhr.git
             git switch -C main
             git add .
-            git commit -m "Deploy Flutter web build"
+            git commit -m 'Deploy Flutter web build'
             git push -f origin main
+
 
 workflows:
   version: 2
