@@ -5,8 +5,13 @@ jobs:
     docker:
       - image: ghcr.io/cirruslabs/flutter:3.38.2
 
-    steps:
+      steps:
       - checkout
+
+      # Allow SSH debugging ("Rerun job with SSH")
+      - run:
+          name: Enable SSH Debug Mode
+          command: echo "SSH debug enabled"
 
       # Install dependencies
       - run:
