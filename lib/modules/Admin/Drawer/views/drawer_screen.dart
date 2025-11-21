@@ -219,10 +219,10 @@ class Drawerscreen extends GetView<AppDrawerController> {
                   keyId: 21,
                   controller: controller2,
                   child: IconButton(
-                    icon: Icon(
-                      Icons.logout,
-                      size: iconSize1,
-                      color: Colors.white,
+                    icon: Image.asset(
+                      'assets/icon/log-out.png',
+                      height: 32,
+                      width: 32,
                     ),
                     onPressed: () {
                       controller.logout();

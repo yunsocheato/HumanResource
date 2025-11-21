@@ -36,9 +36,7 @@ import '../modules/Admin/Employee/Controller/employeefiltercontroller.dart';
 import '../modules/Admin/History/controller/history_controller.dart';
 import '../modules/Admin/LeaveRequest/controllers/apply_leave_screen_controller.dart';
 import '../modules/Admin/LeaveRequest/controllers/leave_controller.dart';
-import '../modules/Admin/Loginscreen/controllers/login_card_controller.dart';
 import '../modules/Admin/Loginscreen/controllers/login_controller.dart';
-import '../modules/Admin/Loginscreen/controllers/loginscreen_animation_controller.dart';
 import '../modules/Admin/Report/controller/employee_report_controller1.dart';
 import '../modules/Admin/Report/controller/employee_report_controller2.dart';
 import '../modules/Admin/Report/controller/employee_report_controller3.dart';
@@ -82,12 +80,6 @@ class BindingMain extends Bindings {
 
     Get.put(ChartPieController(), permanent: true);
     Get.lazyPut<ChartPieController>(() => ChartPieController());
-
-    Get.put(LoginScreenWidgetDecor(), permanent: true);
-    Get.lazyPut<LoginScreenWidgetDecor>(() => LoginScreenWidgetDecor());
-
-    Get.put(LoginCardController(), permanent: true);
-    Get.lazyPut<LoginCardController>(() => LoginCardController());
 
     Get.put(LoginController(), permanent: true);
     Get.lazyPut<LoginController>(() => LoginController());

@@ -105,7 +105,7 @@ class OverviewAdmin extends GetView<AppDrawerController> {
                   fontSize: fontSizeBody,
                   Imagepath: 'assets/icon/folder.png',
                   index: 101,
-                  onTap: () {},
+                  onTap: () => Get.offAllNamed('/report'),
                 ),
                 _buildSubTile(
                   title: 'Your Attendance',

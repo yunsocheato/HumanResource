@@ -22,4 +22,5 @@ class AppRoutes {
   static const settingmobile = '/settingmobile';
   static const requestleave = '/requestleave';
   static const attendanceuser = '/attendance_user';
+  static const report = '/report';
 }

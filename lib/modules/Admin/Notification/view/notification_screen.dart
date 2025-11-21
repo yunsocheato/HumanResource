@@ -60,13 +60,13 @@ class NotificationScreen extends GetView<NotificationController> {
         boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
       ),
       padding: const EdgeInsets.all(8),
-      child: const Icon(Icons.notifications, size: 32, color: Colors.white),
+      child: Image.asset('assets/icon/notification.png', height: 32, width: 32),
     );
 
-    Widget iconAdmin = const Icon(
-      Icons.notifications,
-      size: 32,
-      color: Colors.white,
+    Widget iconAdmin = Image.asset(
+      'assets/icon/notification.png',
+      height: 32,
+      width: 32,
     );
 
     if (roles.contains("admin") || roles.contains('superadmin')) {

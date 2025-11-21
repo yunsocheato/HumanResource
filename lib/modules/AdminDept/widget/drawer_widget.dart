@@ -100,7 +100,7 @@ class DrawerAdmin extends StatelessWidget {
         _buildSidebarItem(
           imagePath: 'assets/icon/folder.png',
           title: "Report",
-          routeName: "/report_user",
+          routeName: "/report",
         ),
         SizedBox(height: 25),
 

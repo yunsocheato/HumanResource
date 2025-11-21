@@ -20,6 +20,7 @@ import '../modules/Admin/SettingScreen/view/setting_screen_mobile.dart';
 import '../modules/AdminDept/view/attendance_screen.dart';
 import '../modules/AdminDept/view/overview_screen.dart';
 import '../modules/AdminDept/view/profileuser_screen.dart';
+import '../modules/AdminDept/view/report_screen.dart';
 import '../modules/AdminDept/view/request_leave_screen.dart';
 import 'appRoutes.dart';
 
@@ -28,25 +29,25 @@ class AppPages {
     GetPage(
       name: AppRoutes.splash,
       page: () => SplashView(),
-      transition: Transition.fadeIn,
+      transition: Transition.circularReveal,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.login,
       page: () => LoginScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.cupertinoDialog,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.logout,
       page: () => LogoutScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.downToUp,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.userprofile,
       page: () => UserProfileScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.upToDown,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
@@ -58,13 +59,13 @@ class AppPages {
     GetPage(
       name: AppRoutes.dashboard,
       page: () => DashboardScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.leftToRightWithFade,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.attendance,
       page: () => AttendanceScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.rightToLeftWithFade,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
@@ -76,13 +77,13 @@ class AppPages {
     GetPage(
       name: AppRoutes.employee,
       page: () => EmployeeScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.zoom,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.department,
       page: () => DepartmentScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.fade,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
@@ -124,37 +125,43 @@ class AppPages {
     GetPage(
       name: AppRoutes.employeeprofile,
       page: () => EmployeeProfileScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.circularReveal,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.applyLeave,
       page: () => ApplyLeaveScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.cupertino,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.history,
       page: () => HistoryScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.downToUp,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.settingmobile,
       page: () => SettingScreenMobile(),
-      transition: Transition.fadeIn,
+      transition: Transition.size,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.requestleave,
       page: () => RequestLeaveScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.rightToLeftWithFade,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.attendanceuser,
       page: () => AttendanceUserScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.cupertinoDialog,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.report,
+      page: () => ReportScreen(),
+      transition: Transition.circularReveal,
       transitionDuration: Duration(milliseconds: 500),
     ),
   ];
