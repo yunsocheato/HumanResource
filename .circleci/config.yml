@@ -35,19 +35,19 @@ jobs:
 
       # Deploy to Repo 2
       - run:
-          name: Deploy to Repo 2
+          name: Deploy Flutter Web to Repo 2
           command: |
-              cd build/web
-              git config --global user.name "yunsocheato"
-              git config --global user.email "cheatoyunso@gmail.com"
-              git config --global credential.helper store
-              echo "https://$REPO2_USERNAME:$REPO2_PAT@github.com" > ~/.git-credentials
-              git init
-              git remote add origin https://$REPO2_USERNAME:$REPO2_PAT@github.com/yunsocheato/deamhr.git
-              git switch -C master
-              git add .
-              git commit -m 'Deploy Flutter web build'
-              git push -f origin master
+            cd build/web
+            git config --global user.name "yunsocheato"
+            git config --global user.email "cheatoyunso@gmail.com"
+
+            git init
+            git remote add origin https://$REPO2_USERNAME:$REPO2_PAT@github.com/yunsocheato/deamhr.git
+            git checkout -B gh-pages
+            git add .
+            git commit -m "Deploy Flutter web build"
+            git push -f origin gh-pages
+
 
 workflows:
   version: 2
