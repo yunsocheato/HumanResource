@@ -3,43 +3,51 @@ version: 2.1
 jobs:
   build_web:
     docker:
-      - image: cirrusci/flutter:stable
+      - image: ghcr.io/cirruslabs/flutter:3.38.2
+
     steps:
+      # Checkout current repo
       - checkout
+
+      # Optional: Enable SSH debugging
+      - run:
+          name: Enable SSH Debug Mode
+          command: echo "SSH debug enabled"
 
       # Install dependencies
       - run:
           name: Flutter pub get
           command: flutter pub get
 
-      # Build Flutter web
+      # Build Flutter Web
       - run:
           name: Build Flutter Web
           command: flutter build web --release
 
-      # Clean large files >25MB
+      # Remove large files in build/web
       - run:
-          name: Remove large files
-          command: find build/web -type f -size +25M -exec rm -f {} \;
+          name: Clean build files
+          command: |
+            cd build/web
+            find . -name "*.dill*" -delete
+            find . -type f -size +25M -delete
+            ls -lhR
 
       # Deploy to Repo 2
-      # Deploy to Repo 2 step
       - run:
           name: Deploy to Repo 2
           command: |
-            cd build/web
-            # Delete large or unnecessary files
-            find . -name "*.dill*" -delete
-            find . -type f -size +25M -delete
-            ls -lhR  # debug file sizes
-      
-            git init
-            git remote add origin https://$REPO2_USERNAME:$REPO2_PAT@github.com/yunsocheato/deamhr.git
-            git switch -C main  # use the default branch of Repo 2
-            git add .
-            git commit -m "Deploy Flutter web build"
-            git push -f origin main
-
+              cd build/web
+              git config --global user.name "yunsocheato"
+              git config --global user.email "cheatoyunso@gmail.com"
+              git config --global credential.helper store
+              echo "https://$REPO2_USERNAME:$REPO2_PAT@github.com" > ~/.git-credentials
+              git init
+              git remote add origin https://github.com/yunsocheato/deamhr.git
+              git switch -C master
+              git add .
+              git commit -m 'Deploy Flutter web build'
+              git push -f origin master
 
 workflows:
   version: 2

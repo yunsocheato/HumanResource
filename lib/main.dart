@@ -23,6 +23,7 @@ Future<void> main() async {
   final bucket1 = dotenv.env['SUPABASE_BUCKET1'];
   final bucket2 = dotenv.env['SUPABASE_BUCKET2'];
   final bucket3 = dotenv.env['SUPABASE_BUCKET3'];
+
   if (supabaseUrl == null ||
       supabaseKey == null ||
       bucket1 == null ||
