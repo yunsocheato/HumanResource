@@ -31,7 +31,7 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
     fontSize: 30,
     color: Colors.blue.shade900,
     fontWeight: FontWeight.bold,
-    fontFamily: '7TH.TTF',
+    fontFamily: '7TH.ttf',
     shadows: <Shadow>[
       Shadow(
         offset: Offset(5.0, 5.0),
