@@ -50,12 +50,13 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
   late Animation<double> animation;
 
   Future<void> login() async {
-    progressValue.value = 0.0;
-
-    Loading.value = 'Loading...';
-    Get.find<LoadingUiController>().beginLoading();
-
     try {
+      isLoading.value = true;
+      progressValue.value = 0.0;
+
+      Loading.value = 'Loading...';
+      Get.find<LoadingUiController>().beginLoading();
+
       progressValue.value = 0.25;
 
       final result = await LoginService().loginWithEmail(
@@ -71,36 +72,29 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
       Loading.value = 'Success Login';
 
       progressValue.value = 1.0;
+
       Get.find<LoadingUiController>().terminateLoading();
 
       await Future.delayed(const Duration(milliseconds: 300));
 
       switch (role) {
         case UserRole.admin:
-          Get.offAllNamed('/overview');
-          break;
-
         case UserRole.adminDept:
-          Get.offAllNamed('/overview');
-          break;
-
         case UserRole.user:
-          Get.offAllNamed('/overview');
-          break;
-
         case UserRole.superadmin:
           Get.offAllNamed('/overview');
           break;
       }
     } catch (e) {
       Get.find<LoadingUiController>().terminateLoading();
-
       progressValue.value = 0.0;
       Loading.value = e.toString();
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showAwesomeSnackBarGetx('Error', e.toString(), ContentType.failure);
       });
+    } finally {
+      isLoading.value = false;
     }
   }
 

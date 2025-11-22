@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pretty_animated_text/pretty_animated_text.dart';
@@ -202,7 +203,6 @@ class LoginScreen extends GetView<LoginController> {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
             ),
-            labelText: "Email",
           ),
         ),
         const SizedBox(height: 20),
@@ -219,7 +219,6 @@ class LoginScreen extends GetView<LoginController> {
               prefixIcon: const Icon(Icons.lock, color: Colors.blue),
               filled: true,
               fillColor: Colors.blue.shade100,
-              labelText: "Password",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -229,6 +228,7 @@ class LoginScreen extends GetView<LoginController> {
                   controller.isVisible.value
                       ? Icons.visibility
                       : Icons.visibility_off,
+                  color: Colors.blue.shade900,
                 ),
                 onPressed:
                     () =>
@@ -263,11 +263,33 @@ class LoginScreen extends GetView<LoginController> {
                       ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset('assets/images/deamlogo.png', height: 30),
-                          const SizedBox(width: 12),
+                          Image.asset(
+                            'assets/images/deamlogo.png',
+                            height: 35,
+                            width: 35,
+                          ),
+                          const SizedBox(width: 5),
                           const Text(
-                            'Loading...',
-                            style: TextStyle(color: Colors.white),
+                            'Loading',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          AnimatedTextKit(
+                            repeatForever: true,
+                            animatedTexts: [
+                              TypewriterAnimatedText(
+                                '...',
+                                textStyle: const TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                speed: Duration(milliseconds: 150),
+                              ),
+                            ],
                           ),
                         ],
                       )
@@ -283,7 +305,7 @@ class LoginScreen extends GetView<LoginController> {
             Obx(
               () => LinearProgressIndicator(
                 value: controller.progressValue.value,
-                minHeight: 8,
+                minHeight: 4,
                 color: Colors.blue.shade900,
                 backgroundColor: Colors.blue.shade100,
               ),
