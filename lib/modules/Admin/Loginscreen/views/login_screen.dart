@@ -1,12 +1,15 @@
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:pretty_animated_text/pretty_animated_text.dart';
 import '../controllers/login_controller.dart';
 
 class LoginScreen extends GetView<LoginController> {
   static const String routeName = '/login';
+
   LoginScreen({super.key});
 
   @override
@@ -246,6 +249,25 @@ class LoginScreen extends GetView<LoginController> {
     return Obx(() {
       return Column(
         children: [
+          SizedBox(height: 5),
+          InkWell(
+            onTap: () {
+              showAwesomeSnackBarGetx(
+                'Development',
+                'We are sorry this feature is still in Development modes',
+                ContentType.warning,
+              );
+            },
+            child: Text(
+              'Are you forgot password?',
+              style: TextStyle(
+                color: Colors.blue.shade900,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
           SizedBox(
             width: double.infinity,
             height: 55,
@@ -265,15 +287,15 @@ class LoginScreen extends GetView<LoginController> {
                         children: [
                           Image.asset(
                             'assets/images/deamlogo.png',
-                            height: 35,
-                            width: 35,
+                            height: 20,
+                            width: 20,
                           ),
                           const SizedBox(width: 5),
                           const Text(
-                            'Loading',
+                            'please wait',
                             style: TextStyle(
                               color: Colors.blue,
-                              fontSize: 30,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -284,7 +306,7 @@ class LoginScreen extends GetView<LoginController> {
                                 '...',
                                 textStyle: const TextStyle(
                                   color: Colors.blue,
-                                  fontSize: 30,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 speed: Duration(milliseconds: 150),

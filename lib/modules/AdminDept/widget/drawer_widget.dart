@@ -113,7 +113,7 @@ class DrawerAdmin extends StatelessWidget {
         _buildSidebarItem(
           imagePath: 'assets/icon/key.png',
           title: "Change Password",
-          routeName: "/change_password",
+          routeName: "/email_verify",
         ),
         SizedBox(height: 25),
         _buildSidebarItem(

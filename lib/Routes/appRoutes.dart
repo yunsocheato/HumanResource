@@ -23,4 +23,7 @@ class AppRoutes {
   static const requestleave = '/requestleave';
   static const attendanceuser = '/attendance_user';
   static const report = '/report';
+  static const emailverify = '/email_verify';
+  static const otp = '/otp';
+  static const change_password = '/change_password';
 }

@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Admin/ChangePassword/view/otp_screen.dart';
 import 'package:hrms/modules/Admin/LogoutScreen/logout_screen.dart';
 import '../../Utils/SplashScreen/widget/splash_view.dart';
 import '../modules/Admin/Attendance/views/attendance_screen.dart';
+import '../modules/Admin/ChangePassword/view/change_password_screen.dart';
+import '../modules/Admin/ChangePassword/view/email_verify_screen.dart';
 import '../modules/Admin/Dashboard/views/dashboard_screen.dart';
 import '../modules/Admin/Department/views/department_screen.dart';
 import '../modules/Admin/Employee/views/employee_profile_screen.dart';
@@ -162,6 +165,24 @@ class AppPages {
       name: AppRoutes.report,
       page: () => ReportScreen(),
       transition: Transition.circularReveal,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.emailverify,
+      page: () => EmailVerifyScreen(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.otp,
+      page: () => OTPScreen(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.change_password,
+      page: () => ChangePasswordScreen(),
+      transition: Transition.fade,
       transitionDuration: Duration(milliseconds: 500),
     ),
   ];

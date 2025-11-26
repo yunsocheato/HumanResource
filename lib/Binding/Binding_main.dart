@@ -19,6 +19,7 @@ import '../modules/Admin/Attendance/controllers/attendance_chart_pie_controller.
 import '../modules/Admin/Attendance/controllers/attendance_widget_controller.dart';
 import '../modules/Admin/Attendance/controllers/attendane_screen_controller.dart';
 import '../modules/Admin/CardInfo/controllers/card_controller.dart';
+import '../modules/Admin/ChangePassword/controller/verification_controller.dart';
 import '../modules/Admin/Dashboard/controllers/dashboard_recently_screen_controller.dart';
 import '../modules/Admin/Dashboard/controllers/dashboard_screen_controller.dart';
 import '../modules/Admin/Department/controllers/department_controller.dart';
@@ -216,5 +217,8 @@ class BindingMain extends Bindings {
     );
     Get.put(NotificationController(), permanent: true);
     Get.lazyPut<NotificationController>(() => NotificationController());
+
+    Get.put(VerificationController(), permanent: true);
+    Get.lazyPut<VerificationController>(() => VerificationController());
   }
 }

@@ -119,7 +119,7 @@ class OverviewAdmin extends GetView<AppDrawerController> {
                   fontSize: fontSizeBody,
                   Imagepath: 'assets/icon/key.png',
                   index: 103,
-                  onTap: () {},
+                  onTap: () => Get.offAllNamed('/email_verify'),
                 ),
               ],
             ),
