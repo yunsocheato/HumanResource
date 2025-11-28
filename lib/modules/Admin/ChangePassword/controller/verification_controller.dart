@@ -16,6 +16,7 @@ class VerificationController extends GetxController {
   final retypepasswordController = TextEditingController();
   final otpControllers = List.generate(4, (_) => TextEditingController()).obs;
   final GlobalKey<ScaffoldState> stepback = GlobalKey<ScaffoldState>();
+  final errorMessage = ''.obs;
   final generatedOtp = ''.obs;
   RxBool isVerified = false.obs;
   RxString verifiedOtp = ''.obs;
@@ -115,7 +116,7 @@ class VerificationController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse('http://172.20.20.98:1025/send-otp'),
+        Uri.parse('https://fastapi.cheato.top/send-otp'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email}),
       );
@@ -186,7 +187,7 @@ class VerificationController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse('http://172.20.20.98:1025/verify-otp'),
+        Uri.parse('https://fastapi.cheato.top/verify-otp'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': emailText, 'otp': enteredOtp}),
       );
@@ -243,7 +244,7 @@ class VerificationController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse('http://172.20.20.98:1025/change-password'),
+        Uri.parse('https://fastapi.cheato.top/change-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           "email": emailController.text.trim(),

@@ -26,4 +26,6 @@ class AppRoutes {
   static const emailverify = '/email_verify';
   static const otp = '/otp';
   static const change_password = '/change_password';
+  static const email_verify_reset = '/email_verify_reset';
+  static const otp_reset = '/otp_reset';
 }

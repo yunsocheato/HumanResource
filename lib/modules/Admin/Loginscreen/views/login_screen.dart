@@ -252,11 +252,7 @@ class LoginScreen extends GetView<LoginController> {
           SizedBox(height: 5),
           InkWell(
             onTap: () {
-              showAwesomeSnackBarGetx(
-                'Development',
-                'We are sorry this feature is still in Development modes',
-                ContentType.warning,
-              );
+              Get.toNamed('/email_verify_reset');
             },
             child: Text(
               'Are you forgot password?',

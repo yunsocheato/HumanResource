@@ -122,6 +122,9 @@ flutter:
     - assets/images/department.png
     - assets/images/available.png
     - assets/images/supabase.png
+    - assets/images/email_verify.png
+    - assets/images/otpforgot.png
+    - assets/images/forgotscreen.png
     - assets/icon/logout.png
     - assets/icon/logouts.png
     - assets/icon/calendar.png

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/verification_controller.dart';
 
-class EmailVerifyScreen extends GetView<VerificationController> {
-  const EmailVerifyScreen({super.key});
+import '../controller/reset_password_verificationcontroller.dart';
 
-  static const String routeName = '/email_verify';
+class resetverification extends GetView<ResetPasswordController> {
+  const resetverification({super.key});
+
+  static const String routeName = '/email_verify_reset';
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +15,11 @@ class EmailVerifyScreen extends GetView<VerificationController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offAllNamed('/overview');
+            Get.offAllNamed('/login');
           },
-          icon: Icon(Icons.arrow_back, color: Colors.blue),
+          icon: Icon(Icons.arrow_back, color: Colors.orange),
         ),
-        title: const Text('Back', style: TextStyle(color: Colors.blue)),
+        title: const Text('Back', style: TextStyle(color: Colors.orange)),
       ),
 
       body: LayoutBuilder(
@@ -63,7 +64,7 @@ class EmailVerifyScreen extends GetView<VerificationController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
-                            'assets/images/email_verify.png',
+                            'assets/images/forgotscreen.png',
                             width: imageSize,
                             height: imageSize,
                           ),
@@ -98,7 +99,7 @@ class EmailVerifyScreen extends GetView<VerificationController> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  'assets/images/email_verify.png',
+                                  'assets/images/forgotscreen.png',
                                   width: imageSize,
                                   height: imageSize,
                                 ),
@@ -109,7 +110,7 @@ class EmailVerifyScreen extends GetView<VerificationController> {
                         Expanded(
                           flex: 1,
                           child: Material(
-                            color: Colors.blue[100],
+                            color: Colors.orange[100],
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(100),
                               bottomLeft: Radius.circular(100),
@@ -127,7 +128,7 @@ class EmailVerifyScreen extends GetView<VerificationController> {
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.blue.withOpacity(0.7),
+                                      color: Colors.orange.withOpacity(0.7),
                                       spreadRadius: 2,
                                       blurRadius: 5,
                                       offset: const Offset(0, 3),
@@ -147,7 +148,7 @@ class EmailVerifyScreen extends GetView<VerificationController> {
     );
   }
 
-  Widget _buildEmailVerifyContent(VerificationController c) {
+  Widget _buildEmailVerifyContent(ResetPasswordController c) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,12 +159,12 @@ class EmailVerifyScreen extends GetView<VerificationController> {
             fontSize: 24,
             fontWeight: FontWeight.bold,
             fontFamily: '7TH.ttf',
-            color: Colors.blue[900],
+            color: Colors.orange[900],
           ),
         ),
         const SizedBox(height: 16),
         Text(
-          'Note:\nDo not Share your OTP code with another',
+          'Note:\nCheck your code in your mailbox\nDo not share the code with another',
           textAlign: TextAlign.center,
         ),
 
@@ -179,11 +180,12 @@ class EmailVerifyScreen extends GetView<VerificationController> {
                     )
                     : InkWell(
                       onTap: () {
-                        if (c.isOtpVerified.value) return;
+                        Get.offAllNamed('/otp_reset');
+                        // if (c.isOtpVerified.value) return;
 
-                        c.sendOtp();
+                        // c.sendOtp();
                       },
-                      child: const Icon(Icons.send, color: Colors.blue),
+                      child: const Icon(Icons.send, color: Colors.orange),
                     ),
             labelText: 'Your email',
             border: const OutlineInputBorder(),

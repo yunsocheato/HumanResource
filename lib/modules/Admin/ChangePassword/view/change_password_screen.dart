@@ -167,7 +167,7 @@ class ChangePasswordScreen extends GetView<VerificationController> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            fontFamily: '7TH.TTF',
+            fontFamily: '7TH.ttf',
             color: Colors.green[900],
           ),
         ),
@@ -230,7 +230,14 @@ class ChangePasswordScreen extends GetView<VerificationController> {
             minimumSize: const Size(50, 50),
             backgroundColor: Colors.green.shade900,
           ),
-          onPressed: () => c.changePassword(),
+          onPressed:
+              () =>
+                  c.isLoading.value
+                      ? CircularProgressIndicator(
+                        color: Colors.green.shade900,
+                        strokeWidth: 2,
+                      )
+                      : c.changePassword(),
           child: const Text(
             'Change Password',
             style: TextStyle(color: Colors.white),

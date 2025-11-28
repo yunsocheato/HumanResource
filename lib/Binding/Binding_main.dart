@@ -43,6 +43,7 @@ import '../modules/Admin/Report/controller/employee_report_controller2.dart';
 import '../modules/Admin/Report/controller/employee_report_controller3.dart';
 import '../modules/Admin/Report/controller/employee_report_controller4.dart';
 import '../modules/Admin/Report/controller/employee_report_leavesummary_controller.dart';
+import '../modules/Admin/ResetPassword/controller/reset_password_verificationcontroller.dart';
 import '../modules/Admin/Schedule/controller/schedule_screen_controller.dart';
 import '../modules/Admin/SettingScreen/controller/setting_controller.dart';
 import '../modules/Admin/UserSetup/Controller/user_setup_controller.dart';
@@ -220,5 +221,8 @@ class BindingMain extends Bindings {
 
     Get.put(VerificationController(), permanent: true);
     Get.lazyPut<VerificationController>(() => VerificationController());
+
+    Get.put(ResetPasswordController(), permanent: true);
+    Get.lazyPut<ResetPasswordController>(() => ResetPasswordController());
   }
 }

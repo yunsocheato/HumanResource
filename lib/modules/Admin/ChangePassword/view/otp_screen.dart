@@ -173,7 +173,7 @@ class OTPScreen extends GetView<VerificationController> {
           style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
-            fontFamily: '7TH.TTF',
+            fontFamily: '7TH.ttf',
             color: Colors.blue[900],
           ),
         ),
@@ -212,7 +212,14 @@ class OTPScreen extends GetView<VerificationController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () => c.resendopt,
+              onPressed:
+                  () =>
+                      c.isLoading.value
+                          ? CircularProgressIndicator(
+                            color: Colors.red.shade900,
+                            strokeWidth: 2,
+                          )
+                          : c.resendopt(),
               style: TextButton.styleFrom(
                 minimumSize: const Size(50, 50),
                 backgroundColor: Colors.red,
@@ -223,7 +230,14 @@ class OTPScreen extends GetView<VerificationController> {
               ),
             ),
             ElevatedButton(
-              onPressed: () => c.verifyOtp(),
+              onPressed:
+                  () =>
+                      c.isLoading.value
+                          ? CircularProgressIndicator(
+                            color: Colors.blue.shade900,
+                            strokeWidth: 2,
+                          )
+                          : c.verifyOtp(),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(50, 50),
                 backgroundColor: Colors.blue.shade800,
