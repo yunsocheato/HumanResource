@@ -119,7 +119,7 @@ class OTPResetPasswordScreen extends GetView<ResetPasswordController> {
                                   Expanded(
                                     flex: 1,
                                     child: Material(
-                                      color: Colors.blue[100],
+                                      color: Colors.orange[100],
                                       borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(100),
                                         bottomLeft: Radius.circular(100),
@@ -139,9 +139,8 @@ class OTPResetPasswordScreen extends GetView<ResetPasswordController> {
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.blue.withOpacity(
-                                                  0.7,
-                                                ),
+                                                color: Colors.orange
+                                                    .withOpacity(0.7),
                                                 spreadRadius: 2,
                                                 blurRadius: 5,
                                                 offset: const Offset(0, 3),
@@ -318,7 +317,7 @@ class OTPResetPasswordScreen extends GetView<ResetPasswordController> {
                             color: Colors.orange,
                             strokeWidth: 2,
                           )
-                          : c.verify_Otp_reset_password(),
+                          : c.verifyOtpAndSendReset(),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(50, 50),
                 backgroundColor: Colors.orange.shade800,

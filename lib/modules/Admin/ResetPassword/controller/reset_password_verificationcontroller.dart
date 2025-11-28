@@ -182,8 +182,44 @@ class ResetPasswordController extends GetxController {
     }
   }
 
-  Future<void> verify_Otp_reset_password() async {
-    final enteredOtp = otpControllers.map((c) => c.text).join();
+  // Future<void> verifyOtpAndSendReset() async {
+  //   final enteredOtp = otpControllers.map((c) => c.text).join();
+  //   final emailText = emailController.text.trim();
+  //
+  //   if (emailText.isEmpty || enteredOtp.isEmpty) {
+  //     showError("Email and OTP cannot be empty");
+  //     return;
+  //   }
+  //
+  //   isLoading.value = true;
+  //
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse('https://fastapi.cheato.top/verify-otp-reset-password'),
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: jsonEncode({'email': emailText, 'otp': enteredOtp}),
+  //     );
+  //
+  //     final result = jsonDecode(response.body);
+  //
+  //     if (response.statusCode == 200 && result['status'] == 'success') {
+  //       showSuccess(result['message']);
+  //       verifiedOtp.value = enteredOtp;
+  //       isOtpVerified.value = true;
+  //       await Future.delayed(Duration(milliseconds: 500));
+  //       Get.offAllNamed('/check_mail'); // page telling user to check email
+  //     } else {
+  //       showError(result['message'] ?? "OTP verification failed");
+  //     }
+  //   } catch (e) {
+  //     showError("Server error: $e");
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+  Future<void> verifyOtpAndSendReset() async {
+    // 1️⃣ Combine OTP digits and trim
+    final enteredOtp = otpControllers.map((c) => c.text.trim()).join();
     final emailText = emailController.text.trim();
 
     if (emailText.isEmpty || enteredOtp.isEmpty) {
@@ -194,24 +230,28 @@ class ResetPasswordController extends GetxController {
     isLoading.value = true;
 
     try {
+      // 2️⃣ Send OTP and email to FastAPI
       final response = await http.post(
         Uri.parse('https://fastapi.cheato.top/verify-otp-reset-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': emailText, 'otp': enteredOtp}),
       );
 
+      print("Response code: ${response.statusCode}");
+      print("Response body: ${response.body}");
+
       final result = jsonDecode(response.body);
 
-      if (response.statusCode == 200 && result['status'] == 'success') {
-        showSuccess(result['message']);
+      if (response.statusCode == 200 &&
+          result['status'] != null &&
+          result['status'].toString().toLowerCase() == 'success') {
+        showSuccess(result['message'] ?? "OTP verified successfully");
         verifiedOtp.value = enteredOtp;
         isOtpVerified.value = true;
         await Future.delayed(Duration(milliseconds: 500));
         Get.offAllNamed('/check_mail');
       } else {
-        showError(
-          result['detail'] ?? result['message'] ?? "OTP verification failed",
-        );
+        showError(result['message'] ?? "OTP verification failed");
       }
     } catch (e) {
       showError("Server error: $e");
