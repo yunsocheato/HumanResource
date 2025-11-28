@@ -61,190 +61,190 @@ class OTPResetPasswordScreen extends GetView<ResetPasswordController> {
                   : 550;
           double innerPadding = isMobile ? 16 : 32;
 
-          // return Obx(
-          //   () =>
-          //       c.isOtpSent.value
-          //           ? Center(
-          //             child:
-          //                 isMobile
-          //                     ? SingleChildScrollView(
-          //                       child: Column(
-          //                         mainAxisAlignment: MainAxisAlignment.center,
-          //                         children: [
-          //                           Image.asset(
-          //                             'assets/images/otpforgot.png',
-          //                             width: imageSize,
-          //                             height: imageSize,
-          //                           ),
-          //                           Container(
-          //                             height: outerHeight,
-          //                             width: outerWidth,
-          //                             padding: EdgeInsets.all(innerPadding),
-          //                             decoration: BoxDecoration(
-          //                               color: Colors.white,
-          //                               borderRadius: BorderRadius.circular(10),
-          //                               boxShadow: [
-          //                                 BoxShadow(
-          //                                   color: Colors.blue.withOpacity(0.7),
-          //                                   spreadRadius: 2,
-          //                                   blurRadius: 5,
-          //                                   offset: const Offset(0, 3),
-          //                                 ),
-          //                               ],
-          //                             ),
-          //                             child: _buildOtpContent(c),
-          //                           ),
-          //                         ],
-          //                       ),
-          //                     )
-          //                     : Row(
-          //                       children: [
-          //                         Expanded(
-          //                           flex: 1,
-          //                           child: Container(
-          //                             color: Colors.white,
-          //                             child: Column(
-          //                               mainAxisAlignment:
-          //                                   MainAxisAlignment.center,
-          //                               children: [
-          //                                 Image.asset(
-          //                                   'assets/images/otpforgot.png',
-          //                                   width: imageSize,
-          //                                   height: imageSize,
-          //                                 ),
-          //                               ],
-          //                             ),
-          //                           ),
-          //                         ),
-          //                         Expanded(
-          //                           flex: 1,
-          //                           child: Material(
-          //                             color: Colors.blue[100],
-          //                             borderRadius: const BorderRadius.only(
-          //                               topLeft: Radius.circular(100),
-          //                               bottomLeft: Radius.circular(100),
-          //                             ),
-          //                             child: Center(
-          //                               child: Container(
-          //                                 height: outerHeight,
-          //                                 width: outerWidth,
-          //                                 padding: EdgeInsets.all(innerPadding),
-          //                                 constraints: BoxConstraints(
-          //                                   maxWidth: outerWidth,
-          //                                 ),
-          //                                 decoration: BoxDecoration(
-          //                                   color: Colors.white,
-          //                                   borderRadius: BorderRadius.circular(
-          //                                     10,
-          //                                   ),
-          //                                   boxShadow: [
-          //                                     BoxShadow(
-          //                                       color: Colors.blue.withOpacity(
-          //                                         0.7,
-          //                                       ),
-          //                                       spreadRadius: 2,
-          //                                       blurRadius: 5,
-          //                                       offset: const Offset(0, 3),
-          //                                     ),
-          //                                   ],
-          //                                 ),
-          //                                 child: _buildOtpContent(c),
-          //                               ),
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       ],
-          //                     ),
-          //           )
-          //           : const Center(child: CircularProgressIndicator()),
-          // );
-          return Center(
-            child:
-                isMobile
-                    ? SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/otpforgot.png',
-                            width: imageSize,
-                            height: imageSize,
-                          ),
-                          Container(
-                            height: outerHeight,
-                            width: outerWidth,
-                            padding: EdgeInsets.all(innerPadding),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blue.withOpacity(0.7),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: _buildOtpContent(c),
-                          ),
-                        ],
-                      ),
-                    )
-                    : Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            color: Colors.white,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/otpforgot.png',
-                                  width: imageSize,
-                                  height: imageSize,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Material(
-                            color: Colors.orange[100],
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(100),
-                              bottomLeft: Radius.circular(100),
-                            ),
-                            child: Center(
-                              child: Container(
-                                height: outerHeight,
-                                width: outerWidth,
-                                padding: EdgeInsets.all(innerPadding),
-                                constraints: BoxConstraints(
-                                  maxWidth: outerWidth,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.orange.withOpacity(0.7),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 3),
+          return Obx(
+            () =>
+                c.isOtpSent.value
+                    ? Center(
+                      child:
+                          isMobile
+                              ? SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/otpforgot.png',
+                                      width: imageSize,
+                                      height: imageSize,
+                                    ),
+                                    Container(
+                                      height: outerHeight,
+                                      width: outerWidth,
+                                      padding: EdgeInsets.all(innerPadding),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.blue.withOpacity(0.7),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: _buildOtpContent(c),
                                     ),
                                   ],
                                 ),
-                                child: _buildOtpContent(c),
+                              )
+                              : Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/otpforgot.png',
+                                            width: imageSize,
+                                            height: imageSize,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Material(
+                                      color: Colors.blue[100],
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(100),
+                                        bottomLeft: Radius.circular(100),
+                                      ),
+                                      child: Center(
+                                        child: Container(
+                                          height: outerHeight,
+                                          width: outerWidth,
+                                          padding: EdgeInsets.all(innerPadding),
+                                          constraints: BoxConstraints(
+                                            maxWidth: outerWidth,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.blue.withOpacity(
+                                                  0.7,
+                                                ),
+                                                spreadRadius: 2,
+                                                blurRadius: 5,
+                                                offset: const Offset(0, 3),
+                                              ),
+                                            ],
+                                          ),
+                                          child: _buildOtpContent(c),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    )
+                    : const Center(child: CircularProgressIndicator()),
           );
+          // return Center(
+          //   child:
+          //       isMobile
+          //           ? SingleChildScrollView(
+          //             child: Column(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 Image.asset(
+          //                   'assets/images/otpforgot.png',
+          //                   width: imageSize,
+          //                   height: imageSize,
+          //                 ),
+          //                 Container(
+          //                   height: outerHeight,
+          //                   width: outerWidth,
+          //                   padding: EdgeInsets.all(innerPadding),
+          //                   decoration: BoxDecoration(
+          //                     color: Colors.white,
+          //                     borderRadius: BorderRadius.circular(10),
+          //                     boxShadow: [
+          //                       BoxShadow(
+          //                         color: Colors.blue.withOpacity(0.7),
+          //                         spreadRadius: 2,
+          //                         blurRadius: 5,
+          //                         offset: const Offset(0, 3),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                   child: _buildOtpContent(c),
+          //                 ),
+          //               ],
+          //             ),
+          //           )
+          //           : Row(
+          //             children: [
+          //               Expanded(
+          //                 flex: 1,
+          //                 child: Container(
+          //                   color: Colors.white,
+          //                   child: Column(
+          //                     mainAxisAlignment: MainAxisAlignment.center,
+          //                     children: [
+          //                       Image.asset(
+          //                         'assets/images/otpforgot.png',
+          //                         width: imageSize,
+          //                         height: imageSize,
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //               Expanded(
+          //                 flex: 1,
+          //                 child: Material(
+          //                   color: Colors.orange[100],
+          //                   borderRadius: const BorderRadius.only(
+          //                     topLeft: Radius.circular(100),
+          //                     bottomLeft: Radius.circular(100),
+          //                   ),
+          //                   child: Center(
+          //                     child: Container(
+          //                       height: outerHeight,
+          //                       width: outerWidth,
+          //                       padding: EdgeInsets.all(innerPadding),
+          //                       constraints: BoxConstraints(
+          //                         maxWidth: outerWidth,
+          //                       ),
+          //                       decoration: BoxDecoration(
+          //                         color: Colors.white,
+          //                         borderRadius: BorderRadius.circular(10),
+          //                         boxShadow: [
+          //                           BoxShadow(
+          //                             color: Colors.orange.withOpacity(0.7),
+          //                             spreadRadius: 2,
+          //                             blurRadius: 5,
+          //                             offset: const Offset(0, 3),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                       child: _buildOtpContent(c),
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          // );
         },
       ),
     );
@@ -293,7 +293,14 @@ class OTPResetPasswordScreen extends GetView<ResetPasswordController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed:
+                  () =>
+                      c.isOtpVerified.value
+                          ? CircularProgressIndicator(
+                            color: Colors.grey.shade400,
+                            strokeWidth: 2,
+                          )
+                          : c.resend_opt_reset_password(),
               style: TextButton.styleFrom(
                 minimumSize: const Size(50, 50),
                 backgroundColor: Colors.grey.shade400,
@@ -304,7 +311,14 @@ class OTPResetPasswordScreen extends GetView<ResetPasswordController> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed:
+                  () =>
+                      c.isLoading.value
+                          ? CircularProgressIndicator(
+                            color: Colors.orange,
+                            strokeWidth: 2,
+                          )
+                          : c.verify_Otp_reset_password(),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(50, 50),
                 backgroundColor: Colors.orange.shade800,

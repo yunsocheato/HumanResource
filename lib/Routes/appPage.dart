@@ -18,6 +18,7 @@ import '../modules/Admin/Report/view/employee_absent_screen.dart';
 import '../modules/Admin/Report/view/employee_checkin_screen.dart';
 import '../modules/Admin/Report/view/employee_leave_summary_screen.dart';
 import '../modules/Admin/Report/view/employee_ot_screen.dart';
+import '../modules/Admin/ResetPassword/view/check_mail_link_screen.dart';
 import '../modules/Admin/ResetPassword/view/otp_reset_password_screen.dart';
 import '../modules/Admin/ResetPassword/view/reset_verify_email_screen.dart';
 import '../modules/Admin/Schedule/views/schedule_screen.dart';
@@ -196,6 +197,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.otp_reset,
       page: () => OTPResetPasswordScreen(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.check_mail,
+      page: () => CheckMailBoxScreen(),
       transition: Transition.fade,
       transitionDuration: Duration(milliseconds: 500),
     ),

@@ -180,10 +180,9 @@ class resetverification extends GetView<ResetPasswordController> {
                     )
                     : InkWell(
                       onTap: () {
-                        Get.offAllNamed('/otp_reset');
-                        // if (c.isOtpVerified.value) return;
+                        if (c.isOtpVerified.value) return;
 
-                        // c.sendOtp();
+                        c.sendEmailOTP();
                       },
                       child: const Icon(Icons.send, color: Colors.orange),
                     ),
