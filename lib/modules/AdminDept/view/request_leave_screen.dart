@@ -16,7 +16,7 @@ class RequestLeaveScreen extends GetView<RequestLeaveScreenController> {
     final profile = Get.find<UserProfileController>().userprofiles.value;
     final role = profile?.role ?? '';
     final isMobile = Get.width < 600;
-
+    final myScrollController = ScrollController();
     final contents =
         (role == 'admin' || role == 'superadmin')
             ? Drawerscreen(

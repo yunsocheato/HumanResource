@@ -70,41 +70,24 @@ class AttendanceChartWidget extends GetView<AttendanceChartController> {
             List<Color> colors =
                 controller.colorList.take(values.length).toList();
 
-            return Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.green.withOpacity(0.7),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 0),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: SizedBox(
-                  width: chartSize,
-                  height: chartSize,
-                  child: PieChartSz(
-                    colors: colors,
-                    values: values,
-                    gapSize: 0.2,
-                    centerText: "ANALYZE",
-                    centerTextStyle: TextStyle(
-                      fontSize: width < 600 ? 16 : 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                    ),
-                    valueSettings: Valuesettings(
-                      showValues: true,
-                      ValueTextStyle: TextStyle(
-                        fontSize: width < 600 ? 16 : 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+            return SizedBox(
+              width: chartSize,
+              height: chartSize,
+              child: PieChartSz(
+                colors: colors,
+                values: values,
+                gapSize: 0.2,
+                centerText: "ANALYZE",
+                centerTextStyle: TextStyle(
+                  fontSize: width < 600 ? 16 : 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+                valueSettings: Valuesettings(
+                  showValues: true,
+                  ValueTextStyle: TextStyle(
+                    fontSize: width < 600 ? 16 : 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),

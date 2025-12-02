@@ -39,56 +39,70 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
             : 18;
 
     if (showAppBar) {
-      return AppBar(
-        elevation: 8,
-        backgroundColor: Colors.white,
-        toolbarHeight: 60,
-        shadowColor: Colors.grey.withOpacity(0.5),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        leading: Builder(
-          builder:
-              (context) => InkWell(
-                onTap: () => Scaffold.of(context).openDrawer(),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/deamlogo.png',
-                      fit: BoxFit.cover,
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: [
+              // Menu button
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  icon: const Icon(Icons.menu, color: Colors.white, size: 30),
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
+              // Animated title
+              Expanded(
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'DEAM COMPUTER\nINTERNATIONAL',
+                      textStyle: TextStyle(
+                        fontSize: fontSize,
+                        color: Colors.white,
+                        fontFamily: '7TH.ttf',
+                        fontWeight: FontWeight.bold,
+                      ),
+                      speed: const Duration(milliseconds: 100),
+                    ),
+                  ],
+                  totalRepeatCount: 100,
+                  pause: const Duration(milliseconds: 1000),
+                  displayFullTextOnTap: true,
+                ),
+              ),
+              Row(
+                children: [
+                  NotificationScreen(roles: ['user']),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade900.withOpacity(0.7),
+                      shape: const CircleBorder(),
+                      elevation: 25,
+                      shadowColor: Colors.grey,
+                    ),
+                    onPressed: () {},
+                    child: const Icon(
+                      Icons.calendar_month,
+                      size: 25,
+                      color: Colors.white,
                     ),
                   ),
-                ),
+                ],
               ),
+            ],
+          ),
         ),
-        actions: [
-          const Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: CircleAvatar(
-              backgroundColor: Colors.blue,
-              child: Icon(EneftyIcons.calendar_3_bold, color: Colors.white),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              onPressed: () {},
-              icon: Container(
-                width: 37,
-                height: 37,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: const Icon(
-                  EneftyIcons.notification_bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
       );
     }
 
@@ -166,7 +180,6 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
     );
-    ;
   }
 
   @override

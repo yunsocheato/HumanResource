@@ -67,7 +67,7 @@ class DrawerAdmin extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [const DrawerHead(), content],
+                children: [content],
               ),
             ),
           ),
@@ -144,12 +144,13 @@ class DrawerAdmin extends StatelessWidget {
     );
   }
 
-  Drawer _buildDrawerContent(AuthController auth) {
+  Drawer _buildDrawerContent(AuthController auth, {bool includeHeader = true}) {
     return Drawer(
       child: SafeArea(
         child: Column(
           children: [
-            const DrawerHead(),
+            if (includeHeader) _buildProfileHeader(),
+            const SizedBox(height: 20),
             _buildSidebarItem(
               imagePath: 'assets/icon/overview.png',
               title: "OVERVIEW",

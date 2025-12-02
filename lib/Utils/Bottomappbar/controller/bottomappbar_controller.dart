@@ -11,6 +11,8 @@ class BottomAppBarController extends GetxController {
   final Color Selectedcolors = Colors.blue.shade900;
   final Color Unselectedcolors = Colors.black54;
   final tabCount = 4;
+  var bottomBarPosition = 0.0.obs;
+
   final double indicatorWidth = 50;
   final context = Get.context;
 
@@ -19,16 +21,16 @@ class BottomAppBarController extends GetxController {
 
     switch (index) {
       case 0:
-        Get.toNamed(DashboardScreen.routeName);
+        Get.offAllNamed('/overview');
         break;
       case 1:
-        Get.toNamed(AttendanceScreen.routeName);
+        Get.offAllNamed('/attendance_user');
         break;
       case 2:
-        Get.toNamed(EmployeeScreen.routeName);
+        Get.offAllNamed('/report');
         break;
       case 3:
-        Get.toNamed(SettingScreenMobile.routeName);
+        Get.offAllNamed('/settings');
         break;
     }
   }

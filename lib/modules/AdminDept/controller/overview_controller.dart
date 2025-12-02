@@ -16,11 +16,33 @@ class OverViewController extends GetxController
   var leavecardbalance = <LeaveCardModel>[].obs;
   var leavecardrecord = <Map<String, dynamic>>[].obs;
   var currentUser = Rxn<User>();
+  final tabCount = 5;
+  var isSelectedindex = 0.obs;
 
+  final Color Selectedcolors = Colors.blue.shade900;
+  final Color Unselectedcolors = Colors.grey;
   final controller = Get.put(LeaveRecordController());
   Timer? _timer;
 
+  final List<String> managelist = [
+    "Attendance",
+    "Leave Record",
+    "TEAM REQUEST",
+    "User Management",
+    "Leave Analyze",
+    "Attendance Analyze",
+  ];
+
+  final List<String> managelist1 = [
+    "Clock-in/Late",
+    "Leave Request",
+    "Team Request",
+  ];
+
   final PageController pageController = PageController();
+  final PageController pageController1 = PageController(initialPage: 0);
+  final PageController pageController2 = PageController();
+
   final LeaveCardBalanceProvider _provider = Get.put(
     LeaveCardBalanceProvider(),
   );
@@ -138,7 +160,24 @@ class OverViewController extends GetxController
   void onClose() {
     _timer?.cancel();
     pageController.dispose();
+    pageController1.dispose();
+
     super.onClose();
+  }
+
+  BoxDecoration boxDecoration(int index) {
+    return BoxDecoration(
+      color: isSelectedindex.value == index ? Selectedcolors : Colors.white,
+      borderRadius: BorderRadius.circular(5),
+    );
+  }
+
+  Color iconColor(int index) {
+    return isSelectedindex.value == index ? Colors.white : Unselectedcolors;
+  }
+
+  void SelectedIndex(int index) {
+    isSelectedindex.value = index;
   }
 }
 

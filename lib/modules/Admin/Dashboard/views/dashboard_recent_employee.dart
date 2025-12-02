@@ -77,7 +77,7 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             child: Container(
               height: 30,
               width: 145,
@@ -104,90 +104,79 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: controller.users.length,
             itemBuilder: (context, index) {
               final user = controller.users[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: SizedBox(
-                  width: cardWidth,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      elevation: 3,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+              return SizedBox(
+                width: cardWidth,
+                child: Card(
+                  elevation: 3,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 6,
+                        height: cardHeight,
+                        decoration: BoxDecoration(
+                          color: user.color1,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomLeft: Radius.circular(12),
+                          ),
+                        ),
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 6,
-                            height: cardHeight,
-                            decoration: BoxDecoration(
-                              color: user.color1,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                bottomLeft: Radius.circular(12),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: user.iconBgColor,
-                              shape: BoxShape.circle,
-                            ),
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.grey[200],
-                              backgroundImage:
-                                  user.photo_url != null &&
-                                          user.photo_url!.isNotEmpty
-                                      ? NetworkImage(user.photo_url!)
-                                      : null,
-                              child:
-                                  user.photo_url == null ||
-                                          user.photo_url!.isEmpty
-                                      ? const Icon(
-                                        Icons.person,
-                                        color: Colors.grey,
-                                      )
-                                      : null,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    user.name,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(user.email),
-                                  Text(user.position),
-                                  Text(user.department),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                      const SizedBox(width: 12),
+                      Container(
+                        height: 40,
+                        width: 40,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: user.iconBgColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.grey[200],
+                          backgroundImage:
+                              user.photo_url != null &&
+                                      user.photo_url!.isNotEmpty
+                                  ? NetworkImage(user.photo_url!)
+                                  : null,
+                          child:
+                              user.photo_url == null || user.photo_url!.isEmpty
+                                  ? const Icon(Icons.person, color: Colors.grey)
+                                  : null,
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                user.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(user.email),
+                              Text(user.position),
+                              Text(user.department),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );

@@ -12,6 +12,13 @@ class TeamRequestLeaveResponsiveWidget extends GetView<LeaveRecordController> {
 
   @override
   Widget build(BuildContext context) {
+    if (controller.leavesDepartments.isEmpty &&
+        controller.isLoading.value &&
+        controller.currentUserRole.value != 'admindept' &&
+        controller.currentUserRole.value != 'admin' &&
+        controller.currentUserRole.value != 'superadmin') {
+      controller.getLeaves();
+    }
     return Obx(() {
       if (controller.currentUserRole.value != 'admindept' &&
           controller.currentUserRole.value != 'admin' &&
@@ -38,53 +45,94 @@ class TeamRequestLeaveResponsiveWidget extends GetView<LeaveRecordController> {
         return base;
       }
 
+      if (controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      if (leaves.isEmpty) {
+        return const Center(child: Text("No Team Request Leave Found"));
+      }
       return LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < 600) {
-            return ListView.builder(
-              itemCount: leaves.length,
-              itemBuilder: (context, index) {
-                final leave = leaves[index];
-                return Card(
-                  margin: const EdgeInsets.all(8),
-                  child: ListTile(
-                    title: Text('${leave.name} - ${leave.status}'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Reason: ${leave.reason}'),
-                        Text(
-                          'Dates: ${leave.startDate != null ? dateFormat.format(leave.startDate!) : '-'}'
-                          ' - ${leave.endDate != null ? dateFormat.format(leave.endDate!) : '-'}',
+            return Column(
+              children: [
+                const SizedBox(height: 20),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'TEAM REQUEST',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: fontSize(15),
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (leave.status == 'pending') ...[
-                          IconButton(
-                            icon: Icon(Icons.check_circle, color: Colors.green),
-                            onPressed:
-                                () => controller.showApproveDialog(
-                                  context,
-                                  leave.id,
-                                ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.close, color: Colors.red),
-                            onPressed:
-                                () => controller.showRejectDialog(
-                                  context,
-                                  leave.id,
-                                ),
-                          ),
-                        ],
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 10),
+                      const DatePickerTeamLeave(),
+                    ],
                   ),
-                );
-              },
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: leaves.length,
+                    itemBuilder: (context, index) {
+                      final leave = leaves[index];
+                      return SizedBox(
+                        width: double.infinity,
+                        height: 150,
+                        child: Card(
+                          margin: const EdgeInsets.all(8),
+                          child: ListTile(
+                            title: Text('${leave.name} - ${leave.status}'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Department: ${leave.department}'),
+                                Text('Reason: ${leave.reason}'),
+                                Text(
+                                  'Dates: ${leave.startDate != null ? dateFormat.format(leave.startDate!) : '-'}'
+                                  ' - ${leave.endDate != null ? dateFormat.format(leave.endDate!) : '-'}',
+                                ),
+                              ],
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (leave.status == 'pending') ...[
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.check_circle,
+                                      color: Colors.green,
+                                    ),
+                                    onPressed:
+                                        () => controller.showApproveDialog(
+                                          context,
+                                          leave.id,
+                                        ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.close, color: Colors.red),
+                                    onPressed:
+                                        () => controller.showRejectDialog(
+                                          context,
+                                          leave.id,
+                                        ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           }
           return Column(

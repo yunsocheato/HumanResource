@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Core/user_profile_controller.dart';
+import '../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../Admin/Drawer/views/drawer_screen.dart';
 import '../Utils/date_picker_all_chart.dart';
 import '../Utils/date_picker_attendance.dart';
@@ -11,6 +12,7 @@ import '../controller/attendance_controller.dart';
 import '../widget/attendance_chart_widget.dart';
 import '../widget/attendance_widget.dart';
 import '../widget/bottom_appbar_widget1.dart';
+import '../widget/drawer_header_widget.dart';
 import '../widget/drawer_widget.dart';
 
 class AttendanceUserScreen extends GetView<Attendancecontroller> {
@@ -19,31 +21,62 @@ class AttendanceUserScreen extends GetView<Attendancecontroller> {
 
   @override
   Widget build(BuildContext context) {
-    final profile = Get.find<UserProfileController>().userprofiles.value;
-    final role = profile?.role ?? '';
+    final profileController = Get.find<UserProfileController>();
 
-    final screenContent = SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height - 10,
-            ),
-            child: _buildResponsiveContent(),
-          ),
-        ],
-      ),
-    );
+    return Obx(() {
+      final profile = profileController.userprofiles.value;
 
-    final contents =
-        (role == 'admin' || role == 'superadmin')
-            ? Drawerscreen(content: screenContent)
-            : DrawerAdmin(content: screenContent);
+      if (profile == null) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    final isMobile = MediaQuery.of(context).size.width < 600;
-    return isMobile ? BottomAppBarWidget1(body: contents) : contents;
+      final role = profile.role.toLowerCase();
+      final isMobile = Get.width < 900;
+
+      final bool isAdmin = role == 'admin' || role == 'superadmin';
+      final bool isUserSide = role == 'admindept' || role == 'user';
+
+      final contents =
+          isAdmin
+              ? Drawerscreen(
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height - 10,
+                        ),
+                        child: _buildResponsiveContent(),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+              : DrawerAdmin(
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height - 10,
+                        ),
+                        child: _buildResponsiveContent(),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+
+      if (isMobile) {
+        return isAdmin
+            ? BottomAppBarWidget(body: contents)
+            : BottomAppBarWidget1(body: contents);
+      } else {
+        return contents;
+      }
+    });
   }
 }
 
@@ -62,35 +95,135 @@ Widget _buildResponsiveContent() {
 }
 
 Widget _mobileLayout() {
-  return Padding(
-    padding: const EdgeInsets.all(12.0),
-    child: Column(
+  final profileController = Get.find<UserProfileController>();
+  final profile = profileController.userprofiles.value;
+
+  if (profile == null) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  final role = profile.role.toLowerCase();
+  final bool isAdmin = role == 'admin' || role == 'superadmin';
+
+  final size = MediaQuery.of(Get.context!).size;
+  final bottomBarHeight = kBottomNavigationBarHeight;
+
+  return SizedBox(
+    height: size.height,
+    width: size.width,
+    child: Stack(
       children: [
-        const SizedBox(height: 25),
-        Text(
-          'ATTENDANCE RECORDS',
-          style: TextStyle(
-            color: Colors.blue.shade900,
-            fontWeight: FontWeight.w600,
-            fontSize: 13,
+        Container(
+          width: size.width,
+          height: size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.blue.shade900, Colors.blue.shade300],
+            ),
           ),
         ),
-        const SizedBox(height: 12),
-        AttendanceChartWidget(),
-        const SizedBox(height: 25),
-        Text(
-          'ATTENDANCE ANALYZE',
-          style: TextStyle(
-            color: Colors.green.shade900,
-            fontWeight: FontWeight.w600,
-            fontSize: 13,
+
+        Positioned(
+          top: -30,
+          right: -60,
+          child: Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              shape: BoxShape.circle,
+            ),
           ),
         ),
-        const SizedBox(height: 12),
-        AttendanceTablewidget(),
-        const SizedBox(height: 30),
-        _buildProfileSidebar(isMobile: true),
-        const SizedBox(height: 40),
+
+        if (!isAdmin)
+          Positioned(top: 20, left: 0, right: 0, child: DrawerHead()),
+
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: size.height * 0.85,
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white24,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 10,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Container(
+                      width: 40,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade500,
+                        borderRadius: BorderRadius.circular(2.5),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Positioned.fill(
+                  top: 40,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 12,
+                      right: 12,
+                      bottom: bottomBarHeight + 12,
+                    ),
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          Text(
+                            'ATTENDANCE ANALYZE',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.blue.shade900,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          AttendanceChartWidget(),
+                          const SizedBox(height: 55),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'ATTENDANCE RECORDS',
+                                style: TextStyle(
+                                  color: Colors.green.shade900,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              DatePickerAttendance(),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          AttendanceTablewidget(),
+                          const SizedBox(height: 40),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     ),
   );

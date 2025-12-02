@@ -17,6 +17,7 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
 
     return Obx(() {
       final profile = profileController.userprofiles.value;
+      final myScrollController = ScrollController();
 
       if (profile == null) {
         return const Center(child: CircularProgressIndicator());

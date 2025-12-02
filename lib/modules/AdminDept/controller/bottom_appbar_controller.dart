@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hrms/modules/AdminDept/view/overview_screen.dart';
 
 class BottomAppBarController1 extends GetxController {
@@ -8,23 +10,55 @@ class BottomAppBarController1 extends GetxController {
   final Color Unselectedcolors = Colors.black54;
   final tabCount = 4;
   final double indicatorWidth = 50;
-  final context = Get.context;
+  late ScrollController scrollController;
+  var bottomBarPosition = 0.0.obs;
+  static const double barHeight = 75.0 + 15.0;
+
+  @override
+  void onInit() {
+    super.onInit();
+    scrollController = ScrollController();
+    scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void onClose() {
+    scrollController.removeListener(_scrollListener);
+    scrollController.dispose();
+    super.onClose();
+  }
+
+  void _scrollListener() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (bottomBarPosition.value != barHeight) {
+          bottomBarPosition.value = barHeight;
+        }
+      } else if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        if (bottomBarPosition.value != 0.0) {
+          bottomBarPosition.value = 0.0;
+        }
+      }
+    });
+  }
 
   void SelectedIndex(int index) {
     isSelectedindex.value = index;
 
     switch (index) {
       case 0:
-        Get.toNamed(OverViewScreen.routeName);
+        Get.offAllNamed('/overview');
         break;
       case 1:
-        Get.toNamed(OverViewScreen.routeName);
+        Get.offAllNamed('/attendance_user');
         break;
       case 2:
-        Get.toNamed(OverViewScreen.routeName);
+        Get.offAllNamed('/report');
         break;
       case 3:
-        Get.toNamed(OverViewScreen.routeName);
+        Get.offAllNamed('/settings');
         break;
     }
   }
