@@ -16,6 +16,9 @@ class OverViewController extends GetxController
   var leavecardbalance = <LeaveCardModel>[].obs;
   var leavecardrecord = <Map<String, dynamic>>[].obs;
   var currentUser = Rxn<User>();
+  final currentPage = 0.obs;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   final tabCount = 5;
   var isSelectedindex = 0.obs;
 
@@ -103,6 +106,13 @@ class OverViewController extends GetxController
   void onInit() {
     super.onInit();
     controller.loadCurrentUser();
+
+    pageController.addListener(() {
+      final page = pageController.page;
+      if (page != null) {
+        currentPage.value = page.round();
+      }
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       pageController.jumpToPage(0);
     });

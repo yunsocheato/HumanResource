@@ -53,8 +53,8 @@ class Gridoverviewoverview extends GetView<OverViewController> {
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
+            crossAxisSpacing: 3,
+            mainAxisSpacing: 5,
             childAspectRatio: childAspectRatio,
           ),
           itemBuilder: (context, index) {

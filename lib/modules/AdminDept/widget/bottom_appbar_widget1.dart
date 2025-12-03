@@ -9,7 +9,7 @@ class BottomAppBarWidget1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(BottomAppBarController1());
+    final controller = Get.find<BottomAppBarController1>();
 
     return Stack(
       children: [

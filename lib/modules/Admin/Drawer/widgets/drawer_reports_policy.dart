@@ -27,33 +27,35 @@ class ReportPolicy extends GetView<AppDrawerController> {
         double iconSize;
 
         if (isMobile) {
-          fontSizeTitle = 10;
-          fontSizeBody = 10;
-          iconSize = 15;
+          fontSizeTitle = 12;
+          fontSizeBody = 12;
+          iconSize = 12;
         } else if (isTablet) {
           fontSizeTitle = 12;
           fontSizeBody = 12;
-          iconSize = 20;
+          iconSize = 12;
         } else if (isDesktop) {
           fontSizeTitle = 12;
           fontSizeBody = 12;
-          iconSize = 20;
+          iconSize = 12;
         } else if (isLargeDesktop) {
-          fontSizeTitle = 20;
-          fontSizeBody = 16;
-          iconSize = 28;
+          fontSizeTitle = 12;
+          fontSizeBody = 12;
+          iconSize = 12;
         } else {
-          fontSizeTitle = 22;
-          fontSizeBody = 18;
-          iconSize = 32;
+          fontSizeTitle = 12;
+          fontSizeBody = 12;
+          iconSize = 12;
         }
 
         return Obx(() {
+          bool isMobile = Get.width < 600;
+          bool isDesktop = Get.width >= 1024;
           final isExpanded1 = controller.isExpanded1('Report Admin');
           return Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
-              unselectedWidgetColor: Colors.white,
+              unselectedWidgetColor: Colors.blue,
             ),
             child: ExpansionTile(
               initiallyExpanded: isExpanded1,
@@ -71,15 +73,15 @@ class ReportPolicy extends GetView<AppDrawerController> {
                   color:
                       controller.selectedIndex.value == 9
                           ? Colors.blue.shade900
-                          : Colors.white,
+                          : (isMobile ? Colors.blue : Colors.white),
                   fontWeight:
                       controller.selectedIndex.value == 9
                           ? FontWeight.bold
                           : FontWeight.normal,
                 ),
               ),
-              iconColor: Colors.white,
-              collapsedIconColor: Colors.white,
+              iconColor: Colors.blue,
+              collapsedIconColor: Colors.blue,
               childrenPadding: const EdgeInsets.only(left: 32),
               children: [
                 _buildSubTile(
@@ -136,7 +138,7 @@ class ReportPolicy extends GetView<AppDrawerController> {
   }) {
     final controller = Get.find<AppDrawerController>();
     final isSelected = controller.selectedIndex.value == index;
-
+    final isMobile = Get.width < 600;
     return ListTile(
       leading: Image.asset(imagePath, width: imageSize, height: imageSize),
       title: Text(
@@ -146,7 +148,7 @@ class ReportPolicy extends GetView<AppDrawerController> {
           color:
               isSelected
                   ? controller.Selectedcolors
-                  : controller.Unselectedcolors,
+                  : (isMobile ? Colors.blue : controller.Unselectedcolors),
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),

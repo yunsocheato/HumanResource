@@ -29,4 +29,6 @@ class AppRoutes {
   static const email_verify_reset = '/email_verify_reset';
   static const otp_reset = '/otp_reset';
   static const check_mail = '/check_mail';
+  static const menu_admin = '/menu_admin';
+  static const menu_user = '/menu_user';
 }

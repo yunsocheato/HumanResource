@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 
@@ -52,7 +53,7 @@ class DrawerHead1 extends StatelessWidget implements PreferredSizeWidget {
               ),
               child: IconButton(
                 onPressed: () {
-                  Scaffold.of(context).openDrawer();
+                  Future.microtask(() => Get.offAllNamed('/menu_admin'));
                 },
                 icon: const Icon(
                   Icons.dashboard_outlined,

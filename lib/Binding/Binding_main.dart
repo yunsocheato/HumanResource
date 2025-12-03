@@ -224,5 +224,11 @@ class BindingMain extends Bindings {
 
     Get.put(ResetPasswordController(), permanent: true);
     Get.lazyPut<ResetPasswordController>(() => ResetPasswordController());
+
+    Get.put(BottomAppBarController(), permanent: true);
+    Get.lazyPut<BottomAppBarController>(() => BottomAppBarController());
+
+    Get.put(BottomAppBarController1(), permanent: true);
+    Get.lazyPut<BottomAppBarController1>(() => BottomAppBarController1());
   }
 }

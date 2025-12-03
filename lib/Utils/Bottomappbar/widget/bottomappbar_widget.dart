@@ -12,7 +12,7 @@ class BottomAppBarWidget extends GetView<BottomAppBarController> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(BottomAppBarController());
+    final controller = Get.find<BottomAppBarController>();
 
     return Stack(
       children: [
@@ -32,7 +32,7 @@ class BottomAppBarWidget extends GetView<BottomAppBarController> {
                 border: Border.all(color: Colors.blue, width: 1),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.blue.withOpacity(0.2),
+                    color: Colors.blue.withOpacity(0.4),
                     blurRadius: 10,
                     spreadRadius: 2,
                   ),

@@ -46,10 +46,10 @@ class Drawerscreen extends GetView<AppDrawerController> {
         double avatarRadius;
 
         if (isMobile) {
-          sidebarWidth = 240;
-          fontSizeTitle = 15;
+          sidebarWidth = 200;
+          fontSizeTitle = 12;
           fontSizeBody = 12;
-          iconSize = 22;
+          iconSize = 12;
           avatarRadius = 35;
         } else if (isTablet) {
           sidebarWidth = 200;
@@ -192,41 +192,8 @@ class Drawerscreen extends GetView<AppDrawerController> {
                             },
                           ),
                         ),
-                      if (isMobile)
-                        IconButton(
-                          icon: Icon(
-                            Icons.search,
-                            size: iconSize,
-                            color: Colors.white,
-                          ),
-                          onPressed:
-                              () => showModalBottomSheet(
-                                context: context,
-                                backgroundColor: Colors.transparent,
-                                isScrollControlled: true,
-                                builder:
-                                    (_) => SizedBox(
-                                      height: 250,
-                                      child: _buildSearchBox(fontSizeBody),
-                                    ),
-                              ),
-                        ),
                     ],
                   ),
-          drawer:
-              isMobile
-                  ? Drawer(
-                    child: _buildSidebarMobile(
-                      context,
-                      fontSizeTitle,
-                      fontSizeBody,
-                      iconSize,
-                      avatarRadius,
-                      sidebarWidth,
-                      isMobile,
-                    ),
-                  )
-                  : null,
           body: Stack(
             children: [
               Row(
@@ -311,177 +278,6 @@ class Drawerscreen extends GetView<AppDrawerController> {
     );
   }
 
-  Widget _buildSidebarMobile(
-    BuildContext context,
-    double fontSizeTitle,
-    double fontSizeBody,
-    double iconSize,
-    double avatarRadius,
-    double sidebarWidth,
-    bool isMobile,
-  ) {
-    final controller = Get.find<AuthController>();
-    final controller1 = Get.find<UserProfileController>();
-    final controller2 = Get.find<AppDrawerController>();
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Container(
-        width: sidebarWidth,
-        color: const Color(0xFF1B2230),
-        child: Stack(
-          children: [
-            ListView(
-              padding: const EdgeInsets.only(bottom: 150, top: 15),
-              children: [
-                Container(
-                  height: 135,
-                  child: DrawerHeader(
-                    decoration: const BoxDecoration(color: Color(0xFF1B2230)),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        AnimatedBuilder(
-                          animation: controller2.blurAnimation,
-                          builder: (context, child) {
-                            return ImageFiltered(
-                              imageFilter: ImageFilter.blur(
-                                sigmaX: controller2.blurAnimation.value,
-                                sigmaY: controller2.blurAnimation.value,
-                              ),
-                              child: child,
-                            );
-                          },
-                          child: Image.asset(
-                            'assets/images/deamlogo.png',
-                            height: avatarRadius * 2,
-                            width: avatarRadius * 2,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        AnimatedTextKit(
-                          animatedTexts: [
-                            TypewriterAnimatedText(
-                              'DEAM COMPUTER\nINTERNATIONAL',
-                              textStyle: TextStyle(
-                                fontSize: fontSizeBody,
-                                color: Colors.white,
-                                fontFamily: '7TH.ttf',
-                                fontWeight: FontWeight.w300,
-                              ),
-                              speed: Duration(milliseconds: 100),
-                            ),
-                          ],
-                          totalRepeatCount: 100,
-                          pause: Duration(milliseconds: 1000),
-                          displayFullTextOnTap: true,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                OverviewAdmin(),
-                _buildDrawerTile(
-                  'Admin Dashboard',
-                  'assets/icon/home.png',
-                  () => MethodButton18(),
-                  index: 24,
-                  fontSize: fontSizeBody,
-                ),
-                _buildDrawerTile(
-                  'Mange Attendance User',
-                  'assets/icon/calendars.png',
-                  () => MethodButton2(),
-                  index: 1,
-                  fontSize: fontSizeBody,
-                ),
-                PolicySetup(),
-                ReportPolicy(),
-                Employeepolicy(),
-                TableLeaveRequest(),
-              ],
-            ),
-            if (isMobile)
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 90,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF1B2230),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 12.0,
-                    ),
-                    child: Row(
-                      children: [
-                        Obx(() {
-                          final image = controller1.userprofiles.value?.image;
-                          return CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Colors.white,
-                            backgroundImage:
-                                (image == null || image.isEmpty)
-                                    ? AssetImage(
-                                      'assets/images/profileuser.png',
-                                    )
-                                    : NetworkImage(image) as ImageProvider,
-                          );
-                        }),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Obx(() {
-                            final profile = controller1.userprofiles.value;
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  profile?.name ?? 'No Name',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                Text(
-                                  profile?.role ?? 'No Role',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.logout, color: Colors.white),
-                          onPressed: () => controller.logout(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildSearchBox(double fontSize) {
     final HoverMouseController controller = Get.put(HoverMouseController());
     return Padding(
@@ -519,7 +315,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
       final controller = Get.find<AppDrawerController>();
       final isSelected =
           index != null && controller.selectedIndex.value == index;
-
+      final isMobile = Get.width < 600;
       return ListTile(
         leading: Image.asset(imagePath, width: imageSize, height: imageSize),
         title: Text(
@@ -529,7 +325,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
             color:
                 isSelected
                     ? controller.Selectedcolors
-                    : controller.Unselectedcolors,
+                    : (isMobile ? Colors.blue : controller.Unselectedcolors),
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
         ),

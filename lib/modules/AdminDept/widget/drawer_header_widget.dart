@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Admin/Drawer/controllers/drawer_controller.dart';
@@ -16,7 +15,7 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
     final bool isMobile = screenWidth < 600;
     final bool isTablet = screenWidth >= 600 && screenWidth < 900;
     final bool isDesktop = screenWidth >= 900 && screenWidth < 1200;
-    final bool isLargeDesktop = screenWidth >= 1200;
+    final bool _ = screenWidth >= 1200;
 
     final bool showAppBar = isMobile || isTablet;
     final drawerController = Get.find<AppDrawerController>();
@@ -44,7 +43,6 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Row(
             children: [
-              // Menu button
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.3),
@@ -52,15 +50,12 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    Scaffold.of(context).openDrawer();
+                    Future.microtask(() => Get.offAllNamed('/menu_user'));
                   },
                   icon: const Icon(Icons.menu, color: Colors.white, size: 30),
                 ),
               ),
-
               const SizedBox(width: 12),
-
-              // Animated title
               Expanded(
                 child: AnimatedTextKit(
                   animatedTexts: [

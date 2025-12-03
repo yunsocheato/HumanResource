@@ -75,7 +75,7 @@ class OverViewWidget extends GetView<OverViewController> {
                   ),
                 ),
                 const Gridoverviewoverview(),
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
                 PageOverviewScreen(),
                 const SizedBox(height: 25),
                 _buildProfileSidebar(),

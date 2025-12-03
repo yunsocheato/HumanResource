@@ -4,10 +4,12 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/AdminDept/controller/overview_controller.dart';
 
 import '../../../Core/user_profile_controller.dart';
+import '../../../Utils/Bottomappbar/controller/bottomappbar_controller.dart';
 import '../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../Admin/Drawer/views/drawer_screen.dart';
 import '../Utils/date_picker_attendance.dart';
 import '../Utils/date_picker_leave.dart';
+import '../controller/bottom_appbar_controller.dart';
 import '../widget/attendance_widget.dart';
 import '../widget/bottom_appbar_widget1.dart';
 import '../widget/drawer_header_widget.dart';
@@ -22,6 +24,8 @@ class ReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileController = Get.find<UserProfileController>();
+    final controller = Get.find<BottomAppBarController>();
+    final controller1 = Get.find<BottomAppBarController1>();
 
     return Obx(() {
       final profile = profileController.userprofiles.value;

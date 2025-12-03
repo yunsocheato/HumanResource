@@ -7,6 +7,7 @@ import '../modules/Admin/ChangePassword/view/change_password_screen.dart';
 import '../modules/Admin/ChangePassword/view/email_verify_screen.dart';
 import '../modules/Admin/Dashboard/views/dashboard_screen.dart';
 import '../modules/Admin/Department/views/department_screen.dart';
+import '../modules/Admin/Drawer/views/menu_drawer_screen_admin.dart';
 import '../modules/Admin/Employee/views/employee_profile_screen.dart';
 import '../modules/Admin/Employee/views/employee_screen.dart';
 import '../modules/Admin/History/view/history_screen.dart';
@@ -28,6 +29,7 @@ import '../modules/AdminDept/view/overview_screen.dart';
 import '../modules/AdminDept/view/profileuser_screen.dart';
 import '../modules/AdminDept/view/report_screen.dart';
 import '../modules/AdminDept/view/request_leave_screen.dart';
+import '../modules/AdminDept/widget/menu_drawer_user.dart';
 import 'appRoutes.dart';
 
 class AppPages {
@@ -203,6 +205,18 @@ class AppPages {
     GetPage(
       name: AppRoutes.check_mail,
       page: () => CheckMailBoxScreen(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.menu_admin,
+      page: () => MenuMobileScreenAdmin(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.menu_user,
+      page: () => MenuMobileScreenUser(),
       transition: Transition.fade,
       transitionDuration: Duration(milliseconds: 500),
     ),
