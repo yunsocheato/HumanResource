@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hrms/modules/Admin/Calendar_Mobile/calendar_mobile.dart';
 import 'package:hrms/modules/Admin/ChangePassword/view/otp_screen.dart';
 import 'package:hrms/modules/Admin/LogoutScreen/logout_screen.dart';
 import '../../Utils/SplashScreen/widget/splash_view.dart';
@@ -37,7 +38,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.splash,
       page: () => SplashView(),
-      transition: Transition.circularReveal,
+      transition: Transition.leftToRight,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
@@ -133,7 +134,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.employeeprofile,
       page: () => EmployeeProfileScreen(),
-      transition: Transition.circularReveal,
+      transition: Transition.fade,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
@@ -163,13 +164,13 @@ class AppPages {
     GetPage(
       name: AppRoutes.attendanceuser,
       page: () => AttendanceUserScreen(),
-      transition: Transition.cupertinoDialog,
+      transition: Transition.fadeIn,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
       name: AppRoutes.report,
       page: () => ReportScreen(),
-      transition: Transition.circularReveal,
+      transition: Transition.rightToLeftWithFade,
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
@@ -217,6 +218,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.menu_user,
       page: () => MenuMobileScreenUser(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.mobile_calendar,
+      page: () => MobileCalendarScreen(),
       transition: Transition.fade,
       transitionDuration: Duration(milliseconds: 500),
     ),

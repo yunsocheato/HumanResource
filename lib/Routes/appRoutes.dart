@@ -31,4 +31,5 @@ class AppRoutes {
   static const check_mail = '/check_mail';
   static const menu_admin = '/menu_admin';
   static const menu_user = '/menu_user';
+  static const mobile_calendar = '/mobile_calendar';
 }

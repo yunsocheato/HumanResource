@@ -10,6 +10,7 @@ import 'package:hrms/Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../../../Core/user_profile_controller.dart';
 import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../../../services/logout_services.dart';
+import '../../../CalendarWeb/calendar_web.dart';
 import '../../Notification/view/notification_screen.dart';
 import '../../SettingScreen/view/setting_screen_Desktop.dart';
 import '../controllers/drawer_controller.dart';
@@ -176,6 +177,17 @@ class Drawerscreen extends GetView<AppDrawerController> {
                         }),
                       const SizedBox(width: 20),
                       NotificationScreen(roles: ['admin', 'superadmin']),
+                      const SizedBox(width: 10),
+                      if (!isMobile)
+                        MouseHover(
+                          keyId: 125,
+                          controller: controller2,
+                          child: CalendarDropdown(
+                            onSelected: (date) {
+                              print(date);
+                            },
+                          ),
+                        ),
                       const SizedBox(width: 10),
                       if (!isMobile)
                         MouseHover(

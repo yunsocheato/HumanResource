@@ -94,7 +94,9 @@ class DrawerHead1 extends StatelessWidget implements PreferredSizeWidget {
                     elevation: 25,
                     shadowColor: Colors.grey,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Future.microtask(() => Get.offAllNamed('/mobile_calendar'));
+                  },
                   child: const Icon(
                     Icons.calendar_month,
                     size: 25,
