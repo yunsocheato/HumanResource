@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/modules/AdminDept/view/overview_screen.dart';
 import '../../../../Utils/Loadingui/ErrorScreen/Controller/ErrorMessage.dart';
 import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
 import '../../Attendance/controllers/attendance_widget_controller.dart';
-import '../../Attendance/views/attendance_screen.dart';
-import '../../Dashboard/views/dashboard_screen.dart';
-import '../../Department/views/department_screen.dart';
-import '../../Employee/views/employee_profile_screen.dart';
-import '../../Employee/views/employee_screen.dart';
 import '../../History/view/history_screen.dart';
-import '../../LeaveRequest/views/leave_request_screen.dart';
-import '../../Report/view/employee_Late_screen.dart';
-import '../../Report/view/employee_absent_screen.dart';
-import '../../Report/view/employee_checkin_screen.dart';
-import '../../Report/view/employee_leave_summary_screen.dart';
-import '../../Report/view/employee_ot_screen.dart';
 import '../../Schedule/views/schedule_screen.dart';
 
 Future<void> MethodButton1() async {

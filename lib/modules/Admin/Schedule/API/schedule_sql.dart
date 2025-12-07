@@ -2,9 +2,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../model/schedule_model.dart';
 
-class ScheduleSQL{
+class ScheduleSQL {
   Future<List<ScheduleModel>> getSchedule() async {
-    final data = await Supabase.instance.client;
+    final data = Supabase.instance.client;
     final response = await data
         .from('schedule')
         .select()

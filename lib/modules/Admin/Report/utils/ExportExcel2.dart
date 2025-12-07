@@ -3,8 +3,6 @@ import 'package:excel/excel.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'dart:typed_data';
 

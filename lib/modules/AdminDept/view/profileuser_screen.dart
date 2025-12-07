@@ -8,7 +8,7 @@ import '../widget/bottom_appbar_widget1.dart';
 import '../widget/drawer_widget.dart';
 
 class UserProfileScreen extends GetView<EmployeeProfileController> {
-  UserProfileScreen({super.key});
+  const UserProfileScreen({super.key});
   static const String routeName = '/userprofile';
 
   @override
@@ -377,7 +377,7 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
                 field['observable'] as RxString,
                 field['controller'] as TextEditingController,
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

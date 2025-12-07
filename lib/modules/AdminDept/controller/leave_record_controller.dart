@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/Model/leave_record_model.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../Model/request_leave_model.dart';
 import '../Provider/leave_provider.dart';
 import '../widget/retailrowhelper.dart';
 
@@ -165,7 +162,7 @@ class LeaveRecordController extends GetxController {
               const SizedBox(height: 12),
               Obx(
                 () => DropdownButtonFormField<String>(
-                  value:
+                  initialValue:
                       selectedApprover.value.isEmpty
                           ? null
                           : selectedApprover.value,
@@ -526,8 +523,9 @@ class LeaveRecordController extends GetxController {
                                                         child,
                                                         progress,
                                                       ) {
-                                                        if (progress == null)
+                                                        if (progress == null) {
                                                           return child;
+                                                        }
                                                         return SizedBox(
                                                           width: radius * 2,
                                                           height: radius * 2,
@@ -686,7 +684,7 @@ class LeaveRecordController extends GetxController {
     );
   }
 
-  static DetailRow(String label, String value) {
+  static Padding DetailRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 
@@ -30,7 +28,7 @@ class HistoryWidget extends GetView<HistoryController> {
   Widget _buildMobileResponsive() {
     final HoverMouseController controller = Get.put(HoverMouseController());
 
-    return Container(
+    return SizedBox(
       height: 200,
       width: double.infinity,
       child: MouseHover(

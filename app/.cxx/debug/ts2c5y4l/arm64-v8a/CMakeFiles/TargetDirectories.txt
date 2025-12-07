@@ -1,0 +1,2 @@
+C:/HumanResource/android/app/.cxx/debug/ts2c5y4l/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/HumanResource/android/app/.cxx/debug/ts2c5y4l/arm64-v8a/CMakeFiles/rebuild_cache.dir

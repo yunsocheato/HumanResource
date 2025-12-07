@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../controllers/dashboard_recently_screen_controller.dart';
@@ -61,6 +60,6 @@ class DashboardModel {
     };
   }
 
-  get icon => RecentlyControllerScreen.icon;
-  get iconColor => RecentlyControllerScreen.iconColor;
+  IconData get icon => RecentlyControllerScreen.icon;
+  MaterialColor get iconColor => RecentlyControllerScreen.iconColor;
 }

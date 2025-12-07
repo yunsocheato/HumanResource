@@ -1,10 +1,13 @@
+import org.gradle.api.tasks.Delete
 buildscript {
     repositories {
         google()
         mavenCentral()
     }
+
     dependencies {
-        classpath("com.android.tools.build:gradle:8.9.1")
+        // Required for Flutter 3.38.x
+        classpath("com.android.tools.build:gradle:8.5.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.25")
     }
 }
@@ -15,26 +18,27 @@ allprojects {
         mavenCentral()
     }
 }
-android {
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-        isCoreLibraryDesugaringEnabled = true
-    }
-}
 
-dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
-}
-
-val newBuildDir = rootProject.layout.buildDirectory.dir("../../build").get()
+val newBuildDir: Directory =
+    rootProject.layout.buildDirectory
+        .dir("../../build")
+        .get()
 rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
-    val subBuildDir = newBuildDir.dir(project.name)
-    project.layout.buildDirectory.value(subBuildDir)
+    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
+    layout.buildDirectory.value(newSubprojectBuildDir)
 }
 
-tasks.register<Delete>("cleanAll") {
+subprojects {
+    afterEvaluate {
+        extensions.findByType(com.android.build.gradle.BaseExtension::class.java)?.apply {
+            compileSdkVersion(36) // Force all modules/plugins to use compileSdk 36
+        }
+    }
+}
+
+
+tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }

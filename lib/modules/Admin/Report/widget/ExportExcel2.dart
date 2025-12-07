@@ -2,16 +2,18 @@ import 'package:excel/excel.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'dart:typed_data';
-
-
 
 import '../API/employee_report_sql2.dart';
 
 Future<void> ExportExcel2() async {
   final employeeService2 = empoloyeecheckINSQL2();
-  final data = await employeeService2.employeeReportCheckin(StartDate: DateTime.now(), endDate: DateTime.now(),from: 0,to: 9999);
+  final data = await employeeService2.employeeReportCheckin(
+    StartDate: DateTime.now(),
+    endDate: DateTime.now(),
+    from: 0,
+    to: 9999,
+  );
 
   final excel = Excel.createExcel();
   final sheet = excel['Report-Late'];
@@ -25,26 +27,27 @@ Future<void> ExportExcel2() async {
 
   sheet.appendRow(headers.map((h) => TextCellValue(h)).toList());
   for (final row in data) {
-    final List<CellValue?> rowCells = headers.map((key) {
-      final value = row.containsKey(key) ? row[key] : null;
+    final List<CellValue?> rowCells =
+        headers.map((key) {
+          final value = row.containsKey(key) ? row[key] : null;
 
-      if (value == null) {
-        return TextCellValue('');
-      } else if (value is int) {
-        return IntCellValue(value);
-      } else if (value is double) {
-        return DoubleCellValue(value);
-      } else if (value is DateTime) {
-        return DateTimeCellValue.fromDateTime(value);
-      } else {
-        try {
-          final dt = DateTime.parse(value.toString());
-          return DateTimeCellValue.fromDateTime(dt);
-        } catch (_) {
-          return TextCellValue(value.toString());
-        }
-      }
-    }).toList();
+          if (value == null) {
+            return TextCellValue('');
+          } else if (value is int) {
+            return IntCellValue(value);
+          } else if (value is double) {
+            return DoubleCellValue(value);
+          } else if (value is DateTime) {
+            return DateTimeCellValue.fromDateTime(value);
+          } else {
+            try {
+              final dt = DateTime.parse(value.toString());
+              return DateTimeCellValue.fromDateTime(dt);
+            } catch (_) {
+              return TextCellValue(value.toString());
+            }
+          }
+        }).toList();
     sheet.appendRow(rowCells);
   }
 
@@ -57,10 +60,7 @@ Future<void> ExportExcel2() async {
       mimeType: MimeType.microsoftExcel,
     );
     Get.snackbar('Success', 'Excel exported: $fileName');
-  }
-  else {
+  } else {
     Get.snackbar('Error', 'Failed to generate Excel');
   }
 }
-
-

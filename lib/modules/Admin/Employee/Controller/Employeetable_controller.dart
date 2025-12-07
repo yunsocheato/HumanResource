@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../Dashboard/controllers/dashboard_recently_screen_controller.dart';
 import '../views/employee_screen.dart';
@@ -37,7 +35,10 @@ class EmployeeTalbeController extends GetxController {
                     topRight: Radius.circular(20),
                   ),
                   gradient: LinearGradient(
-                    colors: [Colors.green.shade900, Colors.greenAccent.shade200],
+                    colors: [
+                      Colors.green.shade900,
+                      Colors.greenAccent.shade200,
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.topRight,
                   ),
@@ -59,13 +60,18 @@ class EmployeeTalbeController extends GetxController {
                     children: [
                       detailRow('Email', request['email'] ?? 'No email'),
                       detailRow('Name', request['name'] ?? 'No name'),
-                      detailRow('Department', request['department'] ?? 'No Department'),
+                      detailRow(
+                        'Department',
+                        request['department'] ?? 'No Department',
+                      ),
                       detailRow('Position', request['position'] ?? 'None'),
                       detailRow('ID', request['id_card'] ?? 'No ID'),
                       detailRow(
                         'Join Date',
                         request['to_date'] != null
-                            ? DateFormat('MMM d, yyyy').format(DateTime.parse(request['to_date']))
+                            ? DateFormat(
+                              'MMM d, yyyy',
+                            ).format(DateTime.parse(request['to_date']))
                             : 'No date',
                       ),
                     ],
@@ -76,10 +82,7 @@ class EmployeeTalbeController extends GetxController {
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Close'),
-          ),
+          TextButton(onPressed: () => Get.back(), child: const Text('Close')),
         ],
       ),
     );
@@ -98,9 +101,7 @@ class EmployeeTalbeController extends GetxController {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          Expanded(
-            child: Text(value),
-          ),
+          Expanded(child: Text(value)),
         ],
       ),
     );

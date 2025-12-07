@@ -9,7 +9,7 @@ class errormessage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
+        SizedBox(
           height: 250,
           width: 250,
           child: ClipRRect(

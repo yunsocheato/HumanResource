@@ -10,17 +10,21 @@ class DataSourceTableReport extends DataTableSource {
   DataRow? getRow(int index) {
     if (index >= data.length) return null;
     final user = data[index];
-    return DataRow(cells: [
-      DataCell(Text(user.id.toString() ?? '')),
-      DataCell(Text(user.fingerprint_id.toString() ?? '')),
-      DataCell(Text(user.username ?? '')),
-      DataCell(Text(user.check_type ?? '')),
-      DataCell(Text(
-        user.created_at != null
-            ? user.created_at!.toLocal().toString().split(' ')[0]
-            : '',
-      )),
-    ]);
+    return DataRow(
+      cells: [
+        DataCell(Text(user.id.toString() ?? '')),
+        DataCell(Text(user.fingerprint_id.toString() ?? '')),
+        DataCell(Text(user.username ?? '')),
+        DataCell(Text(user.check_type ?? '')),
+        DataCell(
+          Text(
+            user.created_at != null
+                ? user.created_at!.toLocal().toString().split(' ')[0]
+                : '',
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -34,7 +38,7 @@ class DataSourceTableReport extends DataTableSource {
 }
 
 extension on String {
-  toLocal() {
+  DateTime toLocal() {
     return DateTime.parse(this).toLocal();
   }
 }

@@ -3,10 +3,9 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class MobileCalendarScreen extends StatefulWidget {
-  const MobileCalendarScreen({Key? key}) : super(key: key);
+  const MobileCalendarScreen({super.key});
   static const String routeName = '/mobile_calendar';
 
   @override
@@ -40,7 +39,7 @@ class _MobileCalendarScreenState extends State<MobileCalendarScreen> {
             width: size.width,
             height: size.height,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.white24,
               // gradient: LinearGradient(
               //   colors: [Colors.blue.shade900, Colors.blue.shade300],
               //   begin: Alignment.topCenter,
@@ -58,7 +57,7 @@ class _MobileCalendarScreenState extends State<MobileCalendarScreen> {
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
                 width: size.width,
-                height: isExpanded ? 700 : 500,
+                height: isExpanded ? 600 : 450,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Colors.blue.shade900, Colors.blue.shade700],
@@ -203,23 +202,27 @@ class _MobileCalendarScreenState extends State<MobileCalendarScreen> {
                         ),
                       ],
                     ),
-
-                    // Divider / toggle
                     Positioned(
-                      bottom: 0,
+                      bottom: -0,
                       left: size.width * 0.4,
                       right: size.width * 0.4,
                       child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
                         onTap: () {
                           setState(() {
                             isExpanded = !isExpanded;
                           });
                         },
                         child: Container(
-                          height: 3,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade500,
-                            borderRadius: BorderRadius.circular(1.5),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: 4,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade500,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
                           ),
                         ),
                       ),

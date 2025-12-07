@@ -20,13 +20,7 @@ class DataSourceTableReportAbsent extends DataTableSource {
           Text(user.absent_date.toLocal().toString().split(' ')[0] ?? ''),
         ),
         DataCell(Text(user.reason ?? '')),
-        DataCell(
-          Text(
-            user.created_at != null
-                ? user.created_at!.toLocal().toString().split(' ')[0]
-                : '',
-          ),
-        ),
+        DataCell(Text(user.created_at.toLocal().toString().split(' ')[0])),
       ],
     );
   }
@@ -42,7 +36,7 @@ class DataSourceTableReportAbsent extends DataTableSource {
 }
 
 extension on String {
-  toLocal() {
+  DateTime toLocal() {
     return DateTime.parse(this).toLocal();
   }
 }

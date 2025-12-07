@@ -1,16 +1,13 @@
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../Controller/employee_profile_controller.dart';
-import '../widgets/employee_profile_circleavatar.dart';
 
 class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
-  EmployeeProfileScreen({super.key});
+  const EmployeeProfileScreen({super.key});
   static const String routeName = '/employeeprofile';
 
   @override
@@ -483,7 +480,7 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
                 field['observable'] as RxString,
                 field['controller'] as TextEditingController,
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

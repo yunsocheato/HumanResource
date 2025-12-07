@@ -1,13 +1,13 @@
 class EmployeeOTModel {
-  final String user_id ;
-  final String staff_id ;
-  final String staff_name ;
-  final DateTime start_date ;
-  final String time_start ;
-  final DateTime end_date ;
-  final String end_time ;
-  final String reason ;
-  final DateTime created_at ;
+  final String user_id;
+  final String staff_id;
+  final String staff_name;
+  final DateTime start_date;
+  final String time_start;
+  final DateTime end_date;
+  final String end_time;
+  final String reason;
+  final DateTime created_at;
 
   EmployeeOTModel({
     required this.user_id,
@@ -19,8 +19,8 @@ class EmployeeOTModel {
     required this.end_time,
     required this.reason,
     required this.created_at,
-});
-  factory EmployeeOTModel.fromJson(Map<String , dynamic> json){
+  });
+  factory EmployeeOTModel.fromJson(Map<String, dynamic> json) {
     return EmployeeOTModel(
       user_id: json['user_id'],
       staff_id: json['staff_id'],
@@ -33,17 +33,17 @@ class EmployeeOTModel {
       created_at: DateTime.parse(json['created_at']),
     );
   }
-  Map<String , dynamic> toJson(){
-    final Map<String , dynamic> data = new Map<String , dynamic>();
-    data['user_id'] = this.user_id;
-    data['staff_id'] = this.staff_id;
-    data['staff_name'] = this.staff_name;
-    data['start_date'] = this.start_date.toIso8601String();
-    data['time_start'] = this.time_start;
-    data['end_date'] = this.end_date.toIso8601String();
-    data['end_time'] = this.end_time;
-    data['reason'] = this.reason;
-    data['created_at'] = this.created_at.toIso8601String();
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = user_id;
+    data['staff_id'] = staff_id;
+    data['staff_name'] = staff_name;
+    data['start_date'] = start_date.toIso8601String();
+    data['time_start'] = time_start;
+    data['end_date'] = end_date.toIso8601String();
+    data['end_time'] = end_time;
+    data['reason'] = reason;
+    data['created_at'] = created_at.toIso8601String();
     return data;
   }
 }

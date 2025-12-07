@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 import '../controller/verification_controller.dart';
@@ -59,35 +58,132 @@ class ChangePasswordScreen extends GetView<VerificationController> {
           return Obx(
             () =>
                 c.isOtpSent.value
-                    ? Center(
+                    ? SafeArea(
                       child:
                           isMobile
                               ? SingleChildScrollView(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 32,
+                                ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    Text(
+                                      'CHANGE PASSWORD',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: '7TH.ttf',
+                                        color: Colors.green[900],
+                                      ),
+                                    ),
                                     Image.asset(
                                       'assets/images/changepass.png',
                                       width: imageSize,
                                       height: imageSize,
+                                      fit: BoxFit.contain,
                                     ),
-                                    Container(
-                                      height: outerHeight,
-                                      width: outerWidth,
-                                      padding: EdgeInsets.all(innerPadding),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.blue.withOpacity(0.7),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 3),
+                                    Text(
+                                      'Your email:\n${c.maskEmail(c.emailController.text)} required change password',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    TextField(
+                                      controller: c.oldpasswordController,
+                                      obscureText: c.hide1.value,
+                                      decoration: InputDecoration(
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            c.hide1.value
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
                                           ),
-                                        ],
+                                          onPressed:
+                                              () =>
+                                                  c.hide1.value =
+                                                      !c.hide1.value,
+                                        ),
+                                        labelText: 'Old Password',
+                                        border: const OutlineInputBorder(),
                                       ),
-                                      child: _buildOtpContent(c),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    TextField(
+                                      controller: c.newpasswordController,
+                                      obscureText: c.hide2.value,
+                                      decoration: InputDecoration(
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            c.hide2.value
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                          ),
+                                          onPressed:
+                                              () =>
+                                                  c.hide2.value =
+                                                      !c.hide2.value,
+                                        ),
+                                        labelText: 'New Password',
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    TextField(
+                                      controller: c.retypepasswordController,
+                                      obscureText: c.hide3.value,
+                                      decoration: InputDecoration(
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            c.hide3.value
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                          ),
+                                          onPressed:
+                                              () =>
+                                                  c.hide3.value =
+                                                      !c.hide3.value,
+                                        ),
+                                        labelText: 'Retype New Password',
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 24),
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: TextButton(
+                                        style: TextButton.styleFrom(
+                                          minimumSize: const Size(50, 50),
+                                          backgroundColor:
+                                              Colors.green.shade900,
+                                        ),
+                                        onPressed:
+                                            () =>
+                                                c.isLoading.value
+                                                    ? CircularProgressIndicator(
+                                                      color:
+                                                          Colors.green.shade900,
+                                                      strokeWidth: 2,
+                                                    )
+                                                    : c.changePassword(),
+                                        child: const Text(
+                                          'Change Password',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),

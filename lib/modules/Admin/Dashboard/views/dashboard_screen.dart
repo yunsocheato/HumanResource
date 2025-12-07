@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Core/user_profile_controller.dart';
 import '../../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
-import '../../../AdminDept/controller/overview_controller.dart';
 import '../../Attendance/views/attendance_chart.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/views/drawer_screen.dart';
@@ -236,8 +235,6 @@ class DashboardScreen extends GetView<DashboardController> {
           child: Stack(
             children: [
               Container(
-                width: size.width,
-                height: size.height,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -262,89 +259,40 @@ class DashboardScreen extends GetView<DashboardController> {
                       topRight: Radius.circular(30),
                     ),
                   ),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Positioned.fill(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: 12,
-                              left: 12,
-                              right: 12,
-                              bottom: bottomBarHeight,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 12,
+                      left: 12,
+                      right: 12,
+                      bottom: bottomBarHeight,
+                    ),
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildHeader(context, isMobile ? 18 : 24),
+                          SizedBox(height: 10),
+                          Cardinfo(),
+                          const SizedBox(height: 12),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: 250,
+                              maxHeight: 350,
                             ),
-                            child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildHeader(context, isMobile ? 18 : 24),
-                                  SizedBox(height: 10),
-                                  Cardinfo(),
-                                  const SizedBox(height: 12),
-                                  ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                      minHeight: 250,
-                                      maxHeight: 350,
-                                    ),
-                                    child: const AttendanceChart(),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  const Recentscreen2(),
-                                  const SizedBox(height: 12),
-                                  const Recentscreen3(),
-                                  const SizedBox(height: 20),
-                                  const Recentemployee(),
-                                  SizedBox(height: bottomBarHeight + 20),
-                                ],
-                              ),
-                            ),
+                            child: const AttendanceChart(),
                           ),
-                        ),
+                          const SizedBox(height: 12),
+                          const Recentscreen2(),
+                          const SizedBox(height: 12),
+                          const Recentscreen3(),
+                          const SizedBox(height: 20),
+                          const Recentemployee(),
+                          SizedBox(height: bottomBarHeight + 20),
+                        ],
                       ),
-                      Positioned(
-                        top: 10,
-                        left: 0,
-                        right: 0,
-                        child: Center(
-                          child: Container(
-                            width: 40,
-                            height: 2,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade500,
-                              borderRadius: BorderRadius.circular(2.5),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  // child: Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  //   child: SingleChildScrollView(
-                  //     physics: const AlwaysScrollableScrollPhysics(),
-                  //
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         // _buildHeader(context, isMobileOrTablet ? 14 : 24),
-                  //         const SizedBox(height: 10),
-                  //         Cardinfo(),
-                  //         const SizedBox(height: 12),
-                  //         const AttendanceChart(),
-                  //         const SizedBox(height: 12),
-                  //         const Recentscreen2(),
-                  //         const SizedBox(height: 12),
-                  //         const Recentscreen3(),
-                  //         const SizedBox(height: 20),
-                  //         const Recentemployee(),
-                  //         SizedBox(height: bottomBarHeight + 20),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                 ),
               ),
               Positioned(

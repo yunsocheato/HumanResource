@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class FingerPrintController extends GetxController{
+class FingerPrintController extends GetxController {
   final isLoading = false.obs;
   final fingerPrint = ''.obs;
   final fingerPrintList = <String>[].obs;
@@ -13,5 +12,4 @@ class FingerPrintController extends GetxController{
 
   final usercannotchange = false.obs;
   final usercanchange = false.obs;
-
 }

@@ -1,14 +1,10 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 import '../controller/search_bar_controller.dart';
 
-class SearchbarScreen extends GetView<SearchBarController>{
+class SearchbarScreen extends GetView<SearchBarController> {
   const SearchbarScreen({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +13,9 @@ class SearchbarScreen extends GetView<SearchBarController>{
 
   Widget _buildSearchBoxResponsives() {
     final isMobile = Get.width < 600;
-    return isMobile ?  _buildSearchBoxMobile()  : _buildSearchBoxOther() ;
+    return isMobile ? _buildSearchBoxMobile() : _buildSearchBoxOther();
   }
+
   Widget _buildSearchBoxMobile() {
     final searchController = Get.find<SearchBarController>();
     return Padding(
@@ -31,7 +28,10 @@ class SearchbarScreen extends GetView<SearchBarController>{
           prefixIcon: const Icon(Icons.search, color: Colors.white),
           hintText: 'Search',
           hintStyle: const TextStyle(color: Colors.white70),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 12,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,
@@ -43,6 +43,7 @@ class SearchbarScreen extends GetView<SearchBarController>{
       ),
     );
   }
+
   Widget _buildSearchBoxOther() {
     final searchController = Get.find<SearchBarController>();
     return SizedBox(
@@ -56,7 +57,10 @@ class SearchbarScreen extends GetView<SearchBarController>{
           prefixIcon: const Icon(Icons.search, color: Colors.white),
           hintText: 'Search',
           hintStyle: const TextStyle(color: Colors.white70),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 12,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,
@@ -68,5 +72,4 @@ class SearchbarScreen extends GetView<SearchBarController>{
       ),
     );
   }
-
 }

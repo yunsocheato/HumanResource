@@ -15,6 +15,7 @@ import '../modules/Admin/History/view/history_screen.dart';
 import '../modules/Admin/LeaveRequest/views/apply_leave_screen.dart';
 import '../modules/Admin/LeaveRequest/views/leave_request_screen.dart';
 import '../modules/Admin/Loginscreen/views/login_screen.dart';
+import '../modules/Admin/Notification/view/notification_mobile_screen.dart';
 import '../modules/Admin/Report/view/employee_Late_screen.dart';
 import '../modules/Admin/Report/view/employee_absent_screen.dart';
 import '../modules/Admin/Report/view/employee_checkin_screen.dart';
@@ -224,6 +225,18 @@ class AppPages {
     GetPage(
       name: AppRoutes.mobile_calendar,
       page: () => MobileCalendarScreen(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.mobile_calendar,
+      page: () => MobileCalendarScreen(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.mobile_notification,
+      page: () => MobileNotificationScreen(),
       transition: Transition.fade,
       transitionDuration: Duration(milliseconds: 500),
     ),

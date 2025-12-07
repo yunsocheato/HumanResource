@@ -14,13 +14,13 @@ class AppDrawerController extends GetxController
   final Color Selectedcolors = Colors.blue.shade900;
   final Color Unselectedcolors = Colors.white;
 
-  get expandedStates => <String, bool>{}.obs;
+  RxMap<String, bool> get expandedStates => <String, bool>{}.obs;
 
   bool isExpanded1(String title) {
     return expandedTile.value == title;
   }
 
-  isExpanded(String title) {
+  dynamic isExpanded(String title) {
     return expandedStates[title] ?? false;
   }
 

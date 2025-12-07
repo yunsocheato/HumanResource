@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:hrms/Utils/Loadingui/Loading_skeleton.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../controllers/card_controller.dart';
 import '../widgets/card_list_view.dart';

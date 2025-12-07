@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton_ui/flutter_skeleton_ui.dart';
 import 'package:get/get.dart';
 import 'package:hrms/modules/AdminDept/Model/leave_record_model.dart';
 import '../../../Utils/Loadingui/ErrorScreen/error_message.dart';
@@ -140,10 +139,10 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                                     final index = entry.key;
                                     final request = entry.value;
                                     return DataRow(
-                                      color: MaterialStateProperty.resolveWith<
+                                      color: WidgetStateProperty.resolveWith<
                                         Color?
                                       >(
-                                        (Set<MaterialState> states) =>
+                                        (Set<WidgetState> states) =>
                                             index.isEven
                                                 ? Colors.blue.shade100
                                                 : Colors.white,

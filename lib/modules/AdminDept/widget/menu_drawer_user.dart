@@ -1,6 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/AdminDept/controller/overview_controller.dart';
 import '../../../../Core/user_profile_controller.dart';
 import '../../../../services/logout_services.dart';
 import '../../Admin/Drawer/controllers/drawer_controller.dart';
@@ -102,36 +102,21 @@ class MenuMobileScreenUser extends StatelessWidget {
             }),
             _menuDivider(),
             const SizedBox(height: 20),
-            _menuBoxGrid(drawer),
+            _menuBoxGrid(Get.find<OverViewController>()),
             const SizedBox(height: 15),
             _menuDivider(),
             const SizedBox(height: 25),
-            _expandTile(
-              title: "Leave & Requests",
-              icon: Icons.request_page_outlined,
-              children: [
-                _simpleItem("Leave Requests", index: 1, drawer: drawer),
-                _simpleItem("Approval Panel", index: 2, drawer: drawer),
-              ],
-            ),
 
             _expandTile(
-              title: "Admin Controls",
-              icon: Icons.admin_panel_settings,
-              children: [
-                _simpleItem("Policy Setup", index: 3, drawer: drawer),
-                _simpleItem("Employee Policies", index: 4, drawer: drawer),
-                _simpleItem("Reports", index: 5, drawer: drawer),
-              ],
+              title: "Change Password",
+              imagePath: 'assets/icon/key.png',
+              onTap: () => Get.offAllNamed('/email_verify'),
             ),
 
             _expandTile(
               title: "Settings",
-              icon: Icons.settings_outlined,
-              children: [
-                _simpleItem("General Settings", index: 6, drawer: drawer),
-                _simpleItem("Notifications", index: 7, drawer: drawer),
-              ],
+              imagePath: 'assets/icon/setting.png',
+              onTap: () => Get.offAllNamed('settingmobile'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -175,18 +160,13 @@ class MenuMobileScreenUser extends StatelessWidget {
     );
   }
 
-  Widget _menuBoxGrid(AppDrawerController drawer) {
-    final items = [
-      ("Dashboard", Icons.dashboard, 24),
-      ("Attendance", Icons.calendar_month, 1),
-      ("Employees", Icons.people, 4),
-      ("Reports", Icons.bar_chart, 5),
-    ];
+  Widget _menuBoxGrid(OverViewController controller) {
+    final drawer = Get.find<AppDrawerController>();
 
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: items.length,
+      itemCount: controller.overviewdashboard.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         mainAxisExtent: 80,
@@ -194,28 +174,48 @@ class MenuMobileScreenUser extends StatelessWidget {
         mainAxisSpacing: 10,
       ),
       itemBuilder: (_, i) {
-        final selected = drawer.selectedIndex.value == items[i].$3;
+        final item = controller.overviewdashboard[i];
+        final selected = drawer.selectedIndex.value == i;
 
         return GestureDetector(
-          onTap: () => drawer.setSelected(items[i].$3),
+          onTap: () {
+            drawer.setSelected(i);
+            switch (i) {
+              case 0:
+                Get.offAllNamed('/requestleave');
+                break;
+              case 1:
+                Get.offAllNamed('/userprofile');
+                break;
+              case 2:
+                Get.offAllNamed('/attendance_user');
+                break;
+              case 3:
+                Get.offAllNamed('/report');
+                break;
+            }
+          },
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white38,
+              color: selected ? Colors.blue.shade50 : Colors.white,
               borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: selected ? Colors.blue : Colors.transparent,
+                width: 2,
+              ),
             ),
             padding: const EdgeInsets.all(12),
             child: Row(
               children: [
-                Icon(
-                  items[i].$2,
-                  size: 26,
-                  color: selected ? Colors.blue : Colors.black,
-                ),
-                const SizedBox(width: 10),
+                Image.asset(item.imagePath, width: 32, height: 32),
+
+                const SizedBox(width: 12),
+
                 Expanded(
                   child: Text(
-                    items[i].$1,
+                    item.title,
                     style: TextStyle(
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: selected ? Colors.blue : Colors.black,
                     ),
@@ -235,8 +235,8 @@ class MenuMobileScreenUser extends StatelessWidget {
 
   Widget _expandTile({
     required String title,
-    required IconData icon,
-    required List<Widget> children,
+    required String imagePath,
+    required VoidCallback onTap,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -245,14 +245,13 @@ class MenuMobileScreenUser extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: ExpansionTile(
-        leading: Icon(icon, color: Colors.black),
+      child: ListTile(
+        leading: Image.asset(imagePath, width: 28, height: 28),
         title: Text(
           title,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
-        childrenPadding: const EdgeInsets.only(left: 20, bottom: 10),
-        children: children,
+        onTap: onTap,
       ),
     );
   }

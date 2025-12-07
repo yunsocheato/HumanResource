@@ -7,6 +7,7 @@ import '../controller/hover_mouse_controller.dart';
 class MouseHover extends GetView<HoverMouseController> {
   final int keyId;
   final Widget child;
+  @override
   final HoverMouseController controller;
   const MouseHover({
     required this.child,

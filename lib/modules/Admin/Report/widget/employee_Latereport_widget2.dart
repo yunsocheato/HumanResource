@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import '../../../../Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import '../../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
@@ -87,8 +86,9 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2> {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                 );
-                                if (picked != null)
+                                if (picked != null) {
                                   controller.updateStartDate(picked);
+                                }
                               },
                               child: Text(
                                 'StartDate',
@@ -113,8 +113,9 @@ class EmployeeScreenLateReport extends GetView<EmployeeReportController2> {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                 );
-                                if (picked != null)
+                                if (picked != null) {
                                   controller.updateEndDate(picked);
+                                }
                               },
                               child: Text(
                                 'EndDate',

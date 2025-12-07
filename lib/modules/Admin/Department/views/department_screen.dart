@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Loadingui/loading_controller.dart';

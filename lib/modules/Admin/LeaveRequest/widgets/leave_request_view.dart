@@ -1,7 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +34,7 @@ class leaverequesttable extends GetView<LeaveController> {
 
   Widget _buildLeaveRequestsTableOther(BuildContext context) {
     final controller = Get.find<LeaveController>();
-    final ScrollController _horizontalController = ScrollController();
+    final ScrollController horizontalController = ScrollController();
     final HoverMouseController controller1 = Get.put(HoverMouseController());
 
     return Obx(() {
@@ -102,9 +100,9 @@ class leaverequesttable extends GetView<LeaveController> {
                 Expanded(
                   child: Scrollbar(
                     thumbVisibility: true,
-                    controller: _horizontalController,
+                    controller: horizontalController,
                     child: SingleChildScrollView(
-                      controller: _horizontalController,
+                      controller: horizontalController,
                       scrollDirection: Axis.horizontal,
                       child: ConstrainedBox(
                         constraints: BoxConstraints(

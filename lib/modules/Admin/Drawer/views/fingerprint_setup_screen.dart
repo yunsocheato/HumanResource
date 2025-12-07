@@ -1,8 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
     show ContentType;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 import '../../../../Utils/SnackBar/snack_bar.dart';

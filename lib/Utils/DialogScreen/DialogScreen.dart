@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 
 import '../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
@@ -19,9 +17,7 @@ void DialogScreen(BuildContext context, Widget content) {
         controller: controller,
         child: AlertDialog(
           backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           insetPadding: EdgeInsets.all(16), // dialog margin
           contentPadding: EdgeInsets.zero,
           content: Container(

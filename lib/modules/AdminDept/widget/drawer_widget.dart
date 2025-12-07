@@ -40,37 +40,41 @@ class DrawerAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<AuthController>();
+    final profileController = Get.find<UserProfileController>();
+    final profile = profileController.userprofiles.value;
+
+    if (profile == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    final role = profile.role.toLowerCase();
+
+    final bool isUser = role == 'user';
 
     return Scaffold(
-      drawer: (isMobile || isTablet) ? _buildDrawerContent(controller) : null,
-
-      body: Row(
+      drawer: isMobile ? _buildDrawerContent(controller) : null,
+      body: Stack(
+        // Wrap everything in Stack to use Positioned for mobile
         children: [
-          if (!isMobile && !isTablet)
-            Container(
-              width: sidebarWidth,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.blueGrey.shade900,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    blurRadius: 8,
+          Row(
+            children: [
+              if (isTablet || isDesktop || isLargeDesktop)
+                Container(
+                  width: sidebarWidth,
+                  color: Colors.blueGrey.shade900,
+                  child: _buildSidebarColumn(controller),
+                ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [if (!isMobile) DrawerHead(), content],
                   ),
-                ],
+                ),
               ),
-              child: _buildSidebarColumn(controller),
-            ),
-
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [content],
-              ),
-            ),
+            ],
           ),
+
+          if (isMobile && isUser)
+            const Positioned(top: 20, left: 0, right: 0, child: DrawerHead()),
         ],
       ),
     );
@@ -144,12 +148,15 @@ class DrawerAdmin extends StatelessWidget {
     );
   }
 
-  Drawer _buildDrawerContent(AuthController auth, {bool includeHeader = true}) {
+  Drawer _buildDrawerContent(
+    AuthController auth, {
+    bool includeHeader = false,
+  }) {
     return Drawer(
       child: SafeArea(
         child: Column(
           children: [
-            if (includeHeader) _buildProfileHeader(),
+            if (includeHeader) DrawerHead(),
             const SizedBox(height: 20),
             _buildSidebarItem(
               imagePath: 'assets/icon/overview.png',
@@ -198,7 +205,7 @@ class DrawerAdmin extends StatelessWidget {
     final profile = Get.find<UserProfileController>().userprofiles.value;
     final image = profile?.image ?? '';
 
-    return Container(
+    return SizedBox(
       height: 100,
       child: DrawerHeader(
         margin: EdgeInsets.zero,
@@ -279,7 +286,7 @@ class DrawerAdmin extends StatelessWidget {
               if (Get.currentRoute == routeName) return;
 
               if (onTap != null && routeName.trim().isEmpty) {
-                onTap!();
+                onTap();
                 return;
               }
 

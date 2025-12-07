@@ -5,7 +5,6 @@ import 'package:hrms/modules/AdminDept/Utils/date_picker_leave.dart';
 import 'package:hrms/modules/AdminDept/controller/attendance_controller.dart';
 import 'package:hrms/modules/AdminDept/widget/overview_card.dart';
 import 'package:hrms/modules/AdminDept/widget/team_leave_request_widget.dart';
-import '../../../Utils/Loadingui/Loading_skeleton.dart';
 import '../Utils/date_picker_all_chart.dart';
 import '../Utils/date_picker_attendance.dart';
 import '../Utils/date_picker_chart_today.dart';
@@ -28,132 +27,138 @@ class OverViewWidget extends GetView<OverViewController> {
     final isMobileGlobal = Get.width < 900;
     final padding = EdgeInsets.all(isMobileGlobal ? 16.0 : 24.0);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
+    return RefreshIndicator(
+      color: Colors.blue.shade900,
+      onRefresh: () async {
+        await Future.delayed(const Duration(seconds: 2));
+      },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
 
-        final isMobile = width < 900;
-        final isTablet = width >= 900 && width < 1200;
-        final isDesktop = width >= 1200 && width < 1440;
-        final isLaptop = width >= 1440;
+          final isMobile = width < 900;
+          final isTablet = width >= 900 && width < 1200;
+          final isDesktop = width >= 1200 && width < 1440;
+          final isLaptop = width >= 1440;
 
-        const double mobileFontSize = 15.0;
-        const double tabletFontSize = 15.0;
-        const double desktopFontSize = 20.0;
-        const double laptopFontSize = 15.0;
+          const double mobileFontSize = 15.0;
+          const double tabletFontSize = 15.0;
+          const double desktopFontSize = 20.0;
+          const double laptopFontSize = 15.0;
 
-        final double fontSize =
-            isMobile
-                ? mobileFontSize
-                : isTablet
-                ? tabletFontSize
-                : isDesktop
-                ? desktopFontSize
-                : isLaptop
-                ? laptopFontSize
-                : mobileFontSize;
+          final double fontSize =
+              isMobile
+                  ? mobileFontSize
+                  : isTablet
+                  ? tabletFontSize
+                  : isDesktop
+                  ? desktopFontSize
+                  : isLaptop
+                  ? laptopFontSize
+                  : mobileFontSize;
 
-        if (isMobile) {
+          if (isMobile) {
+            Get.put(Attendancecontroller());
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'DASHBOARD',
+                        style: TextStyle(
+                          fontSize: fontSize,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Gridoverviewoverview(),
+                  const SizedBox(height: 25),
+                  PageOverviewScreen(),
+                  const SizedBox(height: 25),
+                  _buildProfileSidebar(),
+                ],
+              ),
+            );
+          }
+          double maxTableWidth;
           Get.put(Attendancecontroller());
+
+          if (width < 1024) {
+            maxTableWidth = width * 0.62;
+          } else if (width < 1440) {
+            maxTableWidth = width * 0.72;
+          } else {
+            maxTableWidth = width * 0.78;
+          }
+
           return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            padding: const EdgeInsets.all(8.0),
+            scrollDirection: Axis.vertical,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'DASHBOARD',
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54,
+                const SizedBox(width: 5),
+                SizedBox(
+                  width: maxTableWidth,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    color: Colors.grey.shade200,
+                    child: Padding(
+                      padding: padding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 4),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: PageOverviewScreen(),
+                          ),
+                          const SizedBox(height: 35),
+                          _sectionTitle('DASHBOARD', fontSize),
+                          const SizedBox(height: 15),
+                          const Gridoverviewoverview(),
+                          const SizedBox(height: 35),
+                          _sectionTitle('YOUR LEAVE RECORDS', fontSize),
+                          const SizedBox(height: 15),
+                          DatePickerLeave(),
+                          const SizedBox(height: 15),
+                          const LeaveRequestTablewidget(),
+                          const SizedBox(height: 35),
+                          TeamRequestLeaveResponsiveWidget(),
+                          const SizedBox(height: 35),
+                          _sectionTitle('YOUR ATTENDANCE RECORDS', fontSize),
+                          const SizedBox(height: 8),
+                          DatePickerAttendance(),
+                          const SizedBox(height: 10),
+                          AttendanceTablewidget(),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                const Gridoverviewoverview(),
-                const SizedBox(height: 25),
-                PageOverviewScreen(),
-                const SizedBox(height: 25),
-                _buildProfileSidebar(),
+                const SizedBox(width: 10),
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.loose,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _buildProfileSidebar(),
+                  ),
+                ),
               ],
             ),
           );
-        }
-        double maxTableWidth;
-        Get.put(Attendancecontroller());
-
-        if (width < 1024) {
-          maxTableWidth = width * 0.62;
-        } else if (width < 1440) {
-          maxTableWidth = width * 0.72;
-        } else {
-          maxTableWidth = width * 0.78;
-        }
-
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(8.0),
-          scrollDirection: Axis.vertical,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(width: 5),
-              SizedBox(
-                width: maxTableWidth,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  color: Colors.grey.shade200,
-                  child: Padding(
-                    padding: padding,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 4),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: PageOverviewScreen(),
-                        ),
-                        const SizedBox(height: 35),
-                        _sectionTitle('DASHBOARD', fontSize),
-                        const SizedBox(height: 15),
-                        const Gridoverviewoverview(),
-                        const SizedBox(height: 35),
-                        _sectionTitle('YOUR LEAVE RECORDS', fontSize),
-                        const SizedBox(height: 15),
-                        DatePickerLeave(),
-                        const SizedBox(height: 15),
-                        const LeaveRequestTablewidget(),
-                        const SizedBox(height: 35),
-                        TeamRequestLeaveResponsiveWidget(),
-                        const SizedBox(height: 35),
-                        _sectionTitle('YOUR ATTENDANCE RECORDS', fontSize),
-                        const SizedBox(height: 8),
-                        DatePickerAttendance(),
-                        const SizedBox(height: 10),
-                        AttendanceTablewidget(),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Flexible(
-                flex: 1,
-                // fit: FlexFit.loose,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _buildProfileSidebar(),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 

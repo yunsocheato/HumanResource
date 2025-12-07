@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../Controller/user_setup_controller.dart';
 
@@ -8,7 +7,7 @@ class UserSetupScreen extends GetView<UserSetupScreen> {
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
 
-  UserSetupScreen({Key? key}) : super(key: key);
+  UserSetupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

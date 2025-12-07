@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Admin/Employee/views/employee_screen.dart';
-
-import '../../../modules/Admin/Attendance/views/attendance_screen.dart';
-import '../../../modules/Admin/Dashboard/views/dashboard_screen.dart';
-import '../../../modules/Admin/SettingScreen/view/setting_screen_mobile.dart';
 
 class BottomAppBarController extends GetxController {
   var isSelectedindex = 0.obs;

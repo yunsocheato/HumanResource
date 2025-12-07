@@ -64,35 +64,122 @@ class OTPResetPasswordScreen extends GetView<ResetPasswordController> {
           return Obx(
             () =>
                 c.isOtpSent.value
-                    ? Center(
+                    ? SafeArea(
                       child:
                           isMobile
                               ? SingleChildScrollView(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 32,
+                                ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    Text(
+                                      'OTP\nVERIFICATION',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: '7TH.ttf',
+                                        color: Colors.orange[900],
+                                      ),
+                                    ),
                                     Image.asset(
                                       'assets/images/otpforgot.png',
                                       width: imageSize,
                                       height: imageSize,
+                                      fit: BoxFit.contain,
                                     ),
-                                    Container(
-                                      height: outerHeight,
-                                      width: outerWidth,
-                                      padding: EdgeInsets.all(innerPadding),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.blue.withOpacity(0.7),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 3),
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      'Note:\nDo not share the code with another',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: List.generate(4, (index) {
+                                        return SizedBox(
+                                          width: 50,
+                                          child: TextField(
+                                            controller:
+                                                controller
+                                                    .otpControllers[index],
+                                            focusNode: focusNodes[index],
+                                            keyboardType: TextInputType.number,
+                                            textAlign: TextAlign.center,
+                                            maxLength: 1,
+                                            decoration: const InputDecoration(
+                                              counterText: '',
+                                            ),
+                                            onChanged: (value) {
+                                              if (value.isNotEmpty &&
+                                                  index < 3) {
+                                                focusNodes[index + 1]
+                                                    .requestFocus();
+                                              }
+                                              if (value.isEmpty && index > 0) {
+                                                focusNodes[index - 1]
+                                                    .requestFocus();
+                                              }
+                                            },
                                           ),
-                                        ],
-                                      ),
-                                      child: _buildOtpContent(c),
+                                        );
+                                      }),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        TextButton(
+                                          onPressed:
+                                              () =>
+                                                  c.isOtpVerified.value
+                                                      ? CircularProgressIndicator(
+                                                        color:
+                                                            Colors
+                                                                .grey
+                                                                .shade400,
+                                                        strokeWidth: 2,
+                                                      )
+                                                      : c.resend_opt_reset_password(),
+                                          style: TextButton.styleFrom(
+                                            minimumSize: const Size(50, 50),
+                                            backgroundColor:
+                                                Colors.grey.shade400,
+                                          ),
+                                          child: const Text(
+                                            'Resend Code',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed:
+                                              () =>
+                                                  c.isLoading.value
+                                                      ? CircularProgressIndicator(
+                                                        color: Colors.orange,
+                                                        strokeWidth: 2,
+                                                      )
+                                                      : c.verifyOtpAndSendReset(),
+                                          style: ElevatedButton.styleFrom(
+                                            minimumSize: const Size(50, 50),
+                                            backgroundColor:
+                                                Colors.orange.shade800,
+                                          ),
+                                          child: const Text(
+                                            'Submit',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -157,93 +244,6 @@ class OTPResetPasswordScreen extends GetView<ResetPasswordController> {
                     )
                     : const Center(child: CircularProgressIndicator()),
           );
-          // return Center(
-          //   child:
-          //       isMobile
-          //           ? SingleChildScrollView(
-          //             child: Column(
-          //               mainAxisAlignment: MainAxisAlignment.center,
-          //               children: [
-          //                 Image.asset(
-          //                   'assets/images/otpforgot.png',
-          //                   width: imageSize,
-          //                   height: imageSize,
-          //                 ),
-          //                 Container(
-          //                   height: outerHeight,
-          //                   width: outerWidth,
-          //                   padding: EdgeInsets.all(innerPadding),
-          //                   decoration: BoxDecoration(
-          //                     color: Colors.white,
-          //                     borderRadius: BorderRadius.circular(10),
-          //                     boxShadow: [
-          //                       BoxShadow(
-          //                         color: Colors.blue.withOpacity(0.7),
-          //                         spreadRadius: 2,
-          //                         blurRadius: 5,
-          //                         offset: const Offset(0, 3),
-          //                       ),
-          //                     ],
-          //                   ),
-          //                   child: _buildOtpContent(c),
-          //                 ),
-          //               ],
-          //             ),
-          //           )
-          //           : Row(
-          //             children: [
-          //               Expanded(
-          //                 flex: 1,
-          //                 child: Container(
-          //                   color: Colors.white,
-          //                   child: Column(
-          //                     mainAxisAlignment: MainAxisAlignment.center,
-          //                     children: [
-          //                       Image.asset(
-          //                         'assets/images/otpforgot.png',
-          //                         width: imageSize,
-          //                         height: imageSize,
-          //                       ),
-          //                     ],
-          //                   ),
-          //                 ),
-          //               ),
-          //               Expanded(
-          //                 flex: 1,
-          //                 child: Material(
-          //                   color: Colors.orange[100],
-          //                   borderRadius: const BorderRadius.only(
-          //                     topLeft: Radius.circular(100),
-          //                     bottomLeft: Radius.circular(100),
-          //                   ),
-          //                   child: Center(
-          //                     child: Container(
-          //                       height: outerHeight,
-          //                       width: outerWidth,
-          //                       padding: EdgeInsets.all(innerPadding),
-          //                       constraints: BoxConstraints(
-          //                         maxWidth: outerWidth,
-          //                       ),
-          //                       decoration: BoxDecoration(
-          //                         color: Colors.white,
-          //                         borderRadius: BorderRadius.circular(10),
-          //                         boxShadow: [
-          //                           BoxShadow(
-          //                             color: Colors.orange.withOpacity(0.7),
-          //                             spreadRadius: 2,
-          //                             blurRadius: 5,
-          //                             offset: const Offset(0, 3),
-          //                           ),
-          //                         ],
-          //                       ),
-          //                       child: _buildOtpContent(c),
-          //                     ),
-          //                   ),
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          // );
         },
       ),
     );

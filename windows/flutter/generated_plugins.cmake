@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
-  awesome_notifications
   connectivity_plus
   file_saver
   file_selector_windows

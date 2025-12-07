@@ -13,7 +13,7 @@ class ManageUserSQL {
           .select('name')
           .ilike('name', '%$query%');
 
-      if (result == null || result.isEmpty) return [];
+      if (result.isEmpty) return [];
 
       return List<String>.from(
         result.map((e) => e['name'] as String? ?? ''),

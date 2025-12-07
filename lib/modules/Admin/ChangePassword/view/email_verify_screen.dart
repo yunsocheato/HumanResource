@@ -55,35 +55,73 @@ class EmailVerifyScreen extends GetView<VerificationController> {
                   : 550;
           double innerPadding = isMobile ? 16 : 32;
 
-          return Center(
+          return SafeArea(
             child:
                 isMobile
                     ? SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 32,
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Text(
+                            'Email\nVerification',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: '7TH.ttf',
+                              color: Colors.blue[900],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Note:\nDo not Share your OTP code with another',
+                            textAlign: TextAlign.center,
+                          ),
+
+                          const SizedBox(height: 10),
                           Image.asset(
                             'assets/images/email_verify.png',
                             width: imageSize,
                             height: imageSize,
+                            fit: BoxFit.contain,
                           ),
-                          Container(
-                            height: outerHeight,
-                            width: outerWidth,
-                            padding: EdgeInsets.all(innerPadding),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blue.withOpacity(0.7),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
+                          Obx(
+                            () => TextField(
+                              controller: controller.emailController,
+                              decoration: InputDecoration(
+                                suffixIcon:
+                                    controller.isLoading.value
+                                        ? const CircularProgressIndicator(
+                                          color: Colors.blue,
+                                          strokeWidth: 2,
+                                        )
+                                        : InkWell(
+                                          onTap: () {
+                                            if (controller
+                                                .isOtpVerified
+                                                .value) {
+                                              return;
+                                            }
+
+                                            controller.sendOtp();
+                                          },
+                                          child: const Icon(
+                                            Icons.send,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                labelText: 'Your email',
+                                border: const OutlineInputBorder(),
+                              ),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            child: _buildEmailVerifyContent(c),
                           ),
                         ],
                       ),

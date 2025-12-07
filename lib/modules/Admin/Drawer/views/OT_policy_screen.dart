@@ -1,8 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 import '../../../../Utils/SnackBar/snack_bar.dart';
 import '../controllers/OT_policy_controller.dart';
@@ -10,7 +8,7 @@ import '../controllers/OT_policy_controller.dart';
 class OTPolicyScreen extends GetView<OTPolicyController> {
   final _formkey1 = GlobalKey<FormState>();
   final _formkey2 = GlobalKey<FormState>();
-  OTPolicyScreen({Key? key}) : super(key: key);
+  OTPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

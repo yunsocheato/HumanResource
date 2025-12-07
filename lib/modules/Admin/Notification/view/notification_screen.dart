@@ -52,7 +52,31 @@ class NotificationScreen extends GetView<NotificationController> {
 
   Widget _buildPopupMenuButton(user) {
     final controller2 = Get.find<HoverMouseController>();
-
+    final isMobile = Get.width < 600;
+    final isLaptop = Get.width >= 600 && Get.width < 1024;
+    final isTablet = Get.width >= 600 && Get.width < 1024;
+    final isDesktop = Get.width >= 1024 && Get.width < 1200;
+    final isLargeDesktop = Get.width >= 1200;
+    double height;
+    double width;
+    if (isMobile) {
+      height = 20;
+      width = 20;
+    } else if (isTablet) {
+      height = 25;
+      width = 25;
+    } else if (isDesktop) {
+      height = 25;
+      width = 25;
+    } else if (isLargeDesktop) {
+      height = 30;
+      width = 30;
+    } else if (isLaptop) {
+      height = 25;
+      width = 25;
+    } else {
+      return ErrorWidget('Unknown screen size');
+    }
     Widget iconUser = Container(
       decoration: BoxDecoration(
         color: Colors.blue.shade900.withOpacity(0.7),
@@ -60,7 +84,11 @@ class NotificationScreen extends GetView<NotificationController> {
         boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
       ),
       padding: const EdgeInsets.all(8),
-      child: Image.asset('assets/icon/notification.png', height: 32, width: 32),
+      child: Image.asset(
+        'assets/icon/notification.png',
+        height: height,
+        width: width,
+      ),
     );
 
     Widget iconAdmin = Image.asset(
@@ -79,6 +107,14 @@ class NotificationScreen extends GetView<NotificationController> {
 
     Widget icon = roles.contains("user") ? iconUser : iconAdmin;
 
+    if (isMobile) {
+      return GestureDetector(
+        onTap: () {
+          Get.toNamed('/mobile_notification');
+        },
+        child: icon,
+      );
+    }
     return PopupMenuButton<int>(
       onOpened: () {
         controller.markAllAsRead();
@@ -119,7 +155,7 @@ class NotificationScreen extends GetView<NotificationController> {
                         margin: const EdgeInsets.only(bottom: 5),
                         decoration: BoxDecoration(
                           color:
-                              e.isRead ?? true
+                              (e.isRead ?? true)
                                   ? Colors.grey.shade200
                                   : Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(8),
@@ -141,7 +177,6 @@ class NotificationScreen extends GetView<NotificationController> {
                     ),
                   TextButton(
                     onPressed: () {
-                      Get.back();
                       _showAllNotifications(user);
                     },
                     child: const Text(
@@ -205,7 +240,6 @@ class NotificationScreen extends GetView<NotificationController> {
               const SizedBox(height: 12),
               Expanded(
                 child: Obx(() {
-                  // Show only notifications for the current user
                   final items =
                       controller.allNotifications
                           .where((n) => n.userID == user.id)
@@ -214,7 +248,6 @@ class NotificationScreen extends GetView<NotificationController> {
                   if (items.isEmpty) {
                     return const Center(child: Text("No notifications yet"));
                   }
-
                   return ListView.builder(
                     itemCount: items.length,
                     itemBuilder: (_, index) {

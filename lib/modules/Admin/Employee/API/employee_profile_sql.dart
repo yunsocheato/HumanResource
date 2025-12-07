@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cross_file/cross_file.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/employee_profile_model.dart';

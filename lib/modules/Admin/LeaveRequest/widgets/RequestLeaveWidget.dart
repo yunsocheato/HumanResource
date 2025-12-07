@@ -72,8 +72,7 @@ class RequestLeaveFormWidget extends GetView<ApplyLeaveScreenController> {
                 ],
               ),
             );
-          }
-          else {
+          } else {
             return Center(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -377,7 +376,7 @@ class RequestLeaveFormWidget extends GetView<ApplyLeaveScreenController> {
         const SizedBox(height: 5),
         Obx(
           () => DropdownButtonFormField<String>(
-            value:
+            initialValue:
                 controller.selectedRequestType.value.isNotEmpty
                     ? controller.selectedRequestType.value
                     : null,

@@ -1,6 +1,4 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../UserSetup/View/user_setup_screen.dart';

@@ -56,35 +56,66 @@ class resetverification extends GetView<ResetPasswordController> {
                   : 550;
           double innerPadding = isMobile ? 16 : 32;
 
-          return Center(
+          return SafeArea(
             child:
                 isMobile
                     ? SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 32,
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Text(
+                            'Email\nVerification',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: '7TH.ttf',
+                              color: Colors.orange[900],
+                            ),
+                          ),
                           Image.asset(
                             'assets/images/forgotscreen.png',
                             width: imageSize,
                             height: imageSize,
+                            fit: BoxFit.contain,
                           ),
-                          Container(
-                            height: outerHeight,
-                            width: outerWidth,
-                            padding: EdgeInsets.all(innerPadding),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blue.withOpacity(0.7),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
+                          Text(
+                            'Note:\nCheck your code in your mailbox\nDo not share the code with another',
+                            textAlign: TextAlign.center,
+                          ),
+
+                          const SizedBox(height: 24),
+                          TextField(
+                            controller: c.emailController,
+                            decoration: InputDecoration(
+                              suffixIcon:
+                                  c.isLoading.value
+                                      ? const CircularProgressIndicator(
+                                        color: Colors.blue,
+                                        strokeWidth: 2,
+                                      )
+                                      : InkWell(
+                                        onTap: () {
+                                          if (c.isOtpVerified.value) return;
+
+                                          c.sendEmailOTP();
+                                        },
+                                        child: const Icon(
+                                          Icons.send,
+                                          color: Colors.orange,
+                                        ),
+                                      ),
+                              labelText: 'Your email',
+                              border: const OutlineInputBorder(),
                             ),
-                            child: _buildEmailVerifyContent(c),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),

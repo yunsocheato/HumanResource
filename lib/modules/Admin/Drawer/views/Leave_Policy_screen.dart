@@ -153,8 +153,9 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                   ),
                                 ),
                                 Obx(() {
-                                  if (!controller.isBlockLeave.value)
+                                  if (!controller.isBlockLeave.value) {
                                     return const SizedBox.shrink();
+                                  }
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 8.0,
@@ -317,8 +318,9 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                   ),
                                 ),
                                 Obx(() {
-                                  if (!controller.isAgreement.value)
+                                  if (!controller.isAgreement.value) {
                                     return const SizedBox.shrink();
+                                  }
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 8.0,
@@ -561,8 +563,9 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                   ),
                                 ),
                                 Obx(() {
-                                  if (!controller.isBlockLeave.value)
+                                  if (!controller.isBlockLeave.value) {
                                     return const SizedBox.shrink();
+                                  }
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 8.0,
@@ -730,8 +733,9 @@ class LeavePolicy extends GetView<LeavePolicyController> {
                                   ),
                                 ),
                                 Obx(() {
-                                  if (!controller.isAgreement.value)
+                                  if (!controller.isAgreement.value) {
                                     return const SizedBox.shrink();
+                                  }
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 8.0,

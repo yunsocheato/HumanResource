@@ -127,10 +127,10 @@ class AttendanceTablewidget extends GetView<Attendancecontroller> {
                                     final index = entry.key;
                                     final request = entry.value;
                                     return DataRow(
-                                      color: MaterialStateProperty.resolveWith<
+                                      color: WidgetStateProperty.resolveWith<
                                         Color?
                                       >(
-                                        (Set<MaterialState> states) =>
+                                        (Set<WidgetState> states) =>
                                             index.isEven
                                                 ? Colors.blue.shade100
                                                 : Colors.white,

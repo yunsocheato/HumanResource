@@ -44,7 +44,7 @@ class GridoverviewLeavebalance extends GetView<OverViewController> {
       crossAxisCount = 2;
       iconSize = 16;
       fontSize = 12;
-      itemHeight = 650;
+      itemHeight = 700;
     } else {
       return const Text('Unknown device');
     }

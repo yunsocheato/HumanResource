@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import '../../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../controllers/dashboard_recently_screen_controller.dart';
-import '../controllers/dashboard_screen_controller.dart';
 
 class Recentscreen2 extends GetView<RecentlyControllerScreen> {
   const Recentscreen2({super.key});

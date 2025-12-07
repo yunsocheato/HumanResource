@@ -1,5 +1,4 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrms/Utils/SnackBar/snack_bar.dart';
@@ -23,6 +22,12 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
   final context = Get.context;
   final resizeToAvoidBottomInset = false;
   late bool isMobile;
+
+  // controller for security email and password
+  // final emailExists = false.obs;
+  // final isCheckingEmail = false.obs;
+  // final canTypePassword = false.obs;
+  // final isBlocked = false.obs;
 
   final progressValue = 0.0.obs;
   final loginText = 'D E A M HR';
@@ -97,6 +102,73 @@ class LoginController extends GetxController with SingleGetTickerProviderMixin {
       isLoading.value = false;
     }
   }
+
+  // verify email in database have or not
+  //   Future<void> checkEmail() async {
+  //   final email = emailController.text.trim();
+  //   if (email.isEmpty) return;
+
+  //   final user = await loginService.checkEmail(email);
+
+  //   if (user != null) {
+  //     emailExists.value = true;
+  //     canTypePassword.value = true;
+  //   } else {
+  //     emailExists.value = false;
+  //     canTypePassword.value = false;
+  //   }
+  // }
+
+  //   Future<void> loginsecurity() async {
+  //   final email = emailController.text.trim();
+  //   final password = passwordController.text.trim();
+
+  //   if (email.isEmpty || password.isEmpty) {
+  //     Get.snackbar("Error", "Please enter email and password");
+  //     return;
+  //   }
+
+  //   final res = await loginService.login(
+  //     email: email,
+  //     password: password,
+  //   );
+
+  //   switch (res) {
+  //     case "success":
+  //       Get.offAllNamed('/home');
+  //       break;
+
+  //     case "reset_required":
+  //       Get.dialog(
+  //         const AlertDialog(
+  //           title: Text("Reset Password"),
+  //           content: Text(
+  //             "You entered wrong password twice. Please reset your password.",
+  //           ),
+  //         ),
+  //       );
+  //       break;
+
+  //     case "blocked":
+  //       Get.dialog(
+  //         const AlertDialog(
+  //           title: Text("Account Blocked"),
+  //           content: Text(
+  //             "Please contact Administrator to reset password",
+  //           ),
+  //         ),
+  //       );
+  //       break;
+
+  //     case "wrong_password":
+  //       Get.snackbar("Error", "Wrong password");
+  //       break;
+
+  //     case "user_not_found":
+  //       Get.snackbar("Error", "This email does not exist");
+  //       break;
+  //   }
+  // }
 
   void togglePasswordVisibility() {
     isVisible.value = !isVisible.value;

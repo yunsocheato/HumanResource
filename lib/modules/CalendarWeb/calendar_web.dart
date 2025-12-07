@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 
@@ -16,6 +17,12 @@ class _CalendarDropdownState extends State<CalendarDropdown> {
   OverlayEntry? _overlayEntry;
   bool _isOpen = false;
   DateTime _selectedDate = DateTime.now();
+  DateTime _focusedDate = DateTime.now();
+
+  final Map<String, String> _holidayImages = {
+    '2025-12-25': 'assets/images/christmas.png',
+    '2025-01-01': 'assets/images/new_year.png',
+  };
 
   @override
   void dispose() {
@@ -66,6 +73,7 @@ class _CalendarDropdownState extends State<CalendarDropdown> {
                 elevation: 6,
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
+                  decoration: BoxDecoration(color: const Color(0xFF242C40)),
                   width: 320,
                   padding: const EdgeInsets.all(8),
                   child: TableCalendar(
@@ -75,12 +83,64 @@ class _CalendarDropdownState extends State<CalendarDropdown> {
                     selectedDayPredicate:
                         (day) => isSameDay(day, _selectedDate),
                     onDaySelected: (selected, focused) {
-                      setState(() => _selectedDate = selected);
+                      setState(() {
+                        _selectedDate = selected;
+                        _focusedDate = focused;
+                      });
+
                       widget.onSelected?.call(selected);
                       _toggle();
+
+                      final key = DateFormat('yyyy-MM-dd').format(selected);
+                      final holidayImage = _holidayImages[key];
+                      if (holidayImage != null) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder:
+                              (_) => Container(
+                                padding: const EdgeInsets.all(16),
+                                height: 500,
+                                width: 800,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Holiday!",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue.shade900,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Expanded(
+                                      child: Image.asset(
+                                        holidayImage,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                        );
+                      }
                     },
-                    headerStyle: const HeaderStyle(
+                    weekendDays: [DateTime.sunday],
+                    calendarFormat: CalendarFormat.month,
+                    headerStyle: HeaderStyle(
+                      titleTextStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                       titleCentered: true,
+                      leftChevronIcon: const Icon(
+                        Icons.chevron_left,
+                        color: Colors.white,
+                      ),
+                      rightChevronIcon: const Icon(
+                        Icons.chevron_right,
+                        color: Colors.white,
+                      ),
                       formatButtonVisible: false,
                     ),
                     calendarStyle: CalendarStyle(
@@ -90,8 +150,14 @@ class _CalendarDropdownState extends State<CalendarDropdown> {
                       ),
                       selectedDecoration: BoxDecoration(
                         color: Colors.blue.shade900,
-                        shape: BoxShape.rectangle,
+                        shape: BoxShape.circle,
                       ),
+                      weekendTextStyle: const TextStyle(
+                        color: Colors.redAccent,
+                      ),
+                      defaultTextStyle: const TextStyle(color: Colors.white),
+                      todayTextStyle: const TextStyle(color: Colors.white),
+                      selectedTextStyle: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),

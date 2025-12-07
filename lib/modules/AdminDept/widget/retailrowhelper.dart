@@ -6,7 +6,7 @@ class DetailRows extends StatelessWidget {
   final String title;
   final Widget value;
 
-  const DetailRows(this.title, this.value, {Key? key}) : super(key: key);
+  const DetailRows(this.title, this.value, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +40,8 @@ class DetailRowsColumn extends StatelessWidget {
     required this.approvers,
     this.photo,
     this.radius = 16,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

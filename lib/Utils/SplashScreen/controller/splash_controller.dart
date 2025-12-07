@@ -2,9 +2,6 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../Permission/Permission.dart';
-import '../../../modules/Admin/Dashboard/views/dashboard_screen.dart';
-import '../../../modules/Admin/Loginscreen/views/login_screen.dart';
-import '../../../modules/AdminDept/view/overview_screen.dart';
 
 class SplashController extends GetxController {
   final SupabaseClient client = Supabase.instance.client;

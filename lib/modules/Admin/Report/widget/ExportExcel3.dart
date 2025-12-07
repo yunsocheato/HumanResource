@@ -2,7 +2,6 @@ import 'package:excel/excel.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'dart:typed_data';
 
 import '../API/employee_report_sql3.dart';
@@ -38,21 +37,22 @@ Future<void> ExportExcel3({
   sheet.appendRow(headers.map((h) => TextCellValue(h)).toList());
 
   for (final row in data) {
-    final rowCells = headers.map((key) {
-      final value = row[key];
+    final rowCells =
+        headers.map((key) {
+          final value = row[key];
 
-      if (value == null) return  TextCellValue('');
-      if (value is int) return IntCellValue(value);
-      if (value is double) return DoubleCellValue(value);
-      if (value is DateTime) return DateTimeCellValue.fromDateTime(value);
+          if (value == null) return TextCellValue('');
+          if (value is int) return IntCellValue(value);
+          if (value is double) return DoubleCellValue(value);
+          if (value is DateTime) return DateTimeCellValue.fromDateTime(value);
 
-      try {
-        final dt = DateTime.parse(value.toString());
-        return DateTimeCellValue.fromDateTime(dt);
-      } catch (_) {
-        return TextCellValue(value.toString());
-      }
-    }).toList();
+          try {
+            final dt = DateTime.parse(value.toString());
+            return DateTimeCellValue.fromDateTime(dt);
+          } catch (_) {
+            return TextCellValue(value.toString());
+          }
+        }).toList();
 
     sheet.appendRow(rowCells);
   }
@@ -66,10 +66,7 @@ Future<void> ExportExcel3({
       mimeType: MimeType.microsoftExcel,
     );
     Get.snackbar('Success', 'Excel exported: $fileName');
-  }
-  else {
+  } else {
     Get.snackbar('Error', 'Failed to generate Excel');
   }
 }
-
-

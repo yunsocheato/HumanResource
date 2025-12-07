@@ -1,7 +1,5 @@
 import 'package:enefty_icons/enefty_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import '../controller/setting_controller.dart';
@@ -119,17 +117,16 @@ class SettingScreen extends GetView<SettingController> {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: isSelected ? BoxDecoration(
-          color:  Colors.blue.shade900 ,
-          borderRadius: BorderRadius.circular(8),
-        ) : null,
+        decoration:
+            isSelected
+                ? BoxDecoration(
+                  color: Colors.blue.shade900,
+                  borderRadius: BorderRadius.circular(8),
+                )
+                : null,
         child: Row(
           children: [
-            Icon(
-              icon,
-              color:  Colors.white,
-              size: 14,
-            ),
+            Icon(icon, color: Colors.white, size: 14),
             const SizedBox(width: 8),
             Text(
               label,

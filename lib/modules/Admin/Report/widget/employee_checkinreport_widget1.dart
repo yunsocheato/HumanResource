@@ -85,8 +85,9 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController> {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                 );
-                                if (picked != null)
+                                if (picked != null) {
                                   controller.updateStartDate(picked);
+                                }
                               },
                               child: Text(
                                 'StartDate',
@@ -111,8 +112,9 @@ class EmployeeScreenCheckinReport extends GetView<EmployeeReportController> {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                 );
-                                if (picked != null)
+                                if (picked != null) {
                                   controller.updateEndDate(picked);
+                                }
                               },
                               child: Text(
                                 'EndDate',

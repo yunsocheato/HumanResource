@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import '../../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../controllers/department_controller.dart';
@@ -136,7 +134,7 @@ class DepartmentCard extends GetView<DepartmentScreenController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               height: 120,
               child: FutureBuilder<List<DepartmentModel>>(
                 future: controller.departmentSQL.getUsersByDepartment(),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Admin/Drawer/controllers/drawer_controller.dart';
 import '../../Admin/Notification/view/notification_screen.dart';
+import '../../CalendarWeb/calendar_web.dart';
 
 class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
   const DrawerHead({super.key});
@@ -60,7 +61,7 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
                 child: AnimatedTextKit(
                   animatedTexts: [
                     TypewriterAnimatedText(
-                      'DEAM COMPUTER\nINTERNATIONAL',
+                      'DEAM HR',
                       textStyle: TextStyle(
                         fontSize: fontSize,
                         color: Colors.white,
@@ -158,20 +159,18 @@ class DrawerHead extends StatelessWidget implements PreferredSizeWidget {
           Row(
             children: [
               NotificationScreen(roles: ['user']),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.shade900.withOpacity(0.7),
-                  shape: CircleBorder(
-                    side: BorderSide(color: Colors.blue.shade900, width: 1),
-                  ),
-                  elevation: 25,
-                  shadowColor: Colors.grey,
+              const SizedBox(width: 10),
+              Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.3),
+                  shape: BoxShape.circle,
                 ),
-                onPressed: () {},
-                child: const Icon(
-                  Icons.calendar_month,
-                  size: 25,
-                  color: Colors.white,
+                child: CalendarDropdown(
+                  onSelected: (date) {
+                    print(date);
+                  },
                 ),
               ),
             ],

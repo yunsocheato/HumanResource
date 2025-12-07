@@ -14,7 +14,7 @@ class AttendanceProvider {
           .order('timestamp', ascending: false)
           .limit(5);
 
-      if (response == null || (response is List && response.isEmpty)) {
+      if ((response.isEmpty)) {
         return [];
       }
 
@@ -41,7 +41,7 @@ class AttendanceProvider {
           .lt('timestamp', endDateInclusive.toIso8601String())
           .order('timestamp', ascending: true);
 
-      if (response == null || (response is List && response.isEmpty)) {
+      if ((response.isEmpty)) {
         return [];
       }
 

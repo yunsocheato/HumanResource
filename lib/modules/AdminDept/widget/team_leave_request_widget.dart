@@ -242,12 +242,11 @@ class TeamRequestLeaveResponsiveWidget extends GetView<LeaveRecordController> {
                                               final leave = entry.value;
                                               return DataRow(
                                                 color:
-                                                    MaterialStateProperty.resolveWith<
+                                                    WidgetStateProperty.resolveWith<
                                                       Color?
                                                     >(
                                                       (
-                                                        Set<MaterialState>
-                                                        states,
+                                                        Set<WidgetState> states,
                                                       ) =>
                                                           index.isEven
                                                               ? Colors

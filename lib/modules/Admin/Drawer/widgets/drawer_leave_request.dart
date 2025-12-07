@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../LeaveRequest/widgets/apply_leave_screen_widget.dart';

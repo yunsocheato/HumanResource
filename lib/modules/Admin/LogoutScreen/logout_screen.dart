@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:ui'; // For ImageFilter
 
 class LogoutScreen extends StatelessWidget {
   const LogoutScreen({super.key});
@@ -7,40 +8,90 @@ class LogoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final isMobile = width < 600;
 
-    bool isMobile = screenWidth < 600;
-    bool isTablet = screenWidth >= 600 && screenWidth < 1024;
-    bool isDesktop = screenWidth >= 1024 && screenWidth < 1440;
-    bool isLargeDesktop = screenWidth >= 1440;
+    final imageSize = isMobile ? height : 100.0;
+    final fontSizeTitle = isMobile ? 24.0 : 20.0;
+    final fontSizeNote = isMobile ? 14.0 : 12.0;
 
-    double containerWidth =
-        isMobile
-            ? screenWidth * 0.9
-            : isTablet
-            ? screenWidth * 0.6
-            : isDesktop
-            ? screenWidth * 0.35
-            : screenWidth * 0.25;
-
-    double containerHeight =
-        isMobile
-            ? screenHeight * 0.45
-            : isTablet
-            ? 400
-            : 350;
-
-    double fontSizeTitle = isMobile ? 18 : 20;
-    double fontSizeNote = isMobile ? 11 : 13;
-    double imageSize = isMobile ? 80 : 100;
+    if (isMobile) {
+      return Scaffold(
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Background image
+            Image.asset('assets/icon/logout.png', fit: BoxFit.cover),
+            // Blur effect
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(color: Colors.black.withOpacity(0.3)),
+            ),
+            // Texts and button
+            SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Text(
+                    'You are Logout Successful',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: fontSizeTitle,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      'Note: All data and cache will be deleted after logout.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: fontSizeNote,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton.icon(
+                    onPressed: () => Get.offAllNamed('/login'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.pink,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 14,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    icon: const Icon(Icons.refresh, color: Colors.white),
+                    label: const Text(
+                      'Return to Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       body: Center(
         child: Container(
-          width: containerWidth,
-          height: containerHeight,
+          width: 500,
+          height: 350,
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -59,8 +110,8 @@ class LogoutScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: imageSize,
-                  height: imageSize,
+                  width: 100,
+                  height: 100,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/icon/logout.png'),
@@ -69,49 +120,40 @@ class LogoutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'You are Logout Successful',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: fontSizeTitle,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
-                    decoration: TextDecoration.none,
                   ),
                 ),
                 const SizedBox(height: 12),
-                Text(
+                const Text(
                   'Note: All data and cache will be deleted after logout.',
-                  style: TextStyle(
-                    fontSize: fontSizeNote,
-                    color: Colors.black54,
-                    decoration: TextDecoration.none,
-                  ),
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Colors.black54),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton.icon(
-                  onPressed: () {
-                    Get.offAllNamed('/login');
-                  },
+                  onPressed: () => Get.offAllNamed('/login'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.pink,
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 20,
-                      vertical: isMobile ? 10 : 14,
+                      vertical: 14,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   icon: const Icon(Icons.refresh, color: Colors.white),
-                  label: Text(
+                  label: const Text(
                     'Return to Login',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
-                      fontSize: isMobile ? 14 : 16,
-                      decoration: TextDecoration.none,
                     ),
                   ),
                 ),

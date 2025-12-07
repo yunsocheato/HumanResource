@@ -65,35 +65,121 @@ class OTPScreen extends GetView<VerificationController> {
           return Obx(
             () =>
                 c.isOtpSent.value
-                    ? Center(
+                    ? SafeArea(
                       child:
                           isMobile
                               ? SingleChildScrollView(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 32,
+                                ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    Text(
+                                      'OTP\nVERIFICATION',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: '7TH.ttf',
+                                        color: Colors.blue[900],
+                                      ),
+                                    ),
                                     Image.asset(
                                       'assets/images/otp.png',
                                       width: imageSize,
                                       height: imageSize,
+                                      fit: BoxFit.contain,
                                     ),
-                                    Container(
-                                      height: outerHeight,
-                                      width: outerWidth,
-                                      padding: EdgeInsets.all(innerPadding),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.blue.withOpacity(0.7),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 3),
+                                    Text(
+                                      'Enter OTP sent to your email\n${controller.maskEmail(controller.emailController.text)}',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: List.generate(4, (index) {
+                                        return SizedBox(
+                                          width: 50,
+                                          child: TextField(
+                                            controller:
+                                                controller
+                                                    .otpControllers[index],
+                                            focusNode: focusNodes[index],
+                                            keyboardType: TextInputType.number,
+                                            textAlign: TextAlign.center,
+                                            maxLength: 1,
+                                            decoration: const InputDecoration(
+                                              counterText: '',
+                                            ),
+                                            onChanged: (value) {
+                                              if (value.isNotEmpty &&
+                                                  index < 3) {
+                                                focusNodes[index + 1]
+                                                    .requestFocus();
+                                              }
+                                              if (value.isEmpty && index > 0) {
+                                                focusNodes[index - 1]
+                                                    .requestFocus();
+                                              }
+                                            },
                                           ),
-                                        ],
-                                      ),
-                                      child: _buildOtpContent(c),
+                                        );
+                                      }),
+                                    ),
+                                    const SizedBox(height: 23),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        TextButton(
+                                          onPressed:
+                                              () =>
+                                                  c.isLoading.value
+                                                      ? CircularProgressIndicator(
+                                                        color:
+                                                            Colors.red.shade900,
+                                                        strokeWidth: 2,
+                                                      )
+                                                      : c.resendopt(),
+                                          style: TextButton.styleFrom(
+                                            minimumSize: const Size(50, 50),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                          child: const Text(
+                                            'Resend Code',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed:
+                                              () =>
+                                                  c.isLoading.value
+                                                      ? CircularProgressIndicator(
+                                                        color:
+                                                            Colors
+                                                                .blue
+                                                                .shade900,
+                                                        strokeWidth: 2,
+                                                      )
+                                                      : c.verifyOtp(),
+                                          style: ElevatedButton.styleFrom(
+                                            minimumSize: const Size(50, 50),
+                                            backgroundColor:
+                                                Colors.blue.shade800,
+                                          ),
+                                          child: const Text(
+                                            'Verify Code',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

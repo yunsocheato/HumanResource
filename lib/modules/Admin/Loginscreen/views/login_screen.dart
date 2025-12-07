@@ -1,16 +1,14 @@
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:pretty_animated_text/pretty_animated_text.dart';
 import '../controllers/login_controller.dart';
 
 class LoginScreen extends GetView<LoginController> {
   static const String routeName = '/login';
 
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +37,8 @@ class LoginScreen extends GetView<LoginController> {
     return _buildBaseLayout(
       context: context,
       controller: controller,
-      containerWidth: MediaQuery.of(context).size.width * 0.9,
-      logoSize: 60,
+      containerWidth: MediaQuery.of(context).size.width * 0.97,
+      logoSize: 55,
       padding: const EdgeInsets.all(20),
     );
   }
@@ -207,6 +205,32 @@ class LoginScreen extends GetView<LoginController> {
               borderSide: BorderSide.none,
             ),
           ),
+          // detect email avaialbe in database or not
+//           Obx(
+//   () => TextField(
+//     controller: controller.emailController,
+//     onChanged: (_) => controller.checkEmail(),
+//     decoration: InputDecoration(
+//       prefixIcon: const Icon(Icons.email, color: Colors.blue),
+//       filled: true,
+//       fillColor: Colors.blue.shade100,
+//       suffixIcon: controller.isCheckingEmail.value
+//           ? const SizedBox(
+//               width: 20,
+//               height: 20,
+//               child: CircularProgressIndicator(strokeWidth: 2),
+//             )
+//           : controller.emailExists.value
+//               ? const Icon(Icons.check_circle, color: Colors.green)
+//               : null,
+//       border: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(12),
+//         borderSide: BorderSide.none,
+//       ),
+//     ),
+//   ),
+// ),
+
         ),
         const SizedBox(height: 20),
         const Text(
@@ -241,6 +265,34 @@ class LoginScreen extends GetView<LoginController> {
             ),
           ),
         ),
+        // password security check 
+//         Obx(
+//   () => TextField(
+//     controller: controller.passwordController,
+//     obscureText: !controller.isVisible.value,
+//     enabled: controller.canTypePassword.value && !controller.isBlocked.value,
+//     decoration: InputDecoration(
+//       prefixIcon: const Icon(Icons.lock, color: Colors.blue),
+//       filled: true,
+//       fillColor: Colors.blue.shade100,
+//       border: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(12),
+//         borderSide: BorderSide.none,
+//       ),
+//       suffixIcon: IconButton(
+//         icon: Icon(
+//           controller.isVisible.value
+//               ? Icons.visibility
+//               : Icons.visibility_off,
+//           color: Colors.blue.shade900,
+//         ),
+//         onPressed: () =>
+//             controller.isVisible.value = !controller.isVisible.value,
+//       ),
+//     ),
+//   ),
+// ),
+
       ],
     );
   }

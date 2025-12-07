@@ -6,7 +6,6 @@ import 'package:hrms/modules/AdminDept/Provider/leave_card_balance_provider.dart
 import 'package:hrms/modules/AdminDept/controller/leave_record_controller.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../Admin/Drawer/widgets/Method_drawer_policy_button.dart';
-import '../view/request_leave_screen.dart';
 
 class OverViewController extends GetxController
     with SingleGetTickerProviderMixin {
@@ -167,6 +166,7 @@ class OverViewController extends GetxController
     update();
   }
 
+  @override
   void onClose() {
     _timer?.cancel();
     pageController.dispose();

@@ -239,8 +239,7 @@ class EmployeeProfileController extends GetxController {
       };
 
       updates.removeWhere(
-        (key, value) =>
-            value == null || (value is String && value.trim().isEmpty),
+        (key, value) => value == null || (value.trim().isEmpty),
       );
 
       await _employeeProfilesql.updateUserInfo(

@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SuccessMesage extends GetxController{
+class SuccessMesage extends GetxController {
   final RxString success = ''.obs;
   Future<void> buildSuccessMessages() {
     return Get.dialog(
@@ -16,18 +15,14 @@ class SuccessMesage extends GetxController{
           icon: const Icon(Icons.check_circle, color: Colors.green, size: 50),
           content: Text(success.value),
           actions: [
-            TextButton(
-              onPressed: () => Get.back(),
-              child: const Text('OK'),
-            ),
+            TextButton(onPressed: () => Get.back(), child: const Text('OK')),
             TextButton(
               onPressed: () => Get.back(),
               child: const Text('Cancel'),
             ),
-
           ],
         ),
-        )
+      ),
     );
   }
 }

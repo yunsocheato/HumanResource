@@ -150,8 +150,8 @@ class LeavePolicyController extends GetxController {
     userID.value = data.userID ?? '';
 
     monthly.value = data.monthly ?? 0;
-    daily.value = data.daily != null ? data.daily.toDouble() : 0.0;
-    inMinute.value = data.inMinute != null ? data.inMinute.toDouble() : 0.0;
+    daily.value = data.daily.toDouble();
+    inMinute.value = data.inMinute.toDouble();
 
     blockAnualLeave.value = data.blockAnualLeave ?? false;
     blockSickLeave.value = data.blockSickLeave ?? false;

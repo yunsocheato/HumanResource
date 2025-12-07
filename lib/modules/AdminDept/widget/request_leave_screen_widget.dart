@@ -259,7 +259,7 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
         const SizedBox(height: 5),
         Obx(
           () => DropdownButtonFormField<String>(
-            value:
+            initialValue:
                 controller.selectedRequestType.value.isNotEmpty
                     ? controller.selectedRequestType.value
                     : null,

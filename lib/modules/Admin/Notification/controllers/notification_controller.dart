@@ -111,8 +111,6 @@ class NotificationController extends GetxController {
           callback: (PostgresChangePayload payload) {
             final newData = payload.newRecord;
 
-            if (newData == null) return;
-
             final newNotification = NotificationModel.fromMap(newData);
 
             allNotifications.insert(0, newNotification);
@@ -141,7 +139,9 @@ class NotificationController extends GetxController {
         .update({'is_read': true})
         .eq('user_id', user.id);
 
-    for (var n in allNotifications) n.isRead = true;
+    for (var n in allNotifications) {
+      n.isRead = true;
+    }
     allNotifications.refresh();
     notifications.refresh();
     updateUnreadCount();

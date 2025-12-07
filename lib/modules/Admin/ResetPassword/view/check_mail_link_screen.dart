@@ -4,7 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
 class CheckMailBoxScreen extends StatefulWidget {
-  const CheckMailBoxScreen({Key? key}) : super(key: key);
+  const CheckMailBoxScreen({super.key});
   static const String routeName = '/check_mail';
 
   @override

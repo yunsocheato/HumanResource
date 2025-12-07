@@ -8,7 +8,7 @@ import '../controllers/employee_policy_controller.dart';
 class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
-  EmployeePolicyScreen({Key? key}) : super(key: key);
+  EmployeePolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

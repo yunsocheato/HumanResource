@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import '../../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../../../Utils/Loadingui/ErrorScreen/Controller/DataUnavaiable.dart';
@@ -10,7 +9,7 @@ import '../controllers/attendance_widget_controller.dart';
 import 'attendance_filter_view.dart';
 
 class AttendanceRecords extends GetView<AttendanceController> {
-  AttendanceRecords({super.key});
+  const AttendanceRecords({super.key});
 
   @override
   Widget build(BuildContext context) {
