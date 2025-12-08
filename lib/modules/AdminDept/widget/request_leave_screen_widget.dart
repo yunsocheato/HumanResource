@@ -13,86 +13,147 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
   Widget build(BuildContext context) {
     final isMobile = Get.width < 900;
     final padding = EdgeInsets.all(isMobile ? 16.0 : 32.0);
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child:
-            isMobile
-                ? Column(
+
+    return isMobile
+        ? _buildMobileLayout(context)
+        : Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: _buildFormCard(isMobile: false, padding: padding),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    flex: 1,
+                    child: _buildProfileSidebar(isMobile: false),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+  }
+
+  Widget _buildMobileLayout(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
                   children: [
-                    _buildProfileSidebar(isMobile: true),
-                    const SizedBox(height: 20),
-                    _buildFormCard(isMobile: true, padding: padding),
+                    IconButton(
+                      onPressed: () {
+                        Get.offAllNamed('/overview');
+                      },
+                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Back',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
-                )
-                : Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: _buildFormCard(
-                          isMobile: false,
-                          padding: padding,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        flex: 1,
-                        child: _buildProfileSidebar(isMobile: false),
-                      ),
-                    ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'LEAVE REQUEST',
+                  style: TextStyle(
+                    color: Colors.blue.shade900,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: '7TH.ttf',
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.blue.shade900,
+                    decorationThickness: 2,
                   ),
                 ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 35),
+          Column(
+            children: [
+              Obx(() => buildProfileAvatar(controller.profileImageUrl.value)),
+              const SizedBox(height: 10),
+              Text(
+                controller.nameController.text,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                controller.positionController.text,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+              const SizedBox(height: 10),
+              _mobileInfoRow('Email', controller.emailController.text),
+              _mobileInfoRow('ID CARD', controller.idCardController.text),
+              _mobileInfoRow(
+                'Department',
+                controller.departmentController.text,
+              ),
+              _mobileInfoRow('Type', controller.roleController.text),
+            ],
+          ),
+          Divider(height: 32, color: Colors.grey.shade400),
+          const SizedBox(height: 10),
+          GridoverviewLeavebalance(),
+          Divider(height: 32, color: Colors.grey.shade400),
+          const SizedBox(height: 16),
+          _buildFormCard(isMobile: true, padding: const EdgeInsets.all(16)),
+        ],
+      ),
+    );
+  }
+
+  Widget _mobileInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '$label: ',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            value.isEmpty ? '-' : value,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildFormCard({required bool isMobile, required EdgeInsets padding}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blue.shade900.withOpacity(0.7),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 0),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: padding,
-        child: Form(
-          key: controller.formKey,
-          child: Column(
-            children: [
-              Stack(
-                children: <Widget>[
-                  Text(
-                    'REQUEST LEAVE',
-                    style: TextStyle(
-                      fontSize: 30,
-                      foreground:
-                          Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 2
-                            ..color = Colors.blue[900]!,
-                    ),
-                  ),
-                  const Text(
-                    'REQUEST LEAVE',
-                    style: TextStyle(fontSize: 30, color: Colors.white),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              _buildFormFields(),
-            ],
-          ),
-        ),
+    return Padding(
+      padding: padding,
+      child: Form(
+        key: controller.formKey,
+        child: Column(children: [_buildFormFields()]),
       ),
     );
   }
@@ -202,27 +263,26 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
     );
   }
 
-  Widget _leaveSummaryBox(String title, Color color, String count) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _headerBoxText(width: 150, height: 30, color: color, title: title),
-        const SizedBox(height: 5),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            count,
-            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildFormFields() {
+    final isMobile = Get.width < 900;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (!isMobile) const SizedBox(height: 10),
+        if (!isMobile)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Leave Request-Form',
+              style: TextStyle(
+                color: Colors.blue.shade900,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: '7TH.ttf',
+              ),
+            ),
+          ),
+        if (!isMobile) const SizedBox(height: 20),
         _buildTwoFieldsRow(
           'Request Number',
           controller.requestNumberController,
@@ -232,29 +292,17 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
           Colors.green,
           isDate2: true,
         ),
-        const SizedBox(height: 15),
-        _headerBoxText(
-          width: 120,
-          height: 30,
-          color: Colors.purple,
-          title: 'Location',
-        ),
         const SizedBox(height: 5),
         TextFormField(
           controller: controller.locationController,
           decoration: const InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
             labelText: 'Location',
             prefixIcon: Icon(Icons.location_on, color: Colors.purple),
             border: OutlineInputBorder(),
           ),
           validator: (val) => val == null || val.isEmpty ? 'Required' : null,
-        ),
-        const SizedBox(height: 15),
-        _headerBoxText(
-          width: 120,
-          height: 30,
-          color: Colors.blue,
-          title: 'Request Type',
         ),
         const SizedBox(height: 5),
         Obx(
@@ -275,43 +323,35 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
             validator: (val) => val == null || val.isEmpty ? 'Required' : null,
           ),
         ),
+        Divider(height: 32, color: Colors.grey.shade400),
         const SizedBox(height: 10),
-        _buildDateFieldRow(),
-        const SizedBox(height: 10),
-        _headerBoxText(
-          width: 120,
-          height: 30,
-          color: Colors.orange,
-          title: 'Leave Count',
-        ),
+        _buildDateRow(),
         const SizedBox(height: 5),
         TextFormField(
           controller: controller.leaveCountController,
           decoration: const InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
             labelText: 'Leave Count',
             border: OutlineInputBorder(),
           ),
           keyboardType: TextInputType.number,
           validator: (val) => val == null || val.isEmpty ? 'Required' : null,
         ),
-        const SizedBox(height: 10),
-        _headerBoxText(
-          width: 120,
-          height: 30,
-          color: Colors.pink,
-          title: 'Reason',
-        ),
         const SizedBox(height: 5),
         TextFormField(
           controller: controller.reasonController,
           decoration: const InputDecoration(
             labelText: 'Reason',
+            filled: true,
+            fillColor: Colors.white,
             border: OutlineInputBorder(),
           ),
           maxLines: 3,
           validator: (val) => val == null || val.isEmpty ? 'Required' : null,
         ),
-        const SizedBox(height: 25),
+        Divider(height: 32, color: Colors.grey.shade400),
+        const SizedBox(height: 15),
         Align(alignment: Alignment.bottomRight, child: _buildButtons()),
       ],
     );
@@ -332,19 +372,16 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _headerBoxText(
-                width: 150,
-                height: 30,
-                color: color1,
-                title: label1,
-              ),
-              const SizedBox(height: 5),
               TextFormField(
                 controller: controller1,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
                   labelText: label1,
-                  prefixIcon: Icon(Icons.text_fields, color: color1),
-                  border: const OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.text_fields, color: color2),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 validator:
                     (val) => val == null || val.isEmpty ? 'Required' : null,
@@ -357,13 +394,6 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _headerBoxText(
-                width: 150,
-                height: 30,
-                color: color2,
-                title: label2,
-              ),
-              const SizedBox(height: 5),
               isDate2
                   ? _buildDateField(controller: controller2, label: label2)
                   : TextFormField(
@@ -371,7 +401,9 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
                     decoration: InputDecoration(
                       labelText: label2,
                       prefixIcon: Icon(Icons.text_fields, color: color2),
-                      border: const OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                     validator:
                         (val) => val == null || val.isEmpty ? 'Required' : null,
@@ -383,19 +415,13 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
     );
   }
 
-  Widget _buildDateFieldRow() {
+  Widget _buildDateRow() {
     return Row(
       children: [
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _headerBoxText(
-                width: 120,
-                height: 30,
-                color: Colors.green,
-                title: 'From Date',
-              ),
               const SizedBox(height: 5),
               _buildDateField(
                 controller: controller.startDateController,
@@ -409,12 +435,6 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _headerBoxText(
-                width: 120,
-                height: 30,
-                color: Colors.red,
-                title: 'To Date',
-              ),
               const SizedBox(height: 5),
               _buildDateField(
                 controller: controller.endDateController,
@@ -456,118 +476,239 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
     );
   }
 
-  InputDecoration _getInputDecoration({Widget? suffixIcon}) {
-    return InputDecoration(
-      isDense: true,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-      ),
-      suffixIcon: suffixIcon,
+  Widget _buildTextField(
+    String label,
+    TextEditingController controller, {
+    IconData? icon,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      decoration: _getInputDecoration(
+        suffixIcon: icon != null ? Icon(icon) : null,
+      ).copyWith(hintText: label),
     );
   }
 
-  Widget _headerBoxText({
-    required double width,
-    required double height,
-    required Color color,
-    required String title,
-  }) {
-    final isMobile = Get.width < 900;
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(4),
+  Widget _buildDropdown() {
+    return Obx(
+      () => DropdownButtonFormField<String>(
+        value:
+            controller.selectedRequestType.value.isNotEmpty
+                ? controller.selectedRequestType.value
+                : null,
+        hint: const Text('Select Request Type'),
+        decoration: _getInputDecoration(),
+        items: const [
+          DropdownMenuItem(value: 'Sick Leave', child: Text('Sick Leave')),
+          DropdownMenuItem(value: 'Unpaid Leave', child: Text('Unpaid Leave')),
+          DropdownMenuItem(value: 'Annual Leave', child: Text('Annual Leave')),
+        ],
+        onChanged: (val) {
+          if (val != null) controller.selectedRequestType.value = val;
+        },
       ),
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: isMobile ? 14 : 16,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ),
+    );
+  }
+
+  InputDecoration _getInputDecoration({Widget? suffixIcon}) {
+    return InputDecoration(
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      suffixIcon: suffixIcon,
     );
   }
 
   Widget _buildButtons() {
     final isMobile = Get.width < 600;
 
-    final buttons = Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Obx(
-          () => ElevatedButton(
-            onPressed:
-                controller.isLoading.value
-                    ? null
-                    : () async {
-                      await controller.submitLeave();
-                    },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF673AB7),
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              elevation: 5,
-            ),
-            child:
-                controller.isLoading.value
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text(
-                      'Submit',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+    final bool hasSubmitter = controller.selectedSubmit.value != null;
+
+    final buttons =
+        isMobile
+            ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Obx(
+                  () => ElevatedButton(
+                    onPressed:
+                        (controller.isLoading.value || !hasSubmitter)
+                            ? null
+                            : () async {
+                              await controller.submitLeave();
+                            },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF673AB7),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 15,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 5,
+                    ),
+                    child:
+                        controller.isLoading.value
+                            ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                            : const Text(
+                              'Submit',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                Obx(
+                  () => ElevatedButton(
+                    onPressed:
+                        controller.isLoading.value
+                            ? null
+                            : () async {
+                              await controller.selectedSubmits();
+                            },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      backgroundColor: Colors.blue.shade800,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                    ),
+
+                    child: Text(
+                      controller.selectedSubmit.value != null
+                          ? 'Submit to: ${controller.selectedSubmit.value!['name']}'
+                          : 'Select Submitter',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    backgroundColor: Colors.red.shade900,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                  ),
+                  onPressed: () => Get.back(),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            )
+            : Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Obx(
+                  () => ElevatedButton(
+                    onPressed:
+                        (controller.isLoading.value || !hasSubmitter)
+                            ? null
+                            : () async {
+                              await controller.submitLeave();
+                            },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade900,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 15,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 5,
+                    ),
+                    child:
+                        controller.isLoading.value
+                            ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                            : const Text(
+                              'Submit',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+
+                Obx(
+                  () => ElevatedButton(
+                    onPressed:
+                        controller.isLoading.value
+                            ? null
+                            : () async {
+                              await controller.selectedSubmits();
+                            },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey.shade800,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Obx(
-          () => ElevatedButton(
-            onPressed:
-                controller.isLoading.value
-                    ? null
-                    : () async {
-                      await controller.selectedSubmits();
-                    },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey.shade800,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            ),
-            child: Text(
-              controller.selectedSubmit.value != null
-                  ? 'Submit to: ${controller.selectedSubmit.value!['name']}'
-                  : 'Select Submit',
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(backgroundColor: Colors.red.shade900),
-          onPressed: () => Get.back(),
-          child: const Text('Cancel', style: TextStyle(color: Colors.white)),
-        ),
-      ],
-    );
+                    child: Text(
+                      controller.selectedSubmit.value != null
+                          ? 'Submit : ${controller.selectedSubmit.value!['name']}'
+                          : 'Select Approver',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
 
-    if (!isMobile) return buttons;
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: buttons,
-    );
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    backgroundColor: Colors.red.shade900,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
+                    ),
+                  ),
+
+                  onPressed: () {
+                    Get.offAllNamed('/overview');
+                  },
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            );
+    return buttons;
   }
 }

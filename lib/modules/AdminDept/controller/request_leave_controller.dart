@@ -210,14 +210,20 @@ class RequestLeaveScreenController extends GetxController {
 
       final reviewer = await Get.dialog<Map<String, dynamic>>(
         Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(5),
+              bottomLeft: Radius.circular(5),
+            ),
+          ),
           insetPadding: EdgeInsets.symmetric(
-            horizontal: Get.width > 800 ? Get.width * 0.25 : 20,
+            horizontal: Get.width > 900 ? Get.width * 0.25 : 15,
             vertical: 20,
           ),
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: 600,
-              maxHeight: Get.height * 0.4,
+              maxHeight: Get.height * 0.5,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -228,18 +234,17 @@ class RequestLeaveScreenController extends GetxController {
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF673AB7),
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(8),
+                    gradient: LinearGradient(
+                      colors: [Colors.blue.shade900, Colors.blue.shade700],
                     ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Submit To Management",
+                        "Selected Approver",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),

@@ -180,9 +180,55 @@ class ReportScreen extends StatelessWidget {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         physics: const AlwaysScrollableScrollPhysics(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: _pageviewMangementList(),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          Get.offAllNamed('/overview');
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_back,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'Back',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    'REPORTS',
+                                    style: TextStyle(
+                                      color: Colors.blue.shade900,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: '7TH.ttf',
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.blue.shade900,
+                                      decorationThickness: 2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 30),
+                            _pageviewMangementList(),
+                          ],
                         ),
                       ),
                     ),

@@ -78,19 +78,7 @@ class OverViewScreen extends GetView<OverViewController> {
   }
 
   Widget _buildMobileContent() {
-    final profileController = Get.find<UserProfileController>();
-    final profile = profileController.userprofiles.value;
-
-    if (profile == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    final role = profile.role.toLowerCase();
-    final bool isAdmin = role == 'admin' || role == 'superadmin';
-
     final size = MediaQuery.of(Get.context!).size;
-    final isMobile = Get.width < 600;
-    final isTablet = Get.width >= 600 && Get.width < 900;
     final bottomBarHeight = kBottomNavigationBarHeight;
 
     return SizedBox(
@@ -130,21 +118,6 @@ class OverViewScreen extends GetView<OverViewController> {
                   bottom: bottomBarHeight,
                 ),
                 child: const OverViewWidget(),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 10,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                width: 40,
-                height: 2,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade500,
-                  borderRadius: BorderRadius.circular(2.5),
-                ),
               ),
             ),
           ),

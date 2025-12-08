@@ -64,9 +64,64 @@ class RequestLeaveScreen extends GetView<RequestLeaveScreenController> {
   }
 
   Widget _buildMobileContent() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: RequestLeaveWidget(),
+    final size = MediaQuery.of(Get.context!).size;
+    final bottomBarHeight = kBottomNavigationBarHeight;
+
+    return SafeArea(
+      child: Container(
+        width: size.width,
+        height: size.height,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.blue.shade900, Colors.blue.shade700],
+          ),
+        ),
+        child: Stack(
+          children: [
+            // Decorative floating circle
+            Positioned(
+              top: -30,
+              right: -60,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.25),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+
+            Positioned.fill(
+              bottom: 0,
+              child: Container(
+                margin: EdgeInsets.only(top: size.height * 0.15),
+                decoration: const BoxDecoration(
+                  color: Colors.white24,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 16,
+                    left: 12,
+                    right: 12,
+                    bottom: bottomBarHeight + 12,
+                  ),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: const Column(children: [RequestLeaveWidget()]),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

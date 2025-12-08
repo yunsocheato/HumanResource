@@ -190,204 +190,113 @@ class Recentemployee extends GetView<RecentlyControllerScreen> {
   Widget _buildTabletDesktop(BuildContext context) {
     final controller = Get.find<RecentlyControllerScreen>();
     final HoverMouseController controller1 = Get.put(HoverMouseController());
-
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
+
       if (controller.users.isEmpty) {
         return const Center(child: Text('No data available'));
       }
-
       return MouseHover(
         keyId: 4,
         controller: controller1,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Expanded(
-            child: Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              color: Colors.grey[200],
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 40,
-                    width: 145,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.redAccent.shade700,
-                          Colors.redAccent.shade100,
+          child: Card(
+            elevation: 10,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            color: Colors.grey[200],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 40,
+                  width: 145,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.redAccent.shade700,
+                        Colors.redAccent.shade100,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Register Employees",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: AttendanceFilterView(),
+                ),
+                const SizedBox(height: 5),
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: MediaQuery.of(context).size.width - 350,
+                      ),
+                      child: DataTable(
+                        columns: const [
+                          DataColumn(label: Text('Photo')),
+                          DataColumn(label: Text('Name')),
+                          DataColumn(label: Text('Email')),
+                          DataColumn(label: Text('Position')),
+                          DataColumn(label: Text('Department')),
                         ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.topRight,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
-                        "Register Employees",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: AttendanceFilterView(),
-                  ),
-                  const SizedBox(height: 5),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minWidth: MediaQuery.of(context).size.width - 350,
-                        ),
-                        child: DataTable(
-                          columns: [
-                            DataColumn(
-                              label: Container(
-                                height: 40,
-                                width: 80,
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Photo',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Container(
-                                height: 40,
-                                width: 120,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Name',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Container(
-                                height: 40,
-                                width: 200,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.red.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Email',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Container(
-                                height: 40,
-                                width: 150,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Position',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Container(
-                                height: 40,
-                                width: 150,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Department',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                          rows:
-                              controller.users.map((user) {
-                                return DataRow(
-                                  cells: [
-                                    DataCell(
-                                      CircleAvatar(
-                                        radius: 15,
-                                        backgroundColor: Colors.grey[200],
-                                        backgroundImage:
-                                            user.photo_url != null &&
-                                                    user.photo_url!.isNotEmpty
-                                                ? NetworkImage(user.photo_url!)
-                                                : null,
-                                        child:
-                                            user.photo_url == null ||
-                                                    user.photo_url!.isEmpty
-                                                ? const Icon(
-                                                  Icons.person,
-                                                  color: Colors.grey,
-                                                )
-                                                : null,
-                                      ),
+                        rows:
+                            controller.users.map((user) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(
+                                    CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: Colors.grey[200],
+                                      backgroundImage:
+                                          user.photo_url != null &&
+                                                  user.photo_url!.isNotEmpty
+                                              ? NetworkImage(user.photo_url!)
+                                              : null,
+                                      child:
+                                          user.photo_url == null ||
+                                                  user.photo_url!.isEmpty
+                                              ? const Icon(
+                                                Icons.person,
+                                                color: Colors.grey,
+                                              )
+                                              : null,
                                     ),
-                                    DataCell(Text(user.name)),
-                                    DataCell(Text(user.email)),
-                                    DataCell(Text(user.position)),
-                                    DataCell(Text(user.department)),
-                                  ],
-                                );
-                              }).toList(),
-                        ),
+                                  ),
+                                  DataCell(Text(user.name)),
+                                  DataCell(Text(user.email)),
+                                  DataCell(Text(user.position)),
+                                  DataCell(Text(user.department)),
+                                ],
+                              );
+                            }).toList(),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

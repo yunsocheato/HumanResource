@@ -184,7 +184,53 @@ Widget _mobileLayout() {
                       physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
-                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Get.offAllNamed('/overview');
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_back,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Back',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Text(
+                                  'MY ATTENDANCE',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.blue.shade900,
+                                    decorationThickness: 2,
+                                    wordSpacing: 2,
+                                    color: Colors.blue.shade900,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    fontFamily: '7TH.ttf',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 35),
                           Text(
                             'ATTENDANCE ANALYZE',
                             textAlign: TextAlign.center,

@@ -6,6 +6,7 @@ import '../../Admin/Drawer/views/drawer_screen.dart';
 import '../../Admin/Employee/Controller/employee_profile_controller.dart';
 import '../widget/bottom_appbar_widget1.dart';
 import '../widget/drawer_widget.dart';
+import '../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
 
 class UserProfileScreen extends GetView<EmployeeProfileController> {
   const UserProfileScreen({super.key});
@@ -14,20 +15,17 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
   @override
   Widget build(BuildContext context) {
     final profileController = Get.find<UserProfileController>();
-
     return Obx(() {
       final profile = profileController.userprofiles.value;
-      final myScrollController = ScrollController();
-
       if (profile == null) {
         return const Center(child: CircularProgressIndicator());
       }
-
       final role = profile.role.toLowerCase();
       final isMobile = Get.width < 900;
-
+      final bool isAdmin = role == 'admin' || role == 'superadmin';
+      final bool isUserSide = role == 'admindept' || role == 'user';
       final contents =
-          (role == 'admin' || role == 'superadmin')
+          isAdmin
               ? Drawerscreen(
                 content: SingleChildScrollView(
                   child: Column(
@@ -58,8 +56,13 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
                   ),
                 ),
               );
-
-      return isMobile ? BottomAppBarWidget1(body: contents) : contents;
+      if (isMobile) {
+        return isAdmin
+            ? BottomAppBarWidget(body: contents)
+            : BottomAppBarWidget1(body: contents);
+      } else {
+        return contents;
+      }
     });
   }
 
@@ -76,36 +79,146 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
   }
 
   Widget _buildMobileContent() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildProfileSidebar(),
-          const SizedBox(height: 16),
-          _buildInformationCard(
-            color1: Colors.blue,
-            color: Colors.blue.shade100,
-            title: 'Basic Information',
-            fields: _getBasicInformationFields(),
+    final size = MediaQuery.of(Get.context!).size;
+    final bottomBarHeight = kBottomNavigationBarHeight;
+
+    return SafeArea(
+      child: Container(
+        width: size.width,
+        height: size.height,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.blue.shade900, Colors.blue.shade700],
           ),
-          const SizedBox(height: 16),
-          _buildInformationCard(
-            color1: Colors.green,
-            color: Colors.green.shade100,
-            title: 'Contact Information',
-            fields: _getContactInformationFields(),
-          ),
-          const SizedBox(height: 16),
-          _buildInformationCard(
-            color1: Colors.orange,
-            color: Colors.orange.shade100,
-            title: 'Work Information',
-            fields: _getWorkInformationFields(),
-          ),
-          const SizedBox(height: 30),
-          _buildButtons(controller),
-        ],
+        ),
+        child: Stack(
+          children: [
+            // Positioned(
+            //   top: 0,
+            //   left: 0,
+            //   right: 0,
+            //   child: Center(
+            //     child: Container(
+            //       width: 40,
+            //       height: 3,
+            //       decoration: BoxDecoration(
+            //         color: Colors.grey.shade500,
+            //         borderRadius: BorderRadius.circular(2.5),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            Positioned(
+              top: -30,
+              right: -60,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+
+            Positioned.fill(
+              top: size.height * 0.15,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white24,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 16,
+                    left: 12,
+                    right: 12,
+                    bottom: bottomBarHeight + 12,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed:
+                                        () => Get.offAllNamed('/overview'),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    'Back',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                'My Profile',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: '7TH.ttf',
+                                  color: Colors.blue.shade900,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        _buildProfileSidebar(),
+                        const SizedBox(height: 16),
+                        _buildInformationCard(
+                          color1: Colors.blue,
+                          color: Colors.blue.shade700,
+                          title: 'Basic Information',
+                          fields: _getBasicInformationFields(),
+                        ),
+                        const SizedBox(height: 16),
+
+                        _buildInformationCard(
+                          color1: Colors.green,
+                          color: Colors.green.shade700,
+                          title: 'Contact Information',
+                          fields: _getContactInformationFields(),
+                        ),
+                        const SizedBox(height: 16),
+
+                        _buildInformationCard(
+                          color1: Colors.orange,
+                          color: Colors.orange.shade700,
+                          title: 'Work Information',
+                          fields: _getWorkInformationFields(),
+                        ),
+                        const SizedBox(height: 30),
+
+                        _buildButtons(controller),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -323,7 +436,6 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
     required Color color1,
   }) {
     return Card(
-      elevation: 15,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         padding: const EdgeInsets.all(24.0),
