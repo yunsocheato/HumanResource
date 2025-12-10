@@ -496,7 +496,7 @@ class RequestLeaveWidget extends GetView<RequestLeaveScreenController> {
   Widget _buildDropdown() {
     return Obx(
       () => DropdownButtonFormField<String>(
-        value:
+        initialValue:
             controller.selectedRequestType.value.isNotEmpty
                 ? controller.selectedRequestType.value
                 : null,

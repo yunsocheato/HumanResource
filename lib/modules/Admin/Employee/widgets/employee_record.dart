@@ -24,34 +24,46 @@ class EmployeeList extends GetView<EmployeeFilterController> {
         double cardHeight;
         double titleFontSize;
         double cardWidth;
-
+        double fontSize;
         if (isMobile) {
           cardHeight = 150;
           titleFontSize = 12;
+          fontSize = 10;
           cardWidth = double.infinity;
         } else if (isTablet) {
           cardHeight = 260;
           titleFontSize = 13;
+          fontSize = 12;
           cardWidth = width * 0.3;
         } else if (isLaptop) {
           cardHeight = 300;
+          fontSize = 13;
           titleFontSize = 14;
           cardWidth = double.infinity;
         } else if (isDesktop) {
           cardHeight = 270;
+          fontSize = 14;
           titleFontSize = 16;
           cardWidth = double.infinity;
         } else if (isLargeDesktop) {
           cardHeight = 280;
           titleFontSize = 17;
+          fontSize = 15;
           cardWidth = double.infinity;
         } else {
           cardHeight = 320;
           titleFontSize = 22;
+          fontSize = 15;
           cardWidth = double.infinity;
         }
         if (isMobile) {
-          return _buildMobile(context, cardHeight, titleFontSize, cardWidth);
+          return _buildMobile(
+            context,
+            cardHeight,
+            titleFontSize,
+            cardWidth,
+            fontSize,
+          );
         } else {
           return _buildTabletDesktop(context);
         }
@@ -261,6 +273,7 @@ class EmployeeList extends GetView<EmployeeFilterController> {
     BuildContext context,
     double cardHeight,
     double titleFontSize,
+    double fontSize,
     double cardWidth,
   ) {
     final controller1 = Get.find<EmployeeTalbeController>();
@@ -276,32 +289,20 @@ class EmployeeList extends GetView<EmployeeFilterController> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Container(
-              height: 30,
-              width: 145,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.green.shade700, Colors.greenAccent.shade100],
-                  begin: Alignment.topLeft,
-                  end: Alignment.topRight,
-                ),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Center(
-                child: Text(
-                  'Employee Records',
-                  style: TextStyle(
-                    fontSize: titleFontSize,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Text(
+              'EMPLOYEE RECORDS',
+              style: TextStyle(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue.shade900,
+                fontFamily: '7TH.ttf',
               ),
             ),
           ),
           const SizedBox(height: 10),
+          const AttendanceFilterView(),
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -345,6 +346,7 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                                     user.email,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 16,
                                     ),
                                   ),
                                   IconButton(
@@ -359,10 +361,22 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                                   ),
                                 ],
                               ),
-                              Text(user.name),
-                              Text(user.position),
-                              Text(user.id_card),
-                              Text(user.department),
+                              Text(
+                                'Name:  ${user.name}',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Text(
+                                'ID Card:  ${user.id_card}',
+                                style: TextStyle(fontSize: 13),
+                              ),
+                              Text(
+                                'Join Position as :  ${user.position}',
+                                style: TextStyle(fontSize: 13),
+                              ),
+                              Text(
+                                'Department:  ${user.department}',
+                                style: TextStyle(fontSize: 13),
+                              ),
                             ],
                           ),
                         ),

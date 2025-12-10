@@ -271,6 +271,13 @@ class Drawerscreen extends GetView<AppDrawerController> {
               index: 1,
               fontSize: fontSizeBody,
             ),
+            _buildDrawerTile(
+              'Manage Employee',
+              'assets/icon/user.png',
+              () => MethodButton3(),
+              index: 2,
+              fontSize: fontSizeBody,
+            ),
             PolicySetup(),
             ReportPolicy(),
             Employeepolicy(),

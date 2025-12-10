@@ -7,6 +7,7 @@ import '../../../../Utils/Loadingui/Loading_Screen.dart';
 import '../../../../Utils/Searchbar/controller/search_bar_controller.dart';
 import '../controllers/attendance_widget_controller.dart';
 import 'attendance_filter_view.dart';
+import 'package:intl/intl.dart';
 
 class AttendanceRecords extends GetView<AttendanceController> {
   const AttendanceRecords({super.key});
@@ -246,76 +247,199 @@ class AttendanceRecords extends GetView<AttendanceController> {
 
   Widget _buildAttendanceTableColumn() {
     final controller = Get.find<AttendanceController>();
-    final data = controller.attendanceData;
     final data1 = Get.put(DataUnavailable());
 
-    return Obx(() {
-      if (controller.isLoading.value) {
-        return const Center(child: LoadingScreen());
-      } else if (controller.dataSource.value == null ||
-          controller.attendanceData.isEmpty) {
-        return data1.imageNotFound.value
-            ? SizedBox(
-              width: 150,
-              height: 150,
-              child: Center(
-                child: Image.asset(data1.imageUrl, fit: BoxFit.cover),
-              ),
-            )
-            : const Text("No Data Found", style: TextStyle(color: Colors.red));
-      }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isMobile = constraints.maxWidth < 900;
 
-      return ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 600),
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            final record = data[index];
-            return Card(
-              color: Colors.white,
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                "ATTENDANCE RECORDS",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: Colors.blue.shade900,
+                  fontFamily: '7TH.ttf',
+                ),
               ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 6,
-                    height: 98,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade900,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        bottomLeft: Radius.circular(12),
-                      ),
-                    ),
+            ),
+            const SizedBox(height: 15),
+            const AttendanceFilterView(),
+            const SizedBox(height: 15),
+            Obx(() {
+              final data = controller.attendanceData;
+
+              if (controller.isLoading.value) {
+                return const Center(child: LoadingScreen());
+              }
+
+              if (controller.dataSource.value == null || data.isEmpty) {
+                return Center(
+                  child:
+                      data1.imageNotFound.value
+                          ? SizedBox(
+                            width: 150,
+                            height: 150,
+                            child: Image.asset(
+                              data1.imageUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                          : const Text(
+                            "No Data Found",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                );
+              }
+
+              if (isMobile) {
+                return SingleChildScrollView(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      final record = data[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Container(
+                                width: 6,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade900,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(14),
+                                    bottomLeft: Radius.circular(14),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 6,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        record['username'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      _infoRow(
+                                        "Fingerprint ID",
+                                        record['fingerprint_id'],
+                                      ),
+                                      _infoRow(
+                                        "Clock In",
+                                        formatDate(record['timestamp']),
+                                      ),
+                                      _infoRow("Type", record['check_type']),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  const SizedBox(width: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Username: ${record['name'] ?? '-'}",
+                );
+              }
+
+              return SizedBox(
+                height: 600,
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final record = data[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          record['username'],
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 4),
-                        Text('FingerPrintID: ${record['fingerprint_id']}'),
-                        Text("Clock In: ${record['timestamp'] ?? '-'}"),
-                        Text("Check Type: ${record['check_type'] ?? '-'}"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      );
-    });
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Fingerprint ID: ${record['fingerprint_id'] ?? '-'}',
+                              ),
+                              Text(
+                                'Clock-in: ${formatDate(record['timestamp'])}',
+                              ),
+                              Text('Type: ${record['check_type'] ?? '-'}'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _infoRow(String label, dynamic value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Text(
+        "$label: ${value ?? '-'}",
+        style: const TextStyle(fontSize: 14),
+      ),
+    );
+  }
+
+  String formatDate(String timestamp) {
+    final date = DateTime.parse(timestamp);
+    final formatter = DateFormat('hh:mm a dd.MM.yyyy');
+    return formatter.format(date);
   }
 }

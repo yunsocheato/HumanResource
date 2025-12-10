@@ -78,7 +78,7 @@ class AttendanceController extends GetxController {
           final username = item['username']?.toString().toLowerCase() ?? '';
           final checkType = item['check_type']?.toString().toLowerCase() ?? '';
           final clockIn =
-              DateTime.tryParse(item['clockin'] ?? '') ?? DateTime(2000);
+              DateTime.tryParse(item['timestamp'] ?? '') ?? DateTime(2000);
 
           final matchDate =
               (startDate.value == null ||

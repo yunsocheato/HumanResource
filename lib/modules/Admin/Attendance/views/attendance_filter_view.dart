@@ -37,7 +37,7 @@ class AttendanceFilterView extends GetView<AttendanceController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: Row(
               children: [
                 _buildDropdown(
@@ -45,7 +45,7 @@ class AttendanceFilterView extends GetView<AttendanceController> {
                   filterOptions,
                   const Icon(Icons.filter_alt_off, color: Colors.white),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 5),
                 ElevatedButton.icon(
                   onPressed: () => _pickDate(context, true),
                   style: ElevatedButton.styleFrom(
@@ -66,7 +66,7 @@ class AttendanceFilterView extends GetView<AttendanceController> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 5),
                 ElevatedButton.icon(
                   onPressed: () => _pickDate(context, false),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
@@ -85,7 +85,7 @@ class AttendanceFilterView extends GetView<AttendanceController> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 5),
                 _buildDropdown(
                   controller.selectedExport,
                   exportOptions,
@@ -133,8 +133,8 @@ class AttendanceFilterView extends GetView<AttendanceController> {
     final exportOptions = ['PDF', 'EXCEL', 'Image'];
 
     return Wrap(
-      spacing: 10,
-      runSpacing: 10,
+      spacing: 5,
+      runSpacing: 5,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         _buildDropdownOther(

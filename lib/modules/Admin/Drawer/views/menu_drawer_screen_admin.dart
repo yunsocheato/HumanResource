@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/Admin/Employee/views/employee_screen.dart';
 import '../../../../Core/user_profile_controller.dart';
 import '../controllers/drawer_controller.dart';
 import '../../../../services/logout_services.dart';
@@ -141,9 +142,23 @@ class MenuMobileScreenAdmin extends StatelessWidget {
             _menuGrid(drawer, context),
             const SizedBox(height: 15),
             _menuDivider(),
-            const SizedBox(height: 25),
+            const SizedBox(height: 15),
             _expandTile(
-              title: "Admin Controls",
+              title: "Employee Management",
+              icon: Icons.person,
+              children: [
+                _buildDrawerTile(
+                  'Employee',
+                  'assets/icon/user.png',
+                  () => Get.offAllNamed('/employee'),
+                  index: 140,
+                  fontSize: fontSizeBody,
+                  drawer: drawer,
+                ),
+              ],
+            ),
+            _expandTile(
+              title: "Admin Control Panel",
               icon: Icons.admin_panel_settings,
               children: [PolicySetup(), Employeepolicy(), ReportPolicy()],
             ),

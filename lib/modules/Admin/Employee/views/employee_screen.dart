@@ -1,6 +1,9 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Core/user_profile_controller.dart';
+import 'package:hrms/modules/AdminDept/widget/bottom_appbar_widget1.dart';
+import 'package:hrms/modules/AdminDept/widget/drawer_widget.dart';
 import '../../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
 import '../../Attendance/views/attendance_filter_view.dart';
 import '../../CardInfo/views/card_screen.dart';
@@ -14,30 +17,49 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final isMobile = width < 600;
+    final profileController = Get.find<UserProfileController>();
 
-    final contents = Drawerscreen(
-      content: Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _buildHeader(context, _getTitleFontSize(width)),
-              ),
-              const SizedBox(height: 10),
-              const Cardinfo(),
-              const SizedBox(height: 10),
-              _buildResponsiveCardInfo(context, width),
-            ],
-          ),
+    return Obx(() {
+      final profile = profileController.userprofiles.value;
+      if (profile == null) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final role = profile.role.toLowerCase();
+      final bool isAdmin = role == 'admin' || role == 'superadmin';
+      final bool isMobile = Get.width < 600;
+
+      final desktopBody = SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _buildHeader(context, _getTitleFontSize(Get.width)),
+            ),
+            const SizedBox(height: 10),
+            const Cardinfo(),
+            const SizedBox(height: 10),
+            _buildResponsiveCardInfo(context, Get.width),
+          ],
         ),
-      ),
-    );
-    return isMobile ? BottomAppBarWidget(body: contents) : contents;
+      );
+
+      final mobileBody = _buildMobileBody(context);
+
+      final content =
+          isAdmin
+              ? Drawerscreen(content: isMobile ? mobileBody : desktopBody)
+              : DrawerAdmin(content: isMobile ? mobileBody : desktopBody);
+
+      if (isMobile) {
+        return isAdmin
+            ? BottomAppBarWidget(body: content)
+            : BottomAppBarWidget1(body: content);
+      }
+
+      return content;
+    });
   }
 
   double _getTitleFontSize(double width) {
@@ -49,8 +71,13 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
   }
 
   Widget _buildHeader(BuildContext context, double titleFontSize) {
+    final controller = Get.find<EmployeeScreenController>();
     final width = MediaQuery.of(context).size.width;
     final isMobile = width < 600;
+    final isLaptop = width >= 900 && width < 1440;
+    final isDesktop = width >= 1440 && width < 1920;
+    final isLargeDesktop = width >= 1920;
+    final showHeader = isLaptop || isDesktop || isLargeDesktop;
 
     return Obx(
       () => AnimatedOpacity(
@@ -61,92 +88,126 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
           padding: EdgeInsets.only(
             top: controller.showlogincard1.value ? 0 : 100,
           ),
-
-          child: SizedBox(
-            height: 70,
-            child: Card(
-              color: Colors.white,
-              elevation: 10,
-              shadowColor: Colors.grey.withOpacity(0.5),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        if (isMobile) ...[
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.green.shade100,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              EneftyIcons.user_bold,
-                              color: Colors.green,
-                              size: 16,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                        ],
-                        Stack(
+          child:
+              showHeader
+                  ? SizedBox(
+                    height: 70,
+                    child: Card(
+                      color: Colors.white,
+                      elevation: 10,
+                      shadowColor: Colors.grey.withOpacity(0.5),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'EMPLOYEE',
-                              style: TextStyle(
-                                fontSize: titleFontSize,
-                                foreground:
-                                    Paint()
-                                      ..style = PaintingStyle.stroke
-                                      ..strokeWidth = 2
-                                      ..color = Colors.green[700]!,
-                              ),
+                            Stack(
+                              children: <Widget>[
+                                Text(
+                                  'ADMIN EMPLOYEE',
+                                  style: TextStyle(
+                                    fontSize: titleFontSize,
+                                    foreground:
+                                        Paint()
+                                          ..style = PaintingStyle.stroke
+                                          ..strokeWidth = 2
+                                          ..color = Colors.blue[700]!,
+                                  ),
+                                ),
+                                Text(
+                                  'ADMIN EMPLOYEE',
+                                  style: TextStyle(
+                                    fontSize: titleFontSize,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              'EMPLOYEE',
-                              style: TextStyle(
-                                fontSize: titleFontSize,
-                                color: Colors.white,
+                            Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: IconButton(
+                                onPressed: () => controller.refreshdata(),
+                                icon: Icon(
+                                  Icons.refresh,
+                                  color: Colors.blue,
+                                  size: 24,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        if (!isMobile) ...[
-                          const SizedBox(width: 10),
-                          Container(
-                            height: 70,
-                            width: 70,
-                            decoration: BoxDecoration(
-                              color: Colors.green.shade100,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              EneftyIcons.user_bold,
-                              color: Colors.green,
-                              size: 24,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () => controller.refreshdata(),
-                      icon: Icon(
-                        Icons.refresh,
-                        color: Colors.green,
-                        size: isMobile ? 16 : 24,
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  )
+                  : SizedBox(
+                    height: 70,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                    color: Colors.yellow.shade100,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.person,
+                                    color: Colors.yellow,
+                                    size: 18,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Stack(
+                                  children: <Widget>[
+                                    Text(
+                                      'ADMIN EMPLOYEE',
+                                      style: TextStyle(
+                                        fontSize: titleFontSize,
+                                        foreground:
+                                            Paint()
+                                              ..style = PaintingStyle.stroke
+                                              ..strokeWidth = 2
+                                              ..color = Colors.yellow[700]!,
+                                      ),
+                                    ),
+                                    Text(
+                                      'ADMIN EMPLOYEE',
+                                      style: TextStyle(
+                                        fontSize: titleFontSize,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          onPressed: () => controller.refreshdata(),
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.yellow,
+                            size: isMobile ? 16 : 24,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
         ),
       ),
     );
@@ -181,17 +242,6 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
 
     const employeeList = EmployeeList();
 
-    if (isMobile) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const AttendanceFilterView(),
-          const SizedBox(height: 10),
-          const EmployeeList(),
-        ],
-      );
-    }
-
     if (isTablet) {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -223,6 +273,82 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildMobileBody(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final bottomBarHeight = kBottomNavigationBarHeight;
+    final width = size.width;
+
+    return SizedBox(
+      height: size.height,
+      width: size.width,
+      child: ClipRect(
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.blue.shade900, Colors.blue.shade700],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: size.height * 0.85,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white24,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 12,
+                    left: 12,
+                    right: 12,
+                    bottom: bottomBarHeight,
+                  ),
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeader(context, _getTitleFontSize(width)),
+                        const SizedBox(height: 10),
+                        const Cardinfo(),
+                        const SizedBox(height: 15),
+                        const EmployeeList(),
+                        SizedBox(height: bottomBarHeight + 20),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            Positioned(
+              top: -30,
+              right: -60,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DataTableSourceAttendance extends DataTableSource {
   final List<Map<String, dynamic>> data;
@@ -15,7 +16,13 @@ class DataTableSourceAttendance extends DataTableSource {
         DataCell(Text(row['fingerprint_id'].toString())),
         DataCell(Text(row['username'] ?? 'No Name')),
         DataCell(Text(row['check_type'].toString())),
-        DataCell(Text(row['timestamp'] ?? 'No clock')),
+        DataCell(
+          Text(
+            row['timestamp'] != null
+                ? formatDate(row['timestamp'])
+                : 'No clock',
+          ),
+        ),
       ],
     );
   }
@@ -28,4 +35,10 @@ class DataTableSourceAttendance extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
+
+  String formatDate(String timestamp) {
+    final date = DateTime.parse(timestamp).toLocal();
+    final formatter = DateFormat('hh:mm a dd.MM.yyyy');
+    return formatter.format(date);
+  }
 }
