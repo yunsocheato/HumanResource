@@ -76,7 +76,7 @@ class OverviewAdmin extends GetView<AppDrawerController> {
                     color:
                         controller.selectedIndex.value == 0
                             ? Colors.blue.shade900
-                            : (isMobile ? Colors.blue : Colors.grey),
+                            : (isMobile ? Colors.blue : Colors.white),
                     fontWeight:
                         controller.selectedIndex.value == 0
                             ? FontWeight.bold

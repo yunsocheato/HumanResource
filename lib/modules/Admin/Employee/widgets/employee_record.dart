@@ -74,10 +74,12 @@ class EmployeeList extends GetView<EmployeeFilterController> {
   Widget _buildTabletDesktop(BuildContext context) {
     final controller1 = Get.find<EmployeeTalbeController>();
     final HoverMouseController controller2 = HoverMouseController();
+
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
+
       if (controller.users.isEmpty) {
         return const Center(child: Text('No data available'));
       }
@@ -87,7 +89,8 @@ class EmployeeList extends GetView<EmployeeFilterController> {
         controller: controller2,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Expanded(
+          child: SizedBox(
+            width: double.infinity,
             child: Card(
               elevation: 10,
               shape: RoundedRectangleBorder(
@@ -109,13 +112,13 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                         begin: Alignment.topLeft,
                         end: Alignment.topRight,
                       ),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
                         "Employee Records",
                         style: TextStyle(
                           fontSize: 14,
@@ -126,136 +129,74 @@ class EmployeeList extends GetView<EmployeeFilterController> {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: AttendanceFilterView(),
                   ),
                   const SizedBox(height: 5),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
+                  Expanded(
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minWidth: MediaQuery.of(context).size.width - 300,
-                        ),
-                        child: DataTable(
-                          columns: [
-                            DataColumn(
-                              label: Container(
-                                height: 30,
-                                width: 110,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Email',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: MediaQuery.of(context).size.width - 300,
+                          ),
+                          child: DataTable(
+                            columns: [
+                              DataColumn(
+                                label: _headerCell(
+                                  "Email",
+                                  Colors.blue.shade900,
                                 ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Container(
-                                height: 30,
-                                width: 110,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.red.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Name',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              DataColumn(
+                                label: _headerCell("Name", Colors.red.shade900),
+                              ),
+                              DataColumn(
+                                label: _headerCell(
+                                  "ID Card",
+                                  Colors.yellow.shade900,
                                 ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Container(
-                                height: 30,
-                                width: 120,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'ID Card',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              DataColumn(
+                                label: _headerCell(
+                                  "Position",
+                                  Colors.green.shade900,
                                 ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Container(
-                                height: 30,
-                                width: 120,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Position',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              DataColumn(
+                                label: _headerCell(
+                                  "Details",
+                                  Colors.green.shade900,
                                 ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Container(
-                                height: 30,
-                                width: 110,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade900,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'Details',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                          rows:
-                              controller.users.map((user) {
-                                return DataRow(
-                                  cells: [
-                                    DataCell(Text(user.email)),
-                                    DataCell(Text(user.name)),
-                                    DataCell(Text(user.id_card)),
-                                    DataCell(Text(user.position)),
-                                    DataCell(
-                                      IconButton(
-                                        onPressed:
-                                            () => controller1.showLeaveDialog(
-                                              user.toJson(),
-                                            ),
-                                        icon: const Icon(
-                                          Icons.info,
-                                          color: Colors.grey,
+                            ],
+                            rows:
+                                controller.users.map((user) {
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(user.email)),
+                                      DataCell(Text(user.name)),
+                                      DataCell(Text(user.id_card)),
+                                      DataCell(Text(user.position)),
+                                      DataCell(
+                                        IconButton(
+                                          onPressed:
+                                              () => controller1.showLeaveDialog(
+                                                user.toJson(),
+                                              ),
+                                          icon: const Icon(
+                                            Icons.info,
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
+                                    ],
+                                  );
+                                }).toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -267,6 +208,25 @@ class EmployeeList extends GetView<EmployeeFilterController> {
         ),
       );
     });
+  }
+
+  Widget _headerCell(String text, Color color) {
+    return Container(
+      height: 30,
+      width: 110,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 
   Widget _buildMobile(

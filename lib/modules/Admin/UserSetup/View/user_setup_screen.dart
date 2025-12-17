@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 
 import '../Controller/user_setup_controller.dart';
 
@@ -84,7 +86,7 @@ class UserSetupScreen extends GetView<UserSetupScreen> {
                                 const SizedBox(width: 8),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green.shade900,
+                                    backgroundColor: Colors.red.shade900,
                                     foregroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -93,14 +95,10 @@ class UserSetupScreen extends GetView<UserSetupScreen> {
                                   child: const Text('CREATE'),
                                   onPressed: () async {
                                     await controller.createuser();
-                                    Get.snackbar(
-                                      'New Create User',
+                                    showAwesomeSnackBarGetx(
+                                      "Success",
                                       'Set up New Account on : ${controller.NameController.text} Successfully',
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.3,
-                                      ),
-                                      colorText: Colors.black,
+                                      ContentType.success,
                                     );
                                     Get.close(0);
                                   },
@@ -139,7 +137,7 @@ class UserSetupScreen extends GetView<UserSetupScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text(
-                      'Create UserAccount',
+                      'Setup Users',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
@@ -182,7 +180,7 @@ class UserSetupScreen extends GetView<UserSetupScreen> {
                                 const SizedBox(width: 8),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green.shade900,
+                                    backgroundColor: Colors.red.shade900,
                                     foregroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -191,14 +189,10 @@ class UserSetupScreen extends GetView<UserSetupScreen> {
                                   child: const Text('CREATE'),
                                   onPressed: () async {
                                     await controller.createuser();
-                                    Get.snackbar(
-                                      'New Create User',
+                                    showAwesomeSnackBarGetx(
+                                      "Success",
                                       'Set up New Account on : ${controller.NameController.text} Successfully',
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.3,
-                                      ),
-                                      colorText: Colors.black,
+                                      ContentType.success,
                                     );
                                     Get.close(0);
                                   },
@@ -268,11 +262,11 @@ class UserSetupScreen extends GetView<UserSetupScreen> {
           icon: Icons.add_location_alt_outlined,
           controller: controller.AddressController,
         ),
-        _buildField(
-          label: 'JOIN DATE',
-          icon: Icons.calendar_month,
-          controller: controller.createAtController,
-        ),
+        // _buildField(
+        //   label: 'JOIN DATE',
+        //   icon: Icons.calendar_month,
+        //   controller: controller.createAtController,
+        // ),
         // Column(
         //   children: [
         //     Row(

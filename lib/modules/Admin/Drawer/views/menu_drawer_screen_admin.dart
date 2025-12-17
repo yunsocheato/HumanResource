@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/modules/Admin/Employee/views/employee_screen.dart';
+import 'package:hrms/modules/Admin/Drawer/widgets/drawer_leave_request.dart';
 import '../../../../Core/user_profile_controller.dart';
 import '../controllers/drawer_controller.dart';
 import '../../../../services/logout_services.dart';
@@ -143,40 +143,45 @@ class MenuMobileScreenAdmin extends StatelessWidget {
             const SizedBox(height: 15),
             _menuDivider(),
             const SizedBox(height: 15),
-            _expandTile(
-              title: "Employee Management",
-              icon: Icons.person,
-              children: [
-                _buildDrawerTile(
-                  'Employee',
-                  'assets/icon/user.png',
-                  () => Get.offAllNamed('/employee'),
-                  index: 140,
-                  fontSize: fontSizeBody,
-                  drawer: drawer,
-                ),
-              ],
-            ),
+            // _expandTile(
+            //   title: "Employee Management",
+            //   icon: Icons.person,
+            //   children: [
+            //     _buildDrawerTile(
+            //       'Employee',
+            //       'assets/icon/user.png',
+            //       () => Get.offAllNamed('/employee'),
+            //       index: 140,
+            //       fontSize: fontSizeBody,
+            //       drawer: drawer,
+            //     ),
+            //   ],
+            // ),
             _expandTile(
               title: "Admin Control Panel",
               icon: Icons.admin_panel_settings,
               children: [PolicySetup(), Employeepolicy(), ReportPolicy()],
             ),
+            const SizedBox(height: 10),
             _expandTile(
-              title: "Settings",
-              icon: Icons.settings_outlined,
-              children: [
-                _buildDrawerTile(
-                  'Manage Setting',
-                  'assets/icon/setting.png',
-                  () => Get.offAllNamed('/settingmobile'),
-                  index: 23,
-                  fontSize: fontSizeBody,
-                  drawer: drawer,
-                ),
-              ],
+              title: "Leave Management",
+              icon: Icons.beach_access_outlined,
+              children: [TableLeaveRequest()],
             ),
-
+            // _expandTile(
+            //   title: "Settings",
+            //   icon: Icons.settings_outlined,
+            //   children: [
+            //     _buildDrawerTile(
+            //       'Manage Setting',
+            //       'assets/icon/setting.png',
+            //       () => Get.offAllNamed('/settingmobile'),
+            //       index: 23,
+            //       fontSize: fontSizeBody,
+            //       drawer: drawer,
+            //     ),
+            //   ],
+            // ),
             const SizedBox(height: 20),
           ],
         ),

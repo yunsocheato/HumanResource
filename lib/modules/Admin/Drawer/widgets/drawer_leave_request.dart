@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../LeaveRequest/widgets/apply_leave_screen_widget.dart';
 import '../controllers/drawer_controller.dart';
-import 'Method_drawer_policy_button.dart';
 
 class TableLeaveRequest extends GetView<AppDrawerController> {
   const TableLeaveRequest({super.key});
@@ -17,7 +16,6 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-
         final isMobile = width < 600;
         final isTablet = width >= 600 && width < 1024;
         final isDesktop = width >= 1024 && width < 2560;
@@ -55,7 +53,7 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
           return Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
-              unselectedWidgetColor: Colors.white,
+              unselectedWidgetColor: Colors.blue,
             ),
             child: ExpansionTile(
               initiallyExpanded: isExpanded1,
@@ -66,28 +64,22 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
                 width: iconSize,
                 height: iconSize,
               ),
-              title: InkWell(
-                onTap: () {
-                  controller.selectedIndex.value = 19;
-                  MethodButton5();
-                },
-                child: Text(
-                  'Leave Request',
-                  style: TextStyle(
-                    fontSize: fontSizeTitle,
-                    color:
-                        controller.selectedIndex.value == 19
-                            ? Colors.blue.shade900
-                            : (isMobile ? Colors.blue : Colors.white),
-                    fontWeight:
-                        controller.selectedIndex.value == 19
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                  ),
+              title: Text(
+                'Leave Request',
+                style: TextStyle(
+                  fontSize: fontSizeTitle,
+                  color:
+                      controller.selectedIndex.value == 19
+                          ? Colors.blue.shade900
+                          : (isMobile ? Colors.blue : Colors.white),
+                  fontWeight:
+                      controller.selectedIndex.value == 19
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                 ),
               ),
-              iconColor: Colors.white,
-              collapsedIconColor: Colors.white,
+              iconColor: Colors.blue,
+              collapsedIconColor: Colors.blue,
               childrenPadding: EdgeInsets.only(left: 32),
               children: [
                 _buildSubTile(
@@ -95,7 +87,13 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
                   fontSize: fontSizeBody,
                   title: 'Create Leave Request',
                   index: 20,
-                  onTap: () => DialogScreen(context, ApplyLeaveWidget()),
+                  onTap: () {
+                    if (isMobile) {
+                      Get.offAllNamed('/request-leave-mobile');
+                    } else {
+                      DialogScreen(context, ApplyLeaveWidget());
+                    }
+                  },
                 ),
               ],
             ),

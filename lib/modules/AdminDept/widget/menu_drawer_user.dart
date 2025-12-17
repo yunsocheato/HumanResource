@@ -113,11 +113,11 @@ class MenuMobileScreenUser extends StatelessWidget {
               onTap: () => Get.offAllNamed('/email_verify'),
             ),
 
-            _expandTile(
-              title: "Settings",
-              imagePath: 'assets/icon/setting.png',
-              onTap: () => Get.offAllNamed('settingmobile'),
-            ),
+            // _expandTile(
+            //   title: "Settings",
+            //   imagePath: 'assets/icon/setting.png',
+            //   onTap: () => Get.offAllNamed('settingmobile'),
+            // ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => auth.logout(),

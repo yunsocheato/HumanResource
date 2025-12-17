@@ -32,5 +32,10 @@ class AppRoutes {
   static const menu_admin = '/menu_admin';
   static const menu_user = '/menu_user';
   static const mobile_calendar = '/mobile_calendar';
-  static const mobile_notification = '/mobile_notification';
+  static const user_setup_mobile = '/user_setup_mobile';
+  static const user_update_mobile = '/user_update_mobile';
+  static const manage_user_mobile = '/manage_user_mobile';
+  static const employee_policy_mobile = '/employee_profile_mobile';
+  static const mobile_notification_screen = '/mobile_notification';
+  static const mobile_request_leave = '/request-leave-mobile';
 }

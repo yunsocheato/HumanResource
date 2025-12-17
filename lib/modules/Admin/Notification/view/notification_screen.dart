@@ -110,7 +110,8 @@ class NotificationScreen extends GetView<NotificationController> {
     if (isMobile) {
       return GestureDetector(
         onTap: () {
-          Get.toNamed('/mobile_notification');
+          Get.offAllNamed('/mobile_notification');
+          print('Mobile notification tapped');
         },
         child: icon,
       );

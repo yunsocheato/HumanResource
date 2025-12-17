@@ -47,12 +47,6 @@ Future<void> main() async {
   if (!kIsWeb && (GetPlatform.isAndroid || GetPlatform.isIOS)) {
     FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
   }
-  FlutterError.onError = (FlutterErrorDetails details) {
-    print("🔥 FLUTTER ERROR:");
-    print(details.exceptionAsString());
-    print(details.stack);
-  };
-
   // runApp(
   //   DevicePreview(enabled: !kReleaseMode, builder: (context) => const MyApp()),
   // );

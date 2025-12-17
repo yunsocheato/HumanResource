@@ -62,7 +62,6 @@ class EmployeeProfilesql {
     return response?['photo_url'] as String?;
   }
 
-  /// Update user info (admin or normal user)
   Future<void> updateUserInfo({
     required String targetUserId,
     required Map<String, dynamic> updates,

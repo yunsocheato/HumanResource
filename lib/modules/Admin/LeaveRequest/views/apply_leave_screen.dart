@@ -53,18 +53,17 @@ class ApplyLeaveScreen extends GetView<ApplyLeaveScreenController> {
   Widget _buildResponsiveContent() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 600;
-        return isMobile ? _buildMobileContent() : _buildDesktopTabletContent();
+        return _buildDesktopTabletContent();
       },
     );
   }
 
-  Widget _buildMobileContent() {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: RequestLeaveFormWidget(),
-    );
-  }
+  // Widget _buildMobileContent() {
+  //   return const Padding(
+  //     padding: EdgeInsets.all(8.0),
+  //     child: RequestLeaveFormWidget(),
+  //   );
+  // }
 
   Widget _buildDesktopTabletContent() {
     return const RequestLeaveFormWidget();

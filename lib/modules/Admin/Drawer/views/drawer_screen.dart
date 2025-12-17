@@ -6,11 +6,9 @@ import 'package:get/get.dart';
 import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:hrms/Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../../../../Core/user_profile_controller.dart';
-import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../../../services/logout_services.dart';
 import '../../../CalendarWeb/calendar_web.dart';
 import '../../Notification/view/notification_screen.dart';
-import '../../SettingScreen/view/setting_screen_Desktop.dart';
 import '../controllers/drawer_controller.dart';
 import '../widgets/Method_drawer_policy_button.dart';
 import '../widgets/drawer_employee_policy.dart';
@@ -110,7 +108,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
                           child: AnimatedTextKit(
                             animatedTexts: [
                               TypewriterAnimatedText(
-                                'DEAM HR',
+                                'DEAM COMPUTER\nINTERNATIONAL',
                                 textStyle: TextStyle(
                                   fontSize: fontSizeTitle,
                                   color: Colors.white,
@@ -271,24 +269,24 @@ class Drawerscreen extends GetView<AppDrawerController> {
               index: 1,
               fontSize: fontSizeBody,
             ),
-            _buildDrawerTile(
-              'Manage Employee',
-              'assets/icon/user.png',
-              () => MethodButton3(),
-              index: 2,
-              fontSize: fontSizeBody,
-            ),
+            // _buildDrawerTile(
+            //   'Manage Employee',
+            //   'assets/icon/user.png',
+            //   () => MethodButton3(),
+            //   index: 2,
+            //   fontSize: fontSizeBody,
+            // ),
             PolicySetup(),
             ReportPolicy(),
             Employeepolicy(),
             TableLeaveRequest(),
-            _buildDrawerTile(
-              'Manage Setting',
-              'assets/icon/setting.png',
-              () => DialogScreen(context, SettingScreen()),
-              index: 23,
-              fontSize: fontSizeBody,
-            ),
+            // _buildDrawerTile(
+            //   'Manage Setting',
+            //   'assets/icon/setting.png',
+            //   () => DialogScreen(context, SettingScreen()),
+            //   index: 23,
+            //   fontSize: fontSizeBody,
+            // ),
           ],
         ),
       ),
@@ -326,7 +324,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
     VoidCallback? onTap, {
     int? index,
     double fontSize = 14,
-    double imageSize = 22,
+    double imageSize = 14,
   }) {
     return Obx(() {
       final controller = Get.find<AppDrawerController>();

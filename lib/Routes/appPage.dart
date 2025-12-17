@@ -1,7 +1,12 @@
 import 'package:get/get.dart';
 import 'package:hrms/modules/Admin/Calendar_Mobile/calendar_mobile.dart';
 import 'package:hrms/modules/Admin/ChangePassword/view/otp_screen.dart';
+import 'package:hrms/modules/Admin/Drawer/views/employee_policy_screen_mobile.dart';
+import 'package:hrms/modules/Admin/Drawer/views/manage_user_mobile_screen.dart';
+import 'package:hrms/modules/Admin/Employee/views/employee_profile_mobile_screen.dart';
+import 'package:hrms/modules/Admin/LeaveRequest/widgets/request_leave_widget_mobile.dart';
 import 'package:hrms/modules/Admin/LogoutScreen/logout_screen.dart';
+import 'package:hrms/modules/Admin/UserSetup/View/user_setup_screen_mobile.dart';
 import '../../Utils/SplashScreen/widget/splash_view.dart';
 import '../modules/Admin/Attendance/views/attendance_screen.dart';
 import '../modules/Admin/ChangePassword/view/change_password_screen.dart';
@@ -15,7 +20,6 @@ import '../modules/Admin/History/view/history_screen.dart';
 import '../modules/Admin/LeaveRequest/views/apply_leave_screen.dart';
 import '../modules/Admin/LeaveRequest/views/leave_request_screen.dart';
 import '../modules/Admin/Loginscreen/views/login_screen.dart';
-import '../modules/Admin/Notification/view/notification_mobile_screen.dart';
 import '../modules/Admin/Report/view/employee_Late_screen.dart';
 import '../modules/Admin/Report/view/employee_absent_screen.dart';
 import '../modules/Admin/Report/view/employee_checkin_screen.dart';
@@ -235,8 +239,35 @@ class AppPages {
       transitionDuration: Duration(milliseconds: 500),
     ),
     GetPage(
-      name: AppRoutes.mobile_notification,
-      page: () => MobileNotificationScreen(),
+      name: AppRoutes.user_setup_mobile,
+      page: () => UserSetupScreenMobile(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: AppRoutes.user_update_mobile,
+      page: () => EmployeePolicyMobile(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+
+    GetPage(
+      name: AppRoutes.manage_user_mobile,
+      page: () => ManageUserMobile(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+
+    GetPage(
+      name: AppRoutes.employee_policy_mobile,
+      page: () => EmployeeProfileMobile(),
+      transition: Transition.fade,
+      transitionDuration: Duration(milliseconds: 500),
+    ),
+
+    GetPage(
+      name: AppRoutes.mobile_request_leave,
+      page: () => RequestLeaveWidgetMobile(),
       transition: Transition.fade,
       transitionDuration: Duration(milliseconds: 500),
     ),

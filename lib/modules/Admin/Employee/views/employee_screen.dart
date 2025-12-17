@@ -1,18 +1,17 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/Core/user_profile_controller.dart';
+import 'package:hrms/modules/Admin/Employee/Controller/employee_screen_controller.dart';
 import 'package:hrms/modules/AdminDept/widget/bottom_appbar_widget1.dart';
 import 'package:hrms/modules/AdminDept/widget/drawer_widget.dart';
+import '../../../../Core/user_profile_controller.dart';
 import '../../../../Utils/Bottomappbar/widget/bottomappbar_widget.dart';
-import '../../Attendance/views/attendance_filter_view.dart';
 import '../../CardInfo/views/card_screen.dart';
 import '../../Drawer/views/drawer_screen.dart';
 import '../widgets/employee_record.dart';
-import '../Controller/employee_screen_controller.dart';
 
 class EmployeeScreen extends GetView<EmployeeScreenController> {
   const EmployeeScreen({super.key});
+
   static const String routeName = '/employee';
 
   @override
@@ -73,6 +72,7 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
   Widget _buildHeader(BuildContext context, double titleFontSize) {
     final controller = Get.find<EmployeeScreenController>();
     final width = MediaQuery.of(context).size.width;
+
     final isMobile = width < 600;
     final isLaptop = width >= 900 && width < 1440;
     final isDesktop = width >= 1440 && width < 1920;
@@ -134,8 +134,8 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
                                 shape: BoxShape.circle,
                               ),
                               child: IconButton(
-                                onPressed: () => controller.refreshdata(),
-                                icon: Icon(
+                                onPressed: controller.refreshdata,
+                                icon: const Icon(
                                   Icons.refresh,
                                   color: Colors.blue,
                                   size: 24,
@@ -153,52 +153,47 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 30,
-                                  width: 30,
-                                  decoration: BoxDecoration(
-                                    color: Colors.yellow.shade100,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.person,
-                                    color: Colors.yellow,
-                                    size: 18,
+                            Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                color: Colors.yellow.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.person,
+                                color: Colors.yellow,
+                                size: 18,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Stack(
+                              children: <Widget>[
+                                Text(
+                                  'ADMIN EMPLOYEE',
+                                  style: TextStyle(
+                                    fontSize: titleFontSize,
+                                    foreground:
+                                        Paint()
+                                          ..style = PaintingStyle.stroke
+                                          ..strokeWidth = 2
+                                          ..color = Colors.yellow[700]!,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                Stack(
-                                  children: <Widget>[
-                                    Text(
-                                      'ADMIN EMPLOYEE',
-                                      style: TextStyle(
-                                        fontSize: titleFontSize,
-                                        foreground:
-                                            Paint()
-                                              ..style = PaintingStyle.stroke
-                                              ..strokeWidth = 2
-                                              ..color = Colors.yellow[700]!,
-                                      ),
-                                    ),
-                                    Text(
-                                      'ADMIN EMPLOYEE',
-                                      style: TextStyle(
-                                        fontSize: titleFontSize,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  'ADMIN EMPLOYEE',
+                                  style: TextStyle(
+                                    fontSize: titleFontSize,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
                         IconButton(
-                          onPressed: () => controller.refreshdata(),
+                          onPressed: controller.refreshdata,
                           icon: Icon(
                             Icons.refresh,
                             color: Colors.yellow,
@@ -214,65 +209,12 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
   }
 
   Widget _buildResponsiveCardInfo(BuildContext context, double width) {
-    final isMobile = width < 600;
-    final isTablet = width >= 600 && width < 1024;
-    final isLaptop = width >= 1024 && width < 1440;
-    final isDesktop = width >= 1440 && width < 2560;
-    final isLargeDesktop = width >= 2560;
-
-    double cardWidthFactor;
-    double cardHeight = 350;
-
-    if (isMobile) {
-      cardWidthFactor = 1.0;
-      cardHeight = 220;
-    } else if (isTablet) {
-      cardWidthFactor = 0.5;
-      cardHeight = 300;
-    } else if (isLaptop) {
-      cardWidthFactor = 0.38;
-    } else if (isDesktop) {
-      cardWidthFactor = 0.25;
-    } else {
-      cardWidthFactor = 0.2;
-    }
-
-    final cardWidth = width * cardWidthFactor;
-    final safeCardWidth = cardWidth < 350.0 ? cardWidth : 350.0;
-
-    const employeeList = EmployeeList();
-
-    if (isTablet) {
-      return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Center(
-          child: SizedBox(
-            width: safeCardWidth,
-            height: cardHeight,
-            child: Card(elevation: 4, child: employeeList),
-          ),
-        ),
-      );
-    }
-
-    if (isLaptop || isDesktop) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Expanded(child: employeeList)],
-      );
-    }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: employeeList),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Card(
-            elevation: 2,
-            child: Center(child: Text("Extra Space / Future Widget")),
-          ),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 600),
+        child: const EmployeeList(),
+      ),
     );
   }
 
@@ -333,7 +275,6 @@ class EmployeeScreen extends GetView<EmployeeScreenController> {
                 ),
               ),
             ),
-
             Positioned(
               top: -30,
               right: -60,

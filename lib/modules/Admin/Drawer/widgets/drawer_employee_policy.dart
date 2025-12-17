@@ -95,7 +95,13 @@ class Employeepolicy extends GetView<AppDrawerController> {
                   fontSize: fontSizeBody,
                   title: 'Manage Staff Profile',
                   index: 16,
-                  onTap: () => DialogScreen(context, EmployeeProfileWidget()),
+                  onTap: () {
+                    if (isMobile) {
+                      Get.offAllNamed('/employee_profile_mobile');
+                    } else {
+                      DialogScreen(context, EmployeeProfileWidget());
+                    }
+                  },
                 ),
               ],
             ),

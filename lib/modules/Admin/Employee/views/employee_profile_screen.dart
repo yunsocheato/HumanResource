@@ -35,7 +35,7 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
                     child: SingleChildScrollView(
                       controller: controller.verticalScrollController,
                       padding: const EdgeInsets.all(16.0),
-                      child: _buildResponsiveContent(),
+                      child: _buildDesktopTabletContent(),
                     ),
                   ),
                 ),
@@ -50,8 +50,7 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
 
   Widget _buildHeader() {
     final ctx = Get.context ?? Get.overlayContext;
-    final isMobile =
-        ctx != null ? MediaQuery.of(ctx).size.width < 600 : Get.width < 600;
+
     return Obx(
       () => AnimatedOpacity(
         duration: const Duration(seconds: 2),
@@ -73,93 +72,46 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
                   vertical: 12,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(width: 5),
-                        isMobile
-                            ? Row(
-                              children: [
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.shade100,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.person,
-                                    color: Colors.green,
-                                    size: 16,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Stack(
-                                  children: <Widget>[
-                                    Text(
-                                      'EMPLOYEE PROFILE',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        foreground:
-                                            Paint()
-                                              ..style = PaintingStyle.stroke
-                                              ..strokeWidth = 2
-                                              ..color = Colors.green[700]!,
-                                      ),
-                                    ),
-                                    const Text(
-                                      'EMPLOYEE PROFILE',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                            : Row(
-                              children: [
-                                Stack(
-                                  children: <Widget>[
-                                    Text(
-                                      'EMPLOYEE PROFILE',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        foreground:
-                                            Paint()
-                                              ..style = PaintingStyle.stroke
-                                              ..strokeWidth = 2
-                                              ..color = Colors.green[700]!,
-                                      ),
-                                    ),
-                                    const Text(
-                                      'EMPLOYEE PROFILE',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(width: 10),
-                                Container(
-                                  height: 70,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.shade100,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.person,
-                                    color: Colors.green,
-                                    size: 24,
-                                  ),
-                                ),
-                              ],
+                        Stack(
+                          children: <Widget>[
+                            Text(
+                              'EMPLOYEE PROFILE',
+                              style: TextStyle(
+                                fontSize: 24,
+                                foreground:
+                                    Paint()
+                                      ..style = PaintingStyle.stroke
+                                      ..strokeWidth = 2
+                                      ..color = Colors.green[700]!,
+                              ),
                             ),
+                            const Text(
+                              'EMPLOYEE PROFILE',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade100,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.person,
+                            color: Colors.green,
+                            size: 24,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -168,53 +120,6 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildResponsiveContent() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth < 900) {
-          return _buildMobileContent();
-        } else {
-          return _buildDesktopTabletContent();
-        }
-      },
-    );
-  }
-
-  Widget _buildMobileContent() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildProfileSidebar(),
-          const SizedBox(height: 16),
-          _buildInformationCard(
-            color1: Colors.blue,
-            color: Colors.blue.shade100,
-            title: 'Basic Information',
-            fields: _getBasicInformationFields(),
-          ),
-          const SizedBox(height: 16),
-          _buildInformationCard(
-            color1: Colors.green,
-            color: Colors.green.shade100,
-            title: 'Contact Information',
-            fields: _getContactInformationFields(),
-          ),
-          const SizedBox(height: 16),
-          _buildInformationCard(
-            color1: Colors.orange,
-            color: Colors.orange.shade100,
-            title: 'Work Information',
-            fields: _getWorkInformationFields(),
-          ),
-          const SizedBox(height: 30),
-          _buildButtons(controller),
-        ],
       ),
     );
   }

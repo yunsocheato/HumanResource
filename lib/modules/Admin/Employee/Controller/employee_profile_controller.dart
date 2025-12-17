@@ -20,11 +20,11 @@ class EmployeeProfileController extends GetxController {
   final RxBool isLoading = true.obs;
   final RxBool isEnabled = false.obs;
   final RxBool adminEditing = false.obs;
-
   ScrollController? verticalScrollController;
   var showlogincard1 = true.obs;
 
   final RxList<String> suggestionList = <String>[].obs;
+
   XFile? imageFile;
 
   final TextEditingController userIdController = TextEditingController();
@@ -110,6 +110,7 @@ class EmployeeProfileController extends GetxController {
 
   @override
   void onClose() {
+    usernameSearchController.dispose();
     userIdController.dispose();
     nameController.dispose();
     emailController.dispose();
@@ -147,6 +148,7 @@ class EmployeeProfileController extends GetxController {
   Future<void> fetchSuggestionsProfile(String query) async {
     suggestionList.value = await _employeeProfilesql
         .fetchUsernameSuggestionsEmployeeProfile(query);
+    suggestionList.refresh();
   }
 
   Future<void> fetchbyusersemployeeProfile(String name) async {

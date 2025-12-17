@@ -196,7 +196,7 @@ class RequestLeaveScreenController extends GetxController {
       final response = await Supabase.instance.client
           .from('signupuser')
           .select('user_id, name , role , photo_url')
-          .or('role.eq.admin,role.eq.admindept');
+          .or('role.eq.admin,role.eq.admindept,role.eq.superadmin');
       if (response.isEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showAwesomeSnackBarGetx(

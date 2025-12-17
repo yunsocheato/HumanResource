@@ -43,7 +43,7 @@ class _MobileNotificationScreenState extends State<MobileNotificationScreen> {
               "Notifications",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
                 fontFamily: '7TH.ttf',
               ),
@@ -156,8 +156,8 @@ class _MobileNotificationScreenState extends State<MobileNotificationScreen> {
                     const SizedBox(height: 10),
 
                     Wrap(
-                      spacing: 8, // horizontal spacing between buttons
-                      runSpacing: 8, // vertical spacing when wrapping
+                      spacing: 8,
+                      runSpacing: 8,
                       children: [
                         TextButton.icon(
                           style: ButtonStyle(

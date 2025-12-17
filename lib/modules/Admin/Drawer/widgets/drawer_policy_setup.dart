@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import '../../../../Utils/DialogScreen/DialogScreen.dart';
 import '../../UserSetup/View/user_setup_screen.dart';
 import '../controllers/drawer_controller.dart';
-import '../views/Leave_Policy_screen.dart';
-
 import '../views/employee_policy_screen.dart';
 import '../views/manage_user_screen.dart';
 
@@ -91,36 +89,54 @@ class PolicySetup extends GetView<AppDrawerController> {
                   imagePath: 'assets/icon/usersetup.png',
                   fontSize: fontSizeBody,
                   index: 24,
-                  onTap: () => DialogScreen(context, UserSetupScreen()),
+                  onTap: () {
+                    if (isMobile) {
+                      Get.offAllNamed('/user_setup_mobile');
+                    } else {
+                      DialogScreen(context, UserSetupScreen());
+                    }
+                  },
                 ),
                 _buildSubTile(
                   imagePath: 'assets/icon/userupdate.png',
                   title: 'User Update',
                   fontSize: fontSizeBody,
                   index: 5,
-                  onTap: () => DialogScreen(context, EmployeePolicyScreen()),
+                  onTap: () {
+                    if (isMobile) {
+                      Get.offAllNamed('/user_update_mobile');
+                    } else {
+                      DialogScreen(context, EmployeePolicyScreen());
+                    }
+                  },
                 ),
-                _buildSubTile(
-                  imagePath: 'assets/icon/policy.png',
-                  title: 'Leave Policy',
-                  fontSize: fontSizeBody,
-                  index: 4,
-                  onTap: () => DialogScreen(context, LeavePolicy()),
-                ),
+                // _buildSubTile(
+                //   imagePath: 'assets/icon/policy.png',
+                //   title: 'Leave Policy',
+                //   fontSize: fontSizeBody,
+                //   index: 4,
+                //   onTap: () => DialogScreen(context, LeavePolicy()),
+                // ),
                 _buildSubTile(
                   imagePath: 'assets/icon/manageuser.png',
                   title: 'Manage Users',
                   fontSize: fontSizeBody,
                   index: 6,
-                  onTap: () => DialogScreen(context, ManageUserScreen()),
+                  onTap: () {
+                    if (isMobile) {
+                      Get.offAllNamed('/manage_user_mobile');
+                    } else {
+                      DialogScreen(context, ManageUserScreen());
+                    }
+                  },
                 ),
-                _buildSubTile(
-                  imagePath: 'assets/icon/manageteam.png',
-                  title: 'Manage Team Users',
-                  fontSize: fontSizeBody,
-                  index: 7,
-                  onTap: () {},
-                ),
+                // _buildSubTile(
+                //   imagePath: 'assets/icon/manageteam.png',
+                //   title: 'Manage Team Users',
+                //   fontSize: fontSizeBody,
+                //   index: 7,
+                //   onTap: () {},
+                // ),
               ],
             ),
           );

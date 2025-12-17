@@ -96,13 +96,13 @@ class ReportPolicy extends GetView<AppDrawerController> {
                   index: 11,
                   onTap: () => MethodButton7(),
                 ),
-                _buildSubTile(
-                  imagePath: 'assets/icon/userabsent.png',
-                  fontSize: fontSizeBody,
-                  title: 'Absent Report',
-                  index: 12,
-                  onTap: () => MethodButton9(),
-                ),
+                // _buildSubTile(
+                //   imagePath: 'assets/icon/userabsent.png',
+                //   fontSize: fontSizeBody,
+                //   title: 'Absent Report',
+                //   index: 12,
+                //   onTap: () => MethodButton9(),
+                // ),
                 _buildSubTile(
                   imagePath: 'assets/icon/userleave.png',
                   fontSize: fontSizeBody,
