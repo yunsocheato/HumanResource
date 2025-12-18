@@ -93,16 +93,48 @@ class ManageUserMobile extends GetView<ManageUsersController> {
                         const SizedBox(height: 16),
                         _buildHeaderBar(),
                         const SizedBox(height: 16),
-                        _buildUsernameAutoSuggestField(controller),
-                        const SizedBox(height: 16),
-                        _buildInformationCard(
-                          title: 'User Information',
-                          color: Colors.blue.shade700,
-                          fields: _buildUserInfoFields(controller),
-                        ),
+                        _buildSearchField(controller),
                         const SizedBox(height: 16),
 
-                        _buildActionButtons(),
+                        Obx(() {
+                          if (controller.isLoading.value) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.blue.shade900,
+                              ),
+                            );
+                          }
+                          if (controller.Username1.value.isEmpty) {
+                            return const Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Not Search Yet',
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          return Column(
+                            children: [
+                              _buildInformationCard(
+                                title: 'User Information',
+                                color: Colors.blue.shade700,
+                                fields: _buildUserInfoFields(controller),
+                              ),
+                              const SizedBox(height: 16),
+                              _buildActionButtons(),
+                            ],
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -124,6 +156,12 @@ class ManageUserMobile extends GetView<ManageUsersController> {
             IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
+                controller.clearDataFields();
+                controller.suggestionList1.clear();
+                controller.suggestionList2.clear();
+                controller.suggestionList3.clear();
+                controller.suggestionList4.clear();
+                controller.usernameSearchController.clear();
                 Get.offAllNamed('/dashboard');
               },
             ),
@@ -230,39 +268,57 @@ class ManageUserMobile extends GetView<ManageUsersController> {
     ),
   ];
 
-  Widget _buildUsernameAutoSuggestField(ManageUsersController controller) {
-    final textController = TextEditingController(
-      text: controller.Username1.value,
-    );
-
+  Widget _buildSearchField(ManageUsersController controller) {
     return Obx(() {
       return Column(
         children: [
           TextFormField(
-            controller: textController,
+            textInputAction: TextInputAction.search,
+            controller: controller.usernameSearchController,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.left,
+            keyboardType: TextInputType.text,
+            onFieldSubmitted: (value) {
+              final query = value.trim();
+              if (query.isNotEmpty) {
+                controller.fetchbyusersemployee(query);
+                controller.usernameSearchController.clear();
+                controller.suggestionList1.clear();
+              }
+            },
             decoration: InputDecoration(
               hintText: 'Search by Username',
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),
-                onPressed:
-                    () => controller.fetchbyusersemployee(
-                      textController.text,
-                      fieldIndex: 1,
-                    ),
+                onPressed: () {
+                  final query = controller.usernameSearchController.text.trim();
+                  if (query.isNotEmpty) {
+                    controller.fetchbyusersemployee(query);
+                    controller.usernameSearchController.clear();
+                    controller.suggestionList1.clear();
+                  }
+                },
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            onChanged: (v) => controller.Username1.value = v,
+            onChanged: (v) {
+              controller.Username1.value = v;
+              if (v.trim().isNotEmpty) {
+                controller.fetchSuggestions(1, v.trim());
+              } else {
+                controller.usernameSearchController.clear();
+                controller.suggestionList1.clear();
+              }
+            },
           ),
-
           if (controller.suggestionList1.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(top: 6),
               constraints: const BoxConstraints(maxHeight: 150),
               decoration: BoxDecoration(
-                color: Colors.white24,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.grey.shade300),
               ),
@@ -273,9 +329,10 @@ class ManageUserMobile extends GetView<ManageUsersController> {
                   return ListTile(
                     title: Text(s),
                     onTap: () {
-                      textController.text = s;
+                      controller.usernameSearchController.text = s;
                       controller.Username1.value = s;
-                      controller.fetchbyusersemployee(s, fieldIndex: 1);
+                      controller.fetchbyusersemployee(s);
+                      controller.usernameSearchController.clear();
                       controller.suggestionList1.clear();
                     },
                   );
@@ -315,7 +372,15 @@ class ManageUserMobile extends GetView<ManageUsersController> {
         ),
         const SizedBox(height: 10),
         ElevatedButton(
-          onPressed: () => Get.offAllNamed('/overview'),
+          onPressed: () {
+            controller.clearDataFields();
+            controller.suggestionList1.clear();
+            controller.suggestionList2.clear();
+            controller.suggestionList3.clear();
+            controller.suggestionList4.clear();
+            controller.usernameSearchController.clear();
+            Get.offAllNamed('/dashboard');
+          },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),

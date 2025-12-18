@@ -74,7 +74,7 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                               padding: const EdgeInsets.symmetric(
                                 vertical: 8.0,
                               ),
-                              child: _buildUsernameAutoSuggestField(controller),
+                              child: _buildSearchField(controller),
                             ),
                             _buildUserInfoFields(controller),
                             const SizedBox(height: 16),
@@ -178,7 +178,7 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                               padding: const EdgeInsets.symmetric(
                                 vertical: 8.0,
                               ),
-                              child: _buildUsernameAutoSuggestField(controller),
+                              child: _buildSearchField(controller),
                             ),
                             _buildUserInfoFields(controller),
                             const SizedBox(height: 16),
@@ -190,7 +190,12 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                                     'Close',
                                     style: TextStyle(color: Colors.red),
                                   ),
-                                  onPressed: () => Get.back(),
+                                  onPressed: () {
+                                    controller.clearDataFields();
+                                    controller.usernameSearchController.clear();
+                                    controller.suggestionList.clear();
+                                    Get.back();
+                                  },
                                 ),
                                 const SizedBox(width: 8),
                                 ElevatedButton(
@@ -213,8 +218,10 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                                         ContentType.success,
                                       );
                                     });
-
-                                    Get.close(0);
+                                    controller.clearDataFields();
+                                    controller.usernameSearchController.clear();
+                                    controller.suggestionList.clear();
+                                    Get.back();
                                   },
                                 ),
                               ],
@@ -287,78 +294,6 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
           icon: Icons.calendar_month,
           controller: controller.createAtController,
         ),
-        // Column(
-        //   children: [
-        //     Row(
-        //       children: [
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Restrict'),
-        //             value: controller.usercannotchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercannotchange.value = value ?? false,
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Unrestrict'),
-        //             value: controller.usercanchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercanchange.value = value ?? false,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //     SizedBox(height: 8),
-        //     Row(
-        //       children: [
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Restrict'),
-        //             value: controller.usercannotchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercannotchange.value = value ?? false,
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Unrestrict'),
-        //             value: controller.usercanchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercanchange.value = value ?? false,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //     SizedBox(height: 8),
-        //     Row(
-        //       children: [
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Restrict'),
-        //             value: controller.usercannotchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercannotchange.value = value ?? false,
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Unrestrict'),
-        //             value: controller.usercanchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercanchange.value = value ?? false,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
@@ -427,6 +362,82 @@ class EmployeePolicyScreen extends GetView<EmployeePolicyController> {
                       textController.text = suggestion;
                       controller.Username.value = suggestion;
                       controller.fetchbyusersemployee(suggestion);
+                      controller.suggestionList.clear();
+                    },
+                  );
+                },
+              ),
+            ),
+        ],
+      );
+    });
+  }
+
+  Widget _buildSearchField(EmployeePolicyController controller) {
+    return Obx(() {
+      return Column(
+        children: [
+          TextFormField(
+            textInputAction: TextInputAction.search,
+            controller: controller.usernameSearchController,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.left,
+            keyboardType: TextInputType.text,
+            onFieldSubmitted: (value) {
+              final query = value.trim();
+              if (query.isNotEmpty) {
+                controller.fetchbyusersemployee(query);
+                controller.usernameSearchController.clear();
+                controller.suggestionList.clear();
+              }
+            },
+            decoration: InputDecoration(
+              hintText: 'Search by Username',
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  final query = controller.usernameSearchController.text.trim();
+                  if (query.isNotEmpty) {
+                    controller.fetchbyusersemployee(query);
+                    controller.usernameSearchController.clear();
+                    controller.suggestionList.clear();
+                  }
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onChanged: (v) {
+              controller.Username.value = v;
+              if (v.trim().isNotEmpty) {
+                controller.fetchSuggestions(v.trim());
+              } else {
+                controller.usernameSearchController.clear();
+                controller.suggestionList.clear();
+              }
+            },
+          ),
+          if (controller.suggestionList.isNotEmpty)
+            Container(
+              margin: const EdgeInsets.only(top: 6),
+              constraints: const BoxConstraints(maxHeight: 150),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: ListView.builder(
+                itemCount: controller.suggestionList.length,
+                itemBuilder: (_, index) {
+                  final s = controller.suggestionList[index];
+                  return ListTile(
+                    title: Text(s),
+                    onTap: () {
+                      controller.usernameSearchController.text = s;
+                      controller.Username.value = s;
+                      controller.fetchbyusersemployee(s);
+                      controller.usernameSearchController.clear();
                       controller.suggestionList.clear();
                     },
                   );

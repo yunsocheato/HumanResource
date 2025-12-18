@@ -16,7 +16,7 @@ class ManageUsersController extends GetxController {
   final Managebyname = TextEditingController();
   final headname = TextEditingController();
   final headposition = TextEditingController();
-
+  final usernameSearchController = TextEditingController();
   final Color color = Colors.deepOrange;
 
   var suggestionList1 = <String>[].obs;

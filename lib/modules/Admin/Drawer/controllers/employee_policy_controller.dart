@@ -20,7 +20,7 @@ class EmployeePolicyController extends GetxController {
   final PhoneController = TextEditingController();
   final RoleController = TextEditingController();
   final createAtController = TextEditingController();
-
+  final usernameSearchController = TextEditingController();
   final IconData icon = Icons.search;
   final Color color = Colors.green.shade900;
   final UserId = ''.obs;
@@ -42,6 +42,7 @@ class EmployeePolicyController extends GetxController {
 
   Future<void> fetchSuggestions(String Query) async {
     suggestionList.value = await _sql.fetchUsernameSuggestionsEmployee(Query);
+    suggestionList.refresh();
   }
 
   Future<void> fetchbyusersemployee(String name) async {
@@ -143,7 +144,6 @@ class EmployeePolicyController extends GetxController {
   }
 
   void mapDataFields(employeepolicymodel data) {
-    Username.value = data.name ?? '';
     UserIDController.text = data.userId ?? " ";
     NameController.text = data.name ?? " ";
     EmailController.text = data.email ?? " ";

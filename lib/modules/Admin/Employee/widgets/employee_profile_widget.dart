@@ -35,7 +35,7 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
                       : Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          _buildUsernameAutoSuggestField(),
+                          // _buildUsernameAutoSuggestField(),
                           const SizedBox(height: 16),
                           Align(
                             alignment: Alignment.centerRight,
@@ -76,7 +76,7 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
                       : Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          _buildUsernameAutoSuggestField(),
+                          _buildUsernameAutoSuggestField(controller),
                           const SizedBox(height: 16),
                           Align(
                             alignment: Alignment.centerRight,
@@ -85,7 +85,11 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
                                 'Close',
                                 style: TextStyle(color: Colors.red),
                               ),
-                              onPressed: () => Get.back(),
+                              onPressed: () {
+                                controller.suggestionList.clear();
+                                controller.usernameSearchController.clear();
+                                Get.back();
+                              },
                             ),
                           ),
                         ],
@@ -132,55 +136,75 @@ class EmployeeProfileWidget extends GetView<EmployeeProfileController> {
     );
   }
 
-  Widget _buildUsernameAutoSuggestField() {
+  Widget _buildUsernameAutoSuggestField(EmployeeProfileController controller) {
     return Obx(() {
       return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            controller: controller.nameController,
+            textInputAction: TextInputAction.search,
+            controller: controller.usernameSearchController,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.left,
+            keyboardType: TextInputType.text,
+            onFieldSubmitted: (value) {
+              if (value.isNotEmpty) {
+                controller.suggestionList.clear();
+                controller.usernameSearchController.clear();
+                controller.fetchbyusersemployeeProfile(value);
+                Future.microtask(() {
+                  controller.suggestionList.clear();
+                });
+                Get.to(() => EmployeeProfileScreen());
+              }
+            },
             decoration: InputDecoration(
-              labelText: 'FIND USERNAME',
+              hintText: 'Search by Username',
               suffixIcon: IconButton(
-                icon: Icon(Icons.search, color: Colors.blue.shade900),
+                icon: const Icon(Icons.search),
                 onPressed: () {
-                  if (controller.Username.value.isNotEmpty) {
-                    controller.fetchbyusersemployeeProfile(
-                      controller.Username.value,
-                    );
-                    Get.to(() => EmployeeProfileScreen());
-                  }
+                  controller.fetchbyusersemployeeProfile(
+                    controller.Username.value,
+                  );
+                  controller.suggestionList.clear();
+                  controller.usernameSearchController.clear();
+                  Get.to(() => EmployeeProfileScreen());
                 },
               ),
-              border: const OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            onChanged: (value) {
-              controller.Username.value = value;
+            onChanged: (v) {
+              controller.Username.value = v;
+              if (v.isNotEmpty) {
+                controller.fetchSuggestionsProfile(v);
+              } else {
+                controller.suggestionList.clear();
+              }
             },
           ),
 
-          if (controller.suggestionList.isNotEmpty &&
-              controller.Username.value.isNotEmpty)
+          if (controller.suggestionList.isNotEmpty)
             Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(4),
-              ),
+              margin: const EdgeInsets.only(top: 6),
               constraints: const BoxConstraints(maxHeight: 150),
+              decoration: BoxDecoration(
+                color: Colors.white24,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
               child: ListView.builder(
-                shrinkWrap: true,
                 itemCount: controller.suggestionList.length,
-                itemBuilder: (context, index) {
-                  final suggestion = controller.suggestionList[index];
+                itemBuilder: (_, index) {
+                  final s = controller.suggestionList[index];
                   return ListTile(
-                    title: Text(suggestion),
+                    title: Text(s),
                     onTap: () {
-                      controller.Username.value = suggestion;
-                      controller.usernameSearchController.text = suggestion;
-
-                      controller.fetchbyusersemployeeProfile(suggestion);
-                      controller.suggestionList.clear();
+                      controller.fetchbyusersemployeeProfile(s);
+                      controller.usernameSearchController.clear();
+                      Future.microtask(() {
+                        controller.suggestionList.clear();
+                      });
                       Get.to(() => EmployeeProfileScreen());
                     },
                   );

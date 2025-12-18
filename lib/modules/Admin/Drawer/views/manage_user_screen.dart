@@ -192,7 +192,7 @@ class ManageUserScreen extends GetView<ManageUsersController> {
                               padding: const EdgeInsets.symmetric(
                                 vertical: 8.0,
                               ),
-                              child: _buildUsernameAutoSuggestField(controller),
+                              child: _buildSearchField(controller),
                             ),
                             _buildUserInfoFields(controller),
                             const SizedBox(height: 16),
@@ -204,7 +204,17 @@ class ManageUserScreen extends GetView<ManageUsersController> {
                                     'Close',
                                     style: TextStyle(color: Colors.red),
                                   ),
-                                  onPressed: () => Get.back(),
+                                  onPressed: () {
+                                    controller.suggestionList1.clear();
+                                    controller.suggestionList2.clear();
+                                    controller.suggestionList3.clear();
+                                    controller.NameController.clear();
+                                    controller.UserIDController.clear();
+                                    controller.Managebyname.clear();
+                                    controller.headname.clear();
+                                    controller.headposition.clear();
+                                    Get.back();
+                                  },
                                 ),
                                 const SizedBox(width: 8),
                                 ElevatedButton(
@@ -270,78 +280,6 @@ class ManageUserScreen extends GetView<ManageUsersController> {
           icon: Icons.star,
           controller: controller.headposition,
         ),
-        // Column(
-        //   children: [
-        //     Row(
-        //       children: [
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Restrict'),
-        //             value: controller.usercannotchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercannotchange.value = value ?? false,
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Unrestrict'),
-        //             value: controller.usercanchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercanchange.value = value ?? false,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //     SizedBox(height: 8),
-        //     Row(
-        //       children: [
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Restrict'),
-        //             value: controller.usercannotchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercannotchange.value = value ?? false,
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Unrestrict'),
-        //             value: controller.usercanchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercanchange.value = value ?? false,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //     SizedBox(height: 8),
-        //     Row(
-        //       children: [
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Restrict'),
-        //             value: controller.usercannotchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercannotchange.value = value ?? false,
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: CheckboxListTile(
-        //             contentPadding: EdgeInsets.zero,
-        //             title: const Text('Unrestrict'),
-        //             value: controller.usercanchange.value,
-        //             onChanged: (value) =>
-        //             controller.usercanchange.value = value ?? false,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
@@ -514,6 +452,82 @@ class ManageUserScreen extends GetView<ManageUsersController> {
                         fieldIndex: 3,
                       );
                       controller.suggestionList3.clear();
+                    },
+                  );
+                },
+              ),
+            ),
+        ],
+      );
+    });
+  }
+
+  Widget _buildSearchField(ManageUsersController controller) {
+    return Obx(() {
+      return Column(
+        children: [
+          TextFormField(
+            textInputAction: TextInputAction.search,
+            controller: controller.usernameSearchController,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.left,
+            keyboardType: TextInputType.text,
+            onFieldSubmitted: (value) {
+              final query = value.trim();
+              if (query.isNotEmpty) {
+                controller.fetchbyusersemployee(query);
+                controller.usernameSearchController.clear();
+                controller.suggestionList1.clear();
+              }
+            },
+            decoration: InputDecoration(
+              hintText: 'Search by Username',
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  final query = controller.usernameSearchController.text.trim();
+                  if (query.isNotEmpty) {
+                    controller.fetchbyusersemployee(query);
+                    controller.usernameSearchController.clear();
+                    controller.suggestionList1.clear();
+                  }
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onChanged: (v) {
+              controller.Username1.value = v;
+              if (v.trim().isNotEmpty) {
+                controller.fetchSuggestions(1, v.trim());
+              } else {
+                controller.usernameSearchController.clear();
+                controller.suggestionList1.clear();
+              }
+            },
+          ),
+          if (controller.suggestionList1.isNotEmpty)
+            Container(
+              margin: const EdgeInsets.only(top: 6),
+              constraints: const BoxConstraints(maxHeight: 150),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: ListView.builder(
+                itemCount: controller.suggestionList1.length,
+                itemBuilder: (_, index) {
+                  final s = controller.suggestionList1[index];
+                  return ListTile(
+                    title: Text(s),
+                    onTap: () {
+                      controller.usernameSearchController.text = s;
+                      controller.Username1.value = s;
+                      controller.fetchbyusersemployee(s);
+                      controller.usernameSearchController.clear();
+                      controller.suggestionList1.clear();
                     },
                   );
                 },

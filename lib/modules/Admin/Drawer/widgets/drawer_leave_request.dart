@@ -29,20 +29,20 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
           fontSizeBody = 12;
           iconSize = 12;
         } else if (isTablet) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isDesktop) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isLargeDesktop) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         }
 
@@ -85,7 +85,7 @@ class TableLeaveRequest extends GetView<AppDrawerController> {
                 _buildSubTile(
                   Imagepath: 'assets/icon/userleave.png',
                   fontSize: fontSizeBody,
-                  title: 'Create Leave Request',
+                  title: 'Create Leave',
                   index: 20,
                   onTap: () {
                     if (isMobile) {

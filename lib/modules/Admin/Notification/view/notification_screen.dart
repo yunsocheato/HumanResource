@@ -60,8 +60,8 @@ class NotificationScreen extends GetView<NotificationController> {
     double height;
     double width;
     if (isMobile) {
-      height = 20;
-      width = 20;
+      height = 25;
+      width = 25;
     } else if (isTablet) {
       height = 25;
       width = 25;
@@ -69,8 +69,8 @@ class NotificationScreen extends GetView<NotificationController> {
       height = 25;
       width = 25;
     } else if (isLargeDesktop) {
-      height = 30;
-      width = 30;
+      height = 25;
+      width = 25;
     } else if (isLaptop) {
       height = 25;
       width = 25;
@@ -93,8 +93,8 @@ class NotificationScreen extends GetView<NotificationController> {
 
     Widget iconAdmin = Image.asset(
       'assets/icon/notification.png',
-      height: 32,
-      width: 32,
+      height: height,
+      width: width,
     );
 
     if (roles.contains("admin") || roles.contains('superadmin')) {
@@ -245,7 +245,6 @@ class NotificationScreen extends GetView<NotificationController> {
                       controller.allNotifications
                           .where((n) => n.userID == user.id)
                           .toList();
-
                   if (items.isEmpty) {
                     return const Center(child: Text("No notifications yet"));
                   }

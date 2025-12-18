@@ -163,24 +163,24 @@ class LoginScreen extends GetView<LoginController> {
             ),
           ),
         ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: 40,
-            color: Colors.blue.shade900,
-            child: const Center(
-              child: Text(
-                '© 2025 DEAM COMPUTER INTERNATIONAL PLT — All Rights Reserved',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ),
+        // Positioned(
+        //   bottom: 0,
+        //   left: 0,
+        //   right: 0,
+        //   child: Container(
+        //     height: 40,
+        //     color: Colors.blue.shade900,
+        //     child: const Center(
+        //       child: Text(
+        //         '© 2025 DEAM COMPUTER INTERNATIONAL PLT — All Rights Reserved',
+        //         style: TextStyle(
+        //           color: Colors.white,
+        //           fontWeight: FontWeight.bold,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
@@ -205,32 +205,32 @@ class LoginScreen extends GetView<LoginController> {
               borderSide: BorderSide.none,
             ),
           ),
-          // detect email avaialbe in database or not
-//           Obx(
-//   () => TextField(
-//     controller: controller.emailController,
-//     onChanged: (_) => controller.checkEmail(),
-//     decoration: InputDecoration(
-//       prefixIcon: const Icon(Icons.email, color: Colors.blue),
-//       filled: true,
-//       fillColor: Colors.blue.shade100,
-//       suffixIcon: controller.isCheckingEmail.value
-//           ? const SizedBox(
-//               width: 20,
-//               height: 20,
-//               child: CircularProgressIndicator(strokeWidth: 2),
-//             )
-//           : controller.emailExists.value
-//               ? const Icon(Icons.check_circle, color: Colors.green)
-//               : null,
-//       border: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(12),
-//         borderSide: BorderSide.none,
-//       ),
-//     ),
-//   ),
-// ),
 
+          // detect email avaialbe in database or not
+          //           Obx(
+          //   () => TextField(
+          //     controller: controller.emailController,
+          //     onChanged: (_) => controller.checkEmail(),
+          //     decoration: InputDecoration(
+          //       prefixIcon: const Icon(Icons.email, color: Colors.blue),
+          //       filled: true,
+          //       fillColor: Colors.blue.shade100,
+          //       suffixIcon: controller.isCheckingEmail.value
+          //           ? const SizedBox(
+          //               width: 20,
+          //               height: 20,
+          //               child: CircularProgressIndicator(strokeWidth: 2),
+          //             )
+          //           : controller.emailExists.value
+          //               ? const Icon(Icons.check_circle, color: Colors.green)
+          //               : null,
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(12),
+          //         borderSide: BorderSide.none,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ),
         const SizedBox(height: 20),
         const Text(
@@ -265,34 +265,34 @@ class LoginScreen extends GetView<LoginController> {
             ),
           ),
         ),
-        // password security check 
-//         Obx(
-//   () => TextField(
-//     controller: controller.passwordController,
-//     obscureText: !controller.isVisible.value,
-//     enabled: controller.canTypePassword.value && !controller.isBlocked.value,
-//     decoration: InputDecoration(
-//       prefixIcon: const Icon(Icons.lock, color: Colors.blue),
-//       filled: true,
-//       fillColor: Colors.blue.shade100,
-//       border: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(12),
-//         borderSide: BorderSide.none,
-//       ),
-//       suffixIcon: IconButton(
-//         icon: Icon(
-//           controller.isVisible.value
-//               ? Icons.visibility
-//               : Icons.visibility_off,
-//           color: Colors.blue.shade900,
-//         ),
-//         onPressed: () =>
-//             controller.isVisible.value = !controller.isVisible.value,
-//       ),
-//     ),
-//   ),
-// ),
 
+        // password security check
+        //         Obx(
+        //   () => TextField(
+        //     controller: controller.passwordController,
+        //     obscureText: !controller.isVisible.value,
+        //     enabled: controller.canTypePassword.value && !controller.isBlocked.value,
+        //     decoration: InputDecoration(
+        //       prefixIcon: const Icon(Icons.lock, color: Colors.blue),
+        //       filled: true,
+        //       fillColor: Colors.blue.shade100,
+        //       border: OutlineInputBorder(
+        //         borderRadius: BorderRadius.circular(12),
+        //         borderSide: BorderSide.none,
+        //       ),
+        //       suffixIcon: IconButton(
+        //         icon: Icon(
+        //           controller.isVisible.value
+        //               ? Icons.visibility
+        //               : Icons.visibility_off,
+        //           color: Colors.blue.shade900,
+        //         ),
+        //         onPressed: () =>
+        //             controller.isVisible.value = !controller.isVisible.value,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

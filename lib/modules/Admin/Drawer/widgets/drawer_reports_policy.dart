@@ -29,20 +29,20 @@ class ReportPolicy extends GetView<AppDrawerController> {
           fontSizeBody = 12;
           iconSize = 12;
         } else if (isTablet) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isDesktop) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isLargeDesktop) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         }
 
@@ -65,7 +65,7 @@ class ReportPolicy extends GetView<AppDrawerController> {
                 height: iconSize,
               ),
               title: Text(
-                'Report Admin',
+                'Admin Reports',
                 style: TextStyle(
                   fontSize: fontSizeTitle,
                   color:
@@ -131,8 +131,8 @@ class ReportPolicy extends GetView<AppDrawerController> {
     required String imagePath,
     required int index,
     required VoidCallback onTap,
-    double fontSize = 14,
-    double imageSize = 22,
+    double fontSize = 10,
+    double imageSize = 14,
   }) {
     final controller = Get.find<AppDrawerController>();
     final isSelected = controller.selectedIndex.value == index;

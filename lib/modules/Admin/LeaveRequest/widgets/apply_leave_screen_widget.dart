@@ -151,7 +151,7 @@ class ApplyLeaveWidget extends GetView<ApplyLeaveScreenController> {
               controller.suggestionList.clear();
             },
             decoration: InputDecoration(
-              hintText: 'FIND USERNAME',
+              hintText: 'Search by Username',
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () async {

@@ -1,6 +1,4 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -9,7 +7,6 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:hrms/Core/user_profile_controller.dart';
 import 'package:hrms/Utils/Bottomappbar/widget/bottomappbar_widget.dart';
-import 'package:hrms/Utils/SnackBar/snack_bar.dart';
 import 'package:hrms/modules/Admin/Drawer/views/drawer_screen.dart';
 import 'package:hrms/modules/Admin/Employee/Controller/employee_profile_controller.dart';
 import 'package:hrms/modules/Admin/Employee/widgets/employee_profile_circleavatar.dart';

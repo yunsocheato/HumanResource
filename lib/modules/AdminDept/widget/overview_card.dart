@@ -12,7 +12,7 @@ class Gridoverviewoverview extends GetView<OverViewController> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
-
+        final isMobile = maxWidth < 600;
         int crossAxisCount;
         double childAspectRatio;
         double iconSize;
@@ -27,12 +27,12 @@ class Gridoverviewoverview extends GetView<OverViewController> {
           iconSize = 30;
           fontSize = 16;
           crossAxisCount = 4;
-          childAspectRatio = 2.2;
+          childAspectRatio = 2.3;
         } else if (maxWidth >= 900 && maxWidth < 1024) {
           iconSize = 50;
           fontSize = 18;
           crossAxisCount = 4;
-          childAspectRatio = 2.0;
+          childAspectRatio = 2.3;
         } else if (maxWidth >= 1024 && maxWidth < 1440) {
           iconSize = 100;
           fontSize = 20;
@@ -51,8 +51,8 @@ class Gridoverviewoverview extends GetView<OverViewController> {
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 3,
-            mainAxisSpacing: 5,
+            crossAxisSpacing: isMobile ? 13 : 21,
+            mainAxisSpacing: isMobile ? 13 : 21,
             childAspectRatio: childAspectRatio,
           ),
           itemBuilder: (context, index) {

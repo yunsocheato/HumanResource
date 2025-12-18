@@ -31,24 +31,24 @@ class Employeepolicy extends GetView<AppDrawerController> {
           fontSizeBody = 12;
           iconSize = 12;
         } else if (isTablet) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isDesktop) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isLargeDesktop) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         }
         return Obx(() {
-          final isExpanded1 = controller.isExpanded1('Manage Staff Info');
+          final isExpanded1 = controller.isExpanded1('Profile');
           bool isMobile = Get.width < 600;
           bool isDesktop = Get.width >= 1024;
           return Theme(
@@ -59,8 +59,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
             child: ExpansionTile(
               initiallyExpanded: isExpanded1,
               onExpansionChanged:
-                  (bool expanded) =>
-                      controller.toggleTile1('Manage Staff Info'),
+                  (bool expanded) => controller.toggleTile1('Profile'),
               leading: Image.asset(
                 'assets/icon/user.png',
                 width: iconSize,
@@ -72,7 +71,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
                   MethodButton3();
                 },
                 child: Text(
-                  'Manage Staff Info',
+                  'Profile',
                   style: TextStyle(
                     fontSize: fontSizeTitle,
                     color:
@@ -93,7 +92,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
                 _buildSubTile(
                   Imagepath: 'assets/icon/manageuser.png',
                   fontSize: fontSizeBody,
-                  title: 'Manage Staff Profile',
+                  title: 'Staff Profile',
                   index: 16,
                   onTap: () {
                     if (isMobile) {
@@ -117,7 +116,7 @@ class Employeepolicy extends GetView<AppDrawerController> {
     required int index,
     required VoidCallback onTap,
     double fontSize = 12,
-    double iconSize = 22,
+    double iconSize = 14,
   }) {
     final controller = Get.find<AppDrawerController>();
     final isSelected = controller.selectedIndex.value == index;

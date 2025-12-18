@@ -94,28 +94,59 @@ class EmployeePolicyMobile extends GetView<EmployeePolicyController> {
                         _buildSearchField(controller),
                         const SizedBox(height: 16),
 
-                        _buildInformationCard(
-                          title: "Basic Information",
-                          color: Colors.blue.shade700,
-                          fields: _basicFields(controller),
-                        ),
-                        const SizedBox(height: 16),
+                        Obx(() {
+                          if (controller.isLoading.value) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.blue.shade900,
+                              ),
+                            );
+                          }
+                          if (controller.Username.value.isEmpty) {
+                            return const Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Not Search Yet',
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                          return Column(
+                            children: [
+                              _buildInformationCard(
+                                title: "Basic Information",
+                                color: Colors.blue.shade700,
+                                fields: _basicFields(controller),
+                              ),
+                              const SizedBox(height: 16),
 
-                        _buildInformationCard(
-                          title: "Contact Information",
-                          color: Colors.red.shade700,
-                          fields: _contactFields(controller),
-                        ),
-                        const SizedBox(height: 16),
+                              _buildInformationCard(
+                                title: "Contact Information",
+                                color: Colors.red.shade700,
+                                fields: _contactFields(controller),
+                              ),
+                              const SizedBox(height: 16),
 
-                        _buildInformationCard(
-                          title: "Work Information",
-                          color: Colors.orange.shade700,
-                          fields: _workFields(controller),
-                        ),
-                        const SizedBox(height: 24),
+                              _buildInformationCard(
+                                title: "Work Information",
+                                color: Colors.orange.shade700,
+                                fields: _workFields(controller),
+                              ),
+                              const SizedBox(height: 24),
 
-                        _buildUpdateButtons(controller),
+                              _buildUpdateButtons(controller),
+                            ],
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -136,7 +167,11 @@ class EmployeePolicyMobile extends GetView<EmployeePolicyController> {
           children: [
             IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () => Get.offAllNamed('/dashboard'),
+              onPressed: () {
+                controller.clearDataFields();
+                controller.suggestionList.clear();
+                Get.offAllNamed('/dashboard');
+              },
             ),
             const Text(
               "Back",
@@ -165,61 +200,79 @@ class EmployeePolicyMobile extends GetView<EmployeePolicyController> {
   }
 
   Widget _buildSearchField(EmployeePolicyController controller) {
-    final textController = TextEditingController(
-      text: controller.Username.value,
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextFormField(
-          controller: textController,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            fillColor: Colors.white24,
-            filled: true,
-            hintText: "Search by Username",
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
-            suffixIcon: IconButton(
-              icon: Icon(controller.icon, color: controller.color),
-              onPressed:
-                  () => controller.fetchbyusersemployee(textController.text),
+    return Obx(() {
+      return Column(
+        children: [
+          TextFormField(
+            textInputAction: TextInputAction.search,
+            controller: controller.usernameSearchController,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.left,
+            keyboardType: TextInputType.text,
+            onFieldSubmitted: (value) {
+              final query = value.trim();
+              if (query.isNotEmpty) {
+                controller.fetchbyusersemployee(query);
+                controller.usernameSearchController.clear();
+                controller.suggestionList.clear();
+              }
+            },
+            decoration: InputDecoration(
+              hintText: 'Search by Username',
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  final query = controller.usernameSearchController.text.trim();
+                  if (query.isNotEmpty) {
+                    controller.fetchbyusersemployee(query);
+                    controller.usernameSearchController.clear();
+                    controller.suggestionList.clear();
+                  }
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
+            onChanged: (v) {
+              controller.Username.value = v;
+              if (v.trim().isNotEmpty) {
+                controller.fetchSuggestions(v.trim());
+              } else {
+                controller.usernameSearchController.clear();
+                controller.suggestionList.clear();
+              }
+            },
           ),
-          onChanged: (value) => controller.Username.value = value,
-        ),
-        Obx(() {
-          if (controller.suggestionList.isEmpty ||
-              controller.Username.value.isEmpty) {
-            return const SizedBox.shrink();
-          }
-
-          return Container(
-            height: 150,
-            margin: const EdgeInsets.only(top: 4),
-            decoration: BoxDecoration(
-              color: Colors.white24,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey.shade300),
+          if (controller.suggestionList.isNotEmpty)
+            Container(
+              margin: const EdgeInsets.only(top: 6),
+              constraints: const BoxConstraints(maxHeight: 150),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: ListView.builder(
+                itemCount: controller.suggestionList.length,
+                itemBuilder: (_, index) {
+                  final s = controller.suggestionList[index];
+                  return ListTile(
+                    title: Text(s),
+                    onTap: () {
+                      controller.usernameSearchController.text = s;
+                      controller.Username.value = s;
+                      controller.fetchbyusersemployee(s);
+                      controller.usernameSearchController.clear();
+                      controller.suggestionList.clear();
+                    },
+                  );
+                },
+              ),
             ),
-            child: ListView(
-              children:
-                  controller.suggestionList.map((suggestion) {
-                    return ListTile(
-                      title: Text(suggestion),
-                      onTap: () {
-                        textController.text = suggestion;
-                        controller.Username.value = suggestion;
-                        controller.fetchbyusersemployee(suggestion);
-                        controller.suggestionList.clear();
-                      },
-                    );
-                  }).toList(),
-            ),
-          );
-        }),
-      ],
-    );
+        ],
+      );
+    });
   }
 
   Widget _buildInformationCard({
@@ -299,7 +352,11 @@ class EmployeePolicyMobile extends GetView<EmployeePolicyController> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-          onPressed: () => Get.offAllNamed('/dashboard'),
+          onPressed: () {
+            controller.clearDataFields();
+            controller.suggestionList.clear();
+            Get.offAllNamed('/dashboard');
+          },
           child: const Text("Close", style: TextStyle(color: Colors.red)),
         ),
         const SizedBox(width: 12),
@@ -320,8 +377,9 @@ class EmployeePolicyMobile extends GetView<EmployeePolicyController> {
               "Update UserInfo on: ${controller.NameController.text}",
               ContentType.success,
             );
-
-            Get.back();
+            controller.clearDataFields();
+            controller.suggestionList.clear();
+            Get.offAllNamed('/dashboard');
           },
         ),
       ],

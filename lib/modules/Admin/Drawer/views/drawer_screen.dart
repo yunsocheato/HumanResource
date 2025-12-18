@@ -43,21 +43,21 @@ class Drawerscreen extends GetView<AppDrawerController> {
         double avatarRadius;
 
         if (isMobile) {
-          sidebarWidth = 200;
+          sidebarWidth = 150;
           fontSizeTitle = 12;
           fontSizeBody = 12;
           iconSize = 12;
           avatarRadius = 35;
         } else if (isTablet) {
-          sidebarWidth = 200;
+          sidebarWidth = 150;
           fontSizeTitle = 16;
           fontSizeBody = 13;
           iconSize = 24;
           avatarRadius = 22;
         } else if (isDesktop) {
-          sidebarWidth = 230;
+          sidebarWidth = 200;
           fontSizeTitle = 10;
-          fontSizeBody = 10;
+          fontSizeBody = 13;
           iconSize = 15;
           avatarRadius = 21;
         } else if (isLargeDesktop) {
@@ -81,7 +81,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
               isMobile
                   ? null
                   : AppBar(
-                    toolbarHeight: 65,
+                    toolbarHeight: 55,
                     title: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -263,7 +263,7 @@ class Drawerscreen extends GetView<AppDrawerController> {
               fontSize: fontSizeBody,
             ),
             _buildDrawerTile(
-              'Mange Attendance User',
+              'Attendance User',
               'assets/icon/calendars.png',
               () => MethodButton2(),
               index: 1,

@@ -230,11 +230,11 @@ class OverViewWidget extends GetView<OverViewController> {
         child: Row(
           children: [
             DropDownMenuChartPie(),
-            const SizedBox(width: 8),
+            const SizedBox(width: 5),
             DatePickerChartToday(),
-            const SizedBox(width: 8),
+            const SizedBox(width: 5),
             DatePickerAllDataChart(),
-            const SizedBox(width: 8),
+            const SizedBox(width: 5),
           ],
         ),
       ),

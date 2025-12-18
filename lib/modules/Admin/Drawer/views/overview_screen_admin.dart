@@ -26,24 +26,24 @@ class OverviewAdmin extends GetView<AppDrawerController> {
         double iconSize;
 
         if (isMobile) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isTablet) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isDesktop) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else if (isLargeDesktop) {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         } else {
-          fontSizeTitle = 12;
-          fontSizeBody = 12;
+          fontSizeTitle = 13;
+          fontSizeBody = 10;
           iconSize = 12;
         }
         return Obx(() {
@@ -96,7 +96,7 @@ class OverviewAdmin extends GetView<AppDrawerController> {
                   onTap: () => Get.offAllNamed('/userprofile'),
                 ),
                 _buildSubTile(
-                  title: 'Mange Own Report',
+                  title: ' Your Records',
                   fontSize: fontSizeBody,
                   Imagepath: 'assets/icon/folder.png',
                   index: 101,
@@ -129,8 +129,8 @@ class OverviewAdmin extends GetView<AppDrawerController> {
     required String Imagepath,
     required int index,
     required VoidCallback onTap,
-    double fontSize = 14,
-    double imageSize = 22,
+    double fontSize = 10,
+    double imageSize = 13,
   }) {
     final controller = Get.find<AppDrawerController>();
     final isSelected = controller.selectedIndex.value == index;
