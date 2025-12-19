@@ -11,10 +11,9 @@ class CardController extends GetxController {
   var total = ''.obs;
   var growth = ''.obs;
   var icon = Icons.info.obs;
-  var iconColor = Colors.grey.obs;
+  var iconColor = Colors.blue.shade600.obs;
   var isLoading = true.obs;
 
-  //Attendacne Stream
   var presentcount = 0.obs;
   RxInt percentage = 0.obs;
   var totalcount = 0.obs;
@@ -61,7 +60,6 @@ class CardController extends GetxController {
         isLoading1.value = false;
       },
       onError: (error) {
-        print('Error: $error');
         isLoading1.value = false;
       },
       onDone: () {
@@ -78,7 +76,6 @@ class CardController extends GetxController {
         isLoading3.value = false;
       },
       onError: (error) {
-        print('Error: $error');
         isLoading3.value = false;
       },
       onDone: () {

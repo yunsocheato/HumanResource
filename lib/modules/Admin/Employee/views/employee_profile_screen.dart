@@ -251,13 +251,6 @@ class EmployeeProfileScreen extends GetView<EmployeeProfileController> {
           ),
           const Divider(height: 32),
           _buildSidebarItem(
-            'Status',
-            'Onboarding'.obs,
-            Colors.black54,
-            Icons.star,
-            null,
-          ),
-          _buildSidebarItem(
             'Email',
             controller.emailText,
             Colors.blue,

@@ -47,9 +47,7 @@ Future<void> main() async {
   if (!kIsWeb && (GetPlatform.isAndroid || GetPlatform.isIOS)) {
     FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
   }
-  // runApp(
-  //   DevicePreview(enabled: !kReleaseMode, builder: (context) => const MyApp()),
-  // );
+
   runApp(const MyApp());
 
   if (!kIsWeb && (GetPlatform.isAndroid || GetPlatform.isIOS)) {
@@ -70,9 +68,6 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'DeamHR Web',
-      // useInheritedMediaQuery: true,
-      // locale: DevicePreview.locale(context),
-      // builder: DevicePreview.appBuilder,
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
       enableLog: true,

@@ -2,9 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrms/Utils/HoverMouse/Widget/mouse_hover_widget.dart';
 import 'package:hrms/Utils/Loadingui/Loading_skeleton.dart';
-import '../../../../Utils/HoverMouse/controller/hover_mouse_controller.dart';
 import '../controllers/card_controller.dart';
 import '../widgets/card_list_view.dart';
 
@@ -45,7 +43,7 @@ class Cardinfo extends GetView<CardController> {
           iconSize = 14;
         } else if (isTablet) {
           crossAxisCount = 4;
-          aspectRatio = 1.6;
+          aspectRatio = 2.2;
           cardHeight = 250;
           fontSizeTitle = 13;
           fontSizeNumber = 14;
@@ -53,7 +51,7 @@ class Cardinfo extends GetView<CardController> {
           iconSize = 15;
         } else if (isLaptop) {
           crossAxisCount = 4;
-          aspectRatio = 2.1;
+          aspectRatio = 2.3;
           cardHeight = 210;
           fontSizeTitle = 13;
           fontSizeNumber = 18;
@@ -107,7 +105,6 @@ class Cardinfo extends GetView<CardController> {
                 title: item['title'],
                 subtitle: item['subtitle'](controller),
                 number: item['number'](controller),
-                icon: item['icon'](controller),
                 bgColor: Colors.white,
                 iconBgColor: item['iconBgColor'],
                 subtitleColor: Colors.white,
@@ -116,7 +113,6 @@ class Cardinfo extends GetView<CardController> {
                 fontSizeTitle: fontSizeTitle,
                 fontSizeNumber: fontSizeNumber,
                 fontSizeSubtitle: fontSizeSubtitle,
-                iconSize: iconSize,
                 imagePath: item['imagePath'],
               );
             }),
@@ -131,7 +127,6 @@ class Cardinfo extends GetView<CardController> {
     required String title,
     required String subtitle,
     required String number,
-    required IconData icon,
     required Color bgColor,
     required Color iconBgColor,
     required Color subtitleColor,
@@ -140,61 +135,57 @@ class Cardinfo extends GetView<CardController> {
     required double fontSizeTitle,
     required double fontSizeNumber,
     required double fontSizeSubtitle,
-    required double iconSize,
     String? imagePath,
   }) {
-    final HoverMouseController controller = Get.find<HoverMouseController>();
-
     final bool hasImage = imagePath != null && imagePath.isNotEmpty;
 
-    return MouseHover(
-      keyId: 18,
-      controller: controller,
-      child: Card(
-        color: iconColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 15,
-        shadowColor: Colors.black.withOpacity(0.4),
-        child: Stack(
-          children: [
-            if (hasImage)
-              Align(
-                alignment: Alignment.centerRight,
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                  child: Image.asset(
-                    imagePath,
-                    width: 150,
-                    height: double.infinity,
-                    color: Colors.white.withOpacity(0.3),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              )
-            else
-              Container(
-                decoration: BoxDecoration(
-                  color: iconColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.35),
-                borderRadius: BorderRadius.circular(12),
-              ),
+    return Card(
+      color: iconColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 15,
+      shadowColor: Colors.black.withOpacity(0.4),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.35),
+              borderRadius: BorderRadius.circular(12),
             ),
+          ),
 
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    if (hasImage) ...[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          height: 28,
+                          width: 28,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(100),
+                            image: DecorationImage(
+                              image: AssetImage(imagePath),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ] else
+                      Container(
+                        decoration: BoxDecoration(
+                          color: iconColor,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerRight,
                         child: Text(
                           title,
                           maxLines: 1,
@@ -206,27 +197,12 @@ class Cardinfo extends GetView<CardController> {
                           ),
                         ),
                       ),
-
-                      if (!hasImage)
-                        Container(
-                          height: iconSize * 1.4,
-                          width: iconSize * 1.4,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            icon,
-                            size: iconSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                    ],
-                  ),
-
-                  const Spacer(),
-
-                  Text(
+                    ),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
                     number,
                     style: TextStyle(
                       color: Colors.white,
@@ -234,10 +210,13 @@ class Cardinfo extends GetView<CardController> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                ),
 
-                  const SizedBox(height: 4),
+                const SizedBox(height: 4),
 
-                  Text(
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
                     subtitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -246,11 +225,11 @@ class Cardinfo extends GetView<CardController> {
                       fontSize: fontSizeSubtitle,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -49,191 +49,159 @@ class AttendanceRecords extends GetView<AttendanceController> {
   }
 
   Widget _buildAttendanceTableDesktop(double maxTableWidth) {
-    final controller = Get.find<AttendanceController>();
-    final data1 = Get.put(DataUnavailable());
-
     return Obx(() {
-      if (controller.isLoading.value) {
-        return Center(child: LoadingScreen());
-      } else if (controller.dataSource.value == null ||
+      if (controller.dataSource.value == null ||
           controller.attendanceData.isEmpty) {
-        return data1.imageNotFound.value
-            ? SizedBox(
-              width: 150,
-              height: 150,
-              child: Center(
-                child: Image.asset(data1.imageUrl, fit: BoxFit.cover),
+        return Center(
+          child: Column(
+            children: [
+              Text(
+                'Not Found Attendance',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
-            )
-            : const Text("No Data Found", style: TextStyle(color: Colors.red));
+              const SizedBox(height: 5),
+              Image.asset('assets/icon/nodata.png', width: 120, height: 120),
+            ],
+          ),
+        );
       }
-      final HoverMouseController controller1 = Get.put(HoverMouseController());
-      final context = Get.context!;
-
-      return MouseHover(
-        keyId: 3,
-        controller: controller1,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Card(
-            elevation: 10,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            color: Colors.grey.shade200,
+      return SizedBox(
+        width: double.infinity,
+        height: MediaQuery.of(Get.context!).size.height * 0.6,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 0),
+              ),
+            ],
+          ),
+          margin: const EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  height: 40,
-                  width: 160,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.teal.shade700,
-                        Colors.tealAccent.shade100,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.topRight,
+                Row(
+                  children: [
+                    Text(
+                      "Attendance Record",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue.shade900,
+                        fontFamily: '7TH.ttf',
+                      ),
                     ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () => showAttendanceDialog(),
+                      icon: Icon(Icons.fullscreen, color: Colors.blue),
                     ),
-                  ),
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    "Attendance Records",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
+                  ],
                 ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: AttendanceFilterView(),
-                ),
-                const SizedBox(height: 5),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 450),
+                const SizedBox(height: 10),
+                AttendanceFilterView(),
+                const SizedBox(height: 10),
+                Expanded(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width - 350,
-                      ),
-                      child: PaginatedDataTable(
-                        rowsPerPage: controller.currentLimit,
-                        availableRowsPerPage: const [10, 20, 50, 100, 200],
-                        onPageChanged: (firstRowIndex) {
-                          final newPage =
-                              (firstRowIndex ~/ controller.currentLimit);
-                          controller.updatePagination(
-                            controller.currentLimit,
-                            newPage,
-                          );
-                        },
-                        onRowsPerPageChanged: (value) {
-                          if (value != null) {
-                            controller.updatePagination(value, 0);
-                          }
-                        },
-                        columns: [
-                          // DataColumn(
-                          //   label: Container(
-                          //     height: 30,
-                          //     width: 90,
-                          //     alignment: Alignment.center,
-                          //     decoration: BoxDecoration(
-                          //       color: Colors.blue,
-                          //       borderRadius: BorderRadius.circular(6),
-                          //     ),
-                          //     child: const Text(
-                          //       'Log ID',
-                          //       style: TextStyle(
-                          //         color: Colors.white,
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                          DataColumn(
-                            label: Container(
-                              height: 30,
-                              width: 125,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Text(
-                                'ID Fingerprint',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    child: PaginatedDataTable(
+                      rowsPerPage: controller.currentLimit,
+                      availableRowsPerPage: const [10, 20, 50, 100, 200],
+                      onPageChanged: (firstRowIndex) {
+                        final newPage =
+                            (firstRowIndex ~/ controller.currentLimit);
+                        controller.updatePagination(
+                          controller.currentLimit,
+                          newPage,
+                        );
+                      },
+                      onRowsPerPageChanged: (value) {
+                        if (value != null) {
+                          controller.updatePagination(value, 0);
+                        }
+                      },
+                      columns: [
+                        DataColumn(
+                          label: Container(
+                            height: 30,
+                            width: 125,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'ID Fingerprint',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          DataColumn(
-                            label: Container(
-                              height: 30,
-                              width: 100,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Text(
-                                'Username',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        ),
+                        DataColumn(
+                          label: Container(
+                            height: 30,
+                            width: 100,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'Username',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          DataColumn(
-                            label: Container(
-                              height: 30,
-                              width: 100,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.orange,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Text(
-                                'Check Type',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        ),
+                        DataColumn(
+                          label: Container(
+                            height: 30,
+                            width: 100,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'Check Type',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          DataColumn(
-                            label: Container(
-                              height: 30,
-                              width: 100,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.purple,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Text(
-                                'Clock In',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        ),
+                        DataColumn(
+                          label: Container(
+                            height: 30,
+                            width: 100,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.purple,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'Clock In',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                        ],
-                        source: controller.dataSource.value!,
-                      ),
+                        ),
+                      ],
+                      source: controller.dataSource.value!,
                     ),
                   ),
                 ),
@@ -441,5 +409,156 @@ class AttendanceRecords extends GetView<AttendanceController> {
     final date = DateTime.parse(timestamp);
     final formatter = DateFormat('hh:mm a dd.MM.yyyy');
     return formatter.format(date);
+  }
+
+  void showAttendanceDialog() {
+    Get.dialog(
+      Dialog(
+        insetPadding: EdgeInsets.zero,
+        backgroundColor: Colors.transparent,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: Obx(() {
+              if (controller.dataSource.value == null ||
+                  controller.attendanceData.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'No Attendance Found',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Image.asset(
+                        'assets/icon/nodata.png',
+                        width: 120,
+                        height: 120,
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () => Get.back(),
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Attendance Record",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade900,
+                            fontFamily: '7TH.ttf',
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () => Get.back(),
+                          icon: const Icon(Icons.close, color: Colors.red),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    AttendanceFilterView(),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: SizedBox(
+                          width: MediaQuery.of(Get.context!).size.width,
+                          child: PaginatedDataTable(
+                            header: const SizedBox(),
+                            rowsPerPage: controller.currentLimit,
+                            availableRowsPerPage: const [10, 20, 50, 100, 200],
+                            onPageChanged: (firstRowIndex) {
+                              final newPage =
+                                  (firstRowIndex ~/ controller.currentLimit);
+                              controller.updatePagination(
+                                controller.currentLimit,
+                                newPage,
+                              );
+                            },
+                            onRowsPerPageChanged: (value) {
+                              if (value != null) {
+                                controller.updatePagination(value, 0);
+                              }
+                            },
+                            columns: [
+                              DataColumn(
+                                label: _buildHeader(
+                                  'ID Fingerprint',
+                                  Colors.green,
+                                  125,
+                                ),
+                              ),
+                              DataColumn(
+                                label: _buildHeader(
+                                  'Username',
+                                  Colors.red,
+                                  100,
+                                ),
+                              ),
+                              DataColumn(
+                                label: _buildHeader(
+                                  'Check Type',
+                                  Colors.orange,
+                                  100,
+                                ),
+                              ),
+                              DataColumn(
+                                label: _buildHeader(
+                                  'Clock In',
+                                  Colors.purple,
+                                  100,
+                                ),
+                              ),
+                            ],
+                            source: controller.dataSource.value!,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  Widget _buildHeader(String text, Color color, double width) {
+    return Container(
+      height: 30,
+      width: width,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 }

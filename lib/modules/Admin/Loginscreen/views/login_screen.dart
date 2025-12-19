@@ -194,8 +194,13 @@ class LoginScreen extends GetView<LoginController> {
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           controller: controller.emailController,
+          validator:
+              (value) =>
+                  (value == null || value.isEmpty) ? 'Required Email' : null,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          onFieldSubmitted: (value) => controller.login(),
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.email, color: Colors.blue),
             filled: true,
@@ -239,9 +244,16 @@ class LoginScreen extends GetView<LoginController> {
         ),
         const SizedBox(height: 8),
         Obx(
-          () => TextField(
+          () => TextFormField(
             controller: controller.passwordController,
             obscureText: !controller.isVisible.value,
+            validator:
+                (value) =>
+                    (value == null || value.isEmpty)
+                        ? 'Required Password'
+                        : null,
+            onFieldSubmitted: (value) => controller.login(),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.lock, color: Colors.blue),
               filled: true,

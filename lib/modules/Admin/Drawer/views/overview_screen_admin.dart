@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrms/modules/Admin/Employee/Controller/employee_profile_controller.dart';
 import '../controllers/drawer_controller.dart';
 
 import '../widgets/Method_drawer_policy_button.dart';
@@ -16,7 +17,7 @@ class OverviewAdmin extends GetView<AppDrawerController> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-
+        final controller1 = Get.find<EmployeeProfileController>();
         final isMobile = width < 600;
         final isTablet = width >= 600 && width < 1024;
         final isDesktop = width >= 1024 && width < 2560;
@@ -93,7 +94,10 @@ class OverviewAdmin extends GetView<AppDrawerController> {
                   fontSize: fontSizeBody,
                   Imagepath: 'assets/icon/user.png',
                   index: 100,
-                  onTap: () => Get.offAllNamed('/userprofile'),
+                  onTap: () async {
+                    await controller1.loadUserProfile();
+                    Get.offAllNamed('/userprofile');
+                  },
                 ),
                 _buildSubTile(
                   title: ' Your Records',

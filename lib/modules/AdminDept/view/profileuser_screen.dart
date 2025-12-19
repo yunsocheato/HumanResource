@@ -95,21 +95,6 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
         ),
         child: Stack(
           children: [
-            // Positioned(
-            //   top: 0,
-            //   left: 0,
-            //   right: 0,
-            //   child: Center(
-            //     child: Container(
-            //       width: 40,
-            //       height: 3,
-            //       decoration: BoxDecoration(
-            //         color: Colors.grey.shade500,
-            //         borderRadius: BorderRadius.circular(2.5),
-            //       ),
-            //     ),
-            //   ),
-            // ),
             Positioned(
               top: -30,
               right: -60,
@@ -155,8 +140,11 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
                                       Icons.arrow_back,
                                       color: Colors.white,
                                     ),
-                                    onPressed:
-                                        () => Get.offAllNamed('/overview'),
+                                    onPressed: () {
+                                      controller.clearDataFields();
+                                      controller.profileImageUrl.close();
+                                      Get.offAllNamed('/overview');
+                                    },
                                   ),
                                   const SizedBox(width: 8),
                                   const Text(
@@ -226,43 +214,70 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
   Widget _buildDesktopTabletContent() {
     return Padding(
       padding: const EdgeInsets.all(24.0),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            children: [const SizedBox(height: 50), _buildProfileSidebar()],
-          ),
-          const SizedBox(width: 24),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Align(
+            alignment: Alignment.topLeft,
+            child: Row(
               children: [
-                const SizedBox(height: 50),
-                _buildInformationCard(
-                  color1: Colors.blue,
-                  color: Colors.blue.shade900,
-                  title: 'Basic Information',
-                  fields: _getBasicInformationFields(),
+                Image.asset('assets/icon/user.png', width: 30, height: 30),
+                const SizedBox(width: 12),
+                Text(
+                  'My Profile',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: '7TH.ttf',
+                    color: Colors.blue.shade900,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.blue.shade900,
+                    decorationThickness: 2,
+                  ),
                 ),
-                const SizedBox(height: 24),
-                _buildInformationCard(
-                  color1: Colors.green,
-                  color: Colors.green.shade900,
-                  title: 'Contact Information',
-                  fields: _getContactInformationFields(),
-                ),
-                const SizedBox(height: 24),
-                _buildInformationCard(
-                  color1: Colors.orange,
-                  color: Colors.orange.shade900,
-                  title: 'Work Information',
-                  fields: _getWorkInformationFields(),
-                ),
-                const SizedBox(height: 30),
-
-                _buildButtons(controller),
               ],
             ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [const SizedBox(height: 50), _buildProfileSidebar()],
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 50),
+                    _buildInformationCard(
+                      color1: Colors.blue,
+                      color: Colors.blue.shade900,
+                      title: 'Basic Information',
+                      fields: _getBasicInformationFields(),
+                    ),
+                    const SizedBox(height: 24),
+                    _buildInformationCard(
+                      color1: Colors.green,
+                      color: Colors.green.shade900,
+                      title: 'Contact Information',
+                      fields: _getContactInformationFields(),
+                    ),
+                    const SizedBox(height: 24),
+                    _buildInformationCard(
+                      color1: Colors.orange,
+                      color: Colors.orange.shade900,
+                      title: 'Work Information',
+                      fields: _getWorkInformationFields(),
+                    ),
+                    const SizedBox(height: 30),
+
+                    _buildButtons(controller),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -708,7 +723,10 @@ class UserProfileScreen extends GetView<EmployeeProfileController> {
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: Colors.red),
             ),
-            onPressed: () => Get.back(),
+            onPressed: () {
+              controller.clearDataFields();
+              Get.offAllNamed('/overview');
+            },
             child: const Text(
               'Back',
               style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),

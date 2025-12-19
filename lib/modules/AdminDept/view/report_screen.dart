@@ -418,6 +418,28 @@ class ReportScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Row(
+              children: [
+                Image.asset('assets/icon/folder.png', width: 30, height: 30),
+                const SizedBox(width: 12),
+                Text(
+                  'My Records',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: '7TH.ttf',
+                    color: Colors.blue.shade900,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.blue.shade900,
+                    decorationThickness: 2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 50),
           Text(
             'LEAVE REQUEST',
             style: TextStyle(

@@ -50,7 +50,22 @@ class TeamRequestLeaveResponsiveWidget extends GetView<LeaveRecordController> {
       }
 
       if (leaves.isEmpty) {
-        return const Center(child: Text("No Team Request Leave Found"));
+        return Center(
+          child: Column(
+            children: [
+              Text(
+                'No Team Leave Request Found',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: fontSize(15),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 5),
+              Image.asset('assets/images/nodata.png', width: 150, height: 150),
+            ],
+          ),
+        );
       }
       return LayoutBuilder(
         builder: (context, constraints) {

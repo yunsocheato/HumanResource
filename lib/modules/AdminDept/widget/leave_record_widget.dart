@@ -29,7 +29,7 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
 
     double fontSize(double base) {
       if (width >= 1600) return base * 1.3;
-      if (width >= 1200) return base * 1.1;
+      if (width >= 1200) return base * 1.3;
       if (width >= 1000) return base * 5.6;
       return base * 0.9;
     }
@@ -37,7 +37,7 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
     double colWidth(double base) {
       if (width >= 1600) return base * 1.5;
       if (width >= 1200) return base * 1.3;
-      if (width >= 1000) return base * 1.6;
+      if (width >= 1000) return base * 5.6;
       return base;
     }
 
@@ -83,8 +83,24 @@ class LeaveRequestTablewidget extends GetView<LeaveRecordController> {
                             final requests = controller.leaves;
 
                             if (requests.isEmpty) {
-                              return const errormessage(
-                                tittle: 'No LeaveRecord Found',
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'No Leave Records Found',
+                                      style: TextStyle(
+                                        fontSize: fontSize(15),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Image.asset(
+                                      'assets/icon/nodata.png',
+                                      width: fontSize(120),
+                                      height: fontSize(120),
+                                    ),
+                                  ],
+                                ),
                               );
                             }
                             return DataTable(

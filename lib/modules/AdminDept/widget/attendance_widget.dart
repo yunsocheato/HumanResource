@@ -82,8 +82,24 @@ class AttendanceTablewidget extends GetView<Attendancecontroller> {
 
                             final requests = controller.attendance;
                             if (requests.isEmpty) {
-                              return const errormessage(
-                                tittle: 'No Attendance Found',
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'No Attendance Records Found',
+                                      style: TextStyle(
+                                        fontSize: fontSize(15),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Image.asset(
+                                      'assets/icon/nodata.png',
+                                      width: fontSize(150),
+                                      height: fontSize(150),
+                                    ),
+                                  ],
+                                ),
                               );
                             }
                             return DataTable(

@@ -281,16 +281,29 @@ Widget _tabletLayout() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 20),
-        Text(
-          'ATTENDANCE RECORDS',
-          style: TextStyle(
-            color: Colors.blue.shade900,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+        Align(
+          alignment: Alignment.topLeft,
+          child: Row(
+            children: [
+              Image.asset('assets/icon/calendars.png', width: 30, height: 30),
+              const SizedBox(width: 12),
+              Text(
+                'My Attendance',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: '7TH.ttf',
+                  color: Colors.blue.shade900,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Colors.blue.shade900,
+                  decorationThickness: 2,
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 14),
+
+        const SizedBox(height: 50),
         DatePickerAttendance(),
         const SizedBox(height: 14),
         AttendanceTablewidget(),
@@ -312,28 +325,41 @@ Widget _laptopLayout() {
           flex: 3,
           child: Column(
             children: [
-              const SizedBox(height: 40),
-              Text(
-                'ATTENDANCE RECORDS',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.blue.shade900,
-                  decorationThickness: 2,
-                  wordSpacing: 2,
-                  color: Colors.blue.shade900,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
+              const SizedBox(height: 20),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/icon/calendars.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'My Attendance',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: '7TH.ttf',
+                        color: Colors.blue.shade900,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.blue.shade900,
+                        decorationThickness: 2,
+                      ),
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.left,
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 50),
               DatePickerAttendance(),
               const SizedBox(height: 15),
               AttendanceTablewidget(),
             ],
           ),
         ),
-        const SizedBox(width: 20),
+
+        const SizedBox(height: 30, width: 20),
         Expanded(flex: 1, child: _buildProfileSidebar(isMobile: false)),
       ],
     ),
@@ -350,28 +376,40 @@ Widget _desktopLayout() {
           flex: 4,
           child: Column(
             children: [
-              const SizedBox(height: 50),
-              Text(
-                'ATTENDANCE RECORDS',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.blue.shade900,
-                  decorationThickness: 2,
-                  wordSpacing: 2,
-                  color: Colors.blue.shade900,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                ),
-                textAlign: TextAlign.left,
-              ),
               const SizedBox(height: 20),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/icon/calendars.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'My Attendance',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: '7TH.ttf',
+                        color: Colors.blue.shade900,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.blue.shade900,
+                        decorationThickness: 2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 50),
               DatePickerAttendance(),
               const SizedBox(height: 20),
               AttendanceTablewidget(),
             ],
           ),
         ),
-        const SizedBox(width: 30),
+        const SizedBox(height: 30, width: 20),
         Expanded(flex: 3, child: _buildProfileSidebar(isMobile: false)),
       ],
     ),
@@ -389,27 +427,39 @@ Widget _largeDesktopLayout() {
           child: Column(
             children: [
               const SizedBox(height: 60),
-              Text(
-                'ATTENDANCE RECORDS',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.blue.shade900,
-                  decorationThickness: 2,
-                  wordSpacing: 2,
-                  color: Colors.blue.shade900,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 34,
+              Align(
+                alignment: Alignment.topLeft,
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/icon/calendars.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'My Attendance',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: '7TH.ttf',
+                        color: Colors.blue.shade900,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.blue.shade900,
+                        decorationThickness: 2,
+                      ),
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.left,
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 50),
               DatePickerAttendance(),
               const SizedBox(height: 20),
               AttendanceTablewidget(),
             ],
           ),
         ),
-        const SizedBox(width: 40),
+        const SizedBox(height: 30, width: 20),
         Expanded(flex: 3, child: _buildProfileSidebar(isMobile: false)),
       ],
     ),
@@ -421,7 +471,7 @@ Widget _buildProfileSidebar({required bool isMobile}) {
 
   return Container(
     width: isMobile ? Get.width : null,
-    padding: const EdgeInsets.all(24.0),
+    padding: const EdgeInsets.all(12.0),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(12),
@@ -435,14 +485,15 @@ Widget _buildProfileSidebar({required bool isMobile}) {
       ],
     ),
     child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           'ATTENDANCE ANALYZE',
           style: TextStyle(
             color: Colors.blue.shade900,
             fontWeight: FontWeight.bold,
-            fontSize: isMobile ? 18 : 20,
+            fontSize: isMobile ? 15 : 18,
           ),
         ),
         SizedBox(height: 15),
@@ -464,7 +515,7 @@ Widget _buildProfileSidebar({required bool isMobile}) {
             SizedBox(width: internalSpacing),
             SizedBox(
               width: isMobile ? (Get.width - 60) / 1.3 : 140,
-              height: 50,
+              height: 65,
               child: DropDownMenuChartPie(),
             ),
           ],
